@@ -15,6 +15,8 @@ public:
 
 	virtual bool isDestroyed() = 0;
 
+	// TODO: Add a string containing the base directory for graphics for the sake of path isolation.
+
 private:
 	// Context construction events
 	virtual void createContext() = 0;

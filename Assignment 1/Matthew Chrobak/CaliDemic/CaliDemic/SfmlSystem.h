@@ -1,10 +1,11 @@
 #pragma once
 #include "GraphicsSystem.h"
+#include "SurfaceManager.h"
 #include <SFML\Window.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
 
-class SfmlSystem : public GraphicsSystem
+class SfmlSystem : public GraphicsSystem, private SurfaceManager
 {
 public:
 	SfmlSystem(const char* title, unsigned int contextWidth, unsigned int contextHeight, unsigned int windowWidth, unsigned int windowHeight);

@@ -19,12 +19,33 @@
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{a5c5f87f-a501-4060-a85b-1eca2a4535ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Data">
+      <UniqueIdentifier>{df18f09b-e444-46a4-86d1-39419730a5e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Data">
+      <UniqueIdentifier>{fd22d3bf-cbb7-4c3c-a480-7f60e777063c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Data\Models">
+      <UniqueIdentifier>{61305876-45d6-424e-aefb-6153d54ba219}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Data\Models">
+      <UniqueIdentifier>{31a1de07-b8f7-4da9-9160-3f76b9bde824}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SfmlSystem.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Program.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="City.cpp">
+      <Filter>Source Files\Data\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="SurfaceManager.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="FileSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -34,6 +55,15 @@
     </ClInclude>
     <ClInclude Include="GraphicsSystem.h">
       <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="City.h">
+      <Filter>Header Files\Data\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="SurfaceManager.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="FileSystem.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
