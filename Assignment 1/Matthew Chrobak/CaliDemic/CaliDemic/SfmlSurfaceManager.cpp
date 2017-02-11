@@ -1,5 +1,8 @@
-#include "SurfaceManager.h"
-
+#include "SfmlSurfaceManager.h"
+#ifdef DEBUG
+#include <assert.h>
+#endif
+using namespace SFML;
 
 SurfaceManager::SurfaceManager()
 {
@@ -9,7 +12,13 @@ SurfaceManager::SurfaceManager()
 
 SurfaceManager::~SurfaceManager()
 {
-	// TOO: Delete allocated memory in the map of textures.
+	// TODO: Fix this.
+	//// Dereference and remove all surfaces in the map.
+	//while (this->_surfaces->size() != 0) {
+	//	sf::Texture* tex = this->_surfaces->end()->second;
+	//	delete tex;
+	//	this->_surfaces->erase(this->_surfaces->end()->first);
+	//}
 }
 
 
@@ -39,4 +48,12 @@ void SurfaceManager::_loadTextures()
 #endif
 		}
 	}
+}
+
+sf::Texture* SurfaceManager::_getSurface(std::string surfacename)
+{
+#ifdef DEBUG
+	assert(this->_surfaces->count(surfacename));
+#endif
+	return this->_surfaces->at(surfacename);
 }

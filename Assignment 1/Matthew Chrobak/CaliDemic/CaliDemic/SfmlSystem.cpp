@@ -1,6 +1,7 @@
 #pragma once
 #include "SfmlSystem.h"
 #include <assert.h>
+using namespace SFML;
 
 SfmlSystem::SfmlSystem(const char* title, unsigned int contextWidth, unsigned int contextHeight, unsigned int windowWidth, unsigned int windowHeight)
 {
@@ -75,6 +76,8 @@ void SfmlSystem::drawContext()
 		}
 	}
 
+	this->drawGame();
+
 	// Swap the buffers.
 	this->_windowContext->display();
 }
@@ -112,4 +115,62 @@ void SfmlSystem::setWindowTitle(const char* title)
 	if (this->_windowContext != nullptr) {
 		this->_windowContext->setTitle(title);
 	}
+}
+
+void SfmlSystem::renderSurface(const char* surfacename, SurfaceContext& ctx)
+{
+	sf::Texture* texture = this->_getSurface(surfacename);
+#ifdef DEBUG
+	assert(texture != nullptr);
+#endif
+	sf::Sprite sprite = sf::Sprite(*texture);
+
+	// Set the color if the context specifies so.
+	if (ctx.Color != nullptr) {
+		sf::Color color = sf::Color(
+			ctx.Color->R,
+			ctx.Color->G,
+			ctx.Color->B,
+			ctx.Color->A
+			);
+		sprite.setColor(color);
+	}
+
+	// Set the surface rect if the context specifies.
+	if (ctx.SurfaceRect != nullptr) {
+		sf::IntRect rect = sf::IntRect(
+			ctx.SurfaceRect->Left,
+			ctx.SurfaceRect->Top,
+			ctx.SurfaceRect->Width,
+			ctx.SurfaceRect->Height);
+		sprite.setTextureRect(rect);
+	}
+
+	// Scale the surface if the context specifies.
+	if (ctx.Size != nullptr) {
+		sf::Vector2f scale;
+		// Either compare it to the full-size, or the rect-size.
+		if (ctx.SurfaceRect != nullptr) {
+			scale = sf::Vector2f(
+				(float)ctx.Size->X / ctx.SurfaceRect->Width,
+				(float)ctx.Size->Y / ctx.SurfaceRect->Height
+				);
+		}
+		else {
+			scale = sf::Vector2f(
+				(float)ctx.Size->X / sprite.getTexture()->getSize().x,
+				(float)ctx.Size->Y / sprite.getTexture()->getSize().y
+				);
+		}
+		sprite.scale(scale);
+	}
+
+	// Set the position if the context specifies.
+	if (ctx.Position != nullptr) {
+		sf::Vector2f pos = sf::Vector2f(ctx.Position->X, ctx.Position->Y);
+		sprite.setPosition(pos);
+	}
+
+	// Draw it.
+	this->_windowContext->draw(sprite);
 }
