@@ -19,18 +19,6 @@
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{a5c5f87f-a501-4060-a85b-1eca2a4535ae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Data">
-      <UniqueIdentifier>{df18f09b-e444-46a4-86d1-39419730a5e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Data">
-      <UniqueIdentifier>{fd22d3bf-cbb7-4c3c-a480-7f60e777063c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Data\Models">
-      <UniqueIdentifier>{61305876-45d6-424e-aefb-6153d54ba219}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Data\Models">
-      <UniqueIdentifier>{31a1de07-b8f7-4da9-9160-3f76b9bde824}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Graphics\Sfml">
       <UniqueIdentifier>{48ffb2f1-7e6a-413a-b23d-671a8d07e3a6}</UniqueIdentifier>
     </Filter>
@@ -42,6 +30,24 @@
     </Filter>
     <Filter Include="Header Files\IO">
       <UniqueIdentifier>{f7437700-d5de-4184-b395-0a8effd1a880}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models">
+      <UniqueIdentifier>{df18f09b-e444-46a4-86d1-39419730a5e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models">
+      <UniqueIdentifier>{fd22d3bf-cbb7-4c3c-a480-7f60e777063c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\Cities">
+      <UniqueIdentifier>{2050598e-39af-4a23-9fd3-418a8f88dcde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Cities">
+      <UniqueIdentifier>{b288d816-f28e-40dd-b036-e726fb505fa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Cities\Graphs">
+      <UniqueIdentifier>{f8a4c8dd-bf37-43e0-bf71-1d9edcb57c8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\Cities\Graphs">
+      <UniqueIdentifier>{48d9e93f-ae03-435a-8c23-54e304617d9f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -66,6 +72,24 @@
     <ClCompile Include="GameRenderer.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="ArrayGraphNode.cpp">
+      <Filter>Source Files\Models\Cities\Graphs</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrayGraph.cpp">
+      <Filter>Source Files\Models\Cities\Graphs</Filter>
+    </ClCompile>
+    <ClCompile Include="City.cpp">
+      <Filter>Source Files\Models\Cities</Filter>
+    </ClCompile>
+    <ClCompile Include="CityGraph.cpp">
+      <Filter>Source Files\Models\Cities</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsSystem.h">
@@ -88,6 +112,27 @@
     </ClInclude>
     <ClInclude Include="GameRenderer.h">
       <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="InfectionColors.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrayGraphNode.h">
+      <Filter>Header Files\Models\Cities\Graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrayGraph.h">
+      <Filter>Header Files\Models\Cities\Graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="City.h">
+      <Filter>Header Files\Models\Cities</Filter>
+    </ClInclude>
+    <ClInclude Include="CityGraph.h">
+      <Filter>Header Files\Models\Cities</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

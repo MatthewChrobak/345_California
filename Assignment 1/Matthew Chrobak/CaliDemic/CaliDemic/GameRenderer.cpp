@@ -1,17 +1,24 @@
 #include "GameRenderer.h"
 #include "SurfaceContext.h"
 #include "GraphicsManager.h"
+#include "Game.h"
+#include "City.h"
+
 
 void GameRenderer::drawGame()
 {
 	SurfaceContext ctx;
-	ctx.SurfaceRect = new Rect(0, 0, 32, 32);
-	ctx.Position = new Vector2D(50, 50);
-	GraphicsManager::renderSurface("nodes\\images.png", ctx);
+	ctx.Size = new Vector2D(960, 640);
+	GraphicsManager::renderSurface("backgrounds\\world.png", ctx);
 
-	ctx.SurfaceRect->Left = 32;
-	ctx.Position->X = 100;
-	ctx.Position->Y = 100;
-	ctx.Size = new Vector2D(100, 100);
-	GraphicsManager::renderSurface("nodes\\images.png", ctx);
+	int numCities = Game::getGameBoard()->getNumCities();
+
+	for (int i = 0; i < numCities; i++) {
+		City* city = Game::getGameBoard()->getCity(i);
+
+		ctx.reset();
+		ctx.SurfaceRect = new Rect(0, 0, 32, 32);
+		ctx.Position = new Vector2D(city->x, city->y);
+		GraphicsManager::renderSurface("nodes\\images.png", ctx);
+	}
 }

@@ -67,7 +67,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ArrayGraphNode.cpp" />
+    <ClCompile Include="ArrayGraph.cpp" />
+    <ClCompile Include="Board.cpp" />
+    <ClCompile Include="City.cpp" />
+    <ClCompile Include="CityGraph.cpp" />
     <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GraphicsManager.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="GameRenderer.cpp" />
@@ -76,10 +82,17 @@
     <ClCompile Include="SfmlSurfaceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArrayGraphNode.h" />
+    <ClInclude Include="ArrayGraph.h" />
+    <ClInclude Include="Board.h" />
+    <ClInclude Include="City.h" />
+    <ClInclude Include="CityGraph.h" />
     <ClInclude Include="FileSystem.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GraphicsManager.h" />
     <ClInclude Include="GraphicsSystem.h" />
     <ClInclude Include="GameRenderer.h" />
+    <ClInclude Include="InfectionColors.h" />
     <ClInclude Include="SfmlSystem.h" />
     <ClInclude Include="SurfaceContext.h" />
     <ClInclude Include="SfmlSurfaceManager.h" />

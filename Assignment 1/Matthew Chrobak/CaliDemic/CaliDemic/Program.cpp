@@ -1,6 +1,7 @@
 #pragma once
 #include "SfmlSystem.h"
 #include "GraphicsManager.h"
+#include "Game.h"
 
 #ifdef DEBUG
 
@@ -32,9 +33,14 @@ int main() {
 	// Ensure the graphics folder exists.
 	if (!FileSystem::directoryExists(FileSystem::getStartupPath() + "graphics/")) {
 		FileSystem::createDirectory(FileSystem::getStartupPath() + "graphics/");
-		std::cout << "Created directory graphics/" << std::endl;
 	}
 
+	// Ensure the saves folder exists.
+	if (!FileSystem::directoryExists(FileSystem::getStartupPath() + Game::SavePath)) {
+		FileSystem::createDirectory(FileSystem::getStartupPath() + Game::SavePath);
+	}
+
+	Game::load("save1");
 	gameloop();
 }
 
