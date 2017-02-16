@@ -27,3 +27,8 @@ void ArrayGraphNode::addAdjacentNode(int nodeId)
 #endif
 	this->_adjacentNodeIds.push_back(nodeId);
 }
+
+std::vector<int> ArrayGraphNode::getAdjacentNodes()
+{
+	return this->_adjacentNodeIds;
+}

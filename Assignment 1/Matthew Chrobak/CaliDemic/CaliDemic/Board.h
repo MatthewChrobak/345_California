@@ -8,14 +8,14 @@ public:
 	Board(std::string savefolder);
 	~Board();
 
-	void Save(std::string savefolder);
-
+	void save(std::string savefolder);
 	City* getCity(int index);
 	int getNumCities();
 
 private:
 	CityGraph* _cities;
-
 	static const std::string _nodeFile;
+
+	void loadNodes(std::string nodeFile);
 };
 

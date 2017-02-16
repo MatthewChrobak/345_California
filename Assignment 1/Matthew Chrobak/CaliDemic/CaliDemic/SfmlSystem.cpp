@@ -3,12 +3,18 @@
 #include <assert.h>
 using namespace SFML;
 
-SfmlSystem::SfmlSystem(const char* title, unsigned int contextWidth, unsigned int contextHeight, unsigned int windowWidth, unsigned int windowHeight)
+SfmlSystem::SfmlSystem(std::string title, unsigned int contextWidth, unsigned int contextHeight, unsigned int windowWidth, unsigned int windowHeight)
 {
 	this->setContextSize(contextWidth, contextHeight);
 	this->createContext();
 	this->setWindowTitle(title);
 	this->setWindowSize(windowWidth, windowHeight);
+
+	// TODO:	 Load fonts to a hash-table, similarly to how surfaces are loaded.
+	//			 This will ensure multiple fonts can be loaded and referenced by name.
+
+	// Load the font.
+	this->_font.loadFromFile(FileSystem::getStartupPath() + "fonts\\default.ttf");
 }
 
 SfmlSystem::~SfmlSystem()
@@ -41,7 +47,6 @@ void SfmlSystem::destroyContext()
 #endif
 
 	this->_windowContext->close();
-
 	this->setContextSize(0, 0);
 	this->setWindowSize(0, 0);
 
@@ -76,6 +81,7 @@ void SfmlSystem::drawContext()
 		}
 	}
 
+	// Invoke the method which draws the game.
 	this->drawGame();
 
 	// Swap the buffers.
@@ -110,14 +116,62 @@ void SfmlSystem::setContextSize(unsigned int width, unsigned int height)
 	this->_contextSize = sf::Vector2u(width, height);
 }
 
-void SfmlSystem::setWindowTitle(const char* title)
+void SfmlSystem::setWindowTitle(std::string title)
 {
 	if (this->_windowContext != nullptr) {
 		this->_windowContext->setTitle(title);
 	}
 }
 
-void SfmlSystem::renderSurface(const char* surfacename, SurfaceContext& ctx)
+void SfmlSystem::renderText(std::string text, TextContext& ctx)
+{
+	// Create a new drawable object based on the text given.
+	sf::Text renderText = sf::Text(text, this->_font, ctx.FontSize);
+
+	// Set the fill color if the context specifies so.
+	if (ctx.FillColor != nullptr) {
+		sf::Color color = sf::Color(
+			(sf::Uint8)ctx.FillColor->R,
+			(sf::Uint8)ctx.FillColor->G,
+			(sf::Uint8)ctx.FillColor->B,
+			(sf::Uint8)ctx.FillColor->A
+			);
+		renderText.setFillColor(color);
+	}
+
+	// Set the outline color if the context specifies so.
+	if (ctx.OutlineColor != nullptr) {
+		sf::Color color = sf::Color(
+			(sf::Uint8)ctx.OutlineColor->R,
+			(sf::Uint8)ctx.OutlineColor->G,
+			(sf::Uint8)ctx.OutlineColor->B,
+			(sf::Uint8)ctx.OutlineColor->A
+			);
+		renderText.setOutlineColor(color);
+		renderText.setOutlineThickness(ctx.OutlineThickness);
+	}
+
+	// Set the position if the context specifies.
+	if (ctx.Position != nullptr) {
+		sf::Vector2f pos;
+
+		// Treat the given position as a centerpoint, or as absolute.
+		if (ctx.HorizontalCenter) {
+			int textWidth = renderText.findCharacterPos(text.size() - 1).x - renderText.findCharacterPos(0).x;
+			pos = sf::Vector2f(ctx.Position->X - (textWidth) / 2, ctx.Position->Y);
+		}
+		else {
+			pos = sf::Vector2f(ctx.Position->X, ctx.Position->Y);
+		}
+
+		renderText.setPosition(pos);
+	}
+
+	// Draw it.
+	this->_windowContext->draw(renderText);
+}
+
+void SfmlSystem::renderSurface(std::string surfacename, SurfaceContext& ctx)
 {
 	sf::Texture* texture = this->_getSurface(surfacename);
 #ifdef DEBUG
@@ -128,10 +182,10 @@ void SfmlSystem::renderSurface(const char* surfacename, SurfaceContext& ctx)
 	// Set the color if the context specifies so.
 	if (ctx.Color != nullptr) {
 		sf::Color color = sf::Color(
-			ctx.Color->R,
-			ctx.Color->G,
-			ctx.Color->B,
-			ctx.Color->A
+			(sf::Uint8)ctx.Color->R,
+			(sf::Uint8)ctx.Color->G,
+			(sf::Uint8)ctx.Color->B,
+			(sf::Uint8)ctx.Color->A
 			);
 		sprite.setColor(color);
 	}
@@ -170,6 +224,9 @@ void SfmlSystem::renderSurface(const char* surfacename, SurfaceContext& ctx)
 		sf::Vector2f pos = sf::Vector2f(ctx.Position->X, ctx.Position->Y);
 		sprite.setPosition(pos);
 	}
+
+	// Rotate it.
+	sprite.rotate(ctx.Rotation);
 
 	// Draw it.
 	this->_windowContext->draw(sprite);

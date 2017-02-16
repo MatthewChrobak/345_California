@@ -1,11 +1,12 @@
 #include "GraphicsManager.h"
 #include "SfmlSystem.h"
-
 #ifdef DEBUG
 #include <assert.h>
 #endif
 
 GraphicsSystem* GraphicsManager::_system = nullptr;
+const std::string GraphicsManager::GraphicsPath = "graphics/";
+const std::string GraphicsManager::FontPath = "fonts/";
 
 void GraphicsManager::initialize()
 {
@@ -32,10 +33,18 @@ void GraphicsManager::destroy()
 }
 
 
-void GraphicsManager::renderSurface(const char* surfacename, SurfaceContext& ctx)
+void GraphicsManager::renderSurface(std::string surfacename, SurfaceContext& ctx)
 {
 #ifdef DEBUG
 	assert(GraphicsManager::_system != nullptr);
 #endif
 	GraphicsManager::_system->renderSurface(surfacename, ctx);
+}
+
+void GraphicsManager::renderText(std::string text, TextContext& ctx)
+{
+#ifdef DEBUG
+	assert(GraphicsManager::_system != nullptr);
+#endif
+	GraphicsManager::_system->renderText(text, ctx);
 }

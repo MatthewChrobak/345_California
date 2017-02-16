@@ -1,9 +1,10 @@
 #include "City.h"
 
+const int City::Width = 20;
+const int City::Height = 20;
 
-City::City(std::string name)
+City::City()
 {
-	this->_name = name;
 }
 
 

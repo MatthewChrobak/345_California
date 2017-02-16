@@ -6,13 +6,14 @@
 class City : public ArrayGraphNode
 {
 public:
-	City(std::string name);
+	City();
 	~City();
 
-	int x = 0;
-	int y = 0;
+	static const int Width;
+	static const int Height;
 
-private:
-	std::string _name;
-	InfectionColor _color;
+	int X = 0;
+	int Y = 0;
+	InfectionColor Color;
+	std::string Name;
 };

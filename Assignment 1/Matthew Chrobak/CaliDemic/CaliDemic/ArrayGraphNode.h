@@ -8,6 +8,7 @@ public:
 	~ArrayGraphNode();
 
 	void addAdjacentNode(int nodeId);
+	std::vector<int> getAdjacentNodes();
 
 protected:
 	std::vector<int> _adjacentNodeIds;

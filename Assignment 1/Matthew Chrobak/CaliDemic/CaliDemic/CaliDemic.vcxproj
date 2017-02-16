@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -24,7 +24,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -72,6 +72,8 @@
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="City.cpp" />
     <ClCompile Include="CityGraph.cpp" />
+    <ClCompile Include="CommonContext.cpp" />
+    <ClCompile Include="FileStream.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GraphicsManager.cpp" />
@@ -80,6 +82,7 @@
     <ClCompile Include="SfmlSystem.cpp" />
     <ClCompile Include="SurfaceContext.cpp" />
     <ClCompile Include="SfmlSurfaceManager.cpp" />
+    <ClCompile Include="TextContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrayGraphNode.h" />
@@ -87,6 +90,8 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="City.h" />
     <ClInclude Include="CityGraph.h" />
+    <ClInclude Include="CommonContext.h" />
+    <ClInclude Include="FileStream.h" />
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GraphicsManager.h" />
@@ -96,6 +101,7 @@
     <ClInclude Include="SfmlSystem.h" />
     <ClInclude Include="SurfaceContext.h" />
     <ClInclude Include="SfmlSurfaceManager.h" />
+    <ClInclude Include="TextContext.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

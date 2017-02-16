@@ -38,8 +38,7 @@ void Game::save(std::string savename)
 		FileSystem::createDirectory(fullpath);
 	}
 
-	Game::_gameBoard->Save(fullpath);
-
+	Game::_gameBoard->save(fullpath);
 	Game::destroy();
 }
 
