@@ -5,46 +5,34 @@
 #endif
 
 
-ArrayGraph::ArrayGraph(int numNodes)
+ArrayGraph::ArrayGraph()
 {
-	this->_nodes = new ArrayGraphNode*[numNodes];
-	this->_numNodes = numNodes;
-
-	for (int i = 0; i < this->_numNodes; i++) {
-		*(this->_nodes + i) = nullptr;
-	}
 }
-
 
 ArrayGraph::~ArrayGraph()
 {
-	for (int i = 0; i < this->_numNodes; i++) {
-		if (*(this->_nodes + i) != nullptr) {
-			delete *(this->_nodes + i);
-		}
+	// TODO: Make sure this gets called.
+	while (this->_nodes.size() > 0) {
+		delete this->_nodes[this->_nodes.size() - 1];
+		this->_nodes.pop_back();
 	}
 }
 
-void ArrayGraph::setNode(int index, ArrayGraphNode* node)
+void ArrayGraph::addNode(ArrayGraphNode* node)
 {
-#ifdef DEBUG
-	assert(index >= 0 && index < this->_numNodes);
-#endif
-	if (*(this->_nodes + index) != nullptr) {
-		delete *(this->_nodes + index);
-	}
-	*(this->_nodes + index) = node;
+	this->_nodes.push_back(node);
 }
 
 ArrayGraphNode* ArrayGraph::getNode(int index)
 {
 #ifdef DEBUG
-	assert(index >= 0 && index < this->_numNodes);
+	// Ensure that the index is within the valid bounds.
+	assert(index >= 0 && index < this->_nodes.size());
 #endif
-	return *(this->_nodes + index);
+	return this->_nodes[index];
 }
 
 int ArrayGraph::getNumNodes()
 {
-	return this->_numNodes;
+	return this->_nodes.size();
 }

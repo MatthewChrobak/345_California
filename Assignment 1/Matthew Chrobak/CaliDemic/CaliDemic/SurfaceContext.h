@@ -8,9 +8,9 @@ public:
 	~SurfaceContext();
 	void reset();
 
-	Rect* SurfaceRect = nullptr;
-	Vector2D* Size = nullptr;
-	Vector2D* Position = nullptr;
-	RGBA* Color = nullptr;
-	float Rotation = 0.0f;
+	Rect* surfaceRect = nullptr;
+	Vector2D* size = nullptr;
+	Vector2D* position = nullptr;
+	RGBA* color = nullptr;
+	float rotation = 0.0f;
 };

@@ -1,52 +1,24 @@
 #pragma once
-#include "SfmlSystem.h"
-#include "GraphicsManager.h"
 #include "Game.h"
-
-#ifdef DEBUG
-
-#include "FileSystem.h"
-
-void gameloop()
-{
-	int tick = 0, tmrRender = 0;
-
-	while (1)
-	{
-		tick = clock();
-
-		if (tmrRender < tick) {
-			GraphicsManager::draw();
-			tmrRender = tick + 16;
-		}
-	}
-
-	GraphicsManager::destroy();
-}
+#include <iostream>
 
 // Sample main for debugging and testing purposes.
-int main() {
-	
-	// Initialize the graphics system.
-	GraphicsManager::initialize();
+int main()
+{
+	while (true) {
+		// Either load or create a game.
+		std::string gameName;
+		std::cout << "Please enter the name of a save you wish to create/load or 'exit' to exit." << std::endl;
+		std::getline(std::cin, gameName);
 
-	// Ensure the graphics folder exists.
-	if (!FileSystem::directoryExists(FileSystem::getStartupPath() + GraphicsManager::GraphicsPath)) {
-		FileSystem::createDirectory(FileSystem::getStartupPath() + GraphicsManager::GraphicsPath);
+		if (gameName == "exit") {
+			break;
+		}
+
+		// Load the game.
+		Game::loadOrCreate(gameName);
+
+		// When the game is no longer visible, display that the game ended.
+		std::cout << "Game closed." << std::endl;
 	}
-
-	// Ensure the saves folder exists.
-	if (!FileSystem::directoryExists(FileSystem::getStartupPath() + Game::SavePath)) {
-		FileSystem::createDirectory(FileSystem::getStartupPath() + Game::SavePath);
-	}
-
-	// Ensure that the font folder exists.
-	if (!FileSystem::directoryExists(FileSystem::getStartupPath() + GraphicsManager::FontPath)) {
-		FileSystem::createDirectory(FileSystem::getStartupPath() + GraphicsManager::FontPath);
-	}
-
-	Game::load("save1");
-	gameloop();
 }
-
-#endif

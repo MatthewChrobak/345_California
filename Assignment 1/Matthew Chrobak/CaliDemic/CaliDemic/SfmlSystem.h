@@ -32,6 +32,7 @@ namespace SFML
 		sf::Vector2u _contextSize;
 		sf::Font _font;
 
+		void handleEvent(sf::Event e);
 		void SfmlSystem::createContext();
 		void centerWindow();
 	};

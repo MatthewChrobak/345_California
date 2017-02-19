@@ -7,44 +7,44 @@ RGBA::RGBA() : RGBA::RGBA(255, 255, 255, 1.0f)
 
 RGBA::RGBA(int r, int g, int b)
 {
-	this->R = r;
-	this->G = g;
-	this->B = b;
-	this->A = 255.0f;
+	this->r = r;
+	this->g = g;
+	this->b = b;
+	this->a = 255.0f;
 }
 
 RGBA::RGBA(int r, int g, int b, float a) : RGBA::RGBA(r, g, b)
 {
-	this->A = a;
+	this->a = a;
 }
 
 
 
 Rect::Rect()
 {
-	this->Width = 0;
-	this->Height = 0;
-	this->Top = 0;
-	this->Left = 0;
+	this->width = 0;
+	this->height = 0;
+	this->top = 0;
+	this->left = 0;
 }
 
 Rect::Rect(int top, int left, int width, int height)
 {
-	this->Top = top;
-	this->Left = left;
-	this->Width = width;
-	this->Height = height;
+	this->top = top;
+	this->left = left;
+	this->width = width;
+	this->height = height;
 }
 
 
 Vector2D::Vector2D()
 {
-	this->X = 0;
-	this->Y = 0;
+	this->x = 0;
+	this->y = 0;
 }
 
 Vector2D::Vector2D(int x, int y)
 {
-	this->X = x;
-	this->Y = y;
+	this->x = x;
+	this->y = y;
 }

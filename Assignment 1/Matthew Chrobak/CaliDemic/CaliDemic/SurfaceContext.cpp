@@ -14,28 +14,28 @@ SurfaceContext::~SurfaceContext()
 void SurfaceContext::reset()
 {
 	// Delete the color if we can.
-	if (this->Color != nullptr) {
-		delete this->Color;
-		this->Color = nullptr;
+	if (this->color != nullptr) {
+		delete this->color;
+		this->color = nullptr;
 	}
 
 	// Delete the position if we can.
-	if (this->Position != nullptr) {
-		delete this->Position;
-		this->Position = nullptr;
+	if (this->position != nullptr) {
+		delete this->position;
+		this->position = nullptr;
 	}
 
 	// Delete the size if we can.
-	if (this->Size != nullptr) {
-		delete this->Size;
-		this->Size = nullptr;
+	if (this->size != nullptr) {
+		delete this->size;
+		this->size = nullptr;
 	}
 
 	// Delete the surface rect if we can.
-	if (this->SurfaceRect != nullptr) {
-		delete this->SurfaceRect;
-		this->SurfaceRect = nullptr;
+	if (this->surfaceRect != nullptr) {
+		delete this->surfaceRect;
+		this->surfaceRect = nullptr;
 	}
 
-	this->Rotation = 0.0f;
+	this->rotation = 0.0f;
 }

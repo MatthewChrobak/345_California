@@ -1,6 +1,8 @@
 #pragma once
 #include "SfmlSystem.h"
 #include <assert.h>
+#include "Game.h"
+#include "GuiManager.h"
 using namespace SFML;
 
 SfmlSystem::SfmlSystem(std::string title, unsigned int contextWidth, unsigned int contextHeight, unsigned int windowWidth, unsigned int windowHeight)
@@ -75,10 +77,7 @@ void SfmlSystem::drawContext()
 	sf::Event event;
 	while (this->_windowContext->pollEvent(event)) 
 	{
-		if (event.type == sf::Event::Closed) {
-			this->destroyContext();
-			return;
-		}
+		this->handleEvent(event);
 	}
 
 	// Invoke the method which draws the game.
@@ -86,6 +85,48 @@ void SfmlSystem::drawContext()
 
 	// Swap the buffers.
 	this->_windowContext->display();
+}
+
+void SfmlSystem::handleEvent(sf::Event e)
+{
+	switch (e.type) {
+		// Window Events
+		case sf::Event::Closed:
+			Game::changeState(GameState::Closed);
+			break;
+		case sf::Event::Resized:
+			GuiManager::handleWindowResize(e.size.width, e.size.height);
+			break;
+
+
+			// Mouse Events
+		case sf::Event::MouseButtonPressed:
+			if (e.mouseButton.button == sf::Mouse::Button::Left) {
+				GuiManager::handleMouseDown(e.mouseButton.x, e.mouseButton.y, "left");
+			} else if (e.mouseButton.button == sf::Mouse::Button::Right) {
+				GuiManager::handleMouseDown(e.mouseButton.x, e.mouseButton.y, "right");
+			}
+			break;
+		case sf::Event::MouseButtonReleased:
+			if (e.mouseButton.button == sf::Mouse::Button::Left) {
+				GuiManager::handleMouseUp(e.mouseButton.x, e.mouseButton.y, "left");
+			} else if (e.mouseButton.button == sf::Mouse::Button::Right) {
+				GuiManager::handleMouseUp(e.mouseButton.x, e.mouseButton.y, "right");
+			}
+			break;
+		case sf::Event::MouseMoved:
+			GuiManager::handleMouseMove(e.mouseMove.x, e.mouseMove.y);
+			break;
+
+
+			// Key Events
+		case sf::Event::KeyPressed:
+			GuiManager::handleKeyDown(e.key.code);
+			break;
+		case sf::Event::KeyReleased:
+			GuiManager::handleKeyUp(e.key.code);
+			break;
+	}
 }
 
 void SfmlSystem::centerWindow()
@@ -126,42 +167,42 @@ void SfmlSystem::setWindowTitle(std::string title)
 void SfmlSystem::renderText(std::string text, TextContext& ctx)
 {
 	// Create a new drawable object based on the text given.
-	sf::Text renderText = sf::Text(text, this->_font, ctx.FontSize);
+	sf::Text renderText = sf::Text(text, this->_font, ctx.fontSize);
 
 	// Set the fill color if the context specifies so.
-	if (ctx.FillColor != nullptr) {
+	if (ctx.fillColor != nullptr) {
 		sf::Color color = sf::Color(
-			(sf::Uint8)ctx.FillColor->R,
-			(sf::Uint8)ctx.FillColor->G,
-			(sf::Uint8)ctx.FillColor->B,
-			(sf::Uint8)ctx.FillColor->A
+			(sf::Uint8)ctx.fillColor->r,
+			(sf::Uint8)ctx.fillColor->g,
+			(sf::Uint8)ctx.fillColor->b,
+			(sf::Uint8)ctx.fillColor->a
 			);
 		renderText.setFillColor(color);
 	}
 
 	// Set the outline color if the context specifies so.
-	if (ctx.OutlineColor != nullptr) {
+	if (ctx.outlineColor != nullptr) {
 		sf::Color color = sf::Color(
-			(sf::Uint8)ctx.OutlineColor->R,
-			(sf::Uint8)ctx.OutlineColor->G,
-			(sf::Uint8)ctx.OutlineColor->B,
-			(sf::Uint8)ctx.OutlineColor->A
+			(sf::Uint8)ctx.outlineColor->r,
+			(sf::Uint8)ctx.outlineColor->g,
+			(sf::Uint8)ctx.outlineColor->b,
+			(sf::Uint8)ctx.outlineColor->a
 			);
 		renderText.setOutlineColor(color);
-		renderText.setOutlineThickness(ctx.OutlineThickness);
+		renderText.setOutlineThickness(ctx.outlineThickness);
 	}
 
 	// Set the position if the context specifies.
-	if (ctx.Position != nullptr) {
+	if (ctx.position != nullptr) {
 		sf::Vector2f pos;
 
 		// Treat the given position as a centerpoint, or as absolute.
-		if (ctx.HorizontalCenter) {
-			int textWidth = renderText.findCharacterPos(text.size() - 1).x - renderText.findCharacterPos(0).x;
-			pos = sf::Vector2f(ctx.Position->X - (textWidth) / 2, ctx.Position->Y);
+		if (ctx.horizontalCenter) {
+			int textWidth = (int)(renderText.findCharacterPos(text.size() - 1).x - renderText.findCharacterPos(0).x);
+			pos = sf::Vector2f(ctx.position->x - (textWidth) / 2.0f, (float)ctx.position->y);
 		}
 		else {
-			pos = sf::Vector2f(ctx.Position->X, ctx.Position->Y);
+			pos = sf::Vector2f((float)ctx.position->x, (float)ctx.position->y);
 		}
 
 		renderText.setPosition(pos);
@@ -180,53 +221,53 @@ void SfmlSystem::renderSurface(std::string surfacename, SurfaceContext& ctx)
 	sf::Sprite sprite = sf::Sprite(*texture);
 
 	// Set the color if the context specifies so.
-	if (ctx.Color != nullptr) {
+	if (ctx.color != nullptr) {
 		sf::Color color = sf::Color(
-			(sf::Uint8)ctx.Color->R,
-			(sf::Uint8)ctx.Color->G,
-			(sf::Uint8)ctx.Color->B,
-			(sf::Uint8)ctx.Color->A
+			(sf::Uint8)ctx.color->r,
+			(sf::Uint8)ctx.color->g,
+			(sf::Uint8)ctx.color->b,
+			(sf::Uint8)ctx.color->a
 			);
 		sprite.setColor(color);
 	}
 
 	// Set the surface rect if the context specifies.
-	if (ctx.SurfaceRect != nullptr) {
+	if (ctx.surfaceRect != nullptr) {
 		sf::IntRect rect = sf::IntRect(
-			ctx.SurfaceRect->Left,
-			ctx.SurfaceRect->Top,
-			ctx.SurfaceRect->Width,
-			ctx.SurfaceRect->Height);
+			ctx.surfaceRect->left,
+			ctx.surfaceRect->top,
+			ctx.surfaceRect->width,
+			ctx.surfaceRect->height);
 		sprite.setTextureRect(rect);
 	}
 
 	// Scale the surface if the context specifies.
-	if (ctx.Size != nullptr) {
+	if (ctx.size != nullptr) {
 		sf::Vector2f scale;
 		// Either compare it to the full-size, or the rect-size.
-		if (ctx.SurfaceRect != nullptr) {
+		if (ctx.surfaceRect != nullptr) {
 			scale = sf::Vector2f(
-				(float)ctx.Size->X / ctx.SurfaceRect->Width,
-				(float)ctx.Size->Y / ctx.SurfaceRect->Height
+				(float)ctx.size->x / ctx.surfaceRect->width,
+				(float)ctx.size->y / ctx.surfaceRect->height
 				);
 		}
 		else {
 			scale = sf::Vector2f(
-				(float)ctx.Size->X / sprite.getTexture()->getSize().x,
-				(float)ctx.Size->Y / sprite.getTexture()->getSize().y
+				(float)ctx.size->x / sprite.getTexture()->getSize().x,
+				(float)ctx.size->y / sprite.getTexture()->getSize().y
 				);
 		}
 		sprite.scale(scale);
 	}
 
 	// Set the position if the context specifies.
-	if (ctx.Position != nullptr) {
-		sf::Vector2f pos = sf::Vector2f(ctx.Position->X, ctx.Position->Y);
+	if (ctx.position != nullptr) {
+		sf::Vector2f pos = sf::Vector2f((float)ctx.position->x, (float)ctx.position->y);
 		sprite.setPosition(pos);
 	}
 
 	// Rotate it.
-	sprite.rotate(ctx.Rotation);
+	sprite.rotate(ctx.rotation);
 
 	// Draw it.
 	this->_windowContext->draw(sprite);

@@ -2,6 +2,9 @@
 #include "GraphicsSystem.h"
 #include <string>
 
+#define GRAPHICS_PATH "graphics/"
+#define FONTS_PATH "fonts/"
+
 class GraphicsManager
 {
 public:
@@ -10,9 +13,6 @@ public:
 	static void draw();
 	static void renderSurface(std::string surfaceName, SurfaceContext& ctx);
 	static void renderText(std::string text, TextContext& ctx);
-
-	static const std::string GraphicsPath;
-	static const std::string FontPath;
 
 private:
 	static GraphicsSystem* _system;

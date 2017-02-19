@@ -1,16 +1,15 @@
 #include "GraphicsManager.h"
 #include "SfmlSystem.h"
+#include "GuiManager.h"
 #ifdef DEBUG
 #include <assert.h>
 #endif
 
 GraphicsSystem* GraphicsManager::_system = nullptr;
-const std::string GraphicsManager::GraphicsPath = "graphics/";
-const std::string GraphicsManager::FontPath = "fonts/";
 
 void GraphicsManager::initialize()
 {
-	GraphicsManager::_system = new SFML::SfmlSystem("SFML is working", 960, 640, 960, 640);
+	GraphicsManager::_system = new SFML::SfmlSystem("Pandemic", DRAW_WIDTH, DRAW_HEIGHT, GuiManager::WindowWidth, GuiManager::WindowHeight);
 }
 
 void GraphicsManager::draw()

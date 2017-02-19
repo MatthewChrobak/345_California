@@ -6,5 +6,5 @@ enum InfectionColor : int
 	Blue,
 	Black,
 	Yellow,
-	Length
+	InfectionColor_Length
 };

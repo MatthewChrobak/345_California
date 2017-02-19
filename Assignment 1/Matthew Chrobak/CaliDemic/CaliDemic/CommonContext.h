@@ -4,8 +4,8 @@ struct Vector2D
 {
 	Vector2D();
 	Vector2D(int x, int y);
-	int X;
-	int Y;
+	int x;
+	int y;
 };
 
 struct Rect
@@ -13,10 +13,10 @@ struct Rect
 	Rect();
 	Rect(int top, int left, int width, int height);
 
-	int Top;
-	int Left;
-	int Width;
-	int Height;
+	int top;
+	int left;
+	int width;
+	int height;
 };
 
 struct RGBA
@@ -25,8 +25,8 @@ struct RGBA
 	RGBA(int r, int g, int b);
 	RGBA(int r, int g, int b, float a);
 
-	int R;
-	int G;
-	int B;
-	float A;
+	int r;
+	int g;
+	int b;
+	float a;
 };

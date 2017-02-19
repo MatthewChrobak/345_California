@@ -5,16 +5,14 @@
 class ArrayGraph
 {
 public:
-	ArrayGraph(int numNodes);
+	ArrayGraph();
 	~ArrayGraph();
 
-	void setNode(int index, ArrayGraphNode* node);
+	void addNode(ArrayGraphNode* node);
 	ArrayGraphNode* getNode(int index);
-
 	int getNumNodes();
 
 protected:
-	int _numNodes;
-	ArrayGraphNode** _nodes;
+	std::vector<ArrayGraphNode*> _nodes;
 };
 

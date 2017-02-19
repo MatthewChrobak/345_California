@@ -14,20 +14,25 @@ TextContext::~TextContext()
 void TextContext::reset()
 {
 	// Delete the outline color if we can.
-	if (this->OutlineColor != nullptr) {
-		delete this->OutlineColor;
-		this->OutlineColor = nullptr;
+	if (this->outlineColor != nullptr) {
+		delete this->outlineColor;
+		this->outlineColor = nullptr;
 	}
 
 	// Delete the fill color if we can.
-	if (this->FillColor != nullptr) {
-		delete this->FillColor;
-		this->FillColor = nullptr;
+	if (this->fillColor != nullptr) {
+		delete this->fillColor;
+		this->fillColor = nullptr;
 	}
 
 	// Delete the position if we can.
-	if (this->Position != nullptr) {
-		delete this->Position;
-		this->Position = nullptr;
+	if (this->position != nullptr) {
+		delete this->position;
+		this->position = nullptr;
 	}
+
+	this->outlineThickness = 1.0f;
+	this->fontSize = 11;
+	this->horizontalCenter = false;
+
 }
