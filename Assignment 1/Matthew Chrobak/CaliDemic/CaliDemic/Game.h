@@ -2,8 +2,6 @@
 #include "Board.h"
 #include <string>
 
-#define GAME_SAVES_FOLDER "saves/"
-
 enum GameState : int
 {
 	MainMenu,

@@ -24,8 +24,10 @@ public:
 private:
 	static void convertCoords(int* x, int* y);
 
+#ifdef ADMIN_EDITOR
 	static bool teleportNode;
 	static bool connectNode;
 	static bool moveMode;
 	static bool addNode;
+#endif
 };

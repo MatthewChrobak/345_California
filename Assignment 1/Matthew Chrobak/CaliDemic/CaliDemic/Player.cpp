@@ -8,9 +8,10 @@ Player::Player()
 {
 	this->pawn = new Pawn();
 
+
 	// Make sure all the card pointers point to null.
 	for (int i = 0; i < MAX_PLAYER_CARDS; i++) {
-		*(this->_playerCards + i) = nullptr;
+		this->_playerCards[i] = nullptr;
 	}
 }
 
@@ -23,25 +24,21 @@ Player::~Player()
 	}
 	
 	for (int i = 0; i < MAX_PLAYER_CARDS; i++) {
-		if (*(this->_playerCards + i) != nullptr) {
-			delete (this->_playerCards + i);
+		if (this->_playerCards[i] != nullptr) {
+			delete this->_playerCards[i];
 		}
 	}
 }
 
 
-void Player::setCard(int index, PlayerCard* card) 
+void Player::addCard(PlayerCard* card) 
 {
-#ifdef DEBUG
-	// Make sure the index is within the bounds specified.
-	assert(index >= 0 && index < MAX_PLAYER_CARDS);
-#endif
-	// Delete the object if we're overwriting it.
-	if (*(this->_playerCards + index) != nullptr) {
-		delete (this->_playerCards + index);
+	for (int i = 0; i < MAX_PLAYER_CARDS; i++) {
+		if (this->_playerCards[i] == nullptr) {
+			this->_playerCards[i] = card;
+			break;
+		}
 	}
-
-	*(this->_playerCards + index) = card;
 }
 
 void Player::removeCard(int index)
@@ -50,8 +47,10 @@ void Player::removeCard(int index)
 	// Make sure the index is within the bounds specified.
 	assert(index >= 0 && index < MAX_PLAYER_CARDS);
 #endif
-	delete (this->_playerCards + index);
-	*(this->_playerCards + index) = nullptr;
+	if (this->_playerCards[index] != nullptr) {
+		delete this->_playerCards[index];
+		this->_playerCards[index] = nullptr;
+	}
 }
 
 PlayerCard& Player::getCard(int index)
@@ -60,5 +59,5 @@ PlayerCard& Player::getCard(int index)
 	// Make sure the index is within the bounds specified.
 	assert(index >= 0 && index < MAX_PLAYER_CARDS);
 #endif
-	return **(this->_playerCards + index);
+	return *(this->_playerCards[index]);
 }

@@ -212,6 +212,9 @@
     <ClInclude Include="PlayerCard.h">
       <Filter>Header Files\Models\Player\Cards</Filter>
     </ClInclude>
+    <ClInclude Include="Paths.h">
+      <Filter>Header Files\IO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

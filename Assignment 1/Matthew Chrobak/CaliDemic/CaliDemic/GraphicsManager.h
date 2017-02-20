@@ -2,9 +2,6 @@
 #include "GraphicsSystem.h"
 #include <string>
 
-#define GRAPHICS_PATH "graphics/"
-#define FONTS_PATH "fonts/"
-
 class GraphicsManager
 {
 public:

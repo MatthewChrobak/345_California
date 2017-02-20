@@ -1,15 +1,13 @@
 #include "Board.h"
 #include "FileStream.h"
 #include "FileSystem.h"
-
-const std::string Board::_nodeFile = "nodes.dat";
-const std::string Board::_playerFile = "players.dat";
-
+#include "Paths.h"
+#include <iostream>
 
 Board::Board(std::string savefolder)
 {
-	this->loadNodes(savefolder + Board::_nodeFile);
-	this->loadPlayers(savefolder + Board::_playerFile);
+	this->loadNodes();
+	this->loadPlayers(savefolder + PLAYER_DATA_FILE);
 }
 
 Board::~Board()
@@ -20,14 +18,19 @@ Board::~Board()
 
 void Board::save(std::string saveFolder)
 {
-	this->saveNodes(saveFolder + Board::_nodeFile);
-	this->savePlayers(saveFolder + Board::_playerFile);
+#ifdef ADMIN_EDITOR
+	// Only save the nodes if we're in ADMIN_EDIT mode.
+	this->saveNodes();
+#endif
+	this->savePlayers(saveFolder + PLAYER_DATA_FILE);
 }
 
 
-void Board::loadNodes(std::string nodefile)
+void Board::loadNodes()
 {
 	this->_cities = new CityGraph();
+	std::string nodefile = FileSystem::getStartupPath() + DATA_FOLDER + NODES_DATA_FILE;
+
 
 	// If the file does not exist, there's nothing to load.
 	if (!FileSystem::fileExists(nodefile)) {
@@ -64,10 +67,9 @@ void Board::loadNodes(std::string nodefile)
 	delete fs;
 }
 
-void Board::saveNodes(std::string nodeFile)
+void Board::saveNodes()
 {
-	return;
-	FileStream* fs = FileStream::Open(nodeFile, FileMode::Write);
+	FileStream* fs = FileStream::Open(FileSystem::getStartupPath() + DATA_FOLDER + NODES_DATA_FILE, FileMode::Write);
 
 	fs->write(this->getNumCities());
 

@@ -4,7 +4,12 @@
 class CityCard : public PlayerCard
 {
 public:
-	CityCard();
+	CityCard(const int cityIndex);
 	~CityCard();
-};
 
+	void playCard();
+	std::string getSurfaceName();
+
+private:
+	int _cityIndex;
+};

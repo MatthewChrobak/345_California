@@ -20,11 +20,9 @@ public:
 private:
 	CityGraph* _cities;
 
-	static const std::string _nodeFile;
-	void loadNodes(std::string nodeFile);
-	void saveNodes(std::string nodeFile);
+	void loadNodes();
+	void saveNodes();
 
-	static const std::string _playerFile;
 	void loadPlayers(std::string playerFile);
 	void savePlayers(std::string playerFile);
 
