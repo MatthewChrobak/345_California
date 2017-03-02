@@ -1,0 +1,28 @@
+﻿Build started 2/14/2017 1:07:40 PM.
+     1>Project "C:\Users\The Phi\Documents\Visual Studio 2013\Projects\Assignment1\Assignment1\Assignment1.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Card.cpp Cities.cpp Pawn.cpp Player.cpp
+         Player.cpp
+     1>c:\users\the phi\documents\visual studio 2013\projects\assignment1\assignment1\pawn.cpp(5): error C2011: 'Pawn' : 'class' type redefinition
+                 c:\users\the phi\documents\visual studio 2013\projects\assignment1\assignment1\pawn.h(4) : see declaration of 'Pawn'
+     1>c:\users\the phi\documents\visual studio 2013\projects\assignment1\assignment1\player.cpp(7): error C2228: left of '.roleCard' must have class/struct/union
+                 type is 'Player *const '
+                 did you intend to use '->' instead?
+     1>c:\users\the phi\documents\visual studio 2013\projects\assignment1\assignment1\player.cpp(8): error C2228: left of '.playerCard' must have class/struct/union
+                 type is 'Player *const '
+                 did you intend to use '->' instead?
+     1>c:\users\the phi\documents\visual studio 2013\projects\assignment1\assignment1\player.cpp(9): error C2228: left of '.referenceCard' must have class/struct/union
+                 type is 'Player *const '
+                 did you intend to use '->' instead?
+         Pawn.cpp
+     1>c:\users\the phi\documents\visual studio 2013\projects\assignment1\assignment1\pawn.cpp(5): error C2011: 'Pawn' : 'class' type redefinition
+                 c:\users\the phi\documents\visual studio 2013\projects\assignment1\assignment1\pawn.h(4) : see declaration of 'Pawn'
+         Cities.cpp
+         Card.cpp
+         Generating Code...
+     1>c:\users\the phi\documents\visual studio 2013\projects\assignment1\assignment1\cities.cpp(9): error C4716: 'Cities::setCube' : must return a value
+     1>Done Building Project "C:\Users\The Phi\Documents\Visual Studio 2013\Projects\Assignment1\Assignment1\Assignment1.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:04.03
