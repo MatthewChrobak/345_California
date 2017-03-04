@@ -1,6 +1,9 @@
 #pragma once
+#include <string>
 #include "Pawn.h"
 #include "Cities.h"
+#include <ctime>
+#include <cstdlib>
 
 class Card{
 
@@ -14,18 +17,22 @@ class Reference_Card : public Card{
 class Player_Card : public Card{
 
 };
+
 //this infection card class inherited class card
 class Infection_Card : public Card{
 private:
-	Cities *targetCity;
+	std::string infectCityNameCard;
 
 public:
-	Infection_Card(Cities *targetCity);
-
+	Infection_Card(std::string infectCityNameCard);
+	~Infection_Card();
+	std::string getInfectCityNameCard();
+	
 };
+
 //this role card class inherited class card
 class Role_Card : public Card{
-
+	Pawn* pawn;
 };
 //this epedimic card class inherited class card
 class Epedemic_Card : public Card{
@@ -35,7 +42,6 @@ class Epedemic_Card : public Card{
 class Event_Card : public Card{
 
 };
-
 
 
 

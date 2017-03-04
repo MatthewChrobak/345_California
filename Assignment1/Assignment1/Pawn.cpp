@@ -2,11 +2,10 @@
 #include "Pawn.h"
 #include <string>
 
-class Pawn{
-private:
-	std::string pawnColor = "";
-public:
-	void setPawnColor(std::string color){
-		Pawn::pawnColor = color;
-	}
-};
+void Pawn::setPawnColor(std::string color){
+		this->pawnColor = color;
+}
+
+std::string Pawn::getPawnColor(){
+	return this->pawnColor;
+}

@@ -5,6 +5,9 @@ class Pawn{
 private:
 	std::string pawnColor;
 
-public:
+public: 
+	Pawn();
+	~Pawn();
 	void setPawnColor(std::string color);
+	std::string getPawnColor();
 };
