@@ -14,5 +14,6 @@ public:
 	float outlineThickness = 1.0f;
 	int fontSize = 11;
 	bool horizontalCenter = false;
+	const char* fontname = "default.ttf";
 };
 

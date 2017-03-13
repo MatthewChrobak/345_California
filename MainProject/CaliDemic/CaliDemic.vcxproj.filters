@@ -67,6 +67,30 @@
     <Filter Include="Header Files\Models\Player\Cards">
       <UniqueIdentifier>{18bddf75-a53b-451f-b40a-af48730e9e88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\UI\Elements">
+      <UniqueIdentifier>{295d03fe-7090-4b4e-bc59-a2b9b7539284}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI\Elements\Behaviour">
+      <UniqueIdentifier>{7515c67a-0b58-4679-9479-3a233339ee86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI\Elements\Elements">
+      <UniqueIdentifier>{a32d2182-f93a-44d2-9270-87024cd2b394}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Contexts">
+      <UniqueIdentifier>{7c5cc8b5-7dbe-480e-8b6c-b537fbd2b4ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Contexts">
+      <UniqueIdentifier>{e73707a0-6e99-4c8d-b21d-a9dc5ba131a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\Elements">
+      <UniqueIdentifier>{a243c3e4-3e00-4cf7-8060-be176b6b1a5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\Elements\Behaviour">
+      <UniqueIdentifier>{54a320b9-fce6-44be-afdf-257d102ed1dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\Elements\Elements">
+      <UniqueIdentifier>{dfcd0771-dacf-4d58-afe7-36a89c550d35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp">
@@ -80,9 +104,6 @@
     </ClCompile>
     <ClCompile Include="SfmlSurfaceManager.cpp">
       <Filter>Source Files\Graphics\Sfml</Filter>
-    </ClCompile>
-    <ClCompile Include="SurfaceContext.cpp">
-      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="FileSystem.cpp">
       <Filter>Source Files\IO</Filter>
@@ -107,12 +128,6 @@
     </ClCompile>
     <ClCompile Include="Board.cpp">
       <Filter>Source Files\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="TextContext.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="CommonContext.cpp">
-      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="FileStream.cpp">
       <Filter>Source Files\IO</Filter>
@@ -141,6 +156,39 @@
     <ClCompile Include="InfectionCard.cpp">
       <Filter>Source Files\Models\Player\Cards</Filter>
     </ClCompile>
+    <ClCompile Include="TextContext.cpp">
+      <Filter>Source Files\Graphics\Contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="SurfaceContext.cpp">
+      <Filter>Source Files\Graphics\Contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="CommonContext.cpp">
+      <Filter>Source Files\Graphics\Contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="Buttons.cpp">
+      <Filter>Source Files\UI\Elements\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="Frames.cpp">
+      <Filter>Source Files\UI\Elements\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="Textboxes.cpp">
+      <Filter>Source Files\UI\Elements\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UIButton.cpp">
+      <Filter>Source Files\UI\Elements\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="UIElement.cpp">
+      <Filter>Source Files\UI\Elements\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="UIFrame.cpp">
+      <Filter>Source Files\UI\Elements\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="UITextbox.cpp">
+      <Filter>Source Files\UI\Elements\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="SfmlFontManager.cpp">
+      <Filter>Source Files\Graphics\Sfml</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsSystem.h">
@@ -154,9 +202,6 @@
     </ClInclude>
     <ClInclude Include="SfmlSurfaceManager.h">
       <Filter>Header Files\Graphics\Sfml</Filter>
-    </ClInclude>
-    <ClInclude Include="SurfaceContext.h">
-      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="FileSystem.h">
       <Filter>Header Files\IO</Filter>
@@ -184,12 +229,6 @@
     </ClInclude>
     <ClInclude Include="Board.h">
       <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="TextContext.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="CommonContext.h">
-      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="FileStream.h">
       <Filter>Header Files\IO</Filter>
@@ -220,6 +259,42 @@
     </ClInclude>
     <ClInclude Include="InfectionCard.h">
       <Filter>Header Files\Models\Player\Cards</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonContext.h">
+      <Filter>Header Files\Graphics\Contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="TextContext.h">
+      <Filter>Header Files\Graphics\Contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="SurfaceContext.h">
+      <Filter>Header Files\Graphics\Contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="Buttons.h">
+      <Filter>Header Files\UI\Elements\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="Frames.h">
+      <Filter>Header Files\UI\Elements\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="Textboxes.h">
+      <Filter>Header Files\UI\Elements\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UIButton.h">
+      <Filter>Header Files\UI\Elements\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="UIDefinitions.h">
+      <Filter>Header Files\UI\Elements\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="UIElement.h">
+      <Filter>Header Files\UI\Elements\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="UIFrame.h">
+      <Filter>Header Files\UI\Elements\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="UITextbox.h">
+      <Filter>Header Files\UI\Elements\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="SfmlFontManager.h">
+      <Filter>Header Files\Graphics\Sfml</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
