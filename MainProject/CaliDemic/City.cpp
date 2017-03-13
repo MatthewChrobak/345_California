@@ -4,9 +4,6 @@
 #include <iostream>
 #include <string>
 
-const int City::RenderWidth = 20;
-const int City::RenderHeight = 20;
-
 City::City()
 {
 }

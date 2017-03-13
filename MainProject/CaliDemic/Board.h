@@ -9,10 +9,11 @@ class Board
 public:
 	Player* player;
 
-	Board(std::string savefolder);
+	Board(std::string saveFolder);
 	~Board();
 
-	void save(std::string savefolder);
+	void save(std::string saveFolder);
+
 	void addCity(City* city);
 	City* getCity(int index);
 	int getNumCities();
@@ -20,8 +21,8 @@ public:
 private:
 	CityGraph* _cities;
 
-	void loadNodes();
-	void saveNodes();
+	void loadNodes(std::string nodesFile);
+	void saveNodes(std::string nodesFile);
 
 	void loadPlayers(std::string playerFile);
 	void savePlayers(std::string playerFile);
