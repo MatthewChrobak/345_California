@@ -13,14 +13,17 @@ City::~City()
 {
 }
 
+/*
+normal infection without outbreak
+*/
 void City::infectCity()
 {
-	if (infected)
+	if (this->infected)
 		return;
 	else
 	{
-		infected = true;
-		for (int i = 0; i < 3; i++)
+		this->infected = true;
+		for (int i = 0; i < cubeMaxSize; i++)
 		{
 			if (cube[i] != -1)
 			{
@@ -28,10 +31,31 @@ void City::infectCity()
 				break;
 			}
 		}
-		infected = false;
+		this->infected = false;
 	}
 }
+/*
+infection with outbreak
+*/
+void City::infectCityOutBreak()
+{
 
+}
+
+void City::buildResearchFacility()
+{
+	if (this->research == false)
+	{
+		this->research = true;
+		std::cout << "research facility builded" << std::endl;
+	}
+	else
+	{
+		std::cout << "research facility builded already" << std::endl;
+		return;
+	}
+	
+}
 
 void City::consoleAddNodeAtCoordDialogue(int x, int y)
 {
