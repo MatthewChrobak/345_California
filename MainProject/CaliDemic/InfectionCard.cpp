@@ -15,5 +15,15 @@ InfectionCard::~InfectionCard()
 
 void InfectionCard::infectCityCube(int city)
 {
-	Game::getGameBoard()->getCity(city)->infectCity();
+	//checking if the city's cube array is full (aka. Infected)
+	for (int i = 0; i < Game::getGameBoard()->getCity(city)->cubeMaxSize;i++)
+	{
+		if (Game::getGameBoard()->getCity(city)->cube[i] == Game::getGameBoard()->getCity(city)->color)
+		{
+			Game::getGameBoard()->getCity(city)->infectCity();
+		}
+	}
+
+	
+	
 }
