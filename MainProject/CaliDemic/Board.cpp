@@ -1,13 +1,12 @@
 #include "Board.h"
 #include "FileStream.h"
 #include "FileSystem.h"
-#include "Paths.h"
 #include <iostream>
 
-Board::Board(std::string savefolder)
+Board::Board(std::string saveFolder)
 {
-	this->loadNodes();
-	this->loadPlayers(savefolder + PLAYER_DATA_FILE);
+	this->loadNodes(saveFolder + NODES_DATA_FILE);
+	this->loadPlayers(saveFolder + PLAYER_DATA_FILE);
 }
 
 Board::~Board()
@@ -18,26 +17,21 @@ Board::~Board()
 
 void Board::save(std::string saveFolder)
 {
-#ifdef ADMIN_EDITOR
-	// Only save the nodes if we're in ADMIN_EDIT mode.
-	this->saveNodes();
-#endif
+	this->saveNodes(saveFolder + NODES_DATA_FILE);
 	this->savePlayers(saveFolder + PLAYER_DATA_FILE);
 }
 
 
-void Board::loadNodes()
+void Board::loadNodes(std::string nodesFile)
 {
 	this->_cities = new CityGraph();
-	std::string nodefile = FileSystem::getStartupPath() + DATA_FOLDER + NODES_DATA_FILE;
-
 
 	// If the file does not exist, there's nothing to load.
-	if (!FileSystem::fileExists(nodefile)) {
+	if (!FileSystem::fileExists(nodesFile)) {
 		return;
 	}
 
-	FileStream* fs = FileStream::Open(nodefile, FileMode::Read);
+	FileStream* fs = FileStream::Open(nodesFile, FileMode::Read);
 
 	// Figure out how many nodes there are
 	int numNodes = fs->readInt();
@@ -68,9 +62,9 @@ void Board::loadNodes()
 	delete fs;
 }
 
-void Board::saveNodes()
+void Board::saveNodes(std::string nodesFile)
 {
-	FileStream* fs = FileStream::Open(FileSystem::getStartupPath() + DATA_FOLDER + NODES_DATA_FILE, FileMode::Write);
+	FileStream* fs = FileStream::Open(nodesFile, FileMode::Write);
 
 	fs->write(this->getNumCities());
 
@@ -79,10 +73,10 @@ void Board::saveNodes()
 		City* city = this->getCity(i);
 
 		fs->write(city->name);
-		fs->write(city->cube[0]);			
-		fs->write(city->cube[1]);			
-		fs->write(city->cube[2]);			
-		fs->write(city->research);		
+		fs->write(city->cube[0]);
+		fs->write(city->cube[1]);
+		fs->write(city->cube[2]);
+		fs->write(city->research);
 		fs->write(city->color);
 		fs->write(city->x);
 		fs->write(city->y);
@@ -90,7 +84,7 @@ void Board::saveNodes()
 		// Get and 
 		std::vector<int> nodes = city->getAdjacentNodes();
 		fs->write(nodes.size());
-		for (int x = 0; x < nodes.size(); x++) {
+		for (unsigned int x = 0; x < nodes.size(); x++) {
 			fs->write(nodes[x]);
 		}
 	}

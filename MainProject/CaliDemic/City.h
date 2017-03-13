@@ -3,6 +3,9 @@
 #include "InfectionColors.h"
 #include <string>
 
+#define CITY_RENDER_WIDTH 30
+#define CITY_RENDER_HEIGHT 30
+
 class City : public ArrayGraphNode
 {
 public:
@@ -10,8 +13,6 @@ public:
 	~City();
 
 	static void consoleAddNodeAtCoordDialogue(int x, int y);
-	static const int RenderWidth;
-	static const int RenderHeight;
 	void infectCity();
 
 	int x = 0;
