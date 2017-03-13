@@ -1,73 +1,87 @@
 #include "GuiManager.h"
 #include "Game.h"
 #include "GraphicsManager.h"
+#include "UIButton.h"
+#include "Frames.h"
 #include <iostream>
 
 int GuiManager::WindowHeight = DRAW_HEIGHT;
 int GuiManager::WindowWidth = DRAW_WIDTH;
+std::vector<UIElement*> GuiManager::_uiElements[(int)GameState::GameState_Length];
+UIElement* GuiManager::_currentFocusedElement = nullptr;
 
-#ifdef ADMIN_EDITOR
-bool GuiManager::connectNode = false;
-bool GuiManager::moveMode = false;
-bool GuiManager::teleportNode = false;
-bool GuiManager::addNode = false;
-#endif
+int GuiManager::_mouseX = 0;
+int GuiManager::_mouseY = 0;
+
+void GuiManager::initialize()
+{
+	auto menuScene = &GuiManager::_uiElements[(int)GameState::MainMenu];
+	menuScene->push_back(new MainMenuFrame());
+
+
+	auto gameScene = &GuiManager::_uiElements[(int)GameState::InGame];	
+	gameScene->push_back(new GameFrame());
+}
+
+void GuiManager::destroy()
+{
+	for (int state = 0; state < (int)GameState::GameState_Length; state++) {
+		for (unsigned int i = 0; i < GuiManager::_uiElements[state].size(); i++) {
+			delete GuiManager::_uiElements[state].at(i);
+			GuiManager::_uiElements[state].pop_back();
+		}
+	}
+
+	GuiManager::_currentFocusedElement = nullptr;
+}
+
+void GuiManager::handleWindowClose()
+{
+	switch (Game::getState())
+	{
+		case GameState::InGame:
+			Game::destroy();
+			Game::changeState(GameState::MainMenu);
+			break;
+		case GameState::MainMenu:
+			// Close the game.
+			Game::changeState(GameState::Closed);
+			break;
+	}
+}
 
 void GuiManager::handleMouseDown(int x, int y, std::string button)
 {
 	// Make sure the coordinate account for window resizing.
 	GuiManager::convertCoords(&x, &y);
+	
+	// Get the current scene.
+	auto scene = GuiManager::getCurrentSceneUIElements();
 
-	if (button == "left") {
-		int numCities = Game::getGameBoard()->getNumCities();
-		City* playerCity = Game::getGameBoard()->getCity(Game::getGameBoard()->player->pawn->cityIndex);
+	// Take away the focus from the currently focused UI element.
+	GuiManager::_currentFocusedElement = nullptr;
 
-#ifdef ADMIN_EDITOR
-		if (GuiManager::addNode) {
-			City::consoleAddNodeAtCoordDialogue(x, y);
-		}
-#endif
+	// Loop through every scene element until we find the element we
+	// need to interact with.
+	for (int i = (int)scene->size() - 1; i >= 0; i--) {
+		UIElement* element = scene->at(i);
 
-		// Figure out if we clicked on a city
-		for (int i = 0; i < numCities; i++) {
+		if (element->visible) {
+			if (element->left <= x && element->left + element->width >= x) {
+				if (element->top <= y && element->top + element->height >= y) {
 
-			City* city = Game::getGameBoard()->getCity(i);
-			int centerX = city->x;
-			int centerY = city->y;
-
-			int halfWidth = City::RenderWidth / 2;
-			int halfHeight = City::RenderHeight / 2;
-
-			// Are we within the bounds of the current scity?
-			if (centerX - halfWidth <= x && centerX + halfWidth >= x) {
-				if (centerY - halfHeight <= y && centerY + halfHeight >= y) {
-
-#ifdef ADMIN_EDITOR
-					if (GuiManager::connectNode) {
-						Game::getGameBoard()->getCity(i)->addAdjacentNode(Game::getGameBoard()->player->pawn->cityIndex);
-						return;
-					}
-					if (GuiManager::teleportNode) {
-						Game::getGameBoard()->player->pawn->cityIndex = i;
-						return;
-					}
-#endif
-					
-					// Figure out if the city is adjacent to the city we're currently at.
-					// If so, move to that city.
-					std::vector<int> adjacents = playerCity->getAdjacentNodes();
-
-					for (int k = 0; k < adjacents.size(); k++) {
-						if (i == adjacents[k]) {
-							Game::getGameBoard()->player->pawn->cityIndex = i;
-							break;
-						}
+					// If there's a previous focused element, take away its focus.
+					if (GuiManager::_currentFocusedElement != nullptr) {
+						GuiManager::_currentFocusedElement->resetFocus();
 					}
 
+					// Set the currently focused UI element.
+					GuiManager::_currentFocusedElement = element;
+					element->onMouseDown(button, x, y);
+					element->giveFocus();
 					break;
 				}
 			}
-
 		}
 	}
 }
@@ -82,6 +96,24 @@ void GuiManager::handleMouseUp(int x, int y, std::string button)
 {
 	// Make sure the coordinate account for window resizing.
 	GuiManager::convertCoords(&x, &y);
+
+	// Get the current scene.
+	auto scene = GuiManager::getCurrentSceneUIElements();
+
+	// Loop through every scene element until we find the element we
+	// need to interact with.
+	for (int i = (int)scene->size() - 1; i >= 0; i--) {
+		UIElement* element = scene->at(i);
+
+		if (element->visible) {
+			if (element->left <= x && element->left + element->width >= x) {
+				if (element->top <= y && element->top + element->height >= y) {
+					element->onMouseUp(button, x, y);
+					break;
+				}
+			}
+		}
+	}
 }
 
 void GuiManager::handleMouseMove(int x, int y)
@@ -89,81 +121,92 @@ void GuiManager::handleMouseMove(int x, int y)
 	// Make sure the coordinate account for window resizing.
 	GuiManager::convertCoords(&x, &y);
 
-#ifdef ADMIN_EDITOR
-	if (GuiManager::moveMode) {
-		City* city = Game::getGameBoard()->getCity(Game::getGameBoard()->player->pawn->cityIndex);
+	// Save the mouse coordinates.
+	GuiManager::_mouseX = x;
+	GuiManager::_mouseY = y;
 
-		city->x = x;
-		city->y = y;
+	// Get the current scene.
+	auto scene = GuiManager::getCurrentSceneUIElements();
+
+	// Loop through every scene element until we find the element we
+	// need to interact with.
+	for (int i = (int)scene->size() - 1; i >= 0; i--) {
+		UIElement* element = scene->at(i);
+
+		if (element->visible) {
+			if (element->left <= x && element->left + element->width >= x) {
+				if (element->top <= y && element->top + element->height >= y) {
+					element->onMouseMove(x, y);
+					break;
+				}
+			}
+		}	
 	}
-#endif
 }
 
-void GuiManager::handleKeyDown(char key)
+void GuiManager::handleKeyDown(std::string key)
 {
-#ifdef ADMIN_EDITOR
-	switch (key) {
-		// 'a' - key
-		case 0:
-			GuiManager::addNode = true;
-			break;
-		// 'c' - key
-		case 2:
-			GuiManager::connectNode = true;
-			break;
-		// 'm' - key
-		case 12:
-			GuiManager::moveMode = true;
-			break;
-		// 's' - key
-		case 18:
-			Game::save();
-			break;
-		// 't' - key
-		case 19:
-			GuiManager::teleportNode = true;
-			break;
-		default:
-			std::cout << "KeyDown: " << (int)key << std::endl;
-			break;
+	// If there is a current focus, and an event handler, invoke it.
+	if (GuiManager::_currentFocusedElement != nullptr) {
+		GuiManager::_currentFocusedElement->onKeyDown(key);
 	}
-#endif
 }
 
-void GuiManager::handleKeyUp(char key)
+void GuiManager::handleKeyUp(std::string key)
 {
-#ifdef ADMIN_EDITOR
-	switch (key) {
-		// 'a' - key
-		case 0:
-			GuiManager::addNode = false;
-			break;
-		// 'c' - key
-		case 2:
-			GuiManager::connectNode = false;
-			break;
-		// 'm' - key
-		case 12:
-			GuiManager::moveMode = false;
-			break;
-		// 't' - key
-		case 19:
-			GuiManager::teleportNode = false;
-			break;
-		default:
-			std::cout << "KeyDown: " << (int)key << std::endl;
-			break;
+	// If there is a current focus, and an event handler, invoke it.
+	if (GuiManager::_currentFocusedElement != nullptr) {
+		GuiManager::_currentFocusedElement->onKeyUp(key);
 	}
-#endif
 }
 
 void GuiManager::draw()
 {
+	auto scene = GuiManager::getCurrentSceneUIElements();
+
+	// Go through every UI element in the scene.
+	for (unsigned int i = 0; i < scene->size(); i++) {
+		UIElement* sceneObject = scene->at(i);
+
+		// If the scene object is visible, then draw it.
+		if (sceneObject->visible) {
+			sceneObject->draw();
+		}
+	}
 }
 
 void GuiManager::convertCoords(int* x, int* y)
 {
 	// Apply the ratio conversion.
-	*x = (DRAW_WIDTH / (float)GuiManager::WindowWidth) * *x;
-	*y = (DRAW_HEIGHT / (float)GuiManager::WindowHeight) * *y;
+	*x = (int)((DRAW_WIDTH / (float)GuiManager::WindowWidth) * *x);
+	*y = (int)((DRAW_HEIGHT / (float)GuiManager::WindowHeight) * *y);
+}
+
+std::vector<UIElement*>* GuiManager::getCurrentSceneUIElements()
+{
+	return &GuiManager::_uiElements[(int)Game::getState()];
+}
+
+UIElement* GuiManager::getUIElementByName(std::string name)
+{
+	auto scene = GuiManager::getCurrentSceneUIElements();
+
+	for (unsigned int i = 0; i < scene->size(); i++) {
+		UIElement* element = scene->at(i)->getElementByName(name);
+		if (element != nullptr) {
+			return element;
+		}
+	}
+
+	return nullptr;
+}
+
+int GuiManager::getMouseX()
+{
+	return GuiManager::_mouseX;
+}
+
+int GuiManager::getMouseY()
+{
+	return GuiManager::_mouseY;
 }

@@ -14,6 +14,7 @@ class Game
 {
 public:
 	static void loadOrCreate(std::string savename);
+	static void destroy();
 	static void save();
 
 	static void changeState(GameState state);
@@ -27,8 +28,6 @@ private:
 	static GameState _state;
 	static std::string _saveFolder;
 
-
-	static void destroy();
 	static void checkDirectories();
 	static void gameloop();
 };
