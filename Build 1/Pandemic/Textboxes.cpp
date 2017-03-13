@@ -1,5 +1,5 @@
 #include "Textboxes.h"
-#include "GuiManager.h"
+#include "GraphicsManager.h"
 
 SaveNameTextbox::SaveNameTextbox() : UITextbox(TXT_SAVE_NAME)
 {

@@ -6,15 +6,15 @@
 namespace SFML {
 	class SurfaceManager
 	{
-	private:
-		std::map<std::string, sf::Texture*>* _surfaces;
-		void _loadTextures();
-
 	public:
 		SurfaceManager();
 		~SurfaceManager();
 
 	protected:
 		sf::Texture* _getSurface(std::string name);
+	
+	private:
+		std::map<std::string, sf::Texture*>* _surfaces;
+		void _loadTextures();
 	};
 }

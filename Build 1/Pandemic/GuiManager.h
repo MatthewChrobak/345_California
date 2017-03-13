@@ -4,10 +4,6 @@
 #include "Game.h"
 #include "UIElement.h"
 
-// TODO: Move this constants somewhere else, maybe.
-#define DRAW_WIDTH 960
-#define DRAW_HEIGHT 640
-
 class GuiManager
 {
 public:

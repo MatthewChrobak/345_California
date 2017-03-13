@@ -11,7 +11,6 @@ ArrayGraph::ArrayGraph()
 
 ArrayGraph::~ArrayGraph()
 {
-	// TODO: Make sure this gets called.
 	while (this->_nodes.size() > 0) {
 		delete this->_nodes[this->_nodes.size() - 1];
 		this->_nodes.pop_back();

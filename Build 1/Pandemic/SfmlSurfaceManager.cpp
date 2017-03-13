@@ -1,4 +1,5 @@
 #include "SfmlSurfaceManager.h"
+#include "Paths.h"
 #ifdef DEBUG
 #include <assert.h>
 #endif
@@ -12,19 +13,16 @@ SurfaceManager::SurfaceManager()
 
 SurfaceManager::~SurfaceManager()
 {
-	// TODO: Fix this.
-	//// Dereference and remove all surfaces in the map.
-	//while (this->_surfaces->size() != 0) {
-	//	sf::Texture* tex = this->_surfaces->end()->second;
-	//	delete tex;
-	//	this->_surfaces->erase(this->_surfaces->end()->first);
-	//}
+	for (auto it = this->_surfaces->begin(); it != this->_surfaces->end(); it = this->_surfaces->begin()) {
+		this->_surfaces->erase(it);
+	}
+	delete this->_surfaces;
 }
 
 
 void SurfaceManager::_loadTextures()
 {
-	std::string path = FileSystem::getStartupPath() + "graphics\\";
+	std::string path = FileSystem::getStartupPath() + GRAPHICS_PATH;
 	std::vector<std::string> directories = FileSystem::getDirectories(path + "*");
 
 	// Go through all the directories in the graphics folder.

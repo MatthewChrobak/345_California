@@ -85,6 +85,12 @@
     <Filter Include="Source Files\UI\Elements\Elements">
       <UniqueIdentifier>{5b1dca0d-198a-4540-bc1f-03852e55fba6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Graphics\Contexts">
+      <UniqueIdentifier>{ceaccd41-a754-439d-99e8-b8d38dfbca0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Contexts">
+      <UniqueIdentifier>{b6d956dd-dd4a-45d6-96a3-f4d7bca2f60f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp">
@@ -98,9 +104,6 @@
     </ClCompile>
     <ClCompile Include="SfmlSurfaceManager.cpp">
       <Filter>Source Files\Graphics\Sfml</Filter>
-    </ClCompile>
-    <ClCompile Include="SurfaceContext.cpp">
-      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="FileSystem.cpp">
       <Filter>Source Files\IO</Filter>
@@ -125,12 +128,6 @@
     </ClCompile>
     <ClCompile Include="Board.cpp">
       <Filter>Source Files\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="TextContext.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="CommonContext.cpp">
-      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="FileStream.cpp">
       <Filter>Source Files\IO</Filter>
@@ -177,6 +174,18 @@
     <ClCompile Include="Textboxes.cpp">
       <Filter>Source Files\UI\Elements\Elements</Filter>
     </ClCompile>
+    <ClCompile Include="SfmlFontManager.cpp">
+      <Filter>Source Files\Graphics\Sfml</Filter>
+    </ClCompile>
+    <ClCompile Include="TextContext.cpp">
+      <Filter>Source Files\Graphics\Contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="SurfaceContext.cpp">
+      <Filter>Source Files\Graphics\Contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="CommonContext.cpp">
+      <Filter>Source Files\Graphics\Contexts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsSystem.h">
@@ -190,9 +199,6 @@
     </ClInclude>
     <ClInclude Include="SfmlSurfaceManager.h">
       <Filter>Header Files\Graphics\Sfml</Filter>
-    </ClInclude>
-    <ClInclude Include="SurfaceContext.h">
-      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="FileSystem.h">
       <Filter>Header Files\IO</Filter>
@@ -220,12 +226,6 @@
     </ClInclude>
     <ClInclude Include="Board.h">
       <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="TextContext.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="CommonContext.h">
-      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="FileStream.h">
       <Filter>Header Files\IO</Filter>
@@ -277,6 +277,18 @@
     </ClInclude>
     <ClInclude Include="UIDefinitions.h">
       <Filter>Header Files\UI\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="SfmlFontManager.h">
+      <Filter>Header Files\Graphics\Sfml</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonContext.h">
+      <Filter>Header Files\Graphics\Contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="TextContext.h">
+      <Filter>Header Files\Graphics\Contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="SurfaceContext.h">
+      <Filter>Header Files\Graphics\Contexts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

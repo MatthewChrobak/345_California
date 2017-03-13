@@ -79,6 +79,7 @@
     <ClCompile Include="EventCard.cpp" />
     <ClCompile Include="FileStream.cpp" />
     <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="SfmlFontManager.cpp" />
     <ClCompile Include="Frames.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GraphicsManager.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="CityCard.h" />
     <ClInclude Include="CityGraph.h" />
     <ClInclude Include="CommonContext.h" />
+    <ClInclude Include="SfmlFontManager.h" />
     <ClInclude Include="UIDefinitions.h" />
     <ClInclude Include="EpidemicCard.h" />
     <ClInclude Include="EventCard.h" />

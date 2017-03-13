@@ -1,4 +1,5 @@
 #include "Buttons.h"
+#include "GraphicsManager.h"
 #include "GuiManager.h"
 #include "UITextbox.h"
 

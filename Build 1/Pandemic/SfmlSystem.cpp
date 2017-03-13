@@ -11,12 +11,6 @@ SfmlSystem::SfmlSystem(std::string title, unsigned int contextWidth, unsigned in
 	this->createContext();
 	this->setWindowTitle(title);
 	this->setWindowSize(windowWidth, windowHeight);
-
-	// TODO:	 Load fonts to a hash-table, similarly to how surfaces are loaded.
-	//			 This will ensure multiple fonts can be loaded and referenced by name.
-
-	// Load the font.
-	this->_font.loadFromFile(FileSystem::getStartupPath() + "fonts\\default.ttf");
 }
 
 SfmlSystem::~SfmlSystem()
@@ -169,8 +163,11 @@ void SfmlSystem::setWindowTitle(std::string title)
 
 void SfmlSystem::renderText(std::string text, TextContext& ctx)
 {
+	// Retrieve the font.
+	sf::Font* font = this->_getFont(ctx.fontname);
+
 	// Create a new drawable object based on the text given.
-	sf::Text renderText = sf::Text(text, this->_font, ctx.fontSize);
+	sf::Text renderText = sf::Text(text, *font, ctx.fontSize);
 
 	// Set the fill color if the context specifies so.
 	if (ctx.fillColor != nullptr) {

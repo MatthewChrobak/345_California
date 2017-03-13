@@ -1,7 +1,8 @@
 #include "Frames.h"
 #include "Buttons.h"
 #include "Textboxes.h"
-#include "GuiManager.h"
+#include "Game.h"
+#include "GraphicsManager.h"
 
 GameFrame::GameFrame() : UIFrame(FRM_GAME_FRAME)
 {
