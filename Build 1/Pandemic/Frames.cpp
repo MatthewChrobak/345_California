@@ -34,8 +34,8 @@ void GameFrame::onMouseDown(std::string button, int x, int y)
 			int centerX = city->x;
 			int centerY = city->y;
 
-			int halfWidth = City::RenderWidth / 2;
-			int halfHeight = City::RenderHeight / 2;
+			int halfWidth = CITY_RENDER_WIDTH / 2;
+			int halfHeight = CITY_RENDER_HEIGHT / 2;
 
 			// Are we within the bounds of the current city?
 			if (centerX - halfWidth <= x && centerX + halfWidth >= x) {

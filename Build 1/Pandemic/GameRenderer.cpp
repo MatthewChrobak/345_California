@@ -1,8 +1,6 @@
 #include "GameRenderer.h"
 #include "SurfaceContext.h"
 #include "GraphicsManager.h"
-#include "Game.h"
-#include "City.h"
 #include "GuiManager.h"
 
 void GameRenderer::drawGame()
@@ -12,130 +10,134 @@ void GameRenderer::drawGame()
 		return;
 	}
 
-	SurfaceContext surfaceContext;
-	TextContext textContext;
-
-
 	// Render the background image.
-	surfaceContext.size = new Vector2D(DRAW_WIDTH, DRAW_HEIGHT);
-	GraphicsManager::renderSurface("backgrounds\\world.png", surfaceContext);
+	GameRenderer::drawBackground();
 
-
-
-	// Get the number of cities.
-	int numCities = Game::getGameBoard()->getNumCities();
-
-	// Draw all the edges joining the cities.
-	for (int i = 0; i < numCities; i++) {
-		// Get all the nodes connected to one node.
-		City* primaryNode = Game::getGameBoard()->getCity(i);
-		std::vector<int> adjacentNodes = primaryNode->getAdjacentNodes();
-
-		for (unsigned int x = 0; x < adjacentNodes.size(); x++) {
-			City* adjacentNode = Game::getGameBoard()->getCity(adjacentNodes[x]);
-
-			// Get the length of the hypotenuse between the primary and adjacent node.
-			int width = adjacentNode->x - primaryNode->x;
-			int height = adjacentNode->y - primaryNode->y;
-			double hypLength = std::sqrt(width * width + height * height);
-
-			// Figure out the rotation value and convert it from radians to degrees (180/pi).
-			double degrees = std::atan2(height, width) * 57.2957795130823209;
-
-
-			// Inverse the angle of rotation if we're on specific connecting cities.
-			char inverse = 0;
-			int lineHeight = 1;
-
-			if (primaryNode->name == "Tokyo") {
-				inverse += adjacentNode->name == "San Francisco";
-			}
-
-			if (primaryNode->name == "San Francisco") {
-				inverse += adjacentNode->name == "Tokyo";
-				inverse += adjacentNode->name == "Manila";
-			}
-
-			if (primaryNode->name == "Manila") {
-				inverse += adjacentNode->name == "San Francisco";
-			}
-
-			if (primaryNode->name == "Sydney") {
-				inverse += adjacentNode->name == "Los Angeles";
-			}
-
-			if (primaryNode->name == "Los Angeles") {
-				inverse += adjacentNode->name == "Sydney";
-			}
-
-			if (inverse) {
-				degrees = 180 - degrees;
-				lineHeight = 2;
-			}
-
-			// Reset the context, and modify it to render the edge.
-			surfaceContext.reset();
-			surfaceContext.size = new Vector2D((int)hypLength, lineHeight);
-			surfaceContext.rotation = (float)degrees;
-			surfaceContext.position = new Vector2D(primaryNode->x, primaryNode->y);
-
-			// Pass the context off to the graphics manager to render it.
-			GraphicsManager::renderSurface("nodes\\line.png", surfaceContext);
-		}
-	}
-
-
-	// Render all the city nodes.
-	for (int i = 0; i < numCities; i++) {
-		City* city = Game::getGameBoard()->getCity(i);
-
-		// Reset the context, and modify it to render the node.
-		surfaceContext.reset();
-		surfaceContext.position = new Vector2D(city->x - (City::RenderWidth / 2), city->y - (City::RenderHeight / 2));
-		surfaceContext.size = new Vector2D(City::RenderWidth, City::RenderHeight);
-
-		// Assign the appropriate color.
-		switch (city->color) {
-			case InfectionColor::Red:
-				surfaceContext.color = new RGBA(255, 0, 0);
-				break;
-			case InfectionColor::Blue:
-				surfaceContext.color = new RGBA(0, 0, 255);
-				break;
-			case InfectionColor::Yellow:
-				surfaceContext.color = new RGBA(255, 255, 0);
-				break;
-			case InfectionColor::Black:
-				surfaceContext.color = new RGBA(0, 0, 0);
-				break;
-		}
-
-		// Pass it off to the graphics manager to render it.
-		GraphicsManager::renderSurface("nodes\\node.png", surfaceContext);
-
-
-		// Reset the text context, and render the name of the city just underneath it.
-		textContext.reset();
-		textContext.fillColor = new RGBA(255, 255, 255);
-		textContext.horizontalCenter = true;
-		textContext.position = new Vector2D(city->x, city->y + (City::RenderHeight / 2));
-		textContext.fontSize = 9;
-
-		// Pass it off to the graphics manager to render it.
-		GraphicsManager::renderText(city->name, textContext);
-	}
-
+	// Render all the nodes.
+	GameRenderer::drawCities();
 
 	// Render the player.
-	Player* player = Game::getGameBoard()->player;
+	GameRenderer::drawPlayers();
+}
 
-	int cityIndex = player->pawn->cityIndex;
-	if (cityIndex < numCities) {
-		City* playerCity = Game::getGameBoard()->getCity(cityIndex);
-		surfaceContext.reset();
-		surfaceContext.position = new Vector2D(playerCity->x - 10, playerCity->y - 20);
-		surfaceContext.size = new Vector2D(20, 20);
 
-		GraphicsManager::renderSurface("pawns\\pawn.png", surfaceContext);
+
+void GameRenderer::drawPlayers()
+{
+	// TODO: Work off of the player collection.
+}
+
+void GameRenderer::drawBackground()
+{
+	SurfaceContext ctx;
+	ctx.size = new Vector2D(DRAW_WIDTH, DRAW_HEIGHT);
+	GraphicsManager::renderSurface("backgrounds\\world.png", ctx);
+}
+
+void GameRenderer::drawCities()
+{
+	// Get the game board and the number of cities.
+	Board* board = Game::getGameBoard();
+	unsigned int numCities = board->getNumCities();
+
+	// Draw all the connections so that they appear under the nodes.
+	for (unsigned int i = 0; i < numCities; i++) {
+		GameRenderer::drawCityConnections(*board->getCity(i));
 	}
+
+	// Draw all the nodes and their names.
+	for (unsigned int i = 0; i < numCities; i++) {
+		City* city = board->getCity(i);
+		GameRenderer::drawCityNode(*city);
+		GameRenderer::drawCityName(*city);
+	}
+}
+
+void GameRenderer::drawCityNode(City& city)
+{
+	SurfaceContext ctx;
+	ctx.position = new Vector2D(city.x - (CITY_RENDER_WIDTH / 2), city.y - (CITY_RENDER_HEIGHT / 2));
+	ctx.size = new Vector2D(CITY_RENDER_WIDTH, CITY_RENDER_HEIGHT);
+
+	// Assign the appropriate color.
+	switch (city.color) {
+	case InfectionColor::Red:
+		ctx.color = new RGBA(255, 0, 0);
+		break;
+	case InfectionColor::Blue:
+		ctx.color = new RGBA(0, 0, 255);
+		break;
+	case InfectionColor::Yellow:
+		ctx.color = new RGBA(255, 255, 0);
+		break;
+	case InfectionColor::Black:
+		ctx.color = new RGBA(0, 0, 0);
+		break;
+	}
+
+	// Pass it off to the graphics manager to render it.
+	GraphicsManager::renderSurface("nodes\\node.png", ctx);
+}
+
+void GameRenderer::drawCityName(City& city)
+{
+	// Rrender the name of the city just underneath it.
+	TextContext ctx;
+	ctx.fillColor = new RGBA(255, 255, 255);
+	ctx.horizontalCenter = true;
+	ctx.position = new Vector2D(city.x, city.y + (CITY_RENDER_HEIGHT / 2));
+	ctx.fontSize = 9;
+
+	// Pass it off to the graphics manager to render it.
+	GraphicsManager::renderText(city.name, ctx);
+}
+
+void GameRenderer::drawCityConnections(City& city)
+{
+	SurfaceContext ctx;
+
+	// Get all the nodes connected to the city.
+	auto adjacentNodes = city.getAdjacentNodes();
+
+	for (unsigned int i = 0; i < adjacentNodes.size(); i++) {
+		City* adjacentNode = Game::getGameBoard()->getCity(adjacentNodes.at(i));
+
+		// Get the width of the hypotenuse between this city and its adjacent node.
+		int width = adjacentNode->x - city.x;
+		int height = adjacentNode->y - city.y;
+		double hypLength = std::sqrt(width * width + height * height);
+
+		// Figure out the rotation value and convert it from radians to degrees (180/pi).
+		double degrees = std::atan2(height, width) * 57.2957795130823209;
+
+		int lineHeight = 1;
+
+		// TODO: Make this work off of a city property.
+		// Inverse the angle of rotation if we're on specific connecting cities.
+		/*if (city.inverseAngle && adjacentNode->inverseAngle) {
+			degrees = 180 - degrees;
+			lineHeight = 2;
+		}*/
+
+
+		// Reset and adjust the context.
+		ctx.reset();
+		ctx.size = new Vector2D((int)hypLength, lineHeight);
+		ctx.rotation = (float)degrees;
+		ctx.position = new Vector2D(city.x, city.y);
+
+		// Pass the context off to the graphics manager to render it.
+		GraphicsManager::renderSurface("nodes\\line.png", ctx);
+	}
+}
+
+void GameRenderer::drawPlayer(Player& player)
+{
+	SurfaceContext ctx;
+	City* city = Game::getGameBoard()->getCity(player.pawn->cityIndex);
+
+	ctx.position = new Vector2D(city->x - 10, city->y - 20);
+	ctx.size = new Vector2D(20, 20);
+
+	GraphicsManager::renderSurface("pawns\\pawn.png", ctx);
 }
