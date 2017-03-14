@@ -4,6 +4,7 @@
 #include "UITextbox.h"
 #include "Frames.h"
 #include "PlayerActions.h"
+#include "CityCard.h"
 
 ToggleActionsButton::ToggleActionsButton() : UIButton(CMD_TOGGLE_ACTIONS)
 {
@@ -271,5 +272,91 @@ void PlayerCardsClose::onMouseDown(std::string button, int x, int y)
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
 #endif
-	((PlayerCardsFrame*)element)->resetShow();
+	element->visible = false;
+}
+
+
+PlayerCardsOkay::PlayerCardsOkay(PlayerActions* action, std::vector<int>* cardData) : UIButton(CMD_PLAYER_CARDS_OKAY)
+{
+	this->_action = action;
+	this->_cardData = cardData;
+
+	this->surfaceName = "ui\\button.png";
+	this->caption = "Okay";
+	this->outlineThickness = 2;
+	this->outlineColor = new RGBA(0, 0, 0);
+	this->horizontalCenter = true;
+
+	this->left = CMD_PLAYER_CARDS_OKAY_LEFT;
+	this->top = CMD_PLAYER_CARDS_OKAY_TOP;
+	this->width = CMD_PLAYER_CARDS_OKAY_WIDTH;
+	this->height = CMD_PLAYER_CARDS_OKAY_HEIGHT;
+}
+
+void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
+{
+	switch (*this->_action)
+	{
+		case PlayerActions::Drive:
+
+			break;
+		case PlayerActions::DirectFlight:
+			// We should only have one card selected here.
+			if (this->_cardData->size() == 1) {
+				Board* board = Game::getGameBoard();
+				Player& player = board->getCurrentTurnPlayer();
+				
+				// Get the card index.
+				int cardIndex = this->_cardData->at(0);
+				PlayerCard* card = player.getCard(cardIndex);
+
+				// Make sure the card is not null.
+				if (card != nullptr) {
+
+					// Make sure it's a city card.
+					if (card->getType() == PlayerCardType::City_Card) {
+						CityCard* cityCard = (CityCard*)card;
+						int cityIndex = cityCard->cityIndex;
+
+						// Remove it, move the player, and hide the player cards.
+						player.removeCard(cardIndex);
+						player.pawn->cityIndex = cityIndex;
+						GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+
+						// TODO: Decrement the player actions.
+					}
+					else {
+						GuiManager::showMsgBox("Please select a city card.");
+					}
+				}
+				else {
+					GuiManager::showMsgBox("Card was null.");
+				}
+			}
+			else {
+				GuiManager::showMsgBox("Please select only one card.");
+			}
+			break;
+		case PlayerActions::CharterFlight:
+
+			break;
+		case PlayerActions::ShuttleFlight:
+
+			break;
+		case PlayerActions::BuildResearchCenter:
+
+			break;
+		case PlayerActions::TreatDisease:
+
+			break;
+		case PlayerActions::ShareKnowledge:
+
+			break;
+		case PlayerActions::DiscoverCure:
+
+			break;
+		case PlayerActions::ViewCards:
+			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+			break;
+	}
 }
