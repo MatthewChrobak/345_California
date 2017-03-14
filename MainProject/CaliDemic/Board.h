@@ -4,7 +4,9 @@
 #include "City.h"
 #include "Board.h"
 #include "Player.h"
+#include "ActionCounter.h"
 #include <vector>
+
 
 
 class Board
@@ -22,6 +24,13 @@ public:
 	City* getCity(int index);
 	int getNumCities();
 
+	/*
+	This is to change turn once the number of action is reach
+	*/
+	void playerTurnChange();
+	/*
+	This is to know the current turn of a player
+	*/
 	Player& getCurrentTurnPlayer();
 	Player& getPlayer(int index);
 	int getNumberOfPlayers();

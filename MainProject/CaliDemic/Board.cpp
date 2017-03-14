@@ -2,6 +2,7 @@
 #include "FileStream.h"
 #include "FileSystem.h"
 #include "PlayerActions.h"
+#include "ActionCounter.h"
 #include <iostream>
 #include <vector>
 
@@ -184,4 +185,17 @@ Player& Board::getPlayer(int index)
 int Board::getNumberOfPlayers()
 {
 	return this->_players.size();
+}
+
+/*
+this will check the number of action and change turn if it reaches 
+4 actions
+*/
+void Board::playerTurnChange()
+{
+	if (actionCounter == 0)
+	{
+		this->currentTurnPlayer = ((this->currentTurnPlayer) + 1) % _players.size();
+		resetActionCounter();
+	}
 }
