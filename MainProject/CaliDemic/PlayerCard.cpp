@@ -8,6 +8,11 @@
 #include "FileStream.h"
 #include "FileSystem.h"
 
+vector <string> epidemic
+{
+	"Epidemic","Epidemic","Epidemic","Epidemic"
+};
+
 void PlayerCard::playCard()
 {
 	// Throw an exception because this method is virtual and should be overriden.
@@ -67,7 +72,7 @@ string PlayerCard::getPlayerCards() {
 		string listOfCards = playerCards[0];
 
 		if (playerCards.size() > 1) {
-			for (int i = 1; i < playerCards.size(); i++) {
+			for ( unsigned int i = 1; i < playerCards.size(); i++) {
 				tempArray[i] = playerCards[i];
 				listOfCards = listOfCards + ", " + tempArray[i];
 			}
@@ -78,6 +83,9 @@ string PlayerCard::getPlayerCards() {
 	if (playerCards.size() == 0) {
 		return "You have no more cards to play";
 	}
+
+	// TODO: fix this chun.
+	return "";
 }
 
 // Retrieves a single card from the player's hand
@@ -98,8 +106,8 @@ void PlayerCard::setPlayerCards(int numberOfCards) {
 
 	for (int i = 0; i < numberOfCards; i++) {
 		
-		srand(time(NULL));
-		int value = rand() % (playerCardsDeck.size) + 1;
+		srand((unsigned)time(NULL));
+		int value = rand() % (playerCardsDeck.size()) + 1;
 		
 		if (playerCardsDeck[value].substr(0, 2) == "Rd" || "Be" || "Bk" || "Yw")
 		{
@@ -114,7 +122,7 @@ void PlayerCard::setPlayerCards(int numberOfCards) {
 
 //Automatically discards en Epidemic card if the player picks one
 void PlayerCard::useEpidemic() {
-	for (int i = 0; i< playerCards.size(); i++)
+	for (unsigned int i = 0; i< playerCards.size(); i++)
 	{
 		if (playerCards[i] == "Epidemic") {
 			playerCards.erase(playerCards.begin() + i);
@@ -127,7 +135,7 @@ void PlayerCard::getEventDescription() {
 
 	int counter = 0; // Counter remains 0 if no event card is found in a player's hand
 
-	for (int i = 0; i < playerCards.size(); i++) {
+	for (unsigned int i = 0; i < playerCards.size(); i++) {
 		if (playerCards[i] == "Government Grant") {
 			cout << "Government Grant: Add 1 research station to any city (no discard needed)." << endl;
 			counter++;
@@ -191,15 +199,17 @@ void PlayerCard::setPlayerCardDeck() {
 
 	auto fs = FileStream::Open(FileSystem::getStartupPath() + "doesn't matter right now", FileMode::Read);
 	
-	for (int i = 0; i < 5; i++) {
-		fs->write(this->playerCardsDeck.push_back);
-	}
+	// TODO: fix this chun.
+	//for (int i = 0; i < 5; i++) {
+	//	std::string value = this->playerCardsDeck.at(this->playerCardsDeck.size() - 1);
+	//	fs->write(value);
+	//}
 
-	auto gs = FileStream::Open(FileSystem::getStartupPath() + "doesn't matter once again...", FileMode::Read);
+	//auto gs = FileStream::Open(FileSystem::getStartupPath() + "doesn't matter once again...", FileMode::Read);
 
-	for (int i = 0; i < 4; i++) {
-		gs->write(this->playerCardsDeck.push_back);
-	}
+	//for (int i = 0; i < 4; i++) {
+	//	gs->write(this->playerCardsDeck.pop_back());
+	//}
 }
 
 //Get the description of an epidemic card
@@ -231,7 +241,7 @@ void PlayerCard::buildStationPC() {
 	string black = "Bk";
 
 	//Adds up the counters for every colored car the player possesses
-	for (int i = 0; i < playerCards.size(); i++)
+	for (unsigned int i = 0; i < playerCards.size(); i++)
 	{
 		if (playerCards[i].substr(0, 2) == red) // Checks the first two letters of a city to see if color corresponds
 		{
