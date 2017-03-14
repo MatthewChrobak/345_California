@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 
+
 City::City()
 {
 }
@@ -46,7 +47,9 @@ void City::infectCityOutBreak(int city)
 	and if another city's cube size is rearched, than another outbreak event will 
 	happen
 	*/
-	
+	auto iterator = Game::getGameBoard()->getCity(city)->getAdjacentNodes();
+	for (unsigned int i = 0; i < iterator.size(); i++)
+		InfectionCard::infectCityCube(iterator.at(i));
 }
 
 void City::buildResearchFacility()

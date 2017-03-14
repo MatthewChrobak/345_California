@@ -9,5 +9,6 @@ public:
 	~InfectionCard();
 	static void infectCityCube(int city);
 
+
 };
 

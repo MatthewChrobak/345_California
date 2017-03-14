@@ -135,3 +135,4 @@ int Board::getNumCities()
 {
 	return this->_cities->getNumNodes();
 }
+

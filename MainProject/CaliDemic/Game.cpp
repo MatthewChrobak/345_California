@@ -5,6 +5,13 @@
 #include <assert.h>
 #endif
 
+int Game::numOfCube = 24;
+int Game::numOfYellowCube = numOfCube;
+int Game::numOfBlackCube = numOfCube;
+int Game::numOfRedCube = numOfCube;
+int Game::numOfBlueCube = numOfCube;
+
+
 Board* Game::_gameBoard = nullptr;
 GameState Game::_state = GameState::MainMenu;
 std::string Game::_saveFolder = "";
@@ -78,5 +85,13 @@ void Game::changeState(GameState state)
 #endif
 	// Blindly accept state changes for now.
 	Game::_state = state;
+}
+
+void Game::numOfCubeLeft()
+{
+	std::cout << "Number of yellow cube left: " << numOfYellowCube << std::endl;
+	std::cout << "Number of black cube left: " << numOfBlackCube << std::endl;
+	std::cout << "Number of blue cube left: " << numOfBlueCube << std::endl;
+	std::cout << "Number of red cube left: " << numOfRedCube << std::endl;
 }
 
