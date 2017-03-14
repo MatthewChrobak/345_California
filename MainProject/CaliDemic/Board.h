@@ -23,7 +23,6 @@ public:
 	City* getCity(int index);
 	int getNumCities();
 
-	static void playerTurn();
 	Player& getCurrentTurnPlayer();
 	Player& getPlayer(int index);
 	int getNumberOfPlayers();

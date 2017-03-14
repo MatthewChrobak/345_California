@@ -155,12 +155,6 @@ int Board::getNumCities()
 	return this->_cities->getNumNodes();
 }
 
-//this function will handle the player's turn depending on the number of players
-void Board::playerTurn()
-{
-	int ActionCounter = 0;
-}
-
 Player& Board::getCurrentTurnPlayer()
 {
 	return *this->_players[Board::currentTurnPlayer];
