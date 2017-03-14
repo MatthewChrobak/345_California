@@ -43,7 +43,7 @@ void GameFrame::onMouseDown(std::string button, int x, int y)
 			if (centerX - halfWidth <= x && centerX + halfWidth >= x) {
 				if (centerY - halfHeight <= y && centerY + halfHeight >= y) {
 
-					Player* player = board->player;
+					Player* player = &board->getCurrentTurnPlayer();
 					int playerCityIndex = player->pawn->cityIndex;
 					City* playerCity = nullptr;
 
@@ -132,7 +132,8 @@ void GameFrame::onMouseMove(int x, int y)
 {
 #ifdef ADMIN_EDITOR
 	if (this->_moveMode) {
-		City* city = Game::getGameBoard()->getCity(Game::getGameBoard()->player->pawn->cityIndex);
+		Board* board = Game::getGameBoard();
+		City* city = board->getCity(board->getCurrentTurnPlayer().pawn->cityIndex);
 		city->x = x;
 		city->y = y;
 	}

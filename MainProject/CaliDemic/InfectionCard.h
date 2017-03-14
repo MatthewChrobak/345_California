@@ -7,7 +7,7 @@ class InfectionCard
 public:
 	InfectionCard();
 	~InfectionCard();
-	void infectCityCube(int city);
+	static void infectCityCube(int city);
 
 
 };

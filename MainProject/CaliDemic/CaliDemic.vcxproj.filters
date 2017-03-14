@@ -189,6 +189,9 @@
     <ClCompile Include="SfmlFontManager.cpp">
       <Filter>Source Files\Graphics\Sfml</Filter>
     </ClCompile>
+    <ClCompile Include="ActionCounter.cpp">
+      <Filter>Source Files\Models\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsSystem.h">
