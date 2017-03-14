@@ -184,20 +184,21 @@ void PlayerCard::setPlayerCardDeck() {
 
 	for (int i = 0; i < 5; i++) {
 
-		std::string value = this->playerCardsDeck.at(this->playerCardsDeck.size() - 1);
-		fs->write(value);
+		this->playerCardsDeck.push_back(fs->readString());
+
 	}
+	
+	delete fs;
 
 	//From a file listing all epidemic cards, take each string and store them into playerCardsDeck
-	auto gs = FileStream::Open(FileSystem::getStartupPath() + "doesn't matter once again...", FileMode::Read);
+	fs = FileStream::Open(FileSystem::getStartupPath() + "doesn't matter once again...", FileMode::Read);
 
 	for (int i = 0; i < 4; i++) {
-
-		std::string value = this->playerCardsDeck.at(this->playerCardsDeck.size() - 1);
-		gs->write(value);
+	
+		this->playerCardsDeck.push_back(fs->readString());
 	}
+	
 	delete fs;
-	delete gs;
 }
 
 
