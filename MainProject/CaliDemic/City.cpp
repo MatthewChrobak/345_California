@@ -1,6 +1,7 @@
 #include "City.h"
 #include "Game.h"
 #include "InfectionColors.h"
+#include "InfectionCard.h"
 #include <iostream>
 #include <string>
 
@@ -35,11 +36,17 @@ void City::infectCity()
 	}
 }
 /*
-infection with outbreak
+infection with outbreak of the current passing city.
 */
-void City::infectCityOutBreak()
+void City::infectCityOutBreak(int city)
 {
-
+	/*
+	an iterator that will go through all the nodes connect to the city that is
+	being outbreak and use infectionCityCube function to infection them.
+	and if another city's cube size is rearched, than another outbreak event will 
+	happen
+	*/
+	
 }
 
 void City::buildResearchFacility()
