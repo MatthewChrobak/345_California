@@ -35,7 +35,7 @@ void Board::playerCreation()
 	std::cout << "How many player do you want to create? " << std::endl;
 	std::cin >> numberOfPlayer;
 
-	for (unsigned int i = 0; i < numberOfPlayers; i++)
+	for (int i = 0; i < numberOfPlayer; i++)
 		_players.push_back(new Player());
 
 }
@@ -115,6 +115,8 @@ void Board::savePlayers(std::string playerFile)
 {
 	FileStream* fs = FileStream::Open(playerFile, FileMode::Write);
 
+	fs->write(_players.size());
+
 	// Write the player data.
 	for (unsigned int i = 0; i < _players.size(); i++)
 		fs->write(_players.at(i)->pawn->cityIndex);
@@ -132,9 +134,17 @@ void Board::loadPlayers(std::string playerFile)
 
 	FileStream* fs = FileStream::Open(playerFile, FileMode::Read);
 
-	// Read the player data.
-	for (unsigned int i = 0; i < _players.size(); i++)
-		_players.at(i)->pawn->cityIndex = fs->readInt();
+	int numPlayers = fs->readInt();
+
+	/*
+	Read the player data & the new player is just a blank object
+	so we can actually read from the file because the vector size is not initialize
+	*/
+	for (int i = 0; i < numPlayers; i++) {
+		Player* player = new Player();
+		player->pawn->cityIndex = fs->readInt();
+		this->_players.push_back(player);
+	}
 
 	delete fs;
 }
@@ -163,12 +173,12 @@ Player& Board::getCurrentTurnPlayer()
 Player& Board::getPlayer(int index)
 {
 #ifdef DEBUG
-	assert(index >= 0 && index < this->numberOfPlayers);
+	assert(index >= 0 && index < (int)this->_players.size());
 #endif
 	return *this->_players[index];
 }
 
 int Board::getNumberOfPlayers()
 {
-	return this->numberOfPlayers;
+	return this->_players.size();
 }
