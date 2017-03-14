@@ -127,6 +127,7 @@
     <ClInclude Include="Paths.h" />
     <ClInclude Include="Pawn.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerActions.h" />
     <ClInclude Include="PlayerCard.h" />
     <ClInclude Include="SfmlFontManager.h" />
     <ClInclude Include="SfmlSystem.h" />

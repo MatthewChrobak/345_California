@@ -1,4 +1,5 @@
 #pragma once
+#include "InfectionColors.h"
 #include "CityGraph.h"
 #include "City.h"
 #include "Board.h"

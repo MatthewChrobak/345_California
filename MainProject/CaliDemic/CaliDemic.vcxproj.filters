@@ -299,8 +299,13 @@
     <ClInclude Include="SfmlFontManager.h">
       <Filter>Header Files\Graphics\Sfml</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="ActionCounter.h">
       <Filter>Header Files\Models\Player</Filter>
+=======
+    <ClInclude Include="PlayerActions.h">
+      <Filter>Header Files\Models</Filter>
+>>>>>>> origin/master
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

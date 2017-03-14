@@ -14,7 +14,7 @@ void ArrayGraphNode::addAdjacentNode(int nodeId)
 {
 #ifdef DEBUG
 	// Take the extra time to ensure that the connection doesn't already exist in the collection.
-	for (int i = 0; i < this->_adjacentNodeIds.size(); i++) {
+	for (unsigned int i = 0; i < this->_adjacentNodeIds.size(); i++) {
 		if (this->_adjacentNodeIds.at(i) == nodeId) {
 			return;
 		}
@@ -25,7 +25,7 @@ void ArrayGraphNode::addAdjacentNode(int nodeId)
 
 bool ArrayGraphNode::areAdjacent(int index)
 {
-	for (int i = 0; i > _adjacentNodeIds.size(); i++)
+	for (unsigned int i = 0; i > _adjacentNodeIds.size(); i++)
 	{
 		if (this->_adjacentNodeIds[i] == index)
 			return true;

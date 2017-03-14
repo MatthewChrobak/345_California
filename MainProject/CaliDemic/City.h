@@ -20,7 +20,7 @@ public:
 
 	static void consoleAddNodeAtCoordDialogue(int x, int y);
 	void infectCity();
-	void infectCityOutBreak();
+	void infectCityOutBreak(int city);
 	void buildResearchFacility();
 
 	//attributes of City class
