@@ -30,17 +30,7 @@ protected:
 public:
 	std::vector <string> playerCards;
 
-	int cardCounter = 48;   //This value will decrease as more cards are played.
-
 	vector <string> playerCardsDeck;
-
-	vector <string> epidemic
-	{
-		"Epidemic",
-		"Epidemic",
-		"Epidemic",
-		"Epidemic"
-	};
 
 public:
 	PlayerCard();
@@ -51,7 +41,7 @@ public:
 	string getPlayerCards();
 	string getSingleCard(int cardPosition);
 
-	int getCardCounter();               //Counter for number of cards left in PlayerCards
+	void playerCardGameOver();          //Game over if playerCardsDeck = 0
 	int getVectorSize();                //Retrieves the size of a vector
 
 	void removeSingleCard(int cardPosition);             //Removes a single card from a vector at a specific position

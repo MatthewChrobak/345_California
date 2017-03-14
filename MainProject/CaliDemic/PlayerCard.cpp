@@ -43,12 +43,16 @@ int PlayerCard::getVectorSize() {
 	return playerCards.size();
 }
 
-// Returns the remaining number of cards in the player stack
-int PlayerCard::getCardCounter() {
-	return cardCounter;
+//Game over if playerCardsDeck is empty
+void PlayerCard::playerCardGameOver() {
+	if (playerCardsDeck.size() == 0)
+	{
+		cout << "GAME OVER. YOU RAN OUT OF PLAYER CARDS." << endl;
+		exit(0);
+	}
 }
 
-// Retrieves all the cards from the player's hand as a string
+// Retrieves all the cards from the player's hand as a single string
 string PlayerCard::getPlayerCards() {
 
 	if (playerCards.size() > 0) {
@@ -79,18 +83,13 @@ void PlayerCard::removeSingleCard(int cardPosition) {
 	playerCards.erase(playerCards.begin() + cardPosition);
 }
 
-//Randomly retrieves a card from the player deck for a specified number of times
+//Retrieves a random card from the player deck for a specified number of times
 void PlayerCard::setPlayerCards(int numberOfCards) {
 
 	for (int i = 0; i < numberOfCards; i++) {
 		
-		srand(time(NULL));
-		int value = rand() % (playerCardsDeck.size) + 1;
-		
-		if (playerCardsDeck[value].substr(0, 2) == "Rd" || "Be" || "Bk" || "Yw")
-		{
-			cardCounter--;
-		}
+		srand((unsigned)time(NULL));
+		int value = rand() % (playerCardsDeck.size()); //Get a value from 0 to size of deck
 
 		playerCards.push_back(playerCardsDeck[value]);
 		playerCardsDeck.erase(playerCardsDeck.begin() + value);
@@ -106,6 +105,8 @@ void PlayerCard::useEpidemic() {
 			playerCards.erase(playerCards.begin() + i);
 		}
 	}
+
+	//Further functions needed to initiate the effects of picking an epidemic card
 }
 
 //Get the description of an event card (if in possession)
@@ -113,6 +114,7 @@ void PlayerCard::getEventDescription() {
 
 	int counter = 0; // Counter remains 0 if no event card is found in a player's hand
 
+	//Checks every card in a player's hand to verify if player has an event card
 	for (int i = 0; i < playerCards.size(); i++) {
 		if (playerCards[i] == "Government Grant") {
 			cout << "Government Grant: Add 1 research station to any city (no discard needed)." << endl;
@@ -153,6 +155,8 @@ void PlayerCard::getEventDescription() {
 //Creates the initial player deck. City cards are initialized with a color abbreviation to facilitate identification
 void PlayerCard::setPlayerCardDeck() {
 
+	//From a file listing all cities, take the color assigned to each city, retrieve the city's name (string) and add
+	//its color abbreviation to facilitate ease recognition
 	int numCities = Game::getGameBoard()->getNumCities();
 
 	for (int i = 0; i < numCities; i++) {
@@ -175,23 +179,27 @@ void PlayerCard::setPlayerCardDeck() {
 		}
 	}
 
-	//GOTTA ASK MATT QQ.
-	/*auto fs = FileStream::Open(FileSystem::getStartupPath() + "doesn't matter right now", FileMode::Read);
-	
+	//From a file listing all event cards, take each string and store them into playerCardsDeck
+	auto fs = FileStream::Open(FileSystem::getStartupPath() + "doesn't matter right now", FileMode::Read);
+
 	for (int i = 0; i < 5; i++) {
 
 		std::string value = this->playerCardsDeck.at(this->playerCardsDeck.size() - 1);
-
 		fs->write(value);
 	}
-	
+
+	//From a file listing all epidemic cards, take each string and store them into playerCardsDeck
 	auto gs = FileStream::Open(FileSystem::getStartupPath() + "doesn't matter once again...", FileMode::Read);
 
 	for (int i = 0; i < 4; i++) {
 
-		gs->write(this->playerCardsDeck.pop_back());
-	}*/
+		std::string value = this->playerCardsDeck.at(this->playerCardsDeck.size() - 1);
+		gs->write(value);
+	}
+	delete fs;
+	delete gs;
 }
+
 
 //Get the description of an epidemic card
 void PlayerCard::getEpidemicDescription() {
