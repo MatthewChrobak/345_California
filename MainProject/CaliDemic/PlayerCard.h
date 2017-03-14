@@ -18,7 +18,7 @@ enum PlayerCardType
 	Event_Card
 };
 
-static class PlayerCard {
+class PlayerCard {
 
 	PlayerCardType getType();
 	virtual void playCard() = 0;
@@ -34,13 +34,7 @@ public:
 
 	vector <string> playerCardsDeck;
 
-	vector <string> epidemic
-	{
-		"Epidemic",
-		"Epidemic",
-		"Epidemic",
-		"Epidemic"
-	};
+	vector <string> epidemic;
 
 public:
 	PlayerCard();
