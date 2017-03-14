@@ -38,16 +38,33 @@ infection with outbreak of the current passing city.
 */
 void City::infectCityOutBreak(int city)
 {
-	//TODO:NEED TO BE FIX BY THE PHI
 	/*
 	an iterator that will go through all the nodes connect to the city that is
-	being outbreak and use infectionCityCube function to infection them.
-	and if another city's cube size is rearched, than another outbreak event will 
-	happen
+	being outbreak and if another city's cube size is rearched, than another outbreak event will 
+	happen. A counter is use to recursively call the infectCityOutbreak if the cube is full.
 	*/
 	auto iterator = Game::getGameBoard()->getCity(city)->getAdjacentNodes();
 	for (unsigned int i = 0; i < iterator.size(); i++)
-		InfectionCard::infectCityCube(iterator.at(i));
+	{
+		//reset the counter to 0 when it break out of the cube index loop.
+		int counter = 0;
+		for (unsigned int j = 0; i < cubeMaxSize; j++, counter++)
+		{
+			if (Game::getGameBoard()->getCity(iterator.at(i))->cube[j] == -1)
+			{
+				Game::getGameBoard()->getCity(iterator.at(i))->cube[j] = Game::getGameBoard()->getCity(city)->color;
+				break;
+			}
+			/*
+			if the counter reached the limit then another outbreak will happen
+			*/
+			if (counter > 3)
+			{
+				infectCityOutBreak(iterator.at(i));
+			}
+
+		}
+	}
 }
 
 void City::buildResearchFacility()
