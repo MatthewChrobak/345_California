@@ -44,9 +44,8 @@ struct PlayerCardsFrame : public UIFrame
 	void onMouseDown(std::string button, int x, int y);
 
 	void show(PlayerActions action);
-	void resetShow();
 
 private:
 	PlayerActions _currentAction;
-	std::vector<int> _actionVector;
+	std::vector<int> _cardData;
 };

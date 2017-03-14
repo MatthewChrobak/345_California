@@ -3,6 +3,7 @@
 #include <string>
 #include "Game.h"
 #include "UIElement.h"
+#include "UIMessageBox.h"
 
 class GuiManager
 {
@@ -27,6 +28,10 @@ public:
 	static int getMouseX();
 	static int getMouseY();
 
+
+	static void showMsgBox(std::string message);
+	static void popMsgBox();
+
 private:
 	static void convertCoords(int* x, int* y);
 	static int _mouseX;
@@ -35,4 +40,6 @@ private:
 	static std::vector<UIElement*>* getCurrentSceneUIElements();
 	static std::vector<UIElement*> _uiElements[GameState::GameState_Length];
 	static UIElement* _currentFocusedElement;
+
+	static UIMessageBox _messageBox;
 };

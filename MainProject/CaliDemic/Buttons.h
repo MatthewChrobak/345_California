@@ -1,5 +1,7 @@
 #pragma once
 #include "UIButton.h"
+#include "PlayerActions.h"
+#include <vector>
 
 // The button that's meant to toggle the visibility of the player actions frame
 // while in game.
@@ -77,4 +79,13 @@ struct PlayerCardsClose : public UIButton
 {
 	PlayerCardsClose();
 	void onMouseDown(std::string button, int x, int y);
+};
+
+struct PlayerCardsOkay : public UIButton
+{
+	PlayerCardsOkay(PlayerActions* action, std::vector<int>* cardData);
+	void onMouseDown(std::string button, int x, int y);
+private:
+	PlayerActions* _action;
+	std::vector<int>* _cardData;
 };

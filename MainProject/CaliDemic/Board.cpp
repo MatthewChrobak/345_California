@@ -168,6 +168,9 @@ int Board::getNumCities()
 
 Player& Board::getCurrentTurnPlayer()
 {
+#ifdef DEBUG
+	assert(this->_players.size() > 0);
+#endif
 	return *this->_players[Board::currentTurnPlayer];
 }
 
