@@ -26,10 +26,7 @@ void InfectionCard::infectCityCube(int city)
 	{
 		counter++;
 		//checking the current index if it is not infected by any colors diseases
-		if (Game::getGameBoard()->getCity(city)->cube[i] != InfectionColor::Black ||
-			Game::getGameBoard()->getCity(city)->cube[i] != InfectionColor::Red ||
-			Game::getGameBoard()->getCity(city)->cube[i] != InfectionColor::Blue ||
-			Game::getGameBoard()->getCity(city)->cube[i] != InfectionColor::Yellow)
+		if (Game::getGameBoard()->getCity(city)->cube[i] == -1)
 		{
 			//infect the city if it is at the index i
 			Game::getGameBoard()->getCity(city)->infectCity();
@@ -40,7 +37,7 @@ void InfectionCard::infectCityCube(int city)
 				case 0:
 					if (cityColor == InfectionColor::Red)
 						Game::numOfRedCube--;
-
+					//if the number of cube is equal or below 0, its game over
 					if (Game::numOfRedCube <= 0)
 					{
 						std::cout << "Game Over! no more red cube." << std::endl;
@@ -51,7 +48,7 @@ void InfectionCard::infectCityCube(int city)
 				case 1:
 					if (cityColor == InfectionColor::Blue)
 						Game::numOfBlueCube--;
-
+					//if the number of cube is equal or below 0, its game over
 					if (Game::numOfBlueCube <= 0)
 					{
 						std::cout << "Game Over! no more blue cube." << std::endl;
@@ -62,7 +59,7 @@ void InfectionCard::infectCityCube(int city)
 				case 2:
 					if (cityColor == InfectionColor::Black)
 						Game::numOfBlackCube--;
-
+					//if the number of cube is equal or below 0, its game over
 					if (Game::numOfBlackCube <= 0)
 					{
 						std::cout << "Game Over! no more Black cube." << std::endl;
@@ -73,7 +70,7 @@ void InfectionCard::infectCityCube(int city)
 				case 3:
 					if (cityColor == InfectionColor::Yellow)
 						Game::numOfYellowCube--;
-
+					//if the number of cube is equal or below 0, its game over
 					if (Game::numOfYellowCube <= 0)
 					{
 						std::cout << "Game Over! no more Yellow cube." << std::endl;

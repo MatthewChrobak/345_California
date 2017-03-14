@@ -4,23 +4,34 @@
 #include "City.h"
 #include "Board.h"
 #include "Player.h"
+#include <vector>
+
 
 class Board
 {
 public:
-	Player* player;
+	int numberOfPlayers;
 
 	Board(std::string saveFolder);
 	~Board();
 
 	void save(std::string saveFolder);
+	//player creation, it might be modify for future project purpose
+	void playerCreation();
 
 	void addCity(City* city);
 	City* getCity(int index);
 	int getNumCities();
 
+	static void playerTurn();
+	Player& getCurrentTurnPlayer();
+	Player& getPlayer(int index);
+	int getNumberOfPlayers();
+	int currentTurnPlayer = 0;
+
 private:
 	CityGraph* _cities;
+	std::vector<Player*> _players;
 
 	void loadNodes(std::string nodesFile);
 	void saveNodes(std::string nodesFile);
