@@ -20,6 +20,7 @@ enum PlayerCardType
 
 class PlayerCard {
 
+public:
 	PlayerCardType getType();
 	virtual void playCard() = 0;
 	virtual std::string getSurfaceName() = 0;

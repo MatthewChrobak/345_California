@@ -194,14 +194,14 @@ void PlayerCardsFrame::draw()
 {
 	UIFrame::draw();
 
-	Player* player = Game::getGameBoard()->player;
+	Player& player = Game::getGameBoard()->getCurrentTurnPlayer();
 	SurfaceContext sCtx;
 	TextContext tCtx;
 
 	// Draw two rows of cards.
 	for (int i = 0; i < 7; i++) {
 		// Get the card, and figure out what row and column we're in.
-		PlayerCard& card = player->getCard(i);
+		PlayerCard& card = player.getCard(i);
 		int x = i % 4;
 		int y = i / 4;
 
