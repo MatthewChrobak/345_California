@@ -1,5 +1,6 @@
 #pragma once
 #include "UIFrame.h"
+#include "PlayerActions.h"
 
 // The frame that holds all UI elements whilst in game.
 class GameFrame : public UIFrame
@@ -32,4 +33,20 @@ struct PlayerActionsFrame : public UIFrame
 struct MainMenuFrame : public UIFrame
 {
 	MainMenuFrame();
+};
+
+
+// The frame that handles the rendering of player cards.
+struct PlayerCardsFrame : public UIFrame
+{
+	PlayerCardsFrame();
+	void draw();
+	void onMouseDown(std::string button, int x, int y);
+
+	void show(PlayerActions action);
+	void resetShow();
+
+private:
+	PlayerActions _currentAction;
+	std::vector<int> _actionVector;
 };

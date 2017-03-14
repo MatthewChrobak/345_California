@@ -2,15 +2,16 @@
 #include "Buttons.h"
 #include "Textboxes.h"
 #include "Game.h"
-#include "GraphicsManager.h"
+#include "PlayerActions.h"
 
 GameFrame::GameFrame() : UIFrame(FRM_GAME_FRAME)
 {
 	this->surfaceName = "ui\\frame.png";
-	this->width = DRAW_WIDTH;
-	this->height = DRAW_HEIGHT;
+	this->width = FRM_GAME_FRAME_WIDTH;
+	this->height = FRM_GAME_FRAME_HEIGHT;
 	this->_elements.push_back(new ToggleActionsButton());
 	this->_elements.push_back(new PlayerActionsFrame());
+	this->_elements.push_back(new PlayerCardsFrame());
 }
 
 void GameFrame::onMouseDown(std::string button, int x, int y)
@@ -141,16 +142,27 @@ void GameFrame::onMouseMove(int x, int y)
 PlayerActionsFrame::PlayerActionsFrame() : UIFrame(FRM_PLAYER_ACTIONS)
 {
 	this->surfaceName = "ui\\panel.png";
-	this->width = 100;
-	this->height = 300;
+	this->width = FRM_PLAYER_ACTIONS_WIDTH;
+	this->height = FRM_PLAYER_ACTIONS_HEIGHT;
 
-	this->top = DRAW_HEIGHT - this->height - 10;
-	this->left = DRAW_WIDTH - this->width - 10;
+	this->top = FRM_PLAYER_ACTIONS_TOP;
+	this->left = FRM_PLAYER_ACTIONS_LEFT;
 	this->visible = false;
+
+	this->_elements.push_back(new DrivePlayerAction());
+	this->_elements.push_back(new DirectFlightPlayerAction());
+	this->_elements.push_back(new CharterFlightAction());
+	this->_elements.push_back(new ShuttleFlightAction());
+	this->_elements.push_back(new BuildResearchCenterAction());
+	this->_elements.push_back(new TreatDiseaseAction());
+	this->_elements.push_back(new ShareKnowledgeAction());
+	this->_elements.push_back(new DiscoverCureAction());
+	this->_elements.push_back(new ViewCardsAction());
 }
 
 void PlayerActionsFrame::onMouseDown(std::string button, int x, int y)
 {
+	UIFrame::onMouseDown(button, x, y);
 	this->visible = false;
 }
 
@@ -158,9 +170,42 @@ void PlayerActionsFrame::onMouseDown(std::string button, int x, int y)
 MainMenuFrame::MainMenuFrame() : UIFrame(FRM_MAIN_MENU)
 {
 	this->surfaceName = "ui\\mainmenu.png";
-	this->width = DRAW_WIDTH;
-	this->height = DRAW_HEIGHT;
+	this->width = FRM_MAIN_MENU_WIDTH;
+	this->height = FRM_MAIN_MENU_HEIGHT;
 
 	this->_elements.push_back(new SaveNameTextbox());
 	this->_elements.push_back(new PlayGameButton());
+}
+
+
+PlayerCardsFrame::PlayerCardsFrame() : UIFrame(FRM_PLAYER_CARDS)
+{
+	this->surfaceName = "ui\\textbox.png";
+	this->width = FRM_PLAYER_CARDS_WIDTH;
+	this->height = FRM_PLAYER_CARDS_HEIGHT;
+	this->visible = false;
+
+	this->_elements.push_back(new PlayerCardsClose());
+}
+
+void PlayerCardsFrame::draw()
+{
+	UIFrame::draw();
+}
+
+void PlayerCardsFrame::onMouseDown(std::string button, int x, int y)
+{
+	UIFrame::onMouseDown(button, x, y);
+}
+
+void PlayerCardsFrame::show(PlayerActions action)
+{
+	this->_currentAction = action;
+	this->_actionVector.erase(this->_actionVector.begin(), this->_actionVector.end());
+	this->visible = true;
+}
+
+void PlayerCardsFrame::resetShow()
+{
+	this->visible = false;
 }
