@@ -22,21 +22,14 @@ City::~City()
 /*
 normal infection without outbreak
 */
-void City::infectCity()
+void City::infectCity(int city, int index)
 {
 	if (this->infected)
 		return;
 	else
 	{
 		this->infected = true;
-		for (int i = 0; i < cubeMaxSize; i++)
-		{
-			if (cube[i] != -1)
-			{
-				this->cube[i] = this->color;
-				break;
-			}
-		}
+		Game::getGameBoard()->getCity(city)->cube[index] = Game::getGameBoard()->getCity(city)->color;
 		this->infected = false;
 	}
 }
@@ -45,6 +38,7 @@ infection with outbreak of the current passing city.
 */
 void City::infectCityOutBreak(int city)
 {
+	//TODO:NEED TO BE FIX BY THE PHI
 	/*
 	an iterator that will go through all the nodes connect to the city that is
 	being outbreak and use infectionCityCube function to infection them.
