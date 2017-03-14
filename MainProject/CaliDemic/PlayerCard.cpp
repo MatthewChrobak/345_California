@@ -7,6 +7,7 @@
 #include <stdio.h> 
 #include "FileStream.h"
 #include "FileSystem.h"
+#include "ActionCounter.h"
 
 void PlayerCard::playCard()
 {
@@ -31,18 +32,6 @@ PlayerCard::PlayerCard() {};
 PlayerCard::~PlayerCard()
 {
 }
-
-//FOR TESTING: Method to test remaining cities in PlayerCards
-/*void PlayerCards:: listCities(){
-for(int i =0; i< 12; i++)
-cout << blueCities[i] << endl;
-for(int i =0; i< 12; i++)
-cout << redCities[i] << endl;
-for(int i =0; i< 12; i++)
-cout << blackCities[i] << endl;
-for(int i =0; i< 12; i++)
-cout << yellowCities[i] << endl;
-}*/
 
 //Clearing entire vector for next object
 void PlayerCard::clearVector() {
@@ -75,7 +64,7 @@ string PlayerCard::getPlayerCards() {
 		}
 	}
 
-	if (playerCards.size() == 0) {
+	if (playerCards.size() <= 0) {
 		return "You have no more cards to play";
 	}
 }
@@ -90,10 +79,7 @@ void PlayerCard::removeSingleCard(int cardPosition) {
 	playerCards.erase(playerCards.begin() + cardPosition);
 }
 
-// Sets a specific number of random cards to the player. A random number generator is used to randomly pick the cards
-// that are assigned to a player. A player card that's been assigned from the class to the player is erased from the class.
-// As cards are erased from the vector, the size decreases; that is why getRdmValArray retrieves the size of a vector
-// rather than a fixed integer.
+//Randomly retrieves a card from the player deck for a specified number of times
 void PlayerCard::setPlayerCards(int numberOfCards) {
 
 	for (int i = 0; i < numberOfCards; i++) {
@@ -189,17 +175,22 @@ void PlayerCard::setPlayerCardDeck() {
 		}
 	}
 
-	auto fs = FileStream::Open(FileSystem::getStartupPath() + "doesn't matter right now", FileMode::Read);
+	//GOTTA ASK MATT QQ.
+	/*auto fs = FileStream::Open(FileSystem::getStartupPath() + "doesn't matter right now", FileMode::Read);
 	
 	for (int i = 0; i < 5; i++) {
-		fs->write(this->playerCardsDeck.push_back);
-	}
 
+		std::string value = this->playerCardsDeck.at(this->playerCardsDeck.size() - 1);
+
+		fs->write(value);
+	}
+	
 	auto gs = FileStream::Open(FileSystem::getStartupPath() + "doesn't matter once again...", FileMode::Read);
 
 	for (int i = 0; i < 4; i++) {
-		gs->write(this->playerCardsDeck.push_back);
-	}
+
+		gs->write(this->playerCardsDeck.pop_back());
+	}*/
 }
 
 //Get the description of an epidemic card
@@ -281,7 +272,7 @@ void PlayerCard::buildStationPC() {
 		cout << "Your current cards are: " << getPlayerCards() << endl;
 		int counter2 = 0; // Increments until 5 to ensure that there are 5 cards discarded
 
-						  //The player chooses which cards to use for the construction of a research station
+		//The player chooses which cards to use for the construction of a research station
 		for (int i = 0; i < 5; i++) {
 			int input;
 			cin >> input;
@@ -303,6 +294,7 @@ void PlayerCard::buildStationPC() {
 			}
 		}
 		cout << "A research center has been created at your location." << endl;
+		decrementActionCounter();
 	}
 
 	else {
