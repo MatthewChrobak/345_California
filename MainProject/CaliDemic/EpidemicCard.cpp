@@ -22,3 +22,4 @@ std::string EpidemicCard::getSurfaceName()
 	std::string file = "epidemic.png";
 	return CARDS_PATH + file;
 }
+
