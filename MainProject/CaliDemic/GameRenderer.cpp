@@ -24,7 +24,20 @@ void GameRenderer::drawGame()
 
 void GameRenderer::drawPlayers()
 {
-	// TODO: Work off of the player collection.
+	Board* board = Game::getGameBoard();
+	int numPlayers = board->getNumberOfPlayers();
+	Player& currentTurnPlayer = board->getCurrentTurnPlayer();
+
+	// Draw every player except the current turn.
+	for (int i = 0; i < numPlayers; i++) {
+		Player& player = board->getPlayer(i);
+		if (&currentTurnPlayer != &player) {
+			GameRenderer::drawPlayer(player);
+		}
+	}
+
+	// Draw the player with the current turn.
+	GameRenderer::drawPlayer(currentTurnPlayer);
 }
 
 void GameRenderer::drawBackground()

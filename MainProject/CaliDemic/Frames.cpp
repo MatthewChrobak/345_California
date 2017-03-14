@@ -201,7 +201,13 @@ void PlayerCardsFrame::draw()
 	// Draw two rows of cards.
 	for (int i = 0; i < 7; i++) {
 		// Get the card, and figure out what row and column we're in.
-		PlayerCard& card = player.getCard(i);
+		PlayerCard* card = player.getCard(i);
+
+		// Make sure the card is not null.
+		if (card == nullptr) {
+			continue;
+		}
+
 		int x = i % 4;
 		int y = i / 4;
 
@@ -212,10 +218,11 @@ void PlayerCardsFrame::draw()
 		sCtx.size = new Vector2D(PLAYER_CARD_WIDTH, PLAYER_CARD_HEIGHT);
 		sCtx.position = new Vector2D(PLAYER_CARD_WIDTH * x + 10 * (x + 1), PLAYER_CARD_HEIGHT * y / 2 + 10 * (y + 1) + y * PLAYER_CARD_HEIGHT / 2);
 
+
 		// Render the card as a city card if it's a city card.
-		if (card.getType() == PlayerCardType::City_Card) {
+		if (card->getType() == PlayerCardType::City_Card) {
 			// Get the city from its index.
-			int cityIndex = ((CityCard&)card).cityIndex;
+			int cityIndex = ((CityCard*)card)->cityIndex;
 			City* city = Game::getGameBoard()->getCity(cityIndex);
 
 			// Modify the color

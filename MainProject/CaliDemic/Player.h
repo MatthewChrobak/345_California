@@ -13,7 +13,7 @@ public:
 	~Player();
 
 	void addCard(PlayerCard* card);
-	PlayerCard& getCard(int index);
+	PlayerCard* getCard(int index);
 	void removeCard(int index);
 
 private:
