@@ -10,7 +10,6 @@
 class Board
 {
 public:
-	int numberOfPlayers;
 
 	Board(std::string saveFolder);
 	~Board();
