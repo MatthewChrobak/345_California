@@ -20,8 +20,8 @@
 #define CMD_PLAYER_ACTION_VIEW_CARDS "cmdPlayerActionViewCards"
 
 #define CMD_PLAYER_CARDS_CLOSE "cmdPlayerCardsClose"
-#define CMD_PLAYER_CARDS_CLOSE_WIDTH 50
-#define CMD_PLAYER_CARDS_CLOSE_HEIGHT 50
+#define CMD_PLAYER_CARDS_CLOSE_WIDTH 25
+#define CMD_PLAYER_CARDS_CLOSE_HEIGHT 25
 
 // Frames
 #define UI_TYPE_FRAME "frame"
@@ -44,12 +44,10 @@
 #define FRM_PLAYER_CARDS "frmPlayerCards"
 #define FRM_PLAYER_CARDS_WIDTH DRAW_WIDTH
 #define FRM_PLAYER_CARDS_HEIGHT DRAW_HEIGHT
+#define PLAYER_CARD_WIDTH 150
+#define PLAYER_CARD_HEIGHT 200
 
 
 // Textboxes
 #define UI_TYPE_TEXTBOX "textbox"
 #define TXT_SAVE_NAME "txtSaveName"
-
-
-
-

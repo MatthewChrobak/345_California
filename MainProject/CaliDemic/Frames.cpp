@@ -3,6 +3,7 @@
 #include "Textboxes.h"
 #include "Game.h"
 #include "PlayerActions.h"
+#include "CityCard.h"
 
 GameFrame::GameFrame() : UIFrame(FRM_GAME_FRAME)
 {
@@ -191,6 +192,58 @@ PlayerCardsFrame::PlayerCardsFrame() : UIFrame(FRM_PLAYER_CARDS)
 void PlayerCardsFrame::draw()
 {
 	UIFrame::draw();
+
+	Player* player = Game::getGameBoard()->player;
+	SurfaceContext sCtx;
+	TextContext tCtx;
+
+	// Draw two rows of cards.
+	for (int i = 0; i < 7; i++) {
+		// Get the card, and figure out what row and column we're in.
+		PlayerCard& card = player->getCard(i);
+		int x = i % 4;
+		int y = i / 4;
+
+		// Reset the contexes just in case.
+		tCtx.reset();
+		sCtx.reset();
+
+		sCtx.size = new Vector2D(PLAYER_CARD_WIDTH, PLAYER_CARD_HEIGHT);
+		sCtx.position = new Vector2D(PLAYER_CARD_WIDTH * x + 10 * (x + 1), PLAYER_CARD_HEIGHT * y / 2 + 10 * (y + 1) + y * PLAYER_CARD_HEIGHT / 2);
+
+		// Render the card as a city card if it's a city card.
+		if (card.getType() == PlayerCardType::City_Card) {
+			// Get the city from its index.
+			int cityIndex = ((CityCard&)card).cityIndex;
+			City* city = Game::getGameBoard()->getCity(cityIndex);
+
+			// Modify the color
+			switch (city->color)
+			{
+				case InfectionColor::Black:
+					sCtx.color = new RGBA(100, 100, 100);
+					break;
+				case InfectionColor::Blue:
+					sCtx.color = new RGBA(0, 0, 255);
+					break;
+				case InfectionColor::Red:
+					sCtx.color = new RGBA(255, 0, 0);
+					break;
+				case InfectionColor::Yellow:
+					sCtx.color = new RGBA(255, 255, 0);
+					break;
+			}
+
+			// Render the text in the middle.
+			tCtx.horizontalCenter = true;
+			tCtx.position = new Vector2D(sCtx.position->x + PLAYER_CARD_WIDTH / 2, sCtx.position->y + 25);
+			tCtx.fontSize = 18;
+
+			// Pass it off to the graphics manager to draw.
+			GraphicsManager::renderSurface("cards\\citycard.png", sCtx);
+			GraphicsManager::renderText(city->name, tCtx);
+		}
+	}
 }
 
 void PlayerCardsFrame::onMouseDown(std::string button, int x, int y)
