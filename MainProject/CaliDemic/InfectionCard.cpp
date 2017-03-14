@@ -22,14 +22,13 @@ void InfectionCard::infectCityCube(int city)
 	int cityColor = Game::getGameBoard()->getCity(city)->color;
 
 	//checking if the city's cube array is full (aka. Infected)
-	for (int i = 0; i < Game::getGameBoard()->getCity(city)->cubeMaxSize; i++)
+	for (int i = 0; i < City::cubeMaxSize; i++, counter++)
 	{
-		counter++;
 		//checking the current index if it is not infected by any colors diseases
 		if (Game::getGameBoard()->getCity(city)->cube[i] == -1)
 		{
 			//infect the city if it is at the index i
-			Game::getGameBoard()->getCity(city)->infectCity();
+			Game::getGameBoard()->getCity(city)->infectCity(city, i);
 
 			//decrement the cube's color
 			switch (cityColor)
@@ -89,7 +88,7 @@ void InfectionCard::infectCityCube(int city)
 	Thus, we will call the infect outbreak functions to infect close city
 	from the current infected city.
 	*/
-	if (counter == 3)
+	if (counter > 3)
 	{
 		Game::getGameBoard()->getCity(city)->infectCityOutBreak(city);
 	}
