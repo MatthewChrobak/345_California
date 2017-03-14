@@ -3,6 +3,8 @@
 #include "Textboxes.h"
 #include "Game.h"
 #include "PlayerActions.h"
+#include "CityCard.h"
+#include "GuiManager.h"
 
 GameFrame::GameFrame() : UIFrame(FRM_GAME_FRAME)
 {
@@ -50,7 +52,6 @@ void GameFrame::onMouseDown(std::string button, int x, int y)
 					if (playerCityIndex >= 0 && playerCityIndex < numCities) {
 						playerCity = board->getCity(playerCityIndex);
 					}
-
 
 #ifdef ADMIN_EDITOR
 					if (this->_connectNode) {
@@ -187,26 +188,162 @@ PlayerCardsFrame::PlayerCardsFrame() : UIFrame(FRM_PLAYER_CARDS)
 	this->visible = false;
 
 	this->_elements.push_back(new PlayerCardsClose());
+	this->_elements.push_back(new PlayerCardsOkay(&this->_currentAction, &this->_cardData));
 }
 
 void PlayerCardsFrame::draw()
 {
 	UIFrame::draw();
+
+	Player& player = Game::getGameBoard()->getCurrentTurnPlayer();
+	SurfaceContext sCtx;
+	TextContext tCtx;
+
+	// Draw two rows of cards.
+	for (int i = 0; i < MAX_PLAYER_CARDS; i++) {
+		// Get the card, and figure out what row and column we're in.
+		PlayerCard* card = player.getCard(i);
+
+		// Make sure the card is not null.
+		if (card == nullptr) {
+			continue;
+		}
+
+		int x = i % 4;
+		int y = i / 4;
+
+		// Reset the contexes just in case.
+		tCtx.reset();
+		sCtx.reset();
+
+		sCtx.size = new Vector2D(PLAYER_CARD_WIDTH, PLAYER_CARD_HEIGHT);
+		sCtx.position = new Vector2D(PLAYER_CARD_WIDTH * x + 10 * (x + 1), PLAYER_CARD_HEIGHT * y / 2 + 10 * (y + 1) + y * PLAYER_CARD_HEIGHT / 2);
+
+
+		// Render the card as a city card if it's a city card.
+		if (card->getType() == PlayerCardType::City_Card) {
+			// Get the city from its index.
+			int cityIndex = ((CityCard*)card)->cityIndex;
+			City* city = Game::getGameBoard()->getCity(cityIndex);
+
+			// Do we render the selector?
+			for (unsigned int cardDataIndex = 0; cardDataIndex < this->_cardData.size(); cardDataIndex++) {
+				if (this->_cardData.at(cardDataIndex) == i) {
+					GraphicsManager::renderSurface("cards\\cardselect.png", sCtx);
+					break;
+				}
+			}
+
+			// Modify the color
+			switch (city->color)
+			{
+				case InfectionColor::Black:
+					sCtx.color = new RGBA(100, 100, 100);
+					break;
+				case InfectionColor::Blue:
+					sCtx.color = new RGBA(0, 0, 255);
+					break;
+				case InfectionColor::Red:
+					sCtx.color = new RGBA(255, 0, 0);
+					break;
+				case InfectionColor::Yellow:
+					sCtx.color = new RGBA(255, 255, 0);
+					break;
+			}
+
+			// Render the text in the middle.
+			tCtx.horizontalCenter = true;
+			tCtx.position = new Vector2D(sCtx.position->x + PLAYER_CARD_WIDTH / 2, sCtx.position->y + 25);
+			tCtx.fontSize = 18;
+
+			// Pass it off to the graphics manager to draw.
+			GraphicsManager::renderSurface("cards\\citycard.png", sCtx);
+			GraphicsManager::renderText(city->name, tCtx);
+		}
+	}
 }
 
 void PlayerCardsFrame::onMouseDown(std::string button, int x, int y)
 {
+	Player& player = Game::getGameBoard()->getCurrentTurnPlayer();
 	UIFrame::onMouseDown(button, x, y);
+
+	for (int i = 0; i < MAX_PLAYER_CARDS; i++) {
+		// Get the card, and figure out what row and column we're in.
+		PlayerCard* card = player.getCard(i);
+
+		// Make sure the card is not null.
+		if (card == nullptr) {
+			continue;
+		}
+
+		int column = i % 4;
+		int row = i / 4;
+
+		int left = PLAYER_CARD_WIDTH * column + 10 * (column + 1);
+		int top = PLAYER_CARD_HEIGHT * row / 2 + 10 * (row + 1) + row * PLAYER_CARD_HEIGHT / 2;
+
+		// Did we click on the card?
+		if (left <= x && x <= left + PLAYER_CARD_WIDTH) {
+			if (top <= y && y <= top + PLAYER_CARD_HEIGHT) {
+				
+				// Is the card already contained in the card data?
+				bool contained = false;
+
+				for (unsigned int cardDataIndex = 0; cardDataIndex < this->_cardData.size(); cardDataIndex++) {
+					if (this->_cardData.at(cardDataIndex) == i) {
+						// If it is, remove it.
+						this->_cardData.erase(this->_cardData.begin() + cardDataIndex);
+						contained = true;
+						break;
+					}
+				}
+
+				// If not, put it there.
+				if (!contained) {
+					this->_cardData.push_back(i);
+				}
+				break;
+			}
+		}
+
+	}
 }
 
 void PlayerCardsFrame::show(PlayerActions action)
 {
 	this->_currentAction = action;
-	this->_actionVector.erase(this->_actionVector.begin(), this->_actionVector.end());
+	this->_cardData.erase(this->_cardData.begin(), this->_cardData.end());
 	this->visible = true;
-}
 
-void PlayerCardsFrame::resetShow()
-{
-	this->visible = false;
+	switch (action)
+	{
+	case PlayerActions::Drive:
+
+		break;
+	case PlayerActions::DirectFlight:
+		GuiManager::showMsgBox("Please select one city card to fly to.");
+		break;
+	case PlayerActions::CharterFlight:
+
+		break;
+	case PlayerActions::ShuttleFlight:
+
+		break;
+	case PlayerActions::BuildResearchCenter:
+
+		break;
+	case PlayerActions::TreatDisease:
+
+		break;
+	case PlayerActions::ShareKnowledge:
+
+		break;
+	case PlayerActions::DiscoverCure:
+
+		break;
+	case PlayerActions::ViewCards:
+		// Do nothing.
+		break;
+	}
 }
