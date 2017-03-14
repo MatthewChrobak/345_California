@@ -8,6 +8,10 @@
 
 City::City()
 {
+	for (int i = 0; i < cubeMaxSize; i++)
+	{
+		this->cube[i] = -1;
+	}
 }
 
 

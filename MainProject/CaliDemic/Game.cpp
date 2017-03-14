@@ -5,6 +5,7 @@
 #include <assert.h>
 #endif
 
+//This is to initiate all the cubes for each disease color
 int Game::numOfCube = 24;
 int Game::numOfYellowCube = numOfCube;
 int Game::numOfBlackCube = numOfCube;
