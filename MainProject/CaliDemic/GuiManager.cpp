@@ -13,6 +13,8 @@ UIElement* GuiManager::_currentFocusedElement = nullptr;
 int GuiManager::_mouseX = 0;
 int GuiManager::_mouseY = 0;
 
+UIMessageBox GuiManager::_messageBox;
+
 void GuiManager::initialize()
 {
 	auto menuScene = &GuiManager::_uiElements[(int)GameState::MainMenu];
@@ -61,6 +63,12 @@ void GuiManager::handleMouseDown(int x, int y, std::string button)
 	// Take away the focus from the currently focused UI element.
 	GuiManager::_currentFocusedElement = nullptr;
 
+	// Pass it off to the MessageBox if it's visible
+	if (GuiManager::_messageBox.visible) {
+		GuiManager::_messageBox.onMouseDown(button, x, y);
+		return;
+	}
+
 	// Loop through every scene element until we find the element we
 	// need to interact with.
 	for (int i = (int)scene->size() - 1; i >= 0; i--) {
@@ -100,6 +108,12 @@ void GuiManager::handleMouseUp(int x, int y, std::string button)
 	// Get the current scene.
 	auto scene = GuiManager::getCurrentSceneUIElements();
 
+	// Pass it off to the MessageBox if it's visible
+	if (GuiManager::_messageBox.visible) {
+		GuiManager::_messageBox.onMouseUp(button, x, y);
+		return;
+	}
+
 	// Loop through every scene element until we find the element we
 	// need to interact with.
 	for (int i = (int)scene->size() - 1; i >= 0; i--) {
@@ -128,6 +142,12 @@ void GuiManager::handleMouseMove(int x, int y)
 	// Get the current scene.
 	auto scene = GuiManager::getCurrentSceneUIElements();
 
+	// Pass it off to the MessageBox if it's visible
+	if (GuiManager::_messageBox.visible) {
+		GuiManager::_messageBox.onMouseMove(x, y);
+		return;
+	}
+
 	// Loop through every scene element until we find the element we
 	// need to interact with.
 	for (int i = (int)scene->size() - 1; i >= 0; i--) {
@@ -146,6 +166,12 @@ void GuiManager::handleMouseMove(int x, int y)
 
 void GuiManager::handleKeyDown(std::string key)
 {
+	// Pass it off to the MessageBox if it's visible
+	if (GuiManager::_messageBox.visible) {
+		GuiManager::_messageBox.onKeyDown(key);
+		return;
+	}
+
 	// If there is a current focus, and an event handler, invoke it.
 	if (GuiManager::_currentFocusedElement != nullptr) {
 		GuiManager::_currentFocusedElement->onKeyDown(key);
@@ -154,6 +180,12 @@ void GuiManager::handleKeyDown(std::string key)
 
 void GuiManager::handleKeyUp(std::string key)
 {
+	// Pass it off to the MessageBox if it's visible
+	if (GuiManager::_messageBox.visible) {
+		GuiManager::_messageBox.onKeyUp(key);
+		return;
+	}
+
 	// If there is a current focus, and an event handler, invoke it.
 	if (GuiManager::_currentFocusedElement != nullptr) {
 		GuiManager::_currentFocusedElement->onKeyUp(key);
@@ -172,6 +204,11 @@ void GuiManager::draw()
 		if (sceneObject->visible) {
 			sceneObject->draw();
 		}
+	}
+
+	// Draw the MessagBox if it's visible.
+	if (GuiManager::_messageBox.visible) {
+		GuiManager::_messageBox.draw();
 	}
 }
 
@@ -209,4 +246,14 @@ int GuiManager::getMouseX()
 int GuiManager::getMouseY()
 {
 	return GuiManager::_mouseY;
+}
+
+void GuiManager::showMsgBox(std::string message)
+{
+	GuiManager::_messageBox.addMessage(message);
+}
+
+void GuiManager::popMsgBox()
+{
+	GuiManager::_messageBox.popMessage();
 }
