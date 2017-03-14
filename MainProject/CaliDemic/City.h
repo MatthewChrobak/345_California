@@ -19,7 +19,7 @@ public:
 	~City();
 
 	static void consoleAddNodeAtCoordDialogue(int x, int y);
-	void infectCity();
+	void infectCity(int city,int index);
 	void infectCityOutBreak(int city);
 	void buildResearchFacility();
 

@@ -9,6 +9,7 @@
 #include "FileSystem.h"
 #include "ActionCounter.h"
 
+
 void PlayerCard::playCard()
 {
 	// Throw an exception because this method is virtual and should be overriden.
@@ -60,7 +61,7 @@ string PlayerCard::getPlayerCards() {
 		string listOfCards = playerCards[0];
 
 		if (playerCards.size() > 1) {
-			for (int i = 1; i < playerCards.size(); i++) {
+			for ( unsigned int i = 1; i < playerCards.size(); i++) {
 				tempArray[i] = playerCards[i];
 				listOfCards = listOfCards + ", " + tempArray[i];
 			}
@@ -99,7 +100,7 @@ void PlayerCard::setPlayerCards(int numberOfCards) {
 
 //Automatically discards en Epidemic card if the player picks one
 void PlayerCard::useEpidemic() {
-	for (int i = 0; i< playerCards.size(); i++)
+	for (unsigned int i = 0; i< playerCards.size(); i++)
 	{
 		if (playerCards[i] == "Epidemic") {
 			playerCards.erase(playerCards.begin() + i);
@@ -116,40 +117,43 @@ void PlayerCard::getEventDescription() {
 
 	//Checks every card in a player's hand to verify if player has an event card
 	for (int i = 0; i < playerCards.size(); i++) {
-		if (playerCards[i] == "Government Grant") {
-			cout << "Government Grant: Add 1 research station to any city (no discard needed)." << endl;
-			counter++;
+
+		for (unsigned int i = 0; i < playerCards.size(); i++) {
+			if (playerCards[i] == "Government Grant") {
+				cout << "Government Grant: Add 1 research station to any city (no discard needed)." << endl;
+				counter++;
+			}
+
+			if (playerCards[i] == "Airlift") {
+				cout << "Airlift: Move any 1 pawn to any city. Get permission before moving another player's pawn." << endl;
+				counter++;
+			}
+
+			if (playerCards[i] == "Resilient Population") {
+				cout
+					<< "Resilient Population: Remove any 1 card in the Infection Discard Pile from the game. You may play this between the Infect and Intensify steps of an epidemic."
+					<< endl;
+				counter++;
+			}
+
+			if (playerCards[i] == "Forecast") {
+				cout
+					<< "Forecast: Draw, look at, and rearrange the top 6 cards of the Infection Deck. Put them back on top."
+					<< endl;
+				counter++;
+			}
+			if (playerCards[i] == "One Quiet Night") {
+				cout << "One Quiet Night: Skip the next Infect Cities step (do not flip over any Infection cards)." << endl;
+				counter++;
+			}
 		}
 
-		if (playerCards[i] == "Airlift") {
-			cout << "Airlift: Move any 1 pawn to any city. Get permission before moving another player's pawn." << endl;
-			counter++;
+		if (counter == 0) {
+			cout << "You do not have any event card." << endl;
 		}
 
-		if (playerCards[i] == "Resilient Population") {
-			cout
-				<< "Resilient Population: Remove any 1 card in the Infection Discard Pile from the game. You may play this between the Infect and Intensify steps of an epidemic."
-				<< endl;
-			counter++;
-		}
-
-		if (playerCards[i] == "Forecast") {
-			cout
-				<< "Forecast: Draw, look at, and rearrange the top 6 cards of the Infection Deck. Put them back on top."
-				<< endl;
-			counter++;
-		}
-		if (playerCards[i] == "One Quiet Night") {
-			cout << "One Quiet Night: Skip the next Infect Cities step (do not flip over any Infection cards)." << endl;
-			counter++;
-		}
+		cout << endl;
 	}
-
-	if (counter == 0) {
-		cout << "You do not have any event card." << endl;
-	}
-
-	cout << endl;
 }
 
 //Creates the initial player deck. City cards are initialized with a color abbreviation to facilitate identification
@@ -199,6 +203,7 @@ void PlayerCard::setPlayerCardDeck() {
 	}
 	
 	delete fs;
+
 }
 
 
@@ -231,7 +236,7 @@ void PlayerCard::buildStationPC() {
 	string black = "Bk";
 
 	//Adds up the counters for every colored car the player possesses
-	for (int i = 0; i < playerCards.size(); i++)
+	for (unsigned int i = 0; i < playerCards.size(); i++)
 	{
 		if (playerCards[i].substr(0, 2) == red) // Checks the first two letters of a city to see if color corresponds
 		{

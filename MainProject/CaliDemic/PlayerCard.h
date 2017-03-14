@@ -18,7 +18,7 @@ enum PlayerCardType
 	Event_Card
 };
 
-static class PlayerCard {
+class PlayerCard {
 
 	PlayerCardType getType();
 	virtual void playCard() = 0;
@@ -31,6 +31,8 @@ public:
 	std::vector <string> playerCards;
 
 	vector <string> playerCardsDeck;
+
+	vector <string> epidemic;
 
 public:
 	PlayerCard();
@@ -53,5 +55,4 @@ public:
 	void useEpidemic();                                  //Discards Epidemic cards if player picks one
 	void setPlayerCardDeck();
 
-	 //void listCities(); //To test the list of cities remaining in PlayerCards.
 };

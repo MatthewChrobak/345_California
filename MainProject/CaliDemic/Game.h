@@ -2,6 +2,8 @@
 #include "Board.h"
 #include <string>
 
+#define NUM_OF_STARTING_CUBE 24
+
 enum GameState : int
 {
 	MainMenu,
@@ -25,8 +27,6 @@ public:
 	//return the number of cubes left for each color
 	void numOfCubeLeft();
 
-	//total number of cubes which is 24
-	static int numOfCube;
 	/*
 	attribute to number of cube for each color
 	*/

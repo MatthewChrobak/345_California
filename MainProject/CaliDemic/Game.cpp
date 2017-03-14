@@ -5,11 +5,12 @@
 #include <assert.h>
 #endif
 
-int Game::numOfCube = 24;
-int Game::numOfYellowCube = numOfCube;
-int Game::numOfBlackCube = numOfCube;
-int Game::numOfRedCube = numOfCube;
-int Game::numOfBlueCube = numOfCube;
+//This is to initiate all the cubes for each disease color
+
+int Game::numOfYellowCube = NUM_OF_STARTING_CUBE;
+int Game::numOfBlackCube = NUM_OF_STARTING_CUBE;
+int Game::numOfRedCube = NUM_OF_STARTING_CUBE;
+int Game::numOfBlueCube = NUM_OF_STARTING_CUBE;
 
 
 Board* Game::_gameBoard = nullptr;
