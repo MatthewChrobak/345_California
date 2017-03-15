@@ -114,9 +114,9 @@ void PlayerCard::useEpidemic() {
 	*/
 
 	int counter = 0;
-	int epidemicInfection =Board::infectionCityCards.back();
+	int epidemicInfection = Game::getGameBoard()->infectionCityCards.back();
 	//shrinking the infectionCityCards
-	Board::infectionCityCards.shrink_to_fit();
+	Game::getGameBoard()->infectionCityCards.shrink_to_fit();
 
 	static const int cityColor = Game::getGameBoard()->getCity(epidemicInfection)->color;
 	//infect the draw city three times
