@@ -90,6 +90,7 @@
     <ClCompile Include="PlayerCard.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="GameRenderer.cpp" />
+    <ClCompile Include="RandomNumberGenerator.cpp" />
     <ClCompile Include="SfmlFontManager.cpp" />
     <ClCompile Include="SfmlSystem.cpp" />
     <ClCompile Include="ActionCounter.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerActions.h" />
     <ClInclude Include="PlayerCard.h" />
+    <ClInclude Include="RandomNumberGenerator.h" />
     <ClInclude Include="SfmlFontManager.h" />
     <ClInclude Include="SfmlSystem.h" />
     <ClInclude Include="SurfaceContext.h" />

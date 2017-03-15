@@ -6,6 +6,8 @@
 #include "Player.h"
 #include "ActionCounter.h"
 #include <vector>
+#include <stack>
+#include "PlayerCard.h"
 
 
 
@@ -47,6 +49,7 @@ public:
 private:
 	CityGraph* _cities;
 	std::vector<Player*> _players;
+	std::stack<PlayerCard*> _playerWithdrawPile;
 
 	void loadNodes(std::string nodesFile);
 	void saveNodes(std::string nodesFile);
@@ -54,5 +57,6 @@ private:
 	void loadPlayers(std::string playerFile);
 	void savePlayers(std::string playerFile);
 
+	void generatePlayerCards();
 };
 
