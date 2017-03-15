@@ -12,7 +12,7 @@ int Game::numOfBlackCube = NUM_OF_STARTING_CUBE;
 int Game::numOfRedCube = NUM_OF_STARTING_CUBE;
 int Game::numOfBlueCube = NUM_OF_STARTING_CUBE;
 
-static void numOfCubeDecrementor(int cityColor)
+void Game::numOfCubeDecrementor(int cityColor)
 {
 	switch (cityColor)
 	{
