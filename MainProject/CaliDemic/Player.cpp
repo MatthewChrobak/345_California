@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "PlayerCard.h"
 
 #ifdef DEBUG
 #include <assert.h>

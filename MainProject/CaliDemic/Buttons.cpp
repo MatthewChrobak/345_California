@@ -5,6 +5,8 @@
 #include "Frames.h"
 #include "PlayerActions.h"
 #include "CityCard.h"
+#include "City.h"
+#include "PlayerCard.h"
 
 ToggleActionsButton::ToggleActionsButton() : UIButton(CMD_TOGGLE_ACTIONS)
 {
@@ -337,14 +339,61 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				GuiManager::showMsgBox("Please select only one card.");
 			}
 			break;
+		
 		case PlayerActions::CharterFlight:
+			//We should only have one card selected here.
+			if (this->_cardData->size() == 1) {
+				Board*board = Game::getGameBoard();
+				Player& player = board->getCurrentTurnPlayer();
 
+				// Get the card index.
+				int cardIndex = this->_cardData->at(0);
+				PlayerCard* card = player.getCard(cardIndex);
+
+				//Make sure the card is not null.
+				if (card != nullptr) {
+
+					if(cardIndex == player.pawn->cityIndex) //If card index and pawn index are the same location
+					{
+						//Remove it, move the player, and hide the player cards.
+						player.removeCard(cardIndex);
+						//TODO:MOVE PAWN TO DESIRED POSITION
+						GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+					}
+					else
+					{
+						GuiManager::showMsgBox("Please select a city card with the same location as your pawn.");
+					}
+				}
+				else{
+					GuiManager::showMsgBox("Card was null.");
+				}
+			}
+			else {
+				GuiManager::showMsgBox("Please select a single card.");
+			}
 			break;
+
 		case PlayerActions::ShuttleFlight:
+			/*Board*board = Game:: getGameBoard();
+			Player& player = board->getCurrentTurnPlayer();*/
 
+			//Check if the city at which the pawn is has a research station
+			/*if (player.pawn->) {
+				//If the city at which the pawn is, has a station, the player can click on a city that has a research station
+				if () {//Check if the clicked city has a research station
+					//Move pawn to location
+				}
+				else {
+					GuiManager::showMsgBox("Location has no research station.");
+				}
+			}
+			else {
+				GuiManager::showMsgBox("The current city in which you are has no research station.");
+			}*/
 			break;
-		case PlayerActions::BuildResearchCenter:
 
+		case PlayerActions::BuildResearchCenter:
 			break;
 		case PlayerActions::TreatDisease:
 
@@ -353,6 +402,7 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 			break;
 		case PlayerActions::DiscoverCure:
+			
 
 			break;
 		case PlayerActions::ViewCards:

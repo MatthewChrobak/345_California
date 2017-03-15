@@ -1,4 +1,6 @@
 #include "Pawn.h"
+#include "City.h"
+#include "Game.h"
 
 
 Pawn::Pawn()
