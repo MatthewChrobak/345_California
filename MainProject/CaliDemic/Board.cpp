@@ -178,7 +178,7 @@ void Board::generatePlayerCards()
 		int rng = RandomNumberGenerator::next(0, cityIds.size());
 
 		//Add the city to the withdraw pile.
-		CityCard* card = new CityCard(rng);
+		CityCard* card = new CityCard(cityIds.at(rng));
 		this->_playerWithdrawPile.push(card);
 
 		//Remove the id from the vector.
