@@ -1,5 +1,7 @@
 #pragma once
 #include "UIButton.h"
+#include "PlayerActions.h"
+#include <vector>
 
 // The button that's meant to toggle the visibility of the player actions frame
 // while in game.
@@ -76,5 +78,89 @@ struct ViewCardsAction : public UIButton
 struct PlayerCardsClose : public UIButton
 {
 	PlayerCardsClose();
+	void onMouseDown(std::string button, int x, int y);
+};
+
+struct PlayerCardsOkay : public UIButton
+{
+	PlayerCardsOkay(PlayerActions* action, std::vector<int>* cardData);
+	void onMouseDown(std::string button, int x, int y);
+private:
+	PlayerActions* _action;
+	std::vector<int>* _cardData;
+};
+
+
+
+
+struct ToggleMapEditingActions : public UIButton
+{
+	ToggleMapEditingActions();
+	void onMouseDown(std::string button, int x, int y);
+};
+
+struct MoveNodeAction : public UIButton
+{
+	MoveNodeAction();
+	void onMouseDown(std::string button, int x, int y);
+};
+
+struct SelectNodeAction : public UIButton
+{
+	SelectNodeAction();
+	void onMouseDown(std::string button, int x, int y);
+};
+
+struct AddNodeAction : public UIButton
+{
+	AddNodeAction();
+	void onMouseDown(std::string button, int x, int y);
+};
+
+struct MakeNodeBlackAction : public UIButton
+{
+	MakeNodeBlackAction();
+	void onMouseDown(std::string button, int x, int y);
+};
+
+struct MakeNodeRedAction : public UIButton
+{
+	MakeNodeRedAction();
+	void onMouseDown(std::string button, int x, int y);
+};
+
+struct MakeNodeYellowAction : public UIButton
+{
+	MakeNodeYellowAction();
+	void onMouseDown(std::string button, int x, int y);
+};
+
+struct MakeNodeBlueAction : public UIButton
+{
+	MakeNodeBlueAction();
+	void onMouseDown(std::string button, int x, int y);
+};
+
+struct ChangeNodeNameAction : public UIButton
+{
+	ChangeNodeNameAction();
+	void onMouseDown(std::string button, int x, int y);
+};
+
+struct MakeDirectedEdgeAction : public UIButton
+{
+	MakeDirectedEdgeAction();
+	void onMouseDown(std::string button, int x, int y);
+};
+
+struct RotateNodeAngleAction : public UIButton
+{
+	RotateNodeAngleAction();
+	void onMouseDown(std::string button, int x, int y);
+};
+
+struct FinishedEditingMapAction : public UIButton
+{
+	FinishedEditingMapAction();
 	void onMouseDown(std::string button, int x, int y);
 };

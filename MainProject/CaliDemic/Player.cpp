@@ -53,11 +53,11 @@ void Player::removeCard(int index)
 	}
 }
 
-PlayerCard& Player::getCard(int index)
+PlayerCard* Player::getCard(int index)
 {
 #ifdef DEBUG
 	// Make sure the index is within the bounds specified.
 	assert(index >= 0 && index < MAX_PLAYER_CARDS);
 #endif
-	return *(this->_playerCards[index]);
+	return this->_playerCards[index];
 }

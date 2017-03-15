@@ -10,6 +10,5 @@ public:
 	void playCard();
 	std::string getSurfaceName();
 
-private:
-	int _cityIndex;
+	int cityIndex;
 };

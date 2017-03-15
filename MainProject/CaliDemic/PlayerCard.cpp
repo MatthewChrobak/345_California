@@ -10,11 +10,8 @@
 #include <stdio.h> 
 #include "FileStream.h"
 #include "FileSystem.h"
+#include "ActionCounter.h"
 
-vector <string> epidemic
-{
-	"Epidemic","Epidemic","Epidemic","Epidemic"
-};
 
 void PlayerCard::playCard()
 {
@@ -40,18 +37,6 @@ PlayerCard::~PlayerCard()
 {
 }
 
-//FOR TESTING: Method to test remaining cities in PlayerCards
-/*void PlayerCards:: listCities(){
-for(int i =0; i< 12; i++)
-cout << blueCities[i] << endl;
-for(int i =0; i< 12; i++)
-cout << redCities[i] << endl;
-for(int i =0; i< 12; i++)
-cout << blackCities[i] << endl;
-for(int i =0; i< 12; i++)
-cout << yellowCities[i] << endl;
-}*/
-
 //Clearing entire vector for next object
 void PlayerCard::clearVector() {
 	playerCards.clear();
@@ -62,12 +47,16 @@ int PlayerCard::getVectorSize() {
 	return playerCards.size();
 }
 
-// Returns the remaining number of cards in the player stack
-int PlayerCard::getCardCounter() {
-	return cardCounter;
+//Game over if playerCardsDeck is empty
+void PlayerCard::playerCardGameOver() {
+	if (playerCardsDeck.size() == 0)
+	{
+		cout << "GAME OVER. YOU RAN OUT OF PLAYER CARDS." << endl;
+		exit(0);
+	}
 }
 
-// Retrieves all the cards from the player's hand as a string
+// Retrieves all the cards from the player's hand as a single string
 string PlayerCard::getPlayerCards() {
 
 	if (playerCards.size() > 0) {
@@ -83,12 +72,9 @@ string PlayerCard::getPlayerCards() {
 		}
 	}
 
-	if (playerCards.size() == 0) {
+	if (playerCards.size() <= 0) {
 		return "You have no more cards to play";
 	}
-
-	// TODO: fix this chun.
-	return "";
 }
 
 // Retrieves a single card from the player's hand
@@ -101,21 +87,13 @@ void PlayerCard::removeSingleCard(int cardPosition) {
 	playerCards.erase(playerCards.begin() + cardPosition);
 }
 
-// Sets a specific number of random cards to the player. A random number generator is used to randomly pick the cards
-// that are assigned to a player. A player card that's been assigned from the class to the player is erased from the class.
-// As cards are erased from the vector, the size decreases; that is why getRdmValArray retrieves the size of a vector
-// rather than a fixed integer.
+//Retrieves a random card from the player deck for a specified number of times
 void PlayerCard::setPlayerCards(int numberOfCards) {
 
 	for (int i = 0; i < numberOfCards; i++) {
 		
 		srand((unsigned)time(NULL));
-		int value = rand() % (playerCardsDeck.size()) + 1;
-		
-		if (playerCardsDeck[value].substr(0, 2) == "Rd" || "Be" || "Bk" || "Yw")
-		{
-			cardCounter--;
-		}
+		int value = rand() % (playerCardsDeck.size()); //Get a value from 0 to size of deck
 
 		playerCards.push_back(playerCardsDeck[value]);
 		playerCardsDeck.erase(playerCardsDeck.begin() + value);
@@ -131,6 +109,7 @@ void PlayerCard::useEpidemic() {
 			playerCards.erase(playerCards.begin() + i);
 		}
 	}
+<<<<<<< HEAD
 	*/
 
 	int counter = 0;
@@ -156,6 +135,10 @@ void PlayerCard::useEpidemic() {
 	{
 		City::infectCityOutBreak(epidemicInfection);
 	}
+=======
+
+	//Further functions needed to initiate the effects of picking an epidemic card
+>>>>>>> refs/remotes/origin/master
 }
 
 
@@ -164,46 +147,52 @@ void PlayerCard::getEventDescription() {
 
 	int counter = 0; // Counter remains 0 if no event card is found in a player's hand
 
-	for (unsigned int i = 0; i < playerCards.size(); i++) {
-		if (playerCards[i] == "Government Grant") {
-			cout << "Government Grant: Add 1 research station to any city (no discard needed)." << endl;
-			counter++;
+	//Checks every card in a player's hand to verify if player has an event card
+	for (int i = 0; i < playerCards.size(); i++) {
+
+		for (unsigned int i = 0; i < playerCards.size(); i++) {
+			if (playerCards[i] == "Government Grant") {
+				cout << "Government Grant: Add 1 research station to any city (no discard needed)." << endl;
+				counter++;
+			}
+
+			if (playerCards[i] == "Airlift") {
+				cout << "Airlift: Move any 1 pawn to any city. Get permission before moving another player's pawn." << endl;
+				counter++;
+			}
+
+			if (playerCards[i] == "Resilient Population") {
+				cout
+					<< "Resilient Population: Remove any 1 card in the Infection Discard Pile from the game. You may play this between the Infect and Intensify steps of an epidemic."
+					<< endl;
+				counter++;
+			}
+
+			if (playerCards[i] == "Forecast") {
+				cout
+					<< "Forecast: Draw, look at, and rearrange the top 6 cards of the Infection Deck. Put them back on top."
+					<< endl;
+				counter++;
+			}
+			if (playerCards[i] == "One Quiet Night") {
+				cout << "One Quiet Night: Skip the next Infect Cities step (do not flip over any Infection cards)." << endl;
+				counter++;
+			}
 		}
 
-		if (playerCards[i] == "Airlift") {
-			cout << "Airlift: Move any 1 pawn to any city. Get permission before moving another player's pawn." << endl;
-			counter++;
+		if (counter == 0) {
+			cout << "You do not have any event card." << endl;
 		}
 
-		if (playerCards[i] == "Resilient Population") {
-			cout
-				<< "Resilient Population: Remove any 1 card in the Infection Discard Pile from the game. You may play this between the Infect and Intensify steps of an epidemic."
-				<< endl;
-			counter++;
-		}
-
-		if (playerCards[i] == "Forecast") {
-			cout
-				<< "Forecast: Draw, look at, and rearrange the top 6 cards of the Infection Deck. Put them back on top."
-				<< endl;
-			counter++;
-		}
-		if (playerCards[i] == "One Quiet Night") {
-			cout << "One Quiet Night: Skip the next Infect Cities step (do not flip over any Infection cards)." << endl;
-			counter++;
-		}
+		cout << endl;
 	}
-
-	if (counter == 0) {
-		cout << "You do not have any event card." << endl;
-	}
-
-	cout << endl;
 }
 
 //Creates the initial player deck. City cards are initialized with a color abbreviation to facilitate identification
 void PlayerCard::setPlayerCardDeck() {
 
+	//From a file listing all cities, take the color assigned to each city, retrieve the city's name (string) and add
+	//its color abbreviation to facilitate ease recognition
 	int numCities = Game::getGameBoard()->getNumCities();
 
 	for (int i = 0; i < numCities; i++) {
@@ -226,20 +215,29 @@ void PlayerCard::setPlayerCardDeck() {
 		}
 	}
 
+	//From a file listing all event cards, take each string and store them into playerCardsDeck
 	auto fs = FileStream::Open(FileSystem::getStartupPath() + "doesn't matter right now", FileMode::Read);
+
+	for (int i = 0; i < 5; i++) {
+
+		this->playerCardsDeck.push_back(fs->readString());
+
+	}
 	
-	// TODO: fix this chun.
-	//for (int i = 0; i < 5; i++) {
-	//	std::string value = this->playerCardsDeck.at(this->playerCardsDeck.size() - 1);
-	//	fs->write(value);
-	//}
+	delete fs;
 
-	//auto gs = FileStream::Open(FileSystem::getStartupPath() + "doesn't matter once again...", FileMode::Read);
+	//From a file listing all epidemic cards, take each string and store them into playerCardsDeck
+	fs = FileStream::Open(FileSystem::getStartupPath() + "doesn't matter once again...", FileMode::Read);
 
-	//for (int i = 0; i < 4; i++) {
-	//	gs->write(this->playerCardsDeck.pop_back());
-	//}
+	for (int i = 0; i < 4; i++) {
+	
+		this->playerCardsDeck.push_back(fs->readString());
+	}
+	
+	delete fs;
+
 }
+
 
 //Get the description of an epidemic card
 void PlayerCard::getEpidemicDescription() {
@@ -320,7 +318,7 @@ void PlayerCard::buildStationPC() {
 		cout << "Your current cards are: " << getPlayerCards() << endl;
 		int counter2 = 0; // Increments until 5 to ensure that there are 5 cards discarded
 
-						  //The player chooses which cards to use for the construction of a research station
+		//The player chooses which cards to use for the construction of a research station
 		for (int i = 0; i < 5; i++) {
 			int input;
 			cin >> input;
@@ -342,6 +340,7 @@ void PlayerCard::buildStationPC() {
 			}
 		}
 		cout << "A research center has been created at your location." << endl;
+		decrementActionCounter();
 	}
 
 	else {

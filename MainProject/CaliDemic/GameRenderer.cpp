@@ -24,7 +24,20 @@ void GameRenderer::drawGame()
 
 void GameRenderer::drawPlayers()
 {
-	// TODO: Work off of the player collection.
+	Board* board = Game::getGameBoard();
+	int numPlayers = board->getNumberOfPlayers();
+	Player& currentTurnPlayer = board->getCurrentTurnPlayer();
+
+	// Draw every player except the current turn.
+	for (int i = 0; i < numPlayers; i++) {
+		Player& player = board->getPlayer(i);
+		if (&currentTurnPlayer != &player) {
+			GameRenderer::drawPlayer(player);
+		}
+	}
+
+	// Draw the player with the current turn.
+	GameRenderer::drawPlayer(currentTurnPlayer);
 }
 
 void GameRenderer::drawBackground()
@@ -77,6 +90,38 @@ void GameRenderer::drawCityNode(City& city)
 
 	// Pass it off to the graphics manager to render it.
 	GraphicsManager::renderSurface("nodes\\node.png", ctx);
+
+	ctx.position->x += 10;
+	ctx.position->y += 10;
+
+	
+	//update Counter the when there's a cube value 
+	for (int i = 0; i < 3; i++){
+		if (city.cube[i] >= 0){
+			int cubeColor = city.cube[i];
+			switch (cubeColor) {
+			case InfectionColor::Red:
+				ctx.color = new RGBA(255, 0, 0);
+				break;
+			case InfectionColor::Blue:
+				ctx.color = new RGBA(0, 0, 255);
+				break;
+			case InfectionColor::Yellow:
+				ctx.color = new RGBA(255, 255, 0);
+				break;
+			case InfectionColor::Black:
+				ctx.color = new RGBA(0, 0, 0);
+				break;
+			}
+		}
+		else
+			cout << "No cubes to generate" << endl; 
+	}
+	
+
+
+
+	GraphicsManager::renderSurface("nodes\\cube.png", ctx);
 }
 
 void GameRenderer::drawCityName(City& city)
@@ -112,12 +157,11 @@ void GameRenderer::drawCityConnections(City& city)
 
 		int lineHeight = 1;
 
-		// TODO: Make this work off of a city property.
 		// Inverse the angle of rotation if we're on specific connecting cities.
-		/*if (city.inverseAngle && adjacentNode->inverseAngle) {
+		if (city.inverseAngle && adjacentNode->inverseAngle) {
 			degrees = 180 - degrees;
 			lineHeight = 2;
-		}*/
+		}
 
 
 		// Reset and adjust the context.
@@ -133,11 +177,16 @@ void GameRenderer::drawCityConnections(City& city)
 
 void GameRenderer::drawPlayer(Player& player)
 {
-	SurfaceContext ctx;
-	City* city = Game::getGameBoard()->getCity(player.pawn->cityIndex);
+	int cityIndex = player.pawn->cityIndex;
 
-	ctx.position = new Vector2D(city->x - 10, city->y - 20);
-	ctx.size = new Vector2D(20, 20);
+	// Ensure that the city index is within the bounds of the graph.
+	if (cityIndex >= 0 && cityIndex < Game::getGameBoard()->getNumCities()) {
+		City* city = Game::getGameBoard()->getCity(cityIndex);
+		SurfaceContext ctx;
 
-	GraphicsManager::renderSurface("pawns\\pawn.png", ctx);
+		// Set the position of the player.
+		ctx.position = new Vector2D(city->x - 10, city->y - 20);
+		ctx.size = new Vector2D(20, 20);
+		GraphicsManager::renderSurface("pawns\\pawn.png", ctx);
+	}
 }

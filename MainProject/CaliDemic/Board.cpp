@@ -6,6 +6,7 @@
 #include "Game.h"
 #include <iostream>
 #include <vector>
+#include "CityCard.h"
 
 #ifdef DEBUG
 #include <assert.h>
@@ -30,6 +31,10 @@ Board::Board(std::string saveFolder)
 {
 	this->loadNodes(saveFolder + NODES_DATA_FILE);
 	this->loadPlayers(saveFolder + PLAYER_DATA_FILE);
+
+	for (int i = 0; i < 7; i++) {
+		getCurrentTurnPlayer().addCard(new CityCard(i)); 
+	}
 }
 
 Board::~Board()
@@ -146,6 +151,8 @@ void Board::loadPlayers(std::string playerFile)
 
 	// If the file does not exist, there's nothing to load.
 	if (!FileSystem::fileExists(playerFile)) {
+		this->_players.push_back(new Player());
+		this->_players.push_back(new Player());
 		return;
 	}
 
@@ -184,6 +191,9 @@ int Board::getNumCities()
 
 Player& Board::getCurrentTurnPlayer()
 {
+#ifdef DEBUG
+	assert(this->_players.size() > 0);
+#endif
 	return *this->_players[Board::currentTurnPlayer];
 }
 
