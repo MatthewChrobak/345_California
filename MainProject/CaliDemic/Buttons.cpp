@@ -339,6 +339,37 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			break;
 		case PlayerActions::CharterFlight:
 
+			
+			//select atleast 1 card
+			if (this->_cardData->size() != 1){
+				GuiManager::showMsgBox("Please select only one card.");
+			}else
+			{
+						Board* board = Game::getGameBoard();
+						Player& player = board->getCurrentTurnPlayer();
+
+						// Get the card index.
+						int cardIndex = this->_cardData->at(0);
+						PlayerCard* card = player.getCard(cardIndex);
+
+						//if the player's current city === selected card move there 
+						if (player.pawn->cityIndex == cardIndex){
+							int x = cardIndex;
+							player.pawn->cityIndex = x;
+							player.removeCard(cardIndex);
+							GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+						
+			}
+					
+					
+					
+					
+			}
+
+
+
+
+
 			break;
 		case PlayerActions::ShuttleFlight:
 

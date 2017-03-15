@@ -135,6 +135,8 @@ void Board::loadPlayers(std::string playerFile)
 
 	// If the file does not exist, there's nothing to load.
 	if (!FileSystem::fileExists(playerFile)) {
+		this->_players.push_back(new Player());
+		this->_players.push_back(new Player());
 		return;
 	}
 
