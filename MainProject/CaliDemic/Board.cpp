@@ -5,6 +5,8 @@
 #include "ActionCounter.h"
 #include <iostream>
 #include <vector>
+#include "PlayerCard.h"
+
 
 #ifdef DEBUG
 #include <assert.h>
@@ -197,5 +199,12 @@ void Board::playerTurnChange()
 	{
 		this->currentTurnPlayer = ((this->currentTurnPlayer) + 1) % _players.size();
 		resetActionCounter();
+	}
+}
+
+//initialize the player cards on the board
+void Board:: playerCardDeckBoardInitializer() {
+	for (int i = 0; i < PlayerCard::playerCardsDeck.size(); i++) {
+		this->playerCardDeck.at(i) = PlayerCard::playerCardsDeck.at(i);
 	}
 }

@@ -29,11 +29,8 @@ protected:
 	PlayerCardType _cardType;
 
 public:
-	std::vector <string> playerCards;
-
-	vector <string> playerCardsDeck;
-
-	vector <string> epidemic;
+	static vector <string> playerCards;
+	static vector <string> playerCardsDeck;
 
 public:
 	PlayerCard();
@@ -54,6 +51,6 @@ public:
 	void getEpidemicDescription();                       //Retrieves the description of an epidemic card
 	void buildStationPC();                               //Discards enough cards to build a research station
 	void useEpidemic();                                  //Discards Epidemic cards if player picks one
-	void setPlayerCardDeck();
+	static void setPlayerCardDeck();
 
 };

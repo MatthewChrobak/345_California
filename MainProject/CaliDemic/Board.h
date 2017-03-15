@@ -35,6 +35,9 @@ public:
 	Player& getPlayer(int index);
 	int getNumberOfPlayers();
 	int currentTurnPlayer = 0;
+	std::vector<std::string> playerCardDeck;
+	
+	void playerCardDeckBoardInitializer();
 
 private:
 	CityGraph* _cities;

@@ -167,19 +167,19 @@ void PlayerCard::setPlayerCardDeck() {
 		City* city = Game::getGameBoard()->getCity(i);
 
 		if (city->color == InfectionColor::Blue) {
-			this->playerCardsDeck.push_back("Be - " + city->name);
+			playerCardsDeck.push_back("Be - " + city->name);
 		}
 
 		if (city->color == InfectionColor::Red) {
-			this->playerCardsDeck.push_back("Rd - " + city->name);
+			playerCardsDeck.push_back("Rd - " + city->name);
 		}
 
 		if (city->color == InfectionColor::Yellow) {
-			this->playerCardsDeck.push_back("Yw - " + city->name);
+			playerCardsDeck.push_back("Yw - " + city->name);
 		}
 
 		if (city->color == InfectionColor::Black) {
-			this->playerCardsDeck.push_back("Bl - " + city->name);
+			playerCardsDeck.push_back("Bl - " + city->name);
 		}
 	}
 
@@ -188,7 +188,7 @@ void PlayerCard::setPlayerCardDeck() {
 
 	for (int i = 0; i < 5; i++) {
 
-		this->playerCardsDeck.push_back(fs->readString());
+		playerCardsDeck.push_back(fs->readString());
 
 	}
 	
@@ -199,7 +199,7 @@ void PlayerCard::setPlayerCardDeck() {
 
 	for (int i = 0; i < 4; i++) {
 	
-		this->playerCardsDeck.push_back(fs->readString());
+		playerCardsDeck.push_back(fs->readString());
 	}
 	
 	delete fs;
