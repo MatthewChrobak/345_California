@@ -75,6 +75,7 @@ string PlayerCard::getPlayerCards() {
 	if (playerCards.size() <= 0) {
 		return "You have no more cards to play";
 	}
+	return "";
 }
 
 // Retrieves a single card from the player's hand
@@ -109,7 +110,7 @@ void PlayerCard::useEpidemic() {
 			playerCards.erase(playerCards.begin() + i);
 		}
 	}
-<<<<<<< HEAD
+
 	*/
 
 	int counter = 0;
@@ -135,10 +136,10 @@ void PlayerCard::useEpidemic() {
 	{
 		City::infectCityOutBreak(epidemicInfection);
 	}
-=======
+
 
 	//Further functions needed to initiate the effects of picking an epidemic card
->>>>>>> refs/remotes/origin/master
+
 }
 
 
@@ -148,7 +149,7 @@ void PlayerCard::getEventDescription() {
 	int counter = 0; // Counter remains 0 if no event card is found in a player's hand
 
 	//Checks every card in a player's hand to verify if player has an event card
-	for (int i = 0; i < playerCards.size(); i++) {
+	for (unsigned int i = 0; i < playerCards.size(); i++) {
 
 		for (unsigned int i = 0; i < playerCards.size(); i++) {
 			if (playerCards[i] == "Government Grant") {
