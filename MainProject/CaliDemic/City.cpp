@@ -53,6 +53,9 @@ void City::infectCityOutBreak(int city)
 			if (Game::getGameBoard()->getCity(iterator.at(i))->cube[j] == -1)
 			{
 				Game::getGameBoard()->getCity(iterator.at(i))->cube[j] = Game::getGameBoard()->getCity(city)->color;
+				//decrement the num of cube
+				int cityColor = Game::getGameBoard()->getCity(city)->color;
+				Game::numOfCubeDecrementor(cityColor);
 				break;
 			}
 			/*

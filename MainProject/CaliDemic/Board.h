@@ -38,6 +38,14 @@ public:
 	int getNumberOfPlayers();
 	int currentTurnPlayer = 0;
 
+	/*
+	bank of all cities that can be infected
+	the idea behind that is if the user decides to make 
+	his own city than we can make his own city's infectionCard
+	*/
+	std::vector<int> infectionCityCards;
+	void infectionCityCardsInitializor();
+
 private:
 	CityGraph* _cities;
 	std::vector<Player*> _players;

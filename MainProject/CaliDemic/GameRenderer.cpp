@@ -90,6 +90,38 @@ void GameRenderer::drawCityNode(City& city)
 
 	// Pass it off to the graphics manager to render it.
 	GraphicsManager::renderSurface("nodes\\node.png", ctx);
+
+	ctx.position->x += 10;
+	ctx.position->y += 10;
+
+	
+	//update Counter the when there's a cube value 
+	for (int i = 0; i < 3; i++){
+		if (city.cube[i] >= 0){
+			int cubeColor = city.cube[i];
+			switch (cubeColor) {
+			case InfectionColor::Red:
+				ctx.color = new RGBA(255, 0, 0);
+				break;
+			case InfectionColor::Blue:
+				ctx.color = new RGBA(0, 0, 255);
+				break;
+			case InfectionColor::Yellow:
+				ctx.color = new RGBA(255, 255, 0);
+				break;
+			case InfectionColor::Black:
+				ctx.color = new RGBA(0, 0, 0);
+				break;
+			}
+		}
+		else
+			cout << "No cubes to generate" << endl; 
+	}
+	
+
+
+
+	GraphicsManager::renderSurface("nodes\\cube.png", ctx);
 }
 
 void GameRenderer::drawCityName(City& city)

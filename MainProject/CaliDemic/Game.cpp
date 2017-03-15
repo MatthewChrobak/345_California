@@ -12,7 +12,58 @@ int Game::numOfBlackCube = NUM_OF_STARTING_CUBE;
 int Game::numOfRedCube = NUM_OF_STARTING_CUBE;
 int Game::numOfBlueCube = NUM_OF_STARTING_CUBE;
 
+void Game::numOfCubeDecrementor(int cityColor)
+{
+	switch (cityColor)
+	{
+	case 0:
+		if (cityColor == InfectionColor::Red)
+			Game::numOfRedCube--;
+		//if the number of cube is equal or below 0, its game over
+		if (Game::numOfRedCube <= 0)
+		{
+			std::cout << "Game Over! no more red cube." << std::endl;
+			exit(0);
+		}
+		break;
 
+	case 1:
+		if (cityColor == InfectionColor::Blue)
+			Game::numOfBlueCube--;
+		//if the number of cube is equal or below 0, its game over
+		if (Game::numOfBlueCube <= 0)
+		{
+			std::cout << "Game Over! no more blue cube." << std::endl;
+			exit(0);
+		}
+		break;
+
+	case 2:
+		if (cityColor == InfectionColor::Black)
+			Game::numOfBlackCube--;
+		//if the number of cube is equal or below 0, its game over
+		if (Game::numOfBlackCube <= 0)
+		{
+			std::cout << "Game Over! no more Black cube." << std::endl;
+			exit(0);
+		}
+		break;
+
+	case 3:
+		if (cityColor == InfectionColor::Yellow)
+			Game::numOfYellowCube--;
+		//if the number of cube is equal or below 0, its game over
+		if (Game::numOfYellowCube <= 0)
+		{
+			std::cout << "Game Over! no more Yellow cube." << std::endl;
+			exit(0);
+		}
+		break;
+
+	default:
+		break;
+	}
+}
 Board* Game::_gameBoard = nullptr;
 GameState Game::_state = GameState::MainMenu;
 std::string Game::_saveFolder = "";
