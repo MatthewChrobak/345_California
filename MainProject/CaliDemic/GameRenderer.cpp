@@ -146,11 +146,16 @@ void GameRenderer::drawCityConnections(City& city)
 
 void GameRenderer::drawPlayer(Player& player)
 {
-	SurfaceContext ctx;
-	City* city = Game::getGameBoard()->getCity(player.pawn->cityIndex);
+	int cityIndex = player.pawn->cityIndex;
 
-	ctx.position = new Vector2D(city->x - 10, city->y - 20);
-	ctx.size = new Vector2D(20, 20);
+	// Ensure that the city index is within the bounds of the graph.
+	if (cityIndex >= 0 && cityIndex < Game::getGameBoard()->getNumCities()) {
+		City* city = Game::getGameBoard()->getCity(cityIndex);
+		SurfaceContext ctx;
 
-	GraphicsManager::renderSurface("pawns\\pawn.png", ctx);
+		// Set the position of the player.
+		ctx.position = new Vector2D(city->x - 10, city->y - 20);
+		ctx.size = new Vector2D(20, 20);
+		GraphicsManager::renderSurface("pawns\\pawn.png", ctx);
+	}
 }
