@@ -125,6 +125,7 @@
     <ClInclude Include="ActionCounter.h" />
     <ClInclude Include="InfectionCard.h" />
     <ClInclude Include="InfectionColors.h" />
+    <ClInclude Include="MapEditingActions.h" />
     <ClInclude Include="Paths.h" />
     <ClInclude Include="Pawn.h" />
     <ClInclude Include="Player.h" />

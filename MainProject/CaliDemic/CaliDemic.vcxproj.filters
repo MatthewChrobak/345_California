@@ -311,6 +311,9 @@
     <ClInclude Include="UIMessageBox.h">
       <Filter>Header Files\UI\Elements\Behaviour</Filter>
     </ClInclude>
+    <ClInclude Include="MapEditingActions.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

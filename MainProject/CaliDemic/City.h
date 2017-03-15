@@ -32,4 +32,5 @@ public:
 	int cube[cubeMaxSize];
 	bool research = false;
 	bool infected = false;
+	bool inverseAngle = false;
 };

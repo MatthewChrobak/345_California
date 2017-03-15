@@ -1,4 +1,5 @@
 #include "GraphicsManager.h"
+#include "MapEditingActions.h"
 
 // Buttons
 #define UI_TYPE_BUTTON "button"
@@ -23,6 +24,19 @@
 #define CMD_PLAYER_CARDS_CLOSE_WIDTH 25
 #define CMD_PLAYER_CARDS_CLOSE_HEIGHT 25
 
+#define CMD_TOGGLE_MAP_EDITING_ACTIONS "cmdToggleMapEditingActions"
+#define CMD_TOGGLE_INVERSE_ANGLE "cmdToggleInverseAngle"
+#define CMD_SELECT_NODE "cmdSelectNode"
+#define CMD_ADD_NODE "cmdAddNode"
+#define CMD_MAKE_NODE_RED "cmdMakeNodeRed"
+#define CMD_MAKE_NODE_BLACK "cmdMakeNodeBlack"
+#define CMD_MAKE_NODE_YELLOW "cmdMakeNodeYellow"
+#define CMD_MAKE_NODE_BLUE "cmdMakeNodeBlue"
+#define CMD_CHANGE_NODE_NAME "cmdChangeNodeName"
+#define CMD_MAKE_DIRECTED_EDGE "cmdMakeDirectedEdge"
+#define CMD_MOVE_NODE "cmdMoveNode"
+#define CMD_FINISHED_MAP_EDITING "cmdFinishedMapEditing"
+
 // Frames
 #define UI_TYPE_FRAME "frame"
 
@@ -35,6 +49,12 @@
 #define FRM_PLAYER_ACTIONS_HEIGHT PlayerActions::PlayerActions_Length * CMD_PLAYER_ACTION_BUTTON_HEIGHT
 #define FRM_PLAYER_ACTIONS_LEFT DRAW_WIDTH - FRM_PLAYER_ACTIONS_WIDTH - 10
 #define FRM_PLAYER_ACTIONS_TOP DRAW_HEIGHT - FRM_PLAYER_ACTIONS_HEIGHT - 100
+
+#define FRM_MAP_EDITING_ACTIONS "frmMapEditingActions"
+#define FRM_MAP_EDITING_ACTIONS_WIDTH 100
+#define FRM_MAP_EDITING_ACTIONS_HEIGHT MapEditingActions::MapEditingActions_Length * CMD_PLAYER_ACTION_BUTTON_HEIGHT
+#define FRM_MAP_EDITING_ACTIONS_LEFT DRAW_WIDTH - FRM_MAP_EDITING_ACTIONS_WIDTH - 10
+#define FRM_MAP_EDITING_ACTIONS_TOP DRAW_HEIGHT - FRM_MAP_EDITING_ACTIONS_HEIGHT - 100
 
 #define FRM_MAIN_MENU "frmMainMenu"
 #define FRM_MAIN_MENU_WIDTH	DRAW_WIDTH

@@ -125,12 +125,11 @@ void GameRenderer::drawCityConnections(City& city)
 
 		int lineHeight = 1;
 
-		// TODO: Make this work off of a city property.
 		// Inverse the angle of rotation if we're on specific connecting cities.
-		/*if (city.inverseAngle && adjacentNode->inverseAngle) {
+		if (city.inverseAngle && adjacentNode->inverseAngle) {
 			degrees = 180 - degrees;
 			lineHeight = 2;
-		}*/
+		}
 
 
 		// Reset and adjust the context.
