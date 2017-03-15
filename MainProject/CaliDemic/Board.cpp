@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include "CityCard.h"
+#include "RandomNumberGenerator.h"
 
 #ifdef DEBUG
 #include <assert.h>
@@ -16,15 +17,18 @@ Board::Board(std::string saveFolder)
 	this->loadNodes(saveFolder + NODES_DATA_FILE);
 	this->loadPlayers(saveFolder + PLAYER_DATA_FILE);
 
-	for (int i = 0; i < 7; i++) {
-		getCurrentTurnPlayer().addCard(new CityCard(i)); 
-	}
+	this->generatePlayerCards();
 }
 
 Board::~Board()
 {
 	for (unsigned int i = 0; i < this->_players.size();i++)
 		delete this->_players.at(i);
+
+	while (!this->_playerWithdrawPile.empty()) {
+		delete this->_playerWithdrawPile.top();
+		this->_playerWithdrawPile.pop();
+	}
 
 	delete this->_cities;
 }
@@ -155,6 +159,31 @@ void Board::loadPlayers(std::string playerFile)
 	}
 
 	delete fs;
+}
+
+
+
+
+
+
+void Board::generatePlayerCards()
+{
+	// Create a vector of city indexes.
+	std::vector<int> cityIds;
+	for (int i = 0; i < this->getNumCities(); i++) {
+		cityIds.push_back(i);
+	}
+
+	while (cityIds.size() != 0) {
+		int rng = RandomNumberGenerator::next(0, cityIds.size());
+
+		//Add the city to the withdraw pile.
+		CityCard* card = new CityCard(rng);
+		this->_playerWithdrawPile.push(card);
+
+		//Remove the id from the vector.
+		cityIds.erase(cityIds.begin() + rng);
+	}
 }
 
 
