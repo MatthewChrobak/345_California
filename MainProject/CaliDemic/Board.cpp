@@ -243,11 +243,15 @@ int Board::getNumberOfPlayers()
 this will check the number of action and change turn if it reaches 
 4 actions
 */
-void Board::playerTurnChange()
+bool Board::playerTurnChange()
 {
+	boolean turnChanged = false;
 	if (actionCounter == 0)
 	{
 		this->currentTurnPlayer = ((this->currentTurnPlayer) + 1) % _players.size();
 		resetActionCounter();
+		turnChanged = true;
 	}
+
+	return turnChanged;
 }

@@ -29,7 +29,7 @@ public:
 	/*
 	This is to change turn once the number of action is reach
 	*/
-	void playerTurnChange();
+	bool playerTurnChange();
 	/*
 	This is to know the current turn of a player
 	*/
