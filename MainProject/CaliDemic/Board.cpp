@@ -5,6 +5,7 @@
 #include "ActionCounter.h"
 #include <iostream>
 #include <vector>
+#include "CityCard.h"
 
 #ifdef DEBUG
 #include <assert.h>
@@ -14,6 +15,10 @@ Board::Board(std::string saveFolder)
 {
 	this->loadNodes(saveFolder + NODES_DATA_FILE);
 	this->loadPlayers(saveFolder + PLAYER_DATA_FILE);
+
+	for (int i = 0; i < 7; i++) {
+		getCurrentTurnPlayer().addCard(new CityCard(i)); 
+	}
 }
 
 Board::~Board()

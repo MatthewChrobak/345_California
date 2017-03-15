@@ -6,6 +6,9 @@
 #include "CityCard.h"
 #include "GuiManager.h"
 
+MapEditingActions GameFrame::EditingAction;
+int GameFrame::EditNodeIndex = 0;
+
 GameFrame::GameFrame() : UIFrame(FRM_GAME_FRAME)
 {
 	this->surfaceName = "ui\\frame.png";
@@ -14,6 +17,42 @@ GameFrame::GameFrame() : UIFrame(FRM_GAME_FRAME)
 	this->_elements.push_back(new ToggleActionsButton());
 	this->_elements.push_back(new PlayerActionsFrame());
 	this->_elements.push_back(new PlayerCardsFrame());
+	this->_elements.push_back(new ToggleMapEditingActions());
+	this->_elements.push_back(new MapEditingActionsFrame());
+}
+
+void GameFrame::showAdminTools()
+{
+	this->_editing = true;
+	
+	// Make the map tools button visible.
+	auto element = GuiManager::getUIElementByName(CMD_TOGGLE_MAP_EDITING_ACTIONS);
+#ifdef DEBUG
+	assert(element != nullptr);
+	assert(element->getObjectType() == UI_TYPE_BUTTON);
+#endif
+	element->visible = true;
+}
+
+void GameFrame::finishedEditing()
+{
+	this->_editing = false;
+
+	// Make the map tools button invisible.
+	auto element = GuiManager::getUIElementByName(CMD_TOGGLE_MAP_EDITING_ACTIONS);
+#ifdef DEBUG
+	assert(element != nullptr);
+	assert(element->getObjectType() == UI_TYPE_BUTTON);
+#endif
+	element->visible = false;
+
+	// Make the map tools frame invisible.
+	element = GuiManager::getUIElementByName(FRM_MAP_EDITING_ACTIONS);
+#ifdef DEBUG
+	assert(element != nullptr);
+	assert(element->getObjectType() == UI_TYPE_FRAME);
+#endif
+	element->visible = false;
 }
 
 void GameFrame::onMouseDown(std::string button, int x, int y)
@@ -24,120 +63,159 @@ void GameFrame::onMouseDown(std::string button, int x, int y)
 		Board* board = Game::getGameBoard();
 		int numCities = board->getNumCities();
 
-#ifdef ADMIN_EDITOR
-		if (this->_addNode) {
-			City::consoleAddNodeAtCoordDialogue(x, y);
-		}
-#endif
-
-		// Figure out if we clicked on a city
-		for (int i = 0; i < numCities; i++) {
-
-			City* city = board->getCity(i);
-			int centerX = city->x;
-			int centerY = city->y;
-
-			int halfWidth = CITY_RENDER_WIDTH / 2;
-			int halfHeight = CITY_RENDER_HEIGHT / 2;
-
-			// Are we within the bounds of the current city?
-			if (centerX - halfWidth <= x && centerX + halfWidth >= x) {
-				if (centerY - halfHeight <= y && centerY + halfHeight >= y) {
-
-					Player* player = &board->getCurrentTurnPlayer();
-					int playerCityIndex = player->pawn->cityIndex;
-					City* playerCity = nullptr;
-
-					// Get the city, if it exists on the board.
-					if (playerCityIndex >= 0 && playerCityIndex < numCities) {
-						playerCity = board->getCity(playerCityIndex);
-					}
-
-#ifdef ADMIN_EDITOR
-					if (this->_connectNode) {
-						board->getCity(i)->addAdjacentNode(playerCityIndex);
-						return;
-					}
-					if (this->_teleportNode) {
-						player->pawn->cityIndex = i;
-						return;
-					}
-#endif
-
-					if (playerCity != nullptr) {
-						// Figure out if the city is adjacent to the city we're currently at.
-						// If so, move to that city.
-						std::vector<int> adjacents = playerCity->getAdjacentNodes();
-
-						for (unsigned int k = 0; k < adjacents.size(); k++) {
-							if (i == adjacents[k]) {
-								player->pawn->cityIndex = i;
-								break;
-							}
-						}
-
-					}
-					break;
+		// Are we currently editing the map?
+		if (this->_editing)
+		{
+			// Figure out if we did an action that requires clicking on cities.
+			switch (GameFrame::EditingAction) {
+				// Move the node.
+				case MapEditingActions::MoveNode: {
+					City* city = Game::getGameBoard()->getCity(GameFrame::EditNodeIndex);
+					city->x = x;
+					city->y = y;
 				}
-			}
+				break;
+			case MapEditingActions::RotateAngle:
+			case MapEditingActions::SelectNode:
+			case MapEditingActions::AddNode:
+			case MapEditingActions::MakeNodeBlack:
+			case MapEditingActions::MakeNodeRed:
+			case MapEditingActions::MakeNodeYellow:
+			case MapEditingActions::MakeNodeBlue:
+			case MapEditingActions::MakeDirectedEdge:
+				// Figure out if we clicked on a city
+				for (int i = 0; i < numCities; i++) {
 
+					City* city = board->getCity(i);
+					int centerX = city->x;
+					int centerY = city->y;
+
+					int halfWidth = CITY_RENDER_WIDTH / 2;
+					int halfHeight = CITY_RENDER_HEIGHT / 2;
+
+					// Are we within the bounds of the current city?
+					if (centerX - halfWidth <= x && centerX + halfWidth >= x) {
+						if (centerY - halfHeight <= y && centerY + halfHeight >= y) {
+
+							// Figure out what editing action we're doing.
+							switch (GameFrame::EditingAction) {
+
+								// Modify the currently focused node.
+								case MapEditingActions::SelectNode:
+									GameFrame::EditNodeIndex = i;
+									break;
+
+								// Place the node in the current position.
+								case MapEditingActions::AddNode: {
+									City* newCity = new City();
+									newCity->x = x;
+									newCity->y = y;
+									board->addCity(newCity); 
+								}
+									break;
+
+								// Set the colors.
+								case MapEditingActions::MakeNodeBlack:
+									city->color = InfectionColor::Black;
+									break;
+								case MapEditingActions::MakeNodeRed:
+									city->color = InfectionColor::Red;
+									break;
+								case MapEditingActions::MakeNodeYellow:
+									city->color = InfectionColor::Yellow;
+									break;
+								case MapEditingActions::MakeNodeBlue:
+									city->color = InfectionColor::Blue;
+									break;
+
+								case MapEditingActions::RotateAngle:
+									city->inverseAngle = !city->inverseAngle;
+									break;
+
+								// Add the edges.
+								case MapEditingActions::MakeDirectedEdge: {
+									City* primaryCity = Game::getGameBoard()->getCity(GameFrame::EditNodeIndex);
+									City* secondaryCity = Game::getGameBoard()->getCity(i);
+
+									// Connect them only if they're different.
+									if (i != GameFrame::EditNodeIndex) {
+										primaryCity->addAdjacentNode(i);
+										secondaryCity->addAdjacentNode(GameFrame::EditNodeIndex);
+									}
+								}
+									break;
+							}
+							break;
+						}
+					}
+				}
+				break;
+			}
+		}
+	}
+}
+
+void GameFrame::draw()
+{
+	UIFrame::draw();
+
+	// Are we editing right now?
+	if (this->_editing) {
+		switch (GameFrame::EditingAction) {
+			case MapEditingActions::SelectNode:
+			case MapEditingActions::MakeDirectedEdge:
+			case MapEditingActions::ChangeNodeName:
+			case MapEditingActions::MoveNode:
+				SurfaceContext ctx;
+				City* city = Game::getGameBoard()->getCity(GameFrame::EditNodeIndex);
+				ctx.position = new Vector2D(city->x - (CITY_RENDER_WIDTH / 2), city->y - (CITY_RENDER_HEIGHT / 2));
+				ctx.size = new Vector2D(CITY_RENDER_WIDTH, CITY_RENDER_HEIGHT);
+				GraphicsManager::renderSurface("ui\\selectbox.png", ctx);
+				break;
 		}
 	}
 }
 
 void GameFrame::onKeyDown(std::string key)
 {
-#ifdef ADMIN_EDITOR
-	if (Game::getState() == GameState::InGame) {
-		if (key == "a") {
-			this->_addNode = true;
-		}
-		else if (key == "c") {
-			this->_connectNode = true;
-		}
-		else if (key == "m") {
-			this->_moveMode = true;
-		}
-		else if (key == "s") {
-			Game::save();
-		}
-		else if (key == "t") {
-			this->_teleportNode = true;
+	// Are we editing right now?
+	if (this->_editing) {
+		switch (GameFrame::EditingAction) {
+			case MapEditingActions::ChangeNodeName:
+
+				// Get the city object.
+				City* city = Game::getGameBoard()->getCity(GameFrame::EditNodeIndex);
+
+				// Is the input a non-character?
+				if (key.size() != 1) {
+
+					if (key == "backspace") {
+						// Can we even backspace?
+						if (city->name.size() != 0) {
+							city->name = city->name.substr(0, city->name.size() - 1);
+							return;
+						}
+					}
+
+					// Exit out. This is not a character we should append.
+					return;
+				}
+
+				city->name += key;
+				break;
 		}
 	}
-#endif
 }
+
 
 void GameFrame::onKeyUp(std::string key)
 {
-#ifdef ADMIN_EDITOR
-	if (Game::getState() == GameState::InGame) {
-		if (key == "a") {
-			this->_addNode = false;
-		}
-		else if (key == "c") {
-			this->_connectNode = false;
-		}
-		else if (key == "m") {
-			this->_moveMode = false;
-		}
-		else if (key == "t") {
-			this->_teleportNode = false;
-		}
-	}
-#endif
+
 }
 
 void GameFrame::onMouseMove(int x, int y)
 {
-#ifdef ADMIN_EDITOR
-	if (this->_moveMode) {
-		Board* board = Game::getGameBoard();
-		City* city = board->getCity(board->getCurrentTurnPlayer().pawn->cityIndex);
-		city->x = x;
-		city->y = y;
-	}
-#endif
+
 }
 
 
@@ -346,4 +424,39 @@ void PlayerCardsFrame::show(PlayerActions action)
 		// Do nothing.
 		break;
 	}
+}
+
+
+MapEditingActionsFrame::MapEditingActionsFrame() : UIFrame(FRM_MAP_EDITING_ACTIONS)
+{
+	this->surfaceName = "ui\\panel.png";
+	this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
+	this->height = FRM_MAP_EDITING_ACTIONS_HEIGHT;
+
+	this->top = FRM_MAP_EDITING_ACTIONS_TOP;
+	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
+	this->visible = false;
+
+	this->_elements.push_back(new SelectNodeAction());
+	this->_elements.push_back(new AddNodeAction());
+	this->_elements.push_back(new MakeNodeBlackAction());
+	this->_elements.push_back(new MakeNodeRedAction());
+	this->_elements.push_back(new MakeNodeYellowAction());
+	this->_elements.push_back(new MakeNodeBlueAction());
+	this->_elements.push_back(new ChangeNodeNameAction());
+	this->_elements.push_back(new MakeDirectedEdgeAction());
+	this->_elements.push_back(new MoveNodeAction());
+	this->_elements.push_back(new FinishedEditingMapAction());
+	this->_elements.push_back(new RotateNodeAngleAction());
+}
+
+void MapEditingActionsFrame::draw()
+{
+	UIFrame::draw();
+
+	// Highlight the selected tool.
+	SurfaceContext ctx;
+	ctx.size = new Vector2D(FRM_MAP_EDITING_ACTIONS_WIDTH, CMD_PLAYER_ACTION_BUTTON_HEIGHT);
+	ctx.position = new Vector2D(FRM_MAP_EDITING_ACTIONS_LEFT, FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * GameFrame::EditingAction);
+	GraphicsManager::renderSurface("ui\\lightbox.png", ctx);
 }
