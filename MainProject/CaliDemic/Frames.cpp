@@ -75,9 +75,16 @@ void GameFrame::onMouseDown(std::string button, int x, int y)
 					city->y = y;
 				}
 				break;
+			// Place the node in the current position.
+			case MapEditingActions::AddNode: {
+				City* newCity = new City();
+				newCity->x = x;
+				newCity->y = y;
+				board->addCity(newCity);
+			}
+			break;
 			case MapEditingActions::RotateAngle:
 			case MapEditingActions::SelectNode:
-			case MapEditingActions::AddNode:
 			case MapEditingActions::MakeNodeBlack:
 			case MapEditingActions::MakeNodeRed:
 			case MapEditingActions::MakeNodeYellow:
@@ -103,15 +110,6 @@ void GameFrame::onMouseDown(std::string button, int x, int y)
 								// Modify the currently focused node.
 								case MapEditingActions::SelectNode:
 									GameFrame::EditNodeIndex = i;
-									break;
-
-								// Place the node in the current position.
-								case MapEditingActions::AddNode: {
-									City* newCity = new City();
-									newCity->x = x;
-									newCity->y = y;
-									board->addCity(newCity); 
-								}
 									break;
 
 								// Set the colors.
@@ -159,8 +157,8 @@ void GameFrame::draw()
 {
 	UIFrame::draw();
 
-	// Are we editing right now?
-	if (this->_editing) {
+	// Are we editing right now? We need a city.
+	if (this->_editing && Game::getGameBoard()->getNumCities()) {
 		switch (GameFrame::EditingAction) {
 			case MapEditingActions::SelectNode:
 			case MapEditingActions::MakeDirectedEdge:
@@ -178,8 +176,8 @@ void GameFrame::draw()
 
 void GameFrame::onKeyDown(std::string key)
 {
-	// Are we editing right now?
-	if (this->_editing) {
+	// Are we editing right now? We need a city
+	if (this->_editing && Game::getGameBoard()->getNumCities()) {
 		switch (GameFrame::EditingAction) {
 			case MapEditingActions::ChangeNodeName:
 
