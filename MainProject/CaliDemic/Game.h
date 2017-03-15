@@ -35,6 +35,8 @@ public:
 	static int numOfBlueCube;
 	static int numOfRedCube;
 
+	static void numOfCubeDecrementor(int cityColor);
+
 private:
 	static Board* _gameBoard;
 	static GameState _state;

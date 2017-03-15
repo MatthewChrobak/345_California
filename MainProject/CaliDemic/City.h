@@ -20,7 +20,7 @@ public:
 
 	static void consoleAddNodeAtCoordDialogue(int x, int y);
 	void infectCity(int city,int index);
-	void infectCityOutBreak(int city);
+	static void infectCityOutBreak(int city);
 	void buildResearchFacility();
 
 	//attributes of City class
@@ -33,3 +33,5 @@ public:
 	bool research = false;
 	bool infected = false;
 };
+
+

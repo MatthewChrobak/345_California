@@ -2,6 +2,9 @@
 #include "Game.h"
 #include "EventCard.h"
 #include "EpidemicCard.h"
+#include "Board.h"
+#include "InfectionCard.h"
+#include "City.h"
 #include <stdlib.h>    
 #include <time.h>
 #include <stdio.h> 
@@ -122,13 +125,39 @@ void PlayerCard::setPlayerCards(int numberOfCards) {
 
 //Automatically discards en Epidemic card if the player picks one
 void PlayerCard::useEpidemic() {
-	for (unsigned int i = 0; i< playerCards.size(); i++)
+	/*for (unsigned int i = 0; i< playerCards.size(); i++)
 	{
 		if (playerCards[i] == "Epidemic") {
 			playerCards.erase(playerCards.begin() + i);
 		}
 	}
+	*/
+
+	int counter = 0;
+	int epidemicInfection =Board::infectionCityCards.back();
+	//shrinking the infectionCityCards
+	Board::infectionCityCards.shrink_to_fit();
+
+	static const int cityColor = Game::getGameBoard()->getCity(epidemicInfection)->color;
+	//infect the draw city three times
+	for (int i = 0; i < 3; i++)
+	{
+		
+		if (Game::getGameBoard()->getCity(epidemicInfection)->cube[i] == -1)
+		{
+			counter++;
+			Game::getGameBoard()->getCity(epidemicInfection)->cube[i] = cityColor;
+			Game::numOfCubeDecrementor(cityColor);
+		}
+
+	}
+	//if the draw city is not been infect three times that mean that there is an outbreak
+	if (counter < 3)
+	{
+		City::infectCityOutBreak(epidemicInfection);
+	}
 }
+
 
 //Get the description of an event card (if in possession)
 void PlayerCard::getEventDescription() {

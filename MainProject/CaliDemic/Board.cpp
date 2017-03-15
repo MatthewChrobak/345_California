@@ -3,12 +3,28 @@
 #include "FileSystem.h"
 #include "PlayerActions.h"
 #include "ActionCounter.h"
+#include "Game.h"
 #include <iostream>
 #include <vector>
 
 #ifdef DEBUG
 #include <assert.h>
 #endif
+
+/*
+This will initialize the infectionCard deck
+*/
+void Board::infectionCityCardsInitializor()
+{
+	for (int i = 0; i < Game::getGameBoard()->getNumCities(); i++)
+	{
+		infectionCityCards.push_back(i);
+		infectionCityCards.push_back(i);
+		infectionCityCards.push_back(i);
+	}
+	infectionCityCards.shrink_to_fit();
+
+}
 
 Board::Board(std::string saveFolder)
 {
