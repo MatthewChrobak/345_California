@@ -75,9 +75,17 @@ void GameFrame::onMouseDown(std::string button, int x, int y)
 					city->y = y;
 				}
 				break;
+			case MapEditingActions::AddNode: {
+				if (x <= FRM_MAP_EDITING_ACTIONS_LEFT) {
+					City* city = new City();
+					city->x = x;
+					city->y = y;
+					Game::getGameBoard()->addCity(city);
+				}
+				break;
+			}
 			case MapEditingActions::RotateAngle:
 			case MapEditingActions::SelectNode:
-			case MapEditingActions::AddNode:
 			case MapEditingActions::MakeNodeBlack:
 			case MapEditingActions::MakeNodeRed:
 			case MapEditingActions::MakeNodeYellow:
@@ -160,7 +168,7 @@ void GameFrame::draw()
 	UIFrame::draw();
 
 	// Are we editing right now?
-	if (this->_editing) {
+	if (this->_editing && Game::getGameBoard()->getNumCities()) {
 		switch (GameFrame::EditingAction) {
 			case MapEditingActions::SelectNode:
 			case MapEditingActions::MakeDirectedEdge:
@@ -179,7 +187,7 @@ void GameFrame::draw()
 void GameFrame::onKeyDown(std::string key)
 {
 	// Are we editing right now?
-	if (this->_editing) {
+	if (this->_editing && Game::getGameBoard()->getNumCities()) {
 		switch (GameFrame::EditingAction) {
 			case MapEditingActions::ChangeNodeName:
 
@@ -302,19 +310,21 @@ void PlayerCardsFrame::draw()
 		if (card->getType() == PlayerCardType::City_Card) {
 			// Get the city from its index.
 			int cityIndex = ((CityCard*)card)->cityIndex;
-			City* city = Game::getGameBoard()->getCity(cityIndex);
 
-			// Do we render the selector?
-			for (unsigned int cardDataIndex = 0; cardDataIndex < this->_cardData.size(); cardDataIndex++) {
-				if (this->_cardData.at(cardDataIndex) == i) {
-					GraphicsManager::renderSurface("cards\\cardselect.png", sCtx);
-					break;
+			if (cityIndex >= 0 && cityIndex < Game::getGameBoard()->getNumCities()) {
+				City* city = Game::getGameBoard()->getCity(cityIndex);
+
+				// Do we render the selector?
+				for (unsigned int cardDataIndex = 0; cardDataIndex < this->_cardData.size(); cardDataIndex++) {
+					if (this->_cardData.at(cardDataIndex) == i) {
+						GraphicsManager::renderSurface("cards\\cardselect.png", sCtx);
+						break;
+					}
 				}
-			}
 
-			// Modify the color
-			switch (city->color)
-			{
+				// Modify the color
+				switch (city->color)
+				{
 				case InfectionColor::Black:
 					sCtx.color = new RGBA(100, 100, 100);
 					break;
@@ -327,16 +337,17 @@ void PlayerCardsFrame::draw()
 				case InfectionColor::Yellow:
 					sCtx.color = new RGBA(255, 255, 0);
 					break;
+				}
+
+				// Render the text in the middle.
+				tCtx.horizontalCenter = true;
+				tCtx.position = new Vector2D(sCtx.position->x + PLAYER_CARD_WIDTH / 2, sCtx.position->y + 25);
+				tCtx.fontSize = 18;
+
+				// Pass it off to the graphics manager to draw.
+				GraphicsManager::renderSurface("cards\\citycard.png", sCtx);
+				GraphicsManager::renderText(city->name, tCtx);
 			}
-
-			// Render the text in the middle.
-			tCtx.horizontalCenter = true;
-			tCtx.position = new Vector2D(sCtx.position->x + PLAYER_CARD_WIDTH / 2, sCtx.position->y + 25);
-			tCtx.fontSize = 18;
-
-			// Pass it off to the graphics manager to draw.
-			GraphicsManager::renderSurface("cards\\citycard.png", sCtx);
-			GraphicsManager::renderText(city->name, tCtx);
 		}
 	}
 }
