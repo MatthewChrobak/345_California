@@ -349,142 +349,42 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 						Player& player = board->getCurrentTurnPlayer();
 
 						// Get the card index.
-						int tempCardIndex = this->_cardData->at(0);
-						PlayerCard* card = player.getCard(tempCardIndex);
+						int cardIndex = this->_cardData->at(0);
+						PlayerCard* card = player.getCard(cardIndex);
 
 						//if the player's current city === selected card move there 
-						if (player.pawn->cityIndex == tempCardIndex){
-							player.pawn->cityIndex = tempCardIndex;
-							//DROP THE CARD 
-							player.removeCard(tempCardIndex);
+						if (player.pawn->cityIndex == cardIndex){
+							int x = cardIndex;
+							player.pawn->cityIndex = x;
+							player.removeCard(cardIndex);
 							GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-					}
-			}break;
-		
+						
+			}
+					
+					
+					
+					
+			}
+
+
+
+
+
+			break;
 		case PlayerActions::ShuttleFlight:
-
-			Board* board = Game::getGameBoard();
-			Player& player = board->getCurrentTurnPlayer();
-			int cityIndex = player.pawn->cityIndex;
-			City* city = board->getCity(cityIndex);
-
-
 
 			break;
 		case PlayerActions::BuildResearchCenter:
-			//get the players 
-			Board* board = Game::getGameBoard();
-			Player& player = board->getCurrentTurnPlayer();
 
-			//Select only one card 
-			if (this->_cardData->size() != 1){
-				GuiManager::showMsgBox("Please select only one card.");
-			}
-			else {
-
-				//store the cityCard value in temp location 
-				int tempCardIndex = this->_cardData->at(0);
-
-				if (tempCardIndex == player.pawn->cityIndex){
-					//SET IT TO TRUE FOR BOOLEAN 
-					City* tempCityPointer = board->getCity(tempCardIndex);
-					tempCityPointer->research = true;
-					//DISCARD THE CARD FROM THE PLAYER
-					player.removeCard(tempCardIndex);
-				}
-
-
-			}
 			break;
 		case PlayerActions::TreatDisease:
-			//get the players 
-			Board* board = Game::getGameBoard();
-			Player& player = board->getCurrentTurnPlayer();
-
-			//find the current city player is in 
-
-			int currentCityIndex = player.pawn->cityIndex;
-
-			City* tempCity = board->getCity(currentCityIndex);
-
-			//start a for loop to find and decrement 
-			for (int i = 0; i < City::cubeMaxSize; i++){
-
-				//find any index with a value more than 0, indicating a disease
-				if (tempCity->cube[i] >= 0){
-
-					//if found make the slot to -1 indicating removal of cube
-					tempCity->cube[i] = -1;
-					//increment the board disease counter
-
-
-					int findColor = tempCity->color;
-					switch (findColor) {
-					case 0:
-						cout << "Incrementing red cubes count of the game" << endl;
-						Game::numOfRedCube++;
-
-						break;
-					case 1:
-						cout << "Incrementing blue cubes count of the game" << endl;
-						Game::numOfBlueCube++;
-
-						break;
-					case 2:
-						cout << "Incrementing black cubes count of the game" << endl;
-						Game::numOfBlackCube++;
-
-						break;
-					case 3:
-						cout << "Incrementing yellow cubes count of the game" << endl;
-						Game::numOfYellowCube++;
-
-						break;
-
-					}
-					cout << " A disease cube has been removed" << endl;
-
-					break;
-				}
-
-
 
 			break;
 		case PlayerActions::ShareKnowledge:
 
 			break;
 		case PlayerActions::DiscoverCure:
-			// We should only have one card selected here.
-			if (this->_cardData->size() == 5) {
-				Board* board = Game::getGameBoard();
-				Player& player = board->getCurrentTurnPlayer();
 
-				// same color
-				// they're all city card
-				// the disease hasn't been cured
-
-				// Get the cards.
-				for (int i = 0; i < 5; i++) {
-					PlayerCard* card = player.getCard(this->_cardData->at(i));
-
-					// Make sure the card is not null.
-					if (card != nullptr) {
-
-						// Make sure it's a city card.
-						if (card->getType() == PlayerCardType::City_Card) {
-							CityCard* cityCard = (CityCard*)card;
-
-							// Figure out what color it is.
-							int cityIndex = cityCard->cityIndex;
-
-							board->getCity(cityIndex)->color;
-						}
-					}
-				}
-			}
-			else {
-				GuiManager::showMsgBox("Please select 5 cards.");
-			}
 			break;
 		case PlayerActions::ViewCards:
 			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;

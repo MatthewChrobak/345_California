@@ -30,10 +30,10 @@ void InfectionCard::infectCityCube(int city)
 		if (Game::getGameBoard()->getCity(city)->cube[i] == -1)
 		{
 			//this will remove the card from the infectionDeck
-			Board::infectionCityCards.erase(Board::infectionCityCards.begin() + i);
+			Game::getGameBoard()->infectionCityCards.erase(Game::getGameBoard()->infectionCityCards.begin() + i);
 			//infect the city if it is at the index i
 			Game::getGameBoard()->getCity(city)->infectCity(city, i);
-			Board::infectionCityCards.shrink_to_fit();
+			Game::getGameBoard()->infectionCityCards.shrink_to_fit();
 
 			//decrement the cube's color
 			Game::numOfCubeDecrementor(cityColor);

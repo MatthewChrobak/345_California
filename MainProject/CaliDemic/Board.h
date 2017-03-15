@@ -43,8 +43,8 @@ public:
 	the idea behind that is if the user decides to make 
 	his own city than we can make his own city's infectionCard
 	*/
-	static std::vector<int> infectionCityCards;
-	static void infectionCityCardsInitializor();
+	std::vector<int> infectionCityCards;
+	void infectionCityCardsInitializor();
 
 private:
 	CityGraph* _cities;
