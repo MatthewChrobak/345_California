@@ -56,6 +56,9 @@ private:
 	std::vector<Player*> _players;
 	std::stack<PlayerCard*> _playerWithdrawPile;
 
+	void loadBoardData(std::string boardFile);
+	void saveBoardData(std::string boardFile);
+
 	void loadNodes(std::string nodesFile);
 	void saveNodes(std::string nodesFile);
 

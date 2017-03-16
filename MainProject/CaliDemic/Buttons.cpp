@@ -527,6 +527,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			break;
 		case PlayerActions::ViewCards:
 			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 			break;
 	}
 
