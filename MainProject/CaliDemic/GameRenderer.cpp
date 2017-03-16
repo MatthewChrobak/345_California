@@ -2,6 +2,7 @@
 #include "SurfaceContext.h"
 #include "GraphicsManager.h"
 #include "GuiManager.h"
+#include "Frames.h"
 
 void GameRenderer::drawGame()
 {
@@ -51,18 +52,50 @@ void GameRenderer::drawCities()
 {
 	// Get the game board and the number of cities.
 	Board* board = Game::getGameBoard();
-	unsigned int numCities = board->getNumCities();
+	int numCities = board->getNumCities();
 
 	// Draw all the connections so that they appear under the nodes.
-	for (unsigned int i = 0; i < numCities; i++) {
+	for (int i = 0; i < numCities; i++) {
 		GameRenderer::drawCityConnections(*board->getCity(i));
 	}
 
 	// Draw all the nodes and their names.
-	for (unsigned int i = 0; i < numCities; i++) {
+	for (int i = 0; i < numCities; i++) {
 		City* city = board->getCity(i);
 		GameRenderer::drawCityNode(*city);
 		GameRenderer::drawCityName(*city);
+	}
+
+	// Are we currently trying to do an action?
+	if (GameFrame::PlayerAction == PlayerActions::Drive) {
+		// We're trying to drive. Make sure we know what cities we can go to.
+		Player& player = board->getCurrentTurnPlayer();
+		int playerCityIndex = player.pawn->cityIndex;
+
+		// Is it a valid city?
+		if (playerCityIndex >= 0 && playerCityIndex < board->getNumCities()) {
+			// Get the city and its adjacent nodes.
+			City* playerCity = board->getCity(playerCityIndex);
+			auto adjacentCities = playerCity->getAdjacentNodes();
+
+			// Loop through every city.
+			for (unsigned int i = 0; i < adjacentCities.size(); i++) {
+				int cityIndex = adjacentCities.at(i);
+
+				// Is it a valid city?
+				if (cityIndex >= 0 && cityIndex < board->getNumCities()) {
+					City* city = board->getCity(cityIndex);
+
+					// It is. Render it.
+					SurfaceContext ctx;
+					ctx.position = new Vector2D(city->x - (CITY_RENDER_WIDTH / 2), city->y - (CITY_RENDER_HEIGHT / 2));
+					ctx.size = new Vector2D(CITY_RENDER_WIDTH, CITY_RENDER_HEIGHT);
+
+					GraphicsManager::renderSurface("ui\\selectbox.png", ctx);
+
+				}
+			}
+		}
 	}
 }
 
@@ -114,8 +147,6 @@ void GameRenderer::drawCityNode(City& city)
 				break;
 			}
 		}
-		else
-			cout << "No cubes to generate" << endl; 
 	}
 	
 

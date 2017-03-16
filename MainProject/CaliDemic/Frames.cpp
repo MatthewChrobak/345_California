@@ -6,6 +6,7 @@
 #include "CityCard.h"
 #include "GuiManager.h"
 
+PlayerActions GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 MapEditingActions GameFrame::EditingAction;
 int GameFrame::EditNodeIndex = 0;
 
@@ -91,75 +92,103 @@ void GameFrame::onMouseDown(std::string button, int x, int y)
 			case MapEditingActions::MakeNodeYellow:
 			case MapEditingActions::MakeNodeBlue:
 			case MapEditingActions::MakeDirectedEdge:
-				// Figure out if we clicked on a city
-				for (int i = 0; i < numCities; i++) {
+				// Get the city from the x/y coordinate.
+				int index = City::getCityIndexFromXY(x, y);
+				City* city = board->getCity(index);
 
-					City* city = board->getCity(i);
-					int centerX = city->x;
-					int centerY = city->y;
+				// Make sure it's not null.
+				if (city != nullptr) {
+					// Figure out what editing action we're doing.
+					switch (GameFrame::EditingAction) {
 
-					int halfWidth = CITY_RENDER_WIDTH / 2;
-					int halfHeight = CITY_RENDER_HEIGHT / 2;
-
-					// Are we within the bounds of the current city?
-					if (centerX - halfWidth <= x && centerX + halfWidth >= x) {
-						if (centerY - halfHeight <= y && centerY + halfHeight >= y) {
-
-							// Figure out what editing action we're doing.
-							switch (GameFrame::EditingAction) {
-
-								// Modify the currently focused node.
-								case MapEditingActions::SelectNode:
-									GameFrame::EditNodeIndex = i;
-									break;
-
-								// Place the node in the current position.
-								case MapEditingActions::AddNode: {
-									City* newCity = new City();
-									newCity->x = x;
-									newCity->y = y;
-									board->addCity(newCity); 
-								}
-									break;
-
-								// Set the colors.
-								case MapEditingActions::MakeNodeBlack:
-									city->color = InfectionColor::Black;
-									break;
-								case MapEditingActions::MakeNodeRed:
-									city->color = InfectionColor::Red;
-									break;
-								case MapEditingActions::MakeNodeYellow:
-									city->color = InfectionColor::Yellow;
-									break;
-								case MapEditingActions::MakeNodeBlue:
-									city->color = InfectionColor::Blue;
-									break;
-
-								case MapEditingActions::RotateAngle:
-									city->inverseAngle = !city->inverseAngle;
-									break;
-
-								// Add the edges.
-								case MapEditingActions::MakeDirectedEdge: {
-									City* primaryCity = Game::getGameBoard()->getCity(GameFrame::EditNodeIndex);
-									City* secondaryCity = Game::getGameBoard()->getCity(i);
-
-									// Connect them only if they're different.
-									if (i != GameFrame::EditNodeIndex) {
-										primaryCity->addAdjacentNode(i);
-										secondaryCity->addAdjacentNode(GameFrame::EditNodeIndex);
-									}
-								}
-									break;
-							}
+						// Modify the currently focused node.
+						case MapEditingActions::SelectNode:
+							GameFrame::EditNodeIndex = index;
 							break;
+
+							// Place the node in the current position.
+						case MapEditingActions::AddNode:
+						{
+							City* newCity = new City();
+							newCity->x = x;
+							newCity->y = y;
+							board->addCity(newCity);
 						}
+						break;
+
+						// Set the colors.
+						case MapEditingActions::MakeNodeBlack:
+							city->color = InfectionColor::Black;
+							break;
+						case MapEditingActions::MakeNodeRed:
+							city->color = InfectionColor::Red;
+							break;
+						case MapEditingActions::MakeNodeYellow:
+							city->color = InfectionColor::Yellow;
+							break;
+						case MapEditingActions::MakeNodeBlue:
+							city->color = InfectionColor::Blue;
+							break;
+
+						case MapEditingActions::RotateAngle:
+							city->inverseAngle = !city->inverseAngle;
+							break;
+
+							// Add the edges.
+						case MapEditingActions::MakeDirectedEdge:
+						{
+							City* primaryCity = Game::getGameBoard()->getCity(GameFrame::EditNodeIndex);
+
+							// Connect them only if they're different.
+							if (index != GameFrame::EditNodeIndex) {
+								primaryCity->addAdjacentNode(index);
+								city->addAdjacentNode(GameFrame::EditNodeIndex);
+							}
+						}
+						break;
 					}
+					break;
 				}
 				break;
 			}
+		} 
+		else {
+			// Are we currently trying to do an action?
+			if (GameFrame::PlayerAction != PlayerActions::NoPlayerAction) {
+
+				switch (GameFrame::PlayerAction) 
+				{
+					// Are we trying to move?
+					case PlayerActions::Drive:
+					{
+						Player& player = board->getCurrentTurnPlayer();
+						int playerCityIndex = player.pawn->cityIndex;
+
+						// Make sure we're within the valid bounds.
+						if (playerCityIndex >= 0 && playerCityIndex < numCities) {
+							City* playerCity = board->getCity(playerCityIndex);
+							int clickedCityIndex = City::getCityIndexFromXY(x, y);
+
+							// If the city is an adjacent city, move us.
+							if (playerCity->isAdjacent(clickedCityIndex)) {
+								player.pawn->cityIndex = clickedCityIndex;
+
+								// Reset the player action.
+								// TODO: Decrement the player action count.
+								GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+								break;
+							}
+						}
+						break;
+					}
+					default:
+						GuiManager::showMsgBox("Tried to perform an action on " + GameFrame::PlayerAction);
+						break;
+				}
+			}
 		}
+
+		
 	}
 }
 
@@ -274,7 +303,7 @@ PlayerCardsFrame::PlayerCardsFrame() : UIFrame(FRM_PLAYER_CARDS)
 	this->visible = false;
 
 	this->_elements.push_back(new PlayerCardsClose());
-	this->_elements.push_back(new PlayerCardsOkay(&this->_currentAction, &this->_cardData));
+	this->_elements.push_back(new PlayerCardsOkay(&this->_cardData));
 }
 
 void PlayerCardsFrame::draw()
@@ -399,13 +428,12 @@ void PlayerCardsFrame::onMouseDown(std::string button, int x, int y)
 	}
 }
 
-void PlayerCardsFrame::show(PlayerActions action)
+void PlayerCardsFrame::show()
 {
-	this->_currentAction = action;
 	this->_cardData.erase(this->_cardData.begin(), this->_cardData.end());
 	this->visible = true;
 
-	switch (action)
+	switch (GameFrame::PlayerAction)
 	{
 	case PlayerActions::Drive:
 

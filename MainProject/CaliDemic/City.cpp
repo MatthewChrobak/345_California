@@ -5,6 +5,10 @@
 #include <iostream>
 #include <string>
 
+#ifdef DEBUG
+#include <assert.h>
+#endif
+
 
 City::City()
 {
@@ -85,27 +89,63 @@ void City::buildResearchFacility()
 	
 }
 
-void City::consoleAddNodeAtCoordDialogue(int x, int y)
+bool City::isAdjacent(int index)
 {
-	City* city = new City();
-	std::cout << "Please enter a name: " << std::endl;
-	std::getline(std::cin, city->name);
+	// Determines if the index is inside the adjacency list.
+	for (int i = 0; i < this->_adjacentNodeIds.size(); i++) {
+		if (this->_adjacentNodeIds.at(i) == index) {
+			return true;
+		}
+	}
+	return false;
+}
 
-	while (city->name == "") {
-		std::getline(std::cin, city->name);
+City* City::getCityFromXY(int x, int y)
+{
+	// Get the city index.
+	int index = City::getCityIndexFromXY(x, y);
+
+#ifdef DEBUG
+	// If we're in debug mode, and we're not within the bounds, throw an exception.
+	assert(index != -1 && index < Game::getGameBoard()->getNumCities());
+#endif
+	
+	// Make sure we're within valid bounds.
+	if (index >= 0 && index < Game::getGameBoard()->getNumCities()) {
+		return Game::getGameBoard()->getCity(index);
+	} else {
+		return nullptr;
+	}
+}
+
+int City::getCityIndexFromXY(int x, int y)
+{
+	// Get the game board, and the number of cities.
+	Board* board = Game::getGameBoard();
+#ifdef DEBUG
+	assert(board != nullptr);
+#endif
+	int numCities = board->getNumCities();
+
+	// Figure out what the width and height of the city is.
+	int halfWidth = CITY_RENDER_WIDTH / 2;
+	int halfHeight = CITY_RENDER_HEIGHT / 2;
+
+	for (int i = 0; i < numCities; i++) {
+		City* city = board->getCity(i);
+
+		// The x/y coordinate is their centerpoint.
+		int centerX = city->x;
+		int centerY = city->y;
+
+		// Are we within the bounds of the current city?
+		if (centerX - halfWidth <= x && centerX + halfWidth >= x) {
+			if (centerY - halfHeight <= y && centerY + halfHeight >= y) {
+				// We are. Return the city.
+				return i;
+			}
+		}
 	}
 
-	city->x = x;
-	city->y = y;
-
-	std::cout << "Black: " << InfectionColor::Black << std::endl;
-	std::cout << "Blue: " << InfectionColor::Blue << std::endl;
-	std::cout << "Yellow: " << InfectionColor::Yellow << std::endl;
-	std::cout << "Red: " << InfectionColor::Red << std::endl;
-
-	std::string input;
-	std::getline(std::cin, input);
-	city->color = (InfectionColor)std::atoi(input.c_str());
-
-	Game::getGameBoard()->addCity(city);
+	return -1;
 }

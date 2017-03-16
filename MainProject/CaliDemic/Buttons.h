@@ -83,10 +83,9 @@ struct PlayerCardsClose : public UIButton
 
 struct PlayerCardsOkay : public UIButton
 {
-	PlayerCardsOkay(PlayerActions* action, std::vector<int>* cardData);
+	PlayerCardsOkay(std::vector<int>* cardData);
 	void onMouseDown(std::string button, int x, int y);
 private:
-	PlayerActions* _action;
 	std::vector<int>* _cardData;
 };
 

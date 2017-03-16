@@ -18,10 +18,12 @@ public:
 	City();
 	~City();
 
-	static void consoleAddNodeAtCoordDialogue(int x, int y);
 	void infectCity(int city,int index);
 	static void infectCityOutBreak(int city);
 	void buildResearchFacility();
+
+	// Determines whether or not the city index is within the adjacency list.
+	bool isAdjacent(int index);
 
 	//attributes of City class
 	int x = 0;
@@ -33,6 +35,14 @@ public:
 	bool research = false;
 	bool infected = false;
 	bool inverseAngle = false;
+
+	// Retrieves the city if the x/y coordniate hits the city.
+	// Intended to be used with the UI system and mouseclicks.
+	static City* getCityFromXY(int x, int y);
+
+	// Retrieves the city index if the x/y coordinate hits the city.
+	// Intended to be used with the UI system and mouseclicks.
+	static int getCityIndexFromXY(int x, int y);
 };
 
 
