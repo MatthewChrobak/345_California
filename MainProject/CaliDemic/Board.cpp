@@ -253,16 +253,6 @@ bool Board::playerTurnChange()
 		resetActionCounter();
 		turnChanged = true;
 	}
-<<<<<<< HEAD
-}
-
-//initialize the player cards on the board
-void Board:: playerCardDeckBoardInitializer() {
-	for (int i = 0; i < PlayerCard::playerCardsDeck.size(); i++) {
-		this->playerCardDeck.at(i) = PlayerCard::playerCardsDeck.at(i);
-	}
-=======
 
 	return turnChanged;
->>>>>>> refs/remotes/origin/master
 }
