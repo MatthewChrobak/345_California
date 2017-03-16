@@ -32,10 +32,9 @@ void Board::infectionCityCardsInitializor()
 
 Board::Board(std::string saveFolder)
 {
+	this->loadBoardData(saveFolder + BOARD_DATA_FILE);
 	this->loadNodes(saveFolder + NODES_DATA_FILE);
 	this->loadPlayers(saveFolder + PLAYER_DATA_FILE);
-
-	this->generatePlayerCards();
 }
 
 Board::~Board()
@@ -53,6 +52,7 @@ Board::~Board()
 
 void Board::save(std::string saveFolder)
 {
+	this->saveBoardData(saveFolder + BOARD_DATA_FILE);
 	this->saveNodes(saveFolder + NODES_DATA_FILE);
 	this->savePlayers(saveFolder + PLAYER_DATA_FILE);
 }
@@ -66,6 +66,25 @@ void Board::playerCreation()
 	for (int i = 0; i < numberOfPlayer; i++)
 		_players.push_back(new Player());
 
+}
+
+void Board::loadBoardData(std::string boardFile)
+{
+	// If the file does not exist, there's nothing to load.
+	if (!FileSystem::fileExists(boardFile)) {
+		return;
+	}
+
+	FileStream* fs = FileStream::Open(boardFile, FileMode::Read);
+
+	delete fs;
+}
+
+void Board::saveBoardData(std::string boardFile)
+{
+	FileStream* fs = FileStream::Open(boardFile, FileMode::Read);
+
+	delete fs;
 }
 
 void Board::loadNodes(std::string nodesFile)
@@ -143,11 +162,37 @@ void Board::savePlayers(std::string playerFile)
 {
 	FileStream* fs = FileStream::Open(playerFile, FileMode::Write);
 
-	fs->write(_players.size());
+	fs->write(this->_players.size());
 
 	// Write the player data.
-	for (unsigned int i = 0; i < _players.size(); i++)
-		fs->write(_players.at(i)->pawn->cityIndex);
+	for (unsigned int playerIndex = 0; playerIndex < _players.size(); playerIndex++) {
+		Player& player = this->getPlayer(playerIndex);
+
+		// TODO: Role data
+		fs->write(player.pawn->cityIndex);
+
+		for (int cardIndex = 0; cardIndex < MAX_PLAYER_CARDS; cardIndex++) {
+			PlayerCard* card = player.getCard(cardIndex);
+
+			// If the card is null, write -1 to signify no card type.
+			if (card == nullptr) {
+				
+				fs->write(-1);
+			} else {
+				fs->write(card->getType());
+
+				// For now, assume the player just has city cards.
+				switch (card->getType()) {
+					case PlayerCardType::City_Card:
+					{
+						CityCard* cityCard = (CityCard*)card;
+						fs->write(cityCard->cityIndex);
+					}break;
+				}
+			}
+			
+		}
+	}
 
 	delete fs;
 }
@@ -170,9 +215,30 @@ void Board::loadPlayers(std::string playerFile)
 	Read the player data & the new player is just a blank object
 	so we can actually read from the file because the vector size is not initialize
 	*/
-	for (int i = 0; i < numPlayers; i++) {
+	for (int playerIndex = 0; playerIndex < numPlayers; playerIndex++) {
 		Player* player = new Player();
 		player->pawn->cityIndex = fs->readInt();
+
+		// TODO: Get the role of the player.
+		
+		// Go through all the player's cards.	
+		for (int playerCardIndex = 0; playerCardIndex < MAX_PLAYER_CARDS; playerCardIndex++) {
+			// Get the type of the card.
+			int cardType = fs->readInt();
+
+			// If the card type is non-negative.
+			if (cardType != -1) {
+				// What kind of card is it?
+				switch ((PlayerCardType)cardType) {
+					case PlayerCardType::City_Card:
+					{
+						CityCard* card = new CityCard(fs->readInt());
+						player->addCard(card);
+					}break;
+				}
+			}
+		}
+
 		this->_players.push_back(player);
 	}
 

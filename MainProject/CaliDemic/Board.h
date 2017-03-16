@@ -28,7 +28,7 @@ public:
 	//disease cure boolean
 	//index value indicating disease according it's color...bool array if cured update bool value
 
-	bool isCured[4] = {false, false, false, false};
+	bool isCured[4];
 	
 
 	/*
@@ -58,6 +58,9 @@ private:
 	CityGraph* _cities;
 	std::vector<Player*> _players;
 	std::stack<PlayerCard*> _playerWithdrawPile;
+
+	void loadBoardData(std::string boardFile);
+	void saveBoardData(std::string boardFile);
 
 	void loadNodes(std::string nodesFile);
 	void saveNodes(std::string nodesFile);
