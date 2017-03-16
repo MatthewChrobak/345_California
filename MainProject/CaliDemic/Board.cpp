@@ -205,6 +205,9 @@ void Board::generatePlayerCards()
 
 City* Board::getCity(int index)
 {
+	if (index < 0 || index >= this->getNumCities()) {
+		return nullptr;
+	}
 	return (City*)(this->_cities->getNode(index));
 }
 

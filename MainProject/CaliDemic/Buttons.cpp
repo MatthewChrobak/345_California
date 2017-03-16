@@ -75,12 +75,8 @@ DrivePlayerAction::DrivePlayerAction() : UIButton(CMD_PLAYER_ACTION_DRIVE)
 
 void DrivePlayerAction::onMouseDown(std::string key, int x, int y)
 {
-	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
-#ifdef DEBUG
-	assert(element != nullptr);
-	assert(element->getObjectType() == UI_TYPE_FRAME);
-#endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::Drive);
+	GameFrame::PlayerAction = PlayerActions::Drive;
+	GuiManager::showMsgBox("Please click on a city you wish to drive to.");
 }
 
 DirectFlightPlayerAction::DirectFlightPlayerAction() : UIButton(CMD_PLAYER_ACTION_DIRECT_FLIGHT)
@@ -100,8 +96,10 @@ void DirectFlightPlayerAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::DirectFlight);
+	GameFrame::PlayerAction = PlayerActions::DirectFlight;
+	((PlayerCardsFrame*)element)->show();
 }
 
 CharterFlightAction::CharterFlightAction() : UIButton(CMD_PLAYER_ACTION_CHARTER_FLIGHT)
@@ -121,8 +119,10 @@ void CharterFlightAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::CharterFlight);
+	GameFrame::PlayerAction = PlayerActions::CharterFlight;
+	((PlayerCardsFrame*)element)->show();
 }
 
 ShuttleFlightAction::ShuttleFlightAction() : UIButton(CMD_PLAYER_ACTION_SHUTTLE_FLIGHT)
@@ -142,8 +142,10 @@ void ShuttleFlightAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::ShuttleFlight);
+	GameFrame::PlayerAction = PlayerActions::ShuttleFlight;
+	((PlayerCardsFrame*)element)->show();
 }
 
 BuildResearchCenterAction::BuildResearchCenterAction() : UIButton(CMD_PLAYER_ACTION_BUILD_RESEARCH_CENTER)
@@ -163,8 +165,10 @@ void BuildResearchCenterAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::BuildResearchCenter);
+	GameFrame::PlayerAction = PlayerActions::BuildResearchCenter;
+	((PlayerCardsFrame*)element)->show();
 }
 
 TreatDiseaseAction::TreatDiseaseAction() : UIButton(CMD_PLAYER_ACTION_TREAT_DISEASE)
@@ -184,8 +188,10 @@ void TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::TreatDisease);
+	GameFrame::PlayerAction = PlayerActions::TreatDisease;
+	((PlayerCardsFrame*)element)->show();
 }
 
 ShareKnowledgeAction::ShareKnowledgeAction() : UIButton(CMD_PLAYER_ACTION_SHARE_KNOWLEDGE)
@@ -205,8 +211,10 @@ void ShareKnowledgeAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::ShareKnowledge);
+	GameFrame::PlayerAction = PlayerActions::ShareKnowledge;
+	((PlayerCardsFrame*)element)->show();
 }
 
 
@@ -227,8 +235,10 @@ void DiscoverCureAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::DiscoverCure);
+	GameFrame::PlayerAction = PlayerActions::DiscoverCure;
+	((PlayerCardsFrame*)element)->show();
 }
 
 
@@ -249,8 +259,10 @@ void ViewCardsAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::ViewCards);
+	GameFrame::PlayerAction = PlayerActions::ViewCards;
+	((PlayerCardsFrame*)element)->show();
 }
 
 
@@ -276,9 +288,8 @@ void PlayerCardsClose::onMouseDown(std::string button, int x, int y)
 }
 
 
-PlayerCardsOkay::PlayerCardsOkay(PlayerActions* action, std::vector<int>* cardData) : UIButton(CMD_PLAYER_CARDS_OKAY)
+PlayerCardsOkay::PlayerCardsOkay(std::vector<int>* cardData) : UIButton(CMD_PLAYER_CARDS_OKAY)
 {
-	this->_action = action;
 	this->_cardData = cardData;
 
 	this->surfaceName = "ui\\button.png";
@@ -293,19 +304,22 @@ PlayerCardsOkay::PlayerCardsOkay(PlayerActions* action, std::vector<int>* cardDa
 	this->height = CMD_PLAYER_CARDS_OKAY_HEIGHT;
 }
 
+
+
 void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 {
-	switch (*this->_action)
+	Board* board = Game::getGameBoard();
+	Player& player = board->getCurrentTurnPlayer();
+
+	switch (GameFrame::PlayerAction)
 	{
 		case PlayerActions::Drive:
-
-			break;
+		break;
+		
 		case PlayerActions::DirectFlight:
 			// We should only have one card selected here.
 			if (this->_cardData->size() == 1) {
-				Board* board = Game::getGameBoard();
-				Player& player = board->getCurrentTurnPlayer();
-
+				
 				// Get the card index.
 				int cardIndex = this->_cardData->at(0);
 				PlayerCard* card = player.getCard(cardIndex);
@@ -324,6 +338,8 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 						GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 
 						// TODO: Decrement the player actions.
+						// Reset the player action.
+						GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 					}
 					else {
 						GuiManager::showMsgBox("Please select a city card.");
@@ -337,33 +353,29 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				GuiManager::showMsgBox("Please select only one card.");
 			}
 			break;
+		
 		case PlayerActions::CharterFlight:
-
-
 			//select atleast 1 card
 			if (this->_cardData->size() != 1){
 				GuiManager::showMsgBox("Please select only one card.");
 			}else
 			{
-				Board* board = Game::getGameBoard();
-				Player& player = board->getCurrentTurnPlayer();
+						// Get the card index.
+						int cardIndex = this->_cardData->at(0);
+						PlayerCard* card = player.getCard(cardIndex);
 
-				// Get the card index.
-				int cardIndex = this->_cardData->at(0);
-				PlayerCard* card = player.getCard(cardIndex);
-
-				//if the player's current city === selected card move there
-				if (player.pawn->cityIndex == cardIndex){
-					int x = cardIndex;
-					player.pawn->cityIndex = x;
-					player.removeCard(cardIndex);
-					GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-
-				}
-
-
-
-
+						//if the player's current city === selected card move there 
+						if (player.pawn->cityIndex == cardIndex){
+							int x = cardIndex;
+							player.pawn->cityIndex = x;
+							player.removeCard(cardIndex);
+							GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+						
+			}
+					
+					
+					
+					
 			}
 
 
@@ -385,274 +397,219 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			break;
 		case PlayerActions::DiscoverCure:
 
-			// Ensure that 5 cards were selected.
-			if (this->_cardData->size() == 5) {
-				Board* board = Game::getGameBoard();
-				Player& player = board->getCurrentTurnPlayer();
-
-				const int totalCards = 5;
-
-				// Get the card index.
-				int cardIndex1 = this->_cardData->at(0);
-				int cardIndex2 = this->_cardData->at(1);
-				int cardIndex3 = this->_cardData->at(2);
-				int cardIndex4 = this->_cardData->at(3);
-				int cardIndex5 = this->_cardData->at(4);
-
-				//int cardIndexArray [] = {cardIndex1, cardIndex2, cardIndex3, cardIndex4, cardIndex5};
-
-				//get the cityColors
-				int cityIndex1 = board->getCity(cardIndex1)->color;
-				int cityIndex2 = board->getCity(cardIndex2)->color;
-				int cityIndex3 = board->getCity(cardIndex3)->color;
-				int cityIndex4 = board->getCity(cardIndex4)->color;
-				int cityIndex5 = board->getCity(cardIndex5)->color;
-
-				int cardIndexArray [] = {cityIndex1, cityIndex2, cityIndex3, cityIndex4, cityIndex5};
-
-				// Ensure all cards are of the same color.
-				int counterIfDoesNotMatch = 0;
-				for (int i=0; i<5; i++) {
-					for (int j = 0; j < 5; j++) {
-						if (cardIndexArray[i] != cardIndexArray[j]) {
-							counterIfDoesNotMatch++;
-							GuiManager::showMsgBox("Please select exactly 5 matching cards!");
-							break;
-						}
-					}
-
-				}
-				// Ensure that we have not yet cured the disease.
-				if (!board->isCured[cityIndex1]){
-					board->isCured[cityIndex1] = true;
-					GuiManager::showMsgBox("Congrats disease has been cured");
-
-				}
-				else {
-					GuiManager::showMsgBox("Disease already curedd!");
-
-
-
-				}
-
-
-
-				player.removeCard(cardIndex1);
-				player.removeCard(cardIndex2);
-				player.removeCard(cardIndex3);
-				player.removeCard(cardIndex4);
-				player.removeCard(cardIndex5);
-				GuiManager::showMsgBox("Matching cards removed");
-
-				GameFrame :: PlayerAction = PlayerActions:: NoPlayerAction;
-				break;
-				case PlayerActions::ViewCards:
-					GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-				break;
-			}
+			break;
+		case PlayerActions::ViewCards:
+			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+			break;
 	}
 
-
-
-
-	ToggleMapEditingActions::ToggleMapEditingActions() : UIButton(CMD_TOGGLE_MAP_EDITING_ACTIONS)
-	{
-		this->surfaceName = "ui\\button.png";
-		this->caption = "Show Tools";
-		this->width = CMD_TOGGLE_ACTIONS_WIDTH;
-		this->height = CMD_TOGGLE_ACITONS_HEIGHT;
-		this->visible = false;
-
-		this->left = DRAW_WIDTH - this->width - 10;
-		this->top = DRAW_HEIGHT - this->height - 10;
+	//If turn is changed, show this message
+	if (board->playerTurnChange() == true) {
+		GuiManager::showMsgBox("End of your turn.");
 	}
+}
 
-	void ToggleMapEditingActions::onMouseDown(std::string button, int x, int y)
-	{
-		auto element = GuiManager::getUIElementByName(FRM_MAP_EDITING_ACTIONS);
+
+
+
+ToggleMapEditingActions::ToggleMapEditingActions() : UIButton(CMD_TOGGLE_MAP_EDITING_ACTIONS)
+{
+	this->surfaceName = "ui\\button.png";
+	this->caption = "Show Tools";
+	this->width = CMD_TOGGLE_ACTIONS_WIDTH;
+	this->height = CMD_TOGGLE_ACITONS_HEIGHT;
+	this->visible = false;
+
+	this->left = DRAW_WIDTH - this->width - 10;
+	this->top = DRAW_HEIGHT - this->height - 10;
+}
+
+void ToggleMapEditingActions::onMouseDown(std::string button, int x, int y)
+{
+	auto element = GuiManager::getUIElementByName(FRM_MAP_EDITING_ACTIONS);
 #ifdef DEBUG
-		assert(element != nullptr);
+	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
 #endif
-		element->visible = !element->visible;
-	}
+	element->visible = !element->visible;
+}
 
-	SelectNodeAction::SelectNodeAction() : UIButton(CMD_SELECT_NODE)
-	{
-		this->caption = "Select Node";
-		this->hoverSurfaceName = "ui\\lightbox.png";
-		this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
-		this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
+SelectNodeAction::SelectNodeAction() : UIButton(CMD_SELECT_NODE)
+{
+	this->caption = "Select Node";
+	this->hoverSurfaceName = "ui\\lightbox.png";
+	this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
+	this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
-		this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::SelectNode;
-		this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
-	}
-	void SelectNodeAction::onMouseDown(std::string button, int x, int y)
-	{
-		GameFrame::EditingAction = MapEditingActions::SelectNode;
-	}
+	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::SelectNode;
+	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
+}
+void SelectNodeAction::onMouseDown(std::string button, int x, int y)
+{
+	GameFrame::EditingAction = MapEditingActions::SelectNode;
+}
 
-	RotateNodeAngleAction::RotateNodeAngleAction() : UIButton(CMD_SELECT_NODE)
-	{
-		this->caption = "Rotate Angle";
-		this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
-		this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
+RotateNodeAngleAction::RotateNodeAngleAction() : UIButton(CMD_SELECT_NODE)
+{
+	this->caption = "Rotate Angle";
+	this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
+	this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
-		this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::RotateAngle;
-		this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
-	}
-	void RotateNodeAngleAction::onMouseDown(std::string button, int x, int y)
-	{
-		GameFrame::EditingAction = MapEditingActions::RotateAngle;
-	}
+	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::RotateAngle;
+	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
+}
+void RotateNodeAngleAction::onMouseDown(std::string button, int x, int y)
+{
+	GameFrame::EditingAction = MapEditingActions::RotateAngle;
+}
 
-	AddNodeAction::AddNodeAction() : UIButton(CMD_ADD_NODE)
-	{
-		this->caption = "Add Node";
-		this->hoverSurfaceName = "ui\\lightbox.png";
-		this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
-		this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
+AddNodeAction::AddNodeAction() : UIButton(CMD_ADD_NODE)
+{
+	this->caption = "Add Node";
+	this->hoverSurfaceName = "ui\\lightbox.png";
+	this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
+	this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
-		this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::AddNode;
-		this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
-	}
-	void AddNodeAction::onMouseDown(std::string button, int x, int y)
-	{
-		GameFrame::EditingAction = MapEditingActions::AddNode;
-	}
-
-
-
-	MakeNodeBlackAction::MakeNodeBlackAction() : UIButton(CMD_MAKE_NODE_BLACK)
-	{
-		this->caption = "Make Black";
-		this->hoverSurfaceName = "ui\\lightbox.png";
-		this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
-		this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
-
-		this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeNodeBlack;
-		this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
-	}
-	void MakeNodeBlackAction::onMouseDown(std::string button, int x, int y)
-	{
-		GameFrame::EditingAction = MapEditingActions::MakeNodeBlack;
-	}
+	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::AddNode;
+	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
+}
+void AddNodeAction::onMouseDown(std::string button, int x, int y)
+{
+	GameFrame::EditingAction = MapEditingActions::AddNode;
+}
 
 
 
-	MakeNodeRedAction::MakeNodeRedAction() : UIButton(CMD_MAKE_NODE_RED)
-	{
-		this->caption = "Make Red";
-		this->hoverSurfaceName = "ui\\lightbox.png";
-		this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
-		this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
+MakeNodeBlackAction::MakeNodeBlackAction() : UIButton(CMD_MAKE_NODE_BLACK)
+{
+	this->caption = "Make Black";
+	this->hoverSurfaceName = "ui\\lightbox.png";
+	this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
+	this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
-		this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeNodeRed;
-		this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
-	}
-	void MakeNodeRedAction::onMouseDown(std::string button, int x, int y)
-	{
-		GameFrame::EditingAction = MapEditingActions::MakeNodeRed;
-	}
-
-
-	MakeNodeYellowAction::MakeNodeYellowAction() : UIButton(CMD_MAKE_NODE_YELLOW)
-	{
-		this->caption = "Make Yellow";
-		this->hoverSurfaceName = "ui\\lightbox.png";
-		this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
-		this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
-
-		this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeNodeYellow;
-		this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
-	}
-	void MakeNodeYellowAction::onMouseDown(std::string button, int x, int y)
-	{
-		GameFrame::EditingAction = MapEditingActions::MakeNodeYellow;
-	}
-
-
-	MakeNodeBlueAction::MakeNodeBlueAction() : UIButton(CMD_MAKE_NODE_BLUE)
-	{
-		this->caption = "Make Blue";
-		this->hoverSurfaceName = "ui\\lightbox.png";
-		this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
-		this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
-
-		this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeNodeBlue;
-		this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
-	}
-	void MakeNodeBlueAction::onMouseDown(std::string button, int x, int y)
-	{
-		GameFrame::EditingAction = MapEditingActions::MakeNodeBlue;
-	}
-
-
-	ChangeNodeNameAction::ChangeNodeNameAction() : UIButton(CMD_CHANGE_NODE_NAME)
-	{
-		this->caption = "Rename Node";
-		this->hoverSurfaceName = "ui\\lightbox.png";
-		this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
-		this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
-
-		this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::ChangeNodeName;
-		this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
-	}
-	void ChangeNodeNameAction::onMouseDown(std::string button, int x, int y)
-	{
-		GameFrame::EditingAction = MapEditingActions::ChangeNodeName;
-	}
-
-
-	MakeDirectedEdgeAction::MakeDirectedEdgeAction() : UIButton(CMD_MAKE_DIRECTED_EDGE)
-	{
-		this->caption = "Make Edge";
-		this->hoverSurfaceName = "ui\\lightbox.png";
-		this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
-		this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
-
-		this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeDirectedEdge;
-		this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
-	}
-	void MakeDirectedEdgeAction::onMouseDown(std::string button, int x, int y)
-	{
-		GameFrame::EditingAction = MapEditingActions::MakeDirectedEdge;
-	}
+	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeNodeBlack;
+	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
+}
+void MakeNodeBlackAction::onMouseDown(std::string button, int x, int y)
+{
+	GameFrame::EditingAction = MapEditingActions::MakeNodeBlack;
+}
 
 
 
-	MoveNodeAction::MoveNodeAction() : UIButton(CMD_MOVE_NODE)
-	{
-		this->caption = "MoveNode";
-		this->hoverSurfaceName = "ui\\lightbox.png";
-		this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
-		this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
+MakeNodeRedAction::MakeNodeRedAction() : UIButton(CMD_MAKE_NODE_RED)
+{
+	this->caption = "Make Red";
+	this->hoverSurfaceName = "ui\\lightbox.png";
+	this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
+	this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
-		this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MoveNode;
-		this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
-	}
-	void MoveNodeAction::onMouseDown(std::string button, int x, int y)
-	{
-		GameFrame::EditingAction = MapEditingActions::MoveNode;
-	}
+	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeNodeRed;
+	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
+}
+void MakeNodeRedAction::onMouseDown(std::string button, int x, int y)
+{
+	GameFrame::EditingAction = MapEditingActions::MakeNodeRed;
+}
 
 
-	FinishedEditingMapAction::FinishedEditingMapAction() : UIButton(CMD_FINISHED_MAP_EDITING)
-	{
-		this->caption = "Done Editing";
-		this->hoverSurfaceName = "ui\\lightbox.png";
-		this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
-		this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
+MakeNodeYellowAction::MakeNodeYellowAction() : UIButton(CMD_MAKE_NODE_YELLOW)
+{
+	this->caption = "Make Yellow";
+	this->hoverSurfaceName = "ui\\lightbox.png";
+	this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
+	this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
-		this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::FinishedEditingMap;
-		this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
-	}
-	void FinishedEditingMapAction::onMouseDown(std::string button, int x, int y)
-	{
-		auto element = GuiManager::getUIElementByName(FRM_GAME_FRAME);
+	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeNodeYellow;
+	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
+}
+void MakeNodeYellowAction::onMouseDown(std::string button, int x, int y)
+{
+	GameFrame::EditingAction = MapEditingActions::MakeNodeYellow;
+}
+
+
+MakeNodeBlueAction::MakeNodeBlueAction() : UIButton(CMD_MAKE_NODE_BLUE)
+{
+	this->caption = "Make Blue";
+	this->hoverSurfaceName = "ui\\lightbox.png";
+	this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
+	this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
+
+	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeNodeBlue;
+	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
+}
+void MakeNodeBlueAction::onMouseDown(std::string button, int x, int y)
+{
+	GameFrame::EditingAction = MapEditingActions::MakeNodeBlue;
+}
+
+
+ChangeNodeNameAction::ChangeNodeNameAction() : UIButton(CMD_CHANGE_NODE_NAME)
+{
+	this->caption = "Rename Node";
+	this->hoverSurfaceName = "ui\\lightbox.png";
+	this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
+	this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
+
+	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::ChangeNodeName;
+	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
+}
+void ChangeNodeNameAction::onMouseDown(std::string button, int x, int y)
+{
+	GameFrame::EditingAction = MapEditingActions::ChangeNodeName;
+}
+
+
+MakeDirectedEdgeAction::MakeDirectedEdgeAction() : UIButton(CMD_MAKE_DIRECTED_EDGE)
+{
+	this->caption = "Make Edge";
+	this->hoverSurfaceName = "ui\\lightbox.png";
+	this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
+	this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
+
+	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeDirectedEdge;
+	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
+}
+void MakeDirectedEdgeAction::onMouseDown(std::string button, int x, int y)
+{
+	GameFrame::EditingAction = MapEditingActions::MakeDirectedEdge;
+}
+
+
+
+MoveNodeAction::MoveNodeAction() : UIButton(CMD_MOVE_NODE)
+{
+	this->caption = "MoveNode";
+	this->hoverSurfaceName = "ui\\lightbox.png";
+	this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
+	this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
+
+	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MoveNode;
+	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
+}
+void MoveNodeAction::onMouseDown(std::string button, int x, int y)
+{
+	GameFrame::EditingAction = MapEditingActions::MoveNode;
+}
+
+
+FinishedEditingMapAction::FinishedEditingMapAction() : UIButton(CMD_FINISHED_MAP_EDITING)
+{
+	this->caption = "Done Editing";
+	this->hoverSurfaceName = "ui\\lightbox.png";
+	this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
+	this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
+
+	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::FinishedEditingMap;
+	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
+}
+void FinishedEditingMapAction::onMouseDown(std::string button, int x, int y)
+{
+	auto element = GuiManager::getUIElementByName(FRM_GAME_FRAME);
 #ifdef DEBUG
-		assert(element != nullptr);
+	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
 #endif
-		((GameFrame*)element)->finishedEditing();
-	}
+	((GameFrame*)element)->finishedEditing();
+}
