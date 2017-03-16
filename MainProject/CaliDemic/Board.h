@@ -42,6 +42,7 @@ public:
 	Player& getPlayer(int index);
 	int getNumberOfPlayers();
 	int currentTurnPlayer = 0;
+	void drawCards(); // Draw 2 cards from the player deck
 	std::vector<std::string> playerCardDeck;
 
 
@@ -52,7 +53,8 @@ public:
 	*/
 	std::vector<int> infectionCityCards;
 	void infectionCityCardsInitializor();
-	void drawCards();
+	
+
 
 private:
 	CityGraph* _cities;

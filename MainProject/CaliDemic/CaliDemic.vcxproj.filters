@@ -25,9 +25,6 @@
     <Filter Include="Header Files\Graphics\Sfml">
       <UniqueIdentifier>{d9c959d3-cfda-4f1e-8704-cf63193c6ac1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\IO">
-      <UniqueIdentifier>{f319ec17-a490-455c-a9cf-b613fc2166a6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\IO">
       <UniqueIdentifier>{f7437700-d5de-4184-b395-0a8effd1a880}</UniqueIdentifier>
     </Filter>
@@ -90,6 +87,9 @@
     </Filter>
     <Filter Include="Source Files\UI\Elements\Elements">
       <UniqueIdentifier>{dfcd0771-dacf-4d58-afe7-36a89c550d35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\IO">
+      <UniqueIdentifier>{f319ec17-a490-455c-a9cf-b613fc2166a6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

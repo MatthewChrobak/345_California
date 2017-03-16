@@ -582,11 +582,12 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			} while (numberOfCards > 7);
 		}
 
+		//City::infectCity()
+
+
+
 		GuiManager::showMsgBox("End of your turn.");
 	}
-
-
-
 
 	return true;
 }
