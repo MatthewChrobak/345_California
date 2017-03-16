@@ -15,10 +15,12 @@ public:
 	void addCard(PlayerCard* card);
 	PlayerCard* getCard(int index);
 	void removeCard(int index);
+	int getNumberOfCards();
 	
 
 
 private:
 	PlayerCard* _playerCards[MAX_PLAYER_CARDS];
+	int playerCardCounter;
 };
 

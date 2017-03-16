@@ -178,8 +178,17 @@ void Board::loadPlayers(std::string playerFile)
 	delete fs;
 }
 
+//Draw 2 cards
+Player& Board::drawCards()
+{
+	for (int i = 0; i < 2; i++)
+	{
+		this->_players[this->currentTurnPlayer]->addCard(this->_playerWithdrawPile.top());
+		this->_playerWithdrawPile.pop();
+	}
 
-
+	return *this->_players[Board::currentTurnPlayer];
+}
 
 
 
@@ -252,6 +261,7 @@ bool Board::playerTurnChange()
 		this->currentTurnPlayer = ((this->currentTurnPlayer) + 1) % _players.size();
 		resetActionCounter();
 		turnChanged = true;
+		drawCards();
 	}
 
 	return turnChanged;

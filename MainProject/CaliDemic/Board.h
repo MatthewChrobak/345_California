@@ -38,8 +38,7 @@ public:
 	int getNumberOfPlayers();
 	int currentTurnPlayer = 0;
 	std::vector<std::string> playerCardDeck;
-	
-	void playerCardDeckBoardInitializer();
+
 
 	/*
 	bank of all cities that can be infected
@@ -48,6 +47,7 @@ public:
 	*/
 	std::vector<int> infectionCityCards;
 	void infectionCityCardsInitializor();
+	Player& drawCards();
 
 private:
 	CityGraph* _cities;
