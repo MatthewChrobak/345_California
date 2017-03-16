@@ -445,9 +445,11 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 					player.removeCard(cardIndex5);	
 				} else {
 					GuiManager::showMsgBox("The disease is already cured!");
-					return true;
 				}
+			} else {
+				GuiManager::showMsgBox("Please select 5 cards.");
 			}
+			return true;
 			break;
 		case PlayerActions::TreatDisease:
 
