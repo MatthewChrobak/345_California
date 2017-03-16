@@ -46,7 +46,7 @@ void UITextbox::draw()
 	GraphicsManager::renderText(renderText, *this);
 }
 
-void UITextbox::onKeyDown(std::string key)
+bool UITextbox::onKeyDown(std::string key)
 {
 	// Is the input a non-character?
 	if (key.size() != 1) {
@@ -55,13 +55,14 @@ void UITextbox::onKeyDown(std::string key)
 			// Can we even backspace?
 			if (this->text.size() != 0) {
 				this->text = this->text.substr(0, this->text.size() - 1);
-				return;
+				return true;
 			}
 		}
 
 		// Exit out. This is not a character we should append.
-		return;
+		return true;
 	}
 
 	this->text += key;
+	return true;
 }
