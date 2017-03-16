@@ -335,9 +335,8 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 						// Remove it, move the player, and hide the player cards.
 						player.removeCard(cardIndex);
 						player.pawn->cityIndex = cityIndex;
+						decrementActionCounter();
 						GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-
-						// TODO: Decrement the player actions.
 						// Reset the player action.
 						GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 					}
@@ -355,47 +354,109 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			break;
 		
 		case PlayerActions::CharterFlight:
-			//select atleast 1 card
-			if (this->_cardData->size() != 1){
-				GuiManager::showMsgBox("Please select only one card.");
-			}else
+			//select at least 1 card
+			if (this->_cardData->size() != 1)
 			{
-						// Get the card index.
-						int cardIndex = this->_cardData->at(0);
-						PlayerCard* card = player.getCard(cardIndex);
-
-						//if the player's current city === selected card move there 
-						if (player.pawn->cityIndex == cardIndex){
-							int x = cardIndex;
-							player.pawn->cityIndex = x;
-							player.removeCard(cardIndex);
-							GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-						
+				GuiManager::showMsgBox("Please select only one card.");
 			}
-					
-					
-					
-					
+			else
+			{
+				// Get the card index.
+				int cardIndex = this->_cardData->at(0);
+				PlayerCard* card = player.getCard(cardIndex);
+
+				//if the player's current city == selected card move there 
+				if (player.pawn->cityIndex == cardIndex)
+				{
+					int x = cardIndex;
+					player.pawn->cityIndex = x;
+					player.removeCard(cardIndex);
+					decrementActionCounter();
+					GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;	
+					//reset player Actions
+					GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+				}
+		
 			}
-
-
-
-
 
 			break;
 		case PlayerActions::ShuttleFlight:
 
-			break;
-		case PlayerActions::BuildResearchCenter:
+			/*
+			When the player successfully finishes an action, ensure that the action is reset by writing the line
+			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+			Failure to do so will cause assertions to fail and will cause the application to crash.
+			*/
+			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 
 			break;
+		case PlayerActions::BuildResearchCenter:
+			//select only one card
+			if (this->_cardData->size() != 1)
+				GuiManager::showMsgBox("Please select only one card.");
+
+			//correct selection than check if we have enough research center
+			else
+			{
+				// Get the card index.
+				int cardIndex = this->_cardData->at(0);
+				PlayerCard* card = player.getCard(cardIndex);
+				//check if the card is null or if the card is not city card type
+				if(card != nullptr && card->getType() == PlayerCardType::City_Card)
+				{
+					//check if we have enough research center
+					if (Game::numOfResearchCenter > 0)
+					{
+						if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != true)
+						{
+							//check if the player is current city match with the city card
+							if (player.pawn->cityIndex == cardIndex)
+							{
+								Game::getGameBoard()->getCity(player.pawn->cityIndex)->research = true;
+								player.removeCard(cardIndex);
+								Game::numOfResearchCenter--;
+								decrementActionCounter();
+								//reset player actions
+								GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+							}
+							else
+								GuiManager::showMsgBox("You current position does not match the selected city card.");
+						}
+						else
+							GuiManager::showMsgBox("All research centers have been used.");
+					}
+					else
+						GuiManager::showMsgBox("The research facility is already built in this city.");
+				}
+				else
+					GuiManager::showMsgBox("The card is either null or you did not select a city");
+			}
+			break;
 		case PlayerActions::TreatDisease:
+			/*
+			When the player successfully finishes an action, ensure that the action is reset by writing the line
+			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+			Failure to do so will cause assertions to fail and will cause the application to crash.
+			*/
+			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 
 			break;
 		case PlayerActions::ShareKnowledge:
+			/*
+			When the player successfully finishes an action, ensure that the action is reset by writing the line
+			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+			Failure to do so will cause assertions to fail and will cause the application to crash.
+			*/
+			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 
 			break;
 		case PlayerActions::DiscoverCure:
+			/*
+			When the player successfully finishes an action, ensure that the action is reset by writing the line
+			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+			Failure to do so will cause assertions to fail and will cause the application to crash.
+			*/
+			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 
 			break;
 		case PlayerActions::ViewCards:

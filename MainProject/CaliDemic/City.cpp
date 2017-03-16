@@ -77,22 +77,15 @@ void City::infectCityOutBreak(int city)
 void City::buildResearchFacility()
 {
 	if (this->research == false)
-	{
 		this->research = true;
-		std::cout << "research facility builded" << std::endl;
-	}
 	else
-	{
-		std::cout << "research facility builded already" << std::endl;
 		return;
-	}
-	
 }
 
 bool City::isAdjacent(int index)
 {
 	// Determines if the index is inside the adjacency list.
-	for (int i = 0; i < this->_adjacentNodeIds.size(); i++) {
+	for (unsigned int i = 0; i < this->_adjacentNodeIds.size(); i++) {
 		if (this->_adjacentNodeIds.at(i) == index) {
 			return true;
 		}

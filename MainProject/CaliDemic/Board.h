@@ -29,7 +29,7 @@ public:
 	//index value indicating disease according it's color...bool array if cured update bool value
 
 	bool isCured[4] = {false, false, false, false};
-
+	
 
 	/*
 	This is to change turn once the number of action is reach
