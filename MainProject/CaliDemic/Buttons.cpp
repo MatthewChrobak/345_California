@@ -402,6 +402,9 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			break;
 		case PlayerActions::BuildResearchCenter:
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/Eastside-Ying-Yang
 			//select only one card
 			if (this->_cardData->size() != 1)
 				GuiManager::showMsgBox("Please select only one card.");
@@ -442,6 +445,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				else
 					GuiManager::showMsgBox("The card is either null or you did not select a city");
 			}
+<<<<<<< HEAD
 =======
 			// Ensure that 5 cards were selected.
 			if (this->_cardData->size() == 5) {
@@ -497,6 +501,9 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			}
 			return true;
 >>>>>>> refs/remotes/origin/master
+=======
+
+>>>>>>> origin/Eastside-Ying-Yang
 			break;
 		case PlayerActions::TreatDisease:
 			/*
@@ -517,6 +524,61 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 			break;
 		case PlayerActions::DiscoverCure:
+       
+			// Ensure that 5 cards were selected.
+			if (this->_cardData->size() == 5) {
+				Board* board = Game::getGameBoard();
+				Player& player = board->getCurrentTurnPlayer();
+
+				const int totalCards = 5;
+
+				// Get the card index.
+				int cardIndex1 = this->_cardData->at(0);
+				int cardIndex2 = this->_cardData->at(1);
+				int cardIndex3 = this->_cardData->at(2);
+				int cardIndex4 = this->_cardData->at(3);
+				int cardIndex5 = this->_cardData->at(4);
+
+				//int cardIndexArray [] = {cardIndex1, cardIndex2, cardIndex3, cardIndex4, cardIndex5};
+
+				//get the cityColors
+				int cityIndex1 = board->getCity(cardIndex1)->color;
+				int cityIndex2 = board->getCity(cardIndex2)->color;
+				int cityIndex3 = board->getCity(cardIndex3)->color;
+				int cityIndex4 = board->getCity(cardIndex4)->color;
+				int cityIndex5 = board->getCity(cardIndex5)->color;
+
+				int cardIndexArray[] = { cityIndex1, cityIndex2, cityIndex3, cityIndex4, cityIndex5 };
+
+				// Ensure all cards are of the same color.
+				for (int i = 0; i < 5; i++) {
+					for (int j = 0; j < 5; j++) {
+						if (cardIndexArray[i] != cardIndexArray[j]) {
+							GuiManager::showMsgBox("Please select exactly 5 matching cards!");
+							return true;
+						}
+					}
+
+				}
+				// Ensure that we have not yet cured the disease.
+				if (!board->isCured[cityIndex1]) {
+					board->isCured[cityIndex1] = true;
+					GuiManager::showMsgBox("The disease has been cured");
+					GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+
+					player.removeCard(cardIndex1);
+					player.removeCard(cardIndex2);
+					player.removeCard(cardIndex3);
+					player.removeCard(cardIndex4);
+					player.removeCard(cardIndex5);	
+				} else {
+					GuiManager::showMsgBox("The disease is already cured!");
+				}
+			} else {
+				GuiManager::showMsgBox("Please select 5 cards.");
+			}
+			return true;
+      
 			/*
 			When the player successfully finishes an action, ensure that the action is reset by writing the line
 			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
@@ -537,9 +599,6 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 	return true;
 }
-
-
-
 
 ToggleMapEditingActions::ToggleMapEditingActions() : UIButton(CMD_TOGGLE_MAP_EDITING_ACTIONS)
 {
