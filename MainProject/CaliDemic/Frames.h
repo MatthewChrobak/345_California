@@ -17,6 +17,7 @@ public:
 	void finishedEditing();
 
 	static MapEditingActions EditingAction;
+	static PlayerActions PlayerAction;
 	static int EditNodeIndex;
 
 private:
@@ -45,10 +46,9 @@ struct PlayerCardsFrame : public UIFrame
 	void draw();
 	void onMouseDown(std::string button, int x, int y);
 
-	void show(PlayerActions action);
+	void show();
 
 private:
-	PlayerActions _currentAction;
 	std::vector<int> _cardData;
 };
 

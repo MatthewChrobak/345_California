@@ -11,5 +11,6 @@ enum PlayerActions : int
 	ShareKnowledge,
 	DiscoverCure,
 	ViewCards,
-	PlayerActions_Length
+	PlayerActions_Length,
+	NoPlayerAction
 };
