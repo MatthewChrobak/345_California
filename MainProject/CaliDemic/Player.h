@@ -15,6 +15,8 @@ public:
 	void addCard(PlayerCard* card);
 	PlayerCard* getCard(int index);
 	void removeCard(int index);
+	
+
 
 private:
 	PlayerCard* _playerCards[MAX_PLAYER_CARDS];

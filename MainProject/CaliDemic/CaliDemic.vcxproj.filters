@@ -195,6 +195,9 @@
     <ClCompile Include="UIMessageBox.cpp">
       <Filter>Source Files\UI\Elements\Behaviour</Filter>
     </ClCompile>
+    <ClCompile Include="RandomNumberGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsSystem.h">
@@ -310,6 +313,12 @@
     </ClInclude>
     <ClInclude Include="UIMessageBox.h">
       <Filter>Header Files\UI\Elements\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditingActions.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomNumberGenerator.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -11,14 +11,16 @@ public:
 	void onMouseMove(int x, int y);
 	void onKeyDown(std::string key);
 	void onKeyUp(std::string key);
+	void draw();
+
+	void showAdminTools();
+	void finishedEditing();
+
+	static MapEditingActions EditingAction;
+	static int EditNodeIndex;
 
 private:
-#ifdef ADMIN_EDITOR
-	bool _connectNode = false;
-	bool _moveMode = false;
-	bool _teleportNode = false;
-	bool _addNode = false;
-#endif
+	bool _editing = false;
 };
 
 // The frame that holds all player-action buttons in game.
@@ -48,4 +50,11 @@ struct PlayerCardsFrame : public UIFrame
 private:
 	PlayerActions _currentAction;
 	std::vector<int> _cardData;
+};
+
+// The frame that contains the map-editing actions.
+struct MapEditingActionsFrame : public UIFrame
+{
+	MapEditingActionsFrame();
+	void draw();
 };

@@ -2,6 +2,9 @@
 #include "Game.h"
 #include "EventCard.h"
 #include "EpidemicCard.h"
+#include "Board.h"
+#include "InfectionCard.h"
+#include "City.h"
 #include <stdlib.h>    
 #include <time.h>
 #include <stdio.h> 
@@ -72,6 +75,7 @@ string PlayerCard::getPlayerCards() {
 	if (playerCards.size() <= 0) {
 		return "You have no more cards to play";
 	}
+	return "";
 }
 
 // Retrieves a single card from the player's hand
@@ -100,15 +104,44 @@ void PlayerCard::setPlayerCards(int numberOfCards) {
 
 //Automatically discards en Epidemic card if the player picks one
 void PlayerCard::useEpidemic() {
-	for (unsigned int i = 0; i< playerCards.size(); i++)
+	/*for (unsigned int i = 0; i< playerCards.size(); i++)
 	{
 		if (playerCards[i] == "Epidemic") {
 			playerCards.erase(playerCards.begin() + i);
 		}
 	}
 
+	*/
+
+	int counter = 0;
+	int epidemicInfection = Game::getGameBoard()->infectionCityCards.back();
+	//shrinking the infectionCityCards
+	Game::getGameBoard()->infectionCityCards.shrink_to_fit();
+
+	static const int cityColor = Game::getGameBoard()->getCity(epidemicInfection)->color;
+	//infect the draw city three times
+	for (int i = 0; i < 3; i++)
+	{
+		
+		if (Game::getGameBoard()->getCity(epidemicInfection)->cube[i] == -1)
+		{
+			counter++;
+			Game::getGameBoard()->getCity(epidemicInfection)->cube[i] = cityColor;
+			Game::numOfCubeDecrementor(cityColor);
+		}
+
+	}
+	//if the draw city is not been infect three times that mean that there is an outbreak
+	if (counter < 3)
+	{
+		City::infectCityOutBreak(epidemicInfection);
+	}
+
+
 	//Further functions needed to initiate the effects of picking an epidemic card
+
 }
+
 
 //Get the description of an event card (if in possession)
 void PlayerCard::getEventDescription() {
@@ -116,7 +149,7 @@ void PlayerCard::getEventDescription() {
 	int counter = 0; // Counter remains 0 if no event card is found in a player's hand
 
 	//Checks every card in a player's hand to verify if player has an event card
-	for (int i = 0; i < playerCards.size(); i++) {
+	for (unsigned int i = 0; i < playerCards.size(); i++) {
 
 		for (unsigned int i = 0; i < playerCards.size(); i++) {
 			if (playerCards[i] == "Government Grant") {

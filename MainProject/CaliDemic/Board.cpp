@@ -3,25 +3,49 @@
 #include "FileSystem.h"
 #include "PlayerActions.h"
 #include "ActionCounter.h"
+#include "Game.h"
 #include <iostream>
 #include <vector>
 #include "PlayerCard.h"
-
+#include "CityCard.h"
+#include "RandomNumberGenerator.h"
 
 #ifdef DEBUG
 #include <assert.h>
 #endif
 
+/*
+This will initialize the infectionCard deck
+*/
+void Board::infectionCityCardsInitializor()
+{
+	for (int i = 0; i < Game::getGameBoard()->getNumCities(); i++)
+	{
+		infectionCityCards.push_back(i);
+		infectionCityCards.push_back(i);
+		infectionCityCards.push_back(i);
+	}
+	infectionCityCards.shrink_to_fit();
+
+}
+
 Board::Board(std::string saveFolder)
 {
 	this->loadNodes(saveFolder + NODES_DATA_FILE);
 	this->loadPlayers(saveFolder + PLAYER_DATA_FILE);
+
+	this->generatePlayerCards();
 }
 
 Board::~Board()
 {
 	for (unsigned int i = 0; i < this->_players.size();i++)
 		delete this->_players.at(i);
+
+	while (!this->_playerWithdrawPile.empty()) {
+		delete this->_playerWithdrawPile.top();
+		this->_playerWithdrawPile.pop();
+	}
 
 	delete this->_cities;
 }
@@ -132,6 +156,8 @@ void Board::loadPlayers(std::string playerFile)
 
 	// If the file does not exist, there's nothing to load.
 	if (!FileSystem::fileExists(playerFile)) {
+		this->_players.push_back(new Player());
+		this->_players.push_back(new Player());
 		return;
 	}
 
@@ -150,6 +176,31 @@ void Board::loadPlayers(std::string playerFile)
 	}
 
 	delete fs;
+}
+
+
+
+
+
+
+void Board::generatePlayerCards()
+{
+	// Create a vector of city indexes.
+	std::vector<int> cityIds;
+	for (int i = 0; i < this->getNumCities(); i++) {
+		cityIds.push_back(i);
+	}
+
+	while (cityIds.size() != 0) {
+		int rng = RandomNumberGenerator::next(0, cityIds.size());
+
+		//Add the city to the withdraw pile.
+		CityCard* card = new CityCard(cityIds.at(rng));
+		this->_playerWithdrawPile.push(card);
+
+		//Remove the id from the vector.
+		cityIds.erase(cityIds.begin() + rng);
+	}
 }
 
 
@@ -193,13 +244,16 @@ int Board::getNumberOfPlayers()
 this will check the number of action and change turn if it reaches 
 4 actions
 */
-void Board::playerTurnChange()
+bool Board::playerTurnChange()
 {
+	boolean turnChanged = false;
 	if (actionCounter == 0)
 	{
 		this->currentTurnPlayer = ((this->currentTurnPlayer) + 1) % _players.size();
 		resetActionCounter();
+		turnChanged = true;
 	}
+<<<<<<< HEAD
 }
 
 //initialize the player cards on the board
@@ -207,4 +261,8 @@ void Board:: playerCardDeckBoardInitializer() {
 	for (int i = 0; i < PlayerCard::playerCardsDeck.size(); i++) {
 		this->playerCardDeck.at(i) = PlayerCard::playerCardsDeck.at(i);
 	}
+=======
+
+	return turnChanged;
+>>>>>>> refs/remotes/origin/master
 }
