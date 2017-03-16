@@ -7,10 +7,10 @@ class GameFrame : public UIFrame
 {
 public:
 	GameFrame();
-	void onMouseDown(std::string button, int x, int y);
+	bool onMouseDown(std::string button, int x, int y);
 	void onMouseMove(int x, int y);
-	void onKeyDown(std::string key);
-	void onKeyUp(std::string key);
+	bool onKeyDown(std::string key);
+	bool onKeyUp(std::string key);
 	void draw();
 
 	void showAdminTools();
@@ -28,7 +28,7 @@ private:
 struct PlayerActionsFrame : public UIFrame
 {
 	PlayerActionsFrame();
-	void onMouseDown(std::string button, int x, int y);
+	bool onMouseDown(std::string button, int x, int y);
 };
 
 
@@ -44,7 +44,7 @@ struct PlayerCardsFrame : public UIFrame
 {
 	PlayerCardsFrame();
 	void draw();
-	void onMouseDown(std::string button, int x, int y);
+	bool onMouseDown(std::string button, int x, int y);
 
 	void show();
 

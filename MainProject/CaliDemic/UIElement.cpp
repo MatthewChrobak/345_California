@@ -13,24 +13,28 @@ UIElement::~UIElement()
 {
 }
 
-void UIElement::onMouseDown(std::string button, int x, int y)
+bool UIElement::onMouseDown(std::string button, int x, int y)
 {
+	return true;
 }
 
-void UIElement::onMouseUp(std::string button, int x, int y)
+bool UIElement::onMouseUp(std::string button, int x, int y)
 {
+	return true;
 }
 
 void UIElement::onMouseMove(int x, int y)
 {
 }
 
-void UIElement::onKeyDown(std::string key)
+bool UIElement::onKeyDown(std::string key)
 {
+	return true;
 }
 
-void UIElement::onKeyUp(std::string key)
+bool UIElement::onKeyUp(std::string key)
 {
+	return true;
 }
 
 UIElement* UIElement::getElementByName(std::string name)

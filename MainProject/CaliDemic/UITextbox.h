@@ -13,7 +13,7 @@ public:
 
 	std::string getObjectType();
 	void draw();
-	void onKeyDown(std::string key);
+	bool onKeyDown(std::string key);
 
 private:
 	int tickCursor;
