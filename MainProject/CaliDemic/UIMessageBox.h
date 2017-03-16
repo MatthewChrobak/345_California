@@ -8,7 +8,7 @@ class UIMessageBoxAccept : public UIButton
 {
 public:
 	UIMessageBoxAccept();
-	void onMouseDown(std::string button, int x, int y);
+	bool onMouseDown(std::string button, int x, int y);
 };
 
 

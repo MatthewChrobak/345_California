@@ -62,7 +62,8 @@ UIMessageBoxAccept::UIMessageBoxAccept() : UIButton(CMD_MSG_BOX_ACCEPT)
 	this->top = MSG_BOX_HEIGHT / 2 + this->height;
 }
 
-void UIMessageBoxAccept::onMouseDown(std::string button, int x, int y)
+bool UIMessageBoxAccept::onMouseDown(std::string button, int x, int y)
 {
 	GuiManager::popMsgBox();
+	return true;
 }

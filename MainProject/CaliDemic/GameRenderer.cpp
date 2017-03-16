@@ -2,6 +2,7 @@
 #include "SurfaceContext.h"
 #include "GraphicsManager.h"
 #include "GuiManager.h"
+#include "Frames.h"
 
 void GameRenderer::drawGame()
 {
@@ -51,18 +52,49 @@ void GameRenderer::drawCities()
 {
 	// Get the game board and the number of cities.
 	Board* board = Game::getGameBoard();
-	unsigned int numCities = board->getNumCities();
+	int numCities = board->getNumCities();
 
 	// Draw all the connections so that they appear under the nodes.
-	for (unsigned int i = 0; i < numCities; i++) {
+	for (int i = 0; i < numCities; i++) {
 		GameRenderer::drawCityConnections(*board->getCity(i));
 	}
 
 	// Draw all the nodes and their names.
-	for (unsigned int i = 0; i < numCities; i++) {
+	for (int i = 0; i < numCities; i++) {
 		City* city = board->getCity(i);
 		GameRenderer::drawCityNode(*city);
 		GameRenderer::drawCityName(*city);
+	}
+
+	// Are we currently trying to do an action?
+	if (GameFrame::PlayerAction == PlayerActions::Drive) {
+		// We're trying to drive. Make sure we know what cities we can go to.
+		Player& player = board->getCurrentTurnPlayer();
+		int playerCityIndex = player.pawn->cityIndex;
+
+		// Is it a valid city?
+		if (playerCityIndex >= 0 && playerCityIndex < board->getNumCities()) {
+			// Get the city and its adjacent nodes.
+			City* playerCity = board->getCity(playerCityIndex);
+			auto adjacentCities = playerCity->getAdjacentNodes();
+
+			// Loop through every city.
+			for (unsigned int i = 0; i < adjacentCities.size(); i++) {
+				int cityIndex = adjacentCities.at(i);
+
+				// Is it a valid city?
+				if (cityIndex >= 0 && cityIndex < board->getNumCities()) {
+					City* city = board->getCity(cityIndex);
+
+					// It is. Render it.
+					SurfaceContext ctx;
+					ctx.position = new Vector2D(city->x - (CITY_RENDER_WIDTH / 2), city->y - (CITY_RENDER_HEIGHT / 2));
+					ctx.size = new Vector2D(CITY_RENDER_WIDTH, CITY_RENDER_HEIGHT);
+
+					GraphicsManager::renderSurface("ui\\selectbox.png", ctx);
+				}
+			}
+		}
 	}
 }
 
@@ -90,14 +122,17 @@ void GameRenderer::drawCityNode(City& city)
 
 	// Pass it off to the graphics manager to render it.
 	GraphicsManager::renderSurface("nodes\\node.png", ctx);
-
-	ctx.position->x += 10;
-	ctx.position->y += 10;
-
 	
+	int cubeHeight = CITY_RENDER_HEIGHT / 3;
+
 	//update Counter the when there's a cube value 
 	for (int i = 0; i < 3; i++){
 		if (city.cube[i] >= 0){
+			// Reset the context.
+			ctx.reset();
+			ctx.position = new Vector2D(city.x + CITY_RENDER_WIDTH / 2, city.y - CITY_RENDER_HEIGHT / 2 + i * cubeHeight);
+			ctx.size = new Vector2D(cubeHeight, cubeHeight);
+
 			int cubeColor = city.cube[i];
 			switch (cubeColor) {
 			case InfectionColor::Red:
@@ -113,15 +148,18 @@ void GameRenderer::drawCityNode(City& city)
 				ctx.color = new RGBA(0, 0, 0);
 				break;
 			}
+		
+			GraphicsManager::renderSurface("nodes\\cube.png", ctx);
 		}
-		else
-			cout << "No cubes to generate" << endl; 
 	}
-	
 
-
-
-	GraphicsManager::renderSurface("nodes\\cube.png", ctx);
+	// If the city has a research center, render it.
+	if (city.research) {
+		ctx.reset();
+		ctx.position = new Vector2D(city.x - CITY_RENDER_WIDTH / 2 - CITY_RENDER_HEIGHT / 3, city.y - CITY_RENDER_HEIGHT / 2 + CITY_RENDER_HEIGHT / 3);
+		ctx.size = new Vector2D(CITY_RENDER_WIDTH / 3, CITY_RENDER_HEIGHT / 3);
+		GraphicsManager::renderSurface("nodes\\cross.png", ctx);
+	}
 }
 
 void GameRenderer::drawCityName(City& city)
