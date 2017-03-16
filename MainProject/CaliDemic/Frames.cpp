@@ -56,9 +56,12 @@ void GameFrame::finishedEditing()
 	element->visible = false;
 }
 
-void GameFrame::onMouseDown(std::string button, int x, int y)
+bool GameFrame::onMouseDown(std::string button, int x, int y)
 {
-	UIFrame::onMouseDown(button, x, y);
+	// Maybe we can exit out early.
+	if (UIFrame::onMouseDown(button, x, y)) {
+		return true;
+	}
 
 	if (button == "left") {
 		Board* board = Game::getGameBoard();
@@ -77,12 +80,10 @@ void GameFrame::onMouseDown(std::string button, int x, int y)
 				}
 				break;
 			case MapEditingActions::AddNode: {
-				if (x <= FRM_MAP_EDITING_ACTIONS_LEFT) {
-					City* city = new City();
-					city->x = x;
-					city->y = y;
-					Game::getGameBoard()->addCity(city);
-				}
+				City* city = new City();
+				city->x = x;
+				city->y = y;
+				Game::getGameBoard()->addCity(city);
 				break;
 			}
 			case MapEditingActions::RotateAngle:
@@ -187,9 +188,8 @@ void GameFrame::onMouseDown(std::string button, int x, int y)
 				}
 			}
 		}
-
-		
 	}
+	return true;
 }
 
 void GameFrame::draw()
@@ -213,7 +213,7 @@ void GameFrame::draw()
 	}
 }
 
-void GameFrame::onKeyDown(std::string key)
+bool GameFrame::onKeyDown(std::string key)
 {
 	// Are we editing right now?
 	if (this->_editing && Game::getGameBoard()->getNumCities()) {
@@ -230,29 +230,31 @@ void GameFrame::onKeyDown(std::string key)
 						// Can we even backspace?
 						if (city->name.size() != 0) {
 							city->name = city->name.substr(0, city->name.size() - 1);
-							return;
+							return true;
 						}
 					}
 
 					// Exit out. This is not a character we should append.
-					return;
+					return true;
 				}
 
 				city->name += key;
 				break;
 		}
 	}
+
+	return true;
 }
 
 
-void GameFrame::onKeyUp(std::string key)
+bool GameFrame::onKeyUp(std::string key)
 {
-
+	return true;
 }
 
 void GameFrame::onMouseMove(int x, int y)
 {
-
+	
 }
 
 
@@ -277,10 +279,15 @@ PlayerActionsFrame::PlayerActionsFrame() : UIFrame(FRM_PLAYER_ACTIONS)
 	this->_elements.push_back(new ViewCardsAction());
 }
 
-void PlayerActionsFrame::onMouseDown(std::string button, int x, int y)
+bool PlayerActionsFrame::onMouseDown(std::string button, int x, int y)
 {
-	UIFrame::onMouseDown(button, x, y);
+	// Maybe exit out early.
+	if (UIFrame::onMouseDown(button, x, y)) {
+		return true;
+	}
+
 	this->visible = false;
+	return true;
 }
 
 
@@ -381,10 +388,15 @@ void PlayerCardsFrame::draw()
 	}
 }
 
-void PlayerCardsFrame::onMouseDown(std::string button, int x, int y)
+bool PlayerCardsFrame::onMouseDown(std::string button, int x, int y)
 {
+	// Maybe we can exit out early.
+	if (UIFrame::onMouseDown(button, x, y)) {
+		return true;
+	}
+
 	Player& player = Game::getGameBoard()->getCurrentTurnPlayer();
-	UIFrame::onMouseDown(button, x, y);
+	
 
 	for (int i = 0; i < MAX_PLAYER_CARDS; i++) {
 		// Get the card, and figure out what row and column we're in.
@@ -426,6 +438,7 @@ void PlayerCardsFrame::onMouseDown(std::string button, int x, int y)
 		}
 
 	}
+	return true;
 }
 
 void PlayerCardsFrame::show()

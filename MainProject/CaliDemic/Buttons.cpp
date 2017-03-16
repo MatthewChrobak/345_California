@@ -17,7 +17,7 @@ ToggleActionsButton::ToggleActionsButton() : UIButton(CMD_TOGGLE_ACTIONS)
 	this->top = DRAW_HEIGHT - this->height - 10;
 }
 
-void ToggleActionsButton::onMouseDown(std::string button, int x, int y)
+bool ToggleActionsButton::onMouseDown(std::string button, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_ACTIONS);
 #ifdef DEBUG
@@ -25,6 +25,7 @@ void ToggleActionsButton::onMouseDown(std::string button, int x, int y)
 	assert(element->getObjectType() == UI_TYPE_FRAME);
 #endif
 	element->visible = !element->visible;
+	return true;
 }
 
 
@@ -43,7 +44,7 @@ PlayGameButton::PlayGameButton() : UIButton(CMD_PLAY_GAME_BUTTON)
 	this->fontSize = 48;
 }
 
-void PlayGameButton::onMouseDown(std::string button, int x, int y)
+bool PlayGameButton::onMouseDown(std::string button, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(TXT_SAVE_NAME);
 #ifdef DEBUG
@@ -58,6 +59,7 @@ void PlayGameButton::onMouseDown(std::string button, int x, int y)
 	{
 		Game::loadOrCreate(text);
 	}
+	return true;
 }
 
 
@@ -73,10 +75,11 @@ DrivePlayerAction::DrivePlayerAction() : UIButton(CMD_PLAYER_ACTION_DRIVE)
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void DrivePlayerAction::onMouseDown(std::string key, int x, int y)
+bool DrivePlayerAction::onMouseDown(std::string key, int x, int y)
 {
 	GameFrame::PlayerAction = PlayerActions::Drive;
 	GuiManager::showMsgBox("Please click on a city you wish to drive to.");
+	return true;
 }
 
 DirectFlightPlayerAction::DirectFlightPlayerAction() : UIButton(CMD_PLAYER_ACTION_DIRECT_FLIGHT)
@@ -90,7 +93,7 @@ DirectFlightPlayerAction::DirectFlightPlayerAction() : UIButton(CMD_PLAYER_ACTIO
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void DirectFlightPlayerAction::onMouseDown(std::string key, int x, int y)
+bool DirectFlightPlayerAction::onMouseDown(std::string key, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
@@ -100,6 +103,7 @@ void DirectFlightPlayerAction::onMouseDown(std::string key, int x, int y)
 #endif
 	GameFrame::PlayerAction = PlayerActions::DirectFlight;
 	((PlayerCardsFrame*)element)->show();
+	return true;
 }
 
 CharterFlightAction::CharterFlightAction() : UIButton(CMD_PLAYER_ACTION_CHARTER_FLIGHT)
@@ -113,7 +117,7 @@ CharterFlightAction::CharterFlightAction() : UIButton(CMD_PLAYER_ACTION_CHARTER_
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void CharterFlightAction::onMouseDown(std::string key, int x, int y)
+bool CharterFlightAction::onMouseDown(std::string key, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
@@ -123,6 +127,7 @@ void CharterFlightAction::onMouseDown(std::string key, int x, int y)
 #endif
 	GameFrame::PlayerAction = PlayerActions::CharterFlight;
 	((PlayerCardsFrame*)element)->show();
+	return true;
 }
 
 ShuttleFlightAction::ShuttleFlightAction() : UIButton(CMD_PLAYER_ACTION_SHUTTLE_FLIGHT)
@@ -136,7 +141,7 @@ ShuttleFlightAction::ShuttleFlightAction() : UIButton(CMD_PLAYER_ACTION_SHUTTLE_
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void ShuttleFlightAction::onMouseDown(std::string key, int x, int y)
+bool ShuttleFlightAction::onMouseDown(std::string key, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
@@ -146,6 +151,7 @@ void ShuttleFlightAction::onMouseDown(std::string key, int x, int y)
 #endif
 	GameFrame::PlayerAction = PlayerActions::ShuttleFlight;
 	((PlayerCardsFrame*)element)->show();
+	return true;
 }
 
 BuildResearchCenterAction::BuildResearchCenterAction() : UIButton(CMD_PLAYER_ACTION_BUILD_RESEARCH_CENTER)
@@ -159,7 +165,7 @@ BuildResearchCenterAction::BuildResearchCenterAction() : UIButton(CMD_PLAYER_ACT
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void BuildResearchCenterAction::onMouseDown(std::string key, int x, int y)
+bool BuildResearchCenterAction::onMouseDown(std::string key, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
@@ -169,6 +175,7 @@ void BuildResearchCenterAction::onMouseDown(std::string key, int x, int y)
 #endif
 	GameFrame::PlayerAction = PlayerActions::BuildResearchCenter;
 	((PlayerCardsFrame*)element)->show();
+	return true;
 }
 
 TreatDiseaseAction::TreatDiseaseAction() : UIButton(CMD_PLAYER_ACTION_TREAT_DISEASE)
@@ -182,7 +189,7 @@ TreatDiseaseAction::TreatDiseaseAction() : UIButton(CMD_PLAYER_ACTION_TREAT_DISE
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
+bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
@@ -192,6 +199,7 @@ void TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 #endif
 	GameFrame::PlayerAction = PlayerActions::TreatDisease;
 	((PlayerCardsFrame*)element)->show();
+	return true;
 }
 
 ShareKnowledgeAction::ShareKnowledgeAction() : UIButton(CMD_PLAYER_ACTION_SHARE_KNOWLEDGE)
@@ -205,7 +213,7 @@ ShareKnowledgeAction::ShareKnowledgeAction() : UIButton(CMD_PLAYER_ACTION_SHARE_
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void ShareKnowledgeAction::onMouseDown(std::string key, int x, int y)
+bool ShareKnowledgeAction::onMouseDown(std::string key, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
@@ -215,6 +223,7 @@ void ShareKnowledgeAction::onMouseDown(std::string key, int x, int y)
 #endif
 	GameFrame::PlayerAction = PlayerActions::ShareKnowledge;
 	((PlayerCardsFrame*)element)->show();
+	return true;
 }
 
 
@@ -229,7 +238,7 @@ DiscoverCureAction::DiscoverCureAction() : UIButton(CMD_PLAYER_ACTION_DISCOVER_C
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void DiscoverCureAction::onMouseDown(std::string key, int x, int y)
+bool DiscoverCureAction::onMouseDown(std::string key, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
@@ -239,6 +248,7 @@ void DiscoverCureAction::onMouseDown(std::string key, int x, int y)
 #endif
 	GameFrame::PlayerAction = PlayerActions::DiscoverCure;
 	((PlayerCardsFrame*)element)->show();
+	return true;
 }
 
 
@@ -253,7 +263,7 @@ ViewCardsAction::ViewCardsAction() : UIButton(CMD_PLAYER_ACTION_VIEW_CARDS)
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void ViewCardsAction::onMouseDown(std::string key, int x, int y)
+bool ViewCardsAction::onMouseDown(std::string key, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
@@ -263,6 +273,7 @@ void ViewCardsAction::onMouseDown(std::string key, int x, int y)
 #endif
 	GameFrame::PlayerAction = PlayerActions::ViewCards;
 	((PlayerCardsFrame*)element)->show();
+	return true;
 }
 
 
@@ -277,7 +288,7 @@ PlayerCardsClose::PlayerCardsClose() : UIButton(CMD_PLAYER_CARDS_CLOSE)
 	this->top = 10;
 }
 
-void PlayerCardsClose::onMouseDown(std::string button, int x, int y)
+bool PlayerCardsClose::onMouseDown(std::string button, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
@@ -285,6 +296,8 @@ void PlayerCardsClose::onMouseDown(std::string button, int x, int y)
 	assert(element->getObjectType() == UI_TYPE_FRAME);
 #endif
 	element->visible = false;
+	GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+	return true;
 }
 
 
@@ -306,16 +319,13 @@ PlayerCardsOkay::PlayerCardsOkay(std::vector<int>* cardData) : UIButton(CMD_PLAY
 
 
 
-void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
+bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 {
 	Board* board = Game::getGameBoard();
 	Player& player = board->getCurrentTurnPlayer();
 
 	switch (GameFrame::PlayerAction)
-	{
-		case PlayerActions::Drive:
-		break;
-		
+	{		
 		case PlayerActions::DirectFlight:
 			// We should only have one card selected here.
 			if (this->_cardData->size() == 1) {
@@ -431,6 +441,7 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				else
 					GuiManager::showMsgBox("The card is either null or you did not select a city");
 			}
+
 			break;
 		case PlayerActions::TreatDisease:
 			/*
@@ -451,6 +462,61 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 			break;
 		case PlayerActions::DiscoverCure:
+       
+			// Ensure that 5 cards were selected.
+			if (this->_cardData->size() == 5) {
+				Board* board = Game::getGameBoard();
+				Player& player = board->getCurrentTurnPlayer();
+
+				const int totalCards = 5;
+
+				// Get the card index.
+				int cardIndex1 = this->_cardData->at(0);
+				int cardIndex2 = this->_cardData->at(1);
+				int cardIndex3 = this->_cardData->at(2);
+				int cardIndex4 = this->_cardData->at(3);
+				int cardIndex5 = this->_cardData->at(4);
+
+				//int cardIndexArray [] = {cardIndex1, cardIndex2, cardIndex3, cardIndex4, cardIndex5};
+
+				//get the cityColors
+				int cityIndex1 = board->getCity(cardIndex1)->color;
+				int cityIndex2 = board->getCity(cardIndex2)->color;
+				int cityIndex3 = board->getCity(cardIndex3)->color;
+				int cityIndex4 = board->getCity(cardIndex4)->color;
+				int cityIndex5 = board->getCity(cardIndex5)->color;
+
+				int cardIndexArray[] = { cityIndex1, cityIndex2, cityIndex3, cityIndex4, cityIndex5 };
+
+				// Ensure all cards are of the same color.
+				for (int i = 0; i < 5; i++) {
+					for (int j = 0; j < 5; j++) {
+						if (cardIndexArray[i] != cardIndexArray[j]) {
+							GuiManager::showMsgBox("Please select exactly 5 matching cards!");
+							return true;
+						}
+					}
+
+				}
+				// Ensure that we have not yet cured the disease.
+				if (!board->isCured[cityIndex1]) {
+					board->isCured[cityIndex1] = true;
+					GuiManager::showMsgBox("The disease has been cured");
+					GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+
+					player.removeCard(cardIndex1);
+					player.removeCard(cardIndex2);
+					player.removeCard(cardIndex3);
+					player.removeCard(cardIndex4);
+					player.removeCard(cardIndex5);	
+				} else {
+					GuiManager::showMsgBox("The disease is already cured!");
+				}
+			} else {
+				GuiManager::showMsgBox("Please select 5 cards.");
+			}
+			return true;
+      
 			/*
 			When the player successfully finishes an action, ensure that the action is reset by writing the line
 			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
@@ -468,10 +534,9 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 	if (board->playerTurnChange() == true) {
 		GuiManager::showMsgBox("End of your turn.");
 	}
+
+	return true;
 }
-
-
-
 
 ToggleMapEditingActions::ToggleMapEditingActions() : UIButton(CMD_TOGGLE_MAP_EDITING_ACTIONS)
 {
@@ -485,7 +550,7 @@ ToggleMapEditingActions::ToggleMapEditingActions() : UIButton(CMD_TOGGLE_MAP_EDI
 	this->top = DRAW_HEIGHT - this->height - 10;
 }
 
-void ToggleMapEditingActions::onMouseDown(std::string button, int x, int y)
+bool ToggleMapEditingActions::onMouseDown(std::string button, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_MAP_EDITING_ACTIONS);
 #ifdef DEBUG
@@ -493,6 +558,7 @@ void ToggleMapEditingActions::onMouseDown(std::string button, int x, int y)
 	assert(element->getObjectType() == UI_TYPE_FRAME);
 #endif
 	element->visible = !element->visible;
+	return true;
 }
 
 SelectNodeAction::SelectNodeAction() : UIButton(CMD_SELECT_NODE)
@@ -505,9 +571,10 @@ SelectNodeAction::SelectNodeAction() : UIButton(CMD_SELECT_NODE)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::SelectNode;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void SelectNodeAction::onMouseDown(std::string button, int x, int y)
+bool SelectNodeAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::SelectNode;
+	return true;
 }
 
 RotateNodeAngleAction::RotateNodeAngleAction() : UIButton(CMD_SELECT_NODE)
@@ -519,9 +586,10 @@ RotateNodeAngleAction::RotateNodeAngleAction() : UIButton(CMD_SELECT_NODE)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::RotateAngle;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void RotateNodeAngleAction::onMouseDown(std::string button, int x, int y)
+bool RotateNodeAngleAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::RotateAngle;
+	return true;
 }
 
 AddNodeAction::AddNodeAction() : UIButton(CMD_ADD_NODE)
@@ -534,9 +602,10 @@ AddNodeAction::AddNodeAction() : UIButton(CMD_ADD_NODE)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::AddNode;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void AddNodeAction::onMouseDown(std::string button, int x, int y)
+bool AddNodeAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::AddNode;
+	return true;
 }
 
 
@@ -551,9 +620,10 @@ MakeNodeBlackAction::MakeNodeBlackAction() : UIButton(CMD_MAKE_NODE_BLACK)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeNodeBlack;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void MakeNodeBlackAction::onMouseDown(std::string button, int x, int y)
+bool MakeNodeBlackAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::MakeNodeBlack;
+	return true;
 }
 
 
@@ -568,9 +638,10 @@ MakeNodeRedAction::MakeNodeRedAction() : UIButton(CMD_MAKE_NODE_RED)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeNodeRed;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void MakeNodeRedAction::onMouseDown(std::string button, int x, int y)
+bool MakeNodeRedAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::MakeNodeRed;
+	return true;
 }
 
 
@@ -584,9 +655,10 @@ MakeNodeYellowAction::MakeNodeYellowAction() : UIButton(CMD_MAKE_NODE_YELLOW)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeNodeYellow;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void MakeNodeYellowAction::onMouseDown(std::string button, int x, int y)
+bool MakeNodeYellowAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::MakeNodeYellow;
+	return true;
 }
 
 
@@ -600,9 +672,10 @@ MakeNodeBlueAction::MakeNodeBlueAction() : UIButton(CMD_MAKE_NODE_BLUE)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeNodeBlue;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void MakeNodeBlueAction::onMouseDown(std::string button, int x, int y)
+bool MakeNodeBlueAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::MakeNodeBlue;
+	return true;
 }
 
 
@@ -616,9 +689,10 @@ ChangeNodeNameAction::ChangeNodeNameAction() : UIButton(CMD_CHANGE_NODE_NAME)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::ChangeNodeName;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void ChangeNodeNameAction::onMouseDown(std::string button, int x, int y)
+bool ChangeNodeNameAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::ChangeNodeName;
+	return true;
 }
 
 
@@ -632,9 +706,10 @@ MakeDirectedEdgeAction::MakeDirectedEdgeAction() : UIButton(CMD_MAKE_DIRECTED_ED
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeDirectedEdge;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void MakeDirectedEdgeAction::onMouseDown(std::string button, int x, int y)
+bool MakeDirectedEdgeAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::MakeDirectedEdge;
+	return true;
 }
 
 
@@ -649,9 +724,10 @@ MoveNodeAction::MoveNodeAction() : UIButton(CMD_MOVE_NODE)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MoveNode;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void MoveNodeAction::onMouseDown(std::string button, int x, int y)
+bool MoveNodeAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::MoveNode;
+	return true;
 }
 
 
@@ -665,7 +741,7 @@ FinishedEditingMapAction::FinishedEditingMapAction() : UIButton(CMD_FINISHED_MAP
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::FinishedEditingMap;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void FinishedEditingMapAction::onMouseDown(std::string button, int x, int y)
+bool FinishedEditingMapAction::onMouseDown(std::string button, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_GAME_FRAME);
 #ifdef DEBUG
@@ -673,4 +749,5 @@ void FinishedEditingMapAction::onMouseDown(std::string button, int x, int y)
 	assert(element->getObjectType() == UI_TYPE_FRAME);
 #endif
 	((GameFrame*)element)->finishedEditing();
+	return true;
 }

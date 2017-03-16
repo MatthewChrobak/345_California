@@ -17,7 +17,7 @@ UIFrame::~UIFrame()
 	this->_currentFocusedElement = nullptr;
 }
 
-void UIFrame::onMouseDown(std::string button, int x, int y)
+bool UIFrame::onMouseDown(std::string button, int x, int y)
 {
 	for (int i = (int)this->_elements.size() - 1; i >= 0; i--) {
 		UIElement* element = this->_elements.at(i);
@@ -34,14 +34,16 @@ void UIFrame::onMouseDown(std::string button, int x, int y)
 					element->onMouseDown(button, x, y);
 					element->giveFocus();
 					this->_currentFocusedElement = element;
-					break;
+					return true;
 				}
 			}
 		}
 	}
+
+	return false;
 }
 
-void UIFrame::onMouseUp(std::string button, int x, int y)
+bool UIFrame::onMouseUp(std::string button, int x, int y)
 {
 	for (int i = (int)this->_elements.size() - 1; i >= 0; i--) {
 		UIElement* element = this->_elements.at(i);
@@ -49,12 +51,14 @@ void UIFrame::onMouseUp(std::string button, int x, int y)
 		if (element->visible) {
 			if (x >= element->left && x <= element->left + element->width) {
 				if (y >= element->top && y <= element->top + element->height) {
-					element->onMouseUp(button, x, y);
+					return element->onMouseUp(button, x, y);
 					break;
 				}
 			}
 		}
 	}
+
+	return false;
 }
 
 void UIFrame::onMouseMove(int x, int y)
@@ -73,18 +77,21 @@ void UIFrame::onMouseMove(int x, int y)
 	}
 }
 
-void UIFrame::onKeyDown(std::string key)
+bool UIFrame::onKeyDown(std::string key)
 {
 	if (this->_currentFocusedElement != nullptr) {
-		this->_currentFocusedElement->onKeyDown(key);
+		return this->_currentFocusedElement->onKeyDown(key);
 	}
+
+	return false;
 }
 
-void UIFrame::onKeyUp(std::string key)
+bool UIFrame::onKeyUp(std::string key)
 {
 	if (this->_currentFocusedElement != nullptr) {
-		this->_currentFocusedElement->onKeyUp(key);
+		return this->_currentFocusedElement->onKeyUp(key);
 	}
+	return false;	
 }
 
 std::string UIFrame::getObjectType()

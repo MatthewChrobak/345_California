@@ -8,12 +8,12 @@ public:
 	UIFrame(std::string elementName);
 	~UIFrame();
 
-	void onMouseDown(std::string button, int x, int y);
-	void onMouseUp(std::string button, int x, int y);
+	bool onMouseDown(std::string button, int x, int y);
+	bool onMouseUp(std::string button, int x, int y);
 	void onMouseMove(int x, int y);
 
-	void onKeyDown(std::string key);
-	void onKeyUp(std::string key);
+	bool onKeyDown(std::string key);
+	bool onKeyUp(std::string key);
 
 	UIElement* getElementByName(std::string name);
 	std::string getObjectType();

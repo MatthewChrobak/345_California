@@ -20,12 +20,12 @@ public:
 
 	bool visible = true;
 
-	virtual void onMouseDown(std::string button, int x, int y);
-	virtual void onMouseUp(std::string button, int x, int y);
+	virtual bool onMouseDown(std::string button, int x, int y);
+	virtual bool onMouseUp(std::string button, int x, int y);
 	virtual void onMouseMove(int x, int y);
 
-	virtual void onKeyDown(std::string key);
-	virtual void onKeyUp(std::string key);
+	virtual bool onKeyDown(std::string key);
+	virtual bool onKeyUp(std::string key);
 
 	virtual UIElement* getElementByName(std::string name);
 	virtual std::string getObjectType() = 0;
