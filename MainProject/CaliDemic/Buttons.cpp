@@ -429,7 +429,8 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 				}
 				else {
-					GuiManager::showMsgBox("Disease already cured!");
+					GuiManager::showMsgBox("Disease already curedd!");
+					
 
 
 				}
