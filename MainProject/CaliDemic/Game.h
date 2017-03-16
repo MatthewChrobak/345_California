@@ -3,6 +3,7 @@
 #include <string>
 
 #define NUM_OF_STARTING_CUBE 24
+#define NUM_OF_STARTING_RESEARCH_FACILITY 6
 
 enum GameState : int
 {
@@ -34,6 +35,7 @@ public:
 	static int numOfBlackCube;
 	static int numOfBlueCube;
 	static int numOfRedCube;
+	static int numOfResearchCenter;
 
 	static void numOfCubeDecrementor(int cityColor);
 
