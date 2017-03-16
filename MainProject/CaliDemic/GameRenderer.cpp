@@ -92,7 +92,6 @@ void GameRenderer::drawCities()
 					ctx.size = new Vector2D(CITY_RENDER_WIDTH, CITY_RENDER_HEIGHT);
 
 					GraphicsManager::renderSurface("ui\\selectbox.png", ctx);
-
 				}
 			}
 		}
@@ -123,14 +122,17 @@ void GameRenderer::drawCityNode(City& city)
 
 	// Pass it off to the graphics manager to render it.
 	GraphicsManager::renderSurface("nodes\\node.png", ctx);
-
-	ctx.position->x += 10;
-	ctx.position->y += 10;
-
 	
+	int cubeHeight = CITY_RENDER_HEIGHT / 3;
+
 	//update Counter the when there's a cube value 
 	for (int i = 0; i < 3; i++){
 		if (city.cube[i] >= 0){
+			// Reset the context.
+			ctx.reset();
+			ctx.position = new Vector2D(city.x + CITY_RENDER_WIDTH / 2, city.y - CITY_RENDER_HEIGHT / 2 + i * cubeHeight);
+			ctx.size = new Vector2D(cubeHeight, cubeHeight);
+
 			int cubeColor = city.cube[i];
 			switch (cubeColor) {
 			case InfectionColor::Red:
@@ -146,13 +148,10 @@ void GameRenderer::drawCityNode(City& city)
 				ctx.color = new RGBA(0, 0, 0);
 				break;
 			}
+		
+			GraphicsManager::renderSurface("nodes\\cube.png", ctx);
 		}
 	}
-	
-
-
-
-	GraphicsManager::renderSurface("nodes\\cube.png", ctx);
 }
 
 void GameRenderer::drawCityName(City& city)
