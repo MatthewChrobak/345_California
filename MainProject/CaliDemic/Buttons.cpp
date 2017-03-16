@@ -401,10 +401,6 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 			break;
 		case PlayerActions::BuildResearchCenter:
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> origin/Eastside-Ying-Yang
 			//select only one card
 			if (this->_cardData->size() != 1)
 				GuiManager::showMsgBox("Please select only one card.");
@@ -445,8 +441,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				else
 					GuiManager::showMsgBox("The card is either null or you did not select a city");
 			}
-<<<<<<< HEAD
-=======
+
 			// Ensure that 5 cards were selected.
 			if (this->_cardData->size() == 5) {
 				Board* board = Game::getGameBoard();
@@ -500,10 +495,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				GuiManager::showMsgBox("Please select 5 cards.");
 			}
 			return true;
->>>>>>> refs/remotes/origin/master
-=======
 
->>>>>>> origin/Eastside-Ying-Yang
 			break;
 		case PlayerActions::TreatDisease:
 			/*
