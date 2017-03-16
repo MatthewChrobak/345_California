@@ -308,9 +308,6 @@
     <ClInclude Include="PlayerActions.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="ActionCounter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UIMessageBox.h">
       <Filter>Header Files\UI\Elements\Behaviour</Filter>
     </ClInclude>
@@ -319,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="RandomNumberGenerator.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionCounter.h">
+      <Filter>Header Files\Models\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -259,7 +259,7 @@ void GameRenderer::drawOutbreakMeter()
 		//
 		// if (i != Game::outbreakValue) {
 		//
-		// or something like that
+		// or whatever the outbreak value variable is.
 		if (i != 0) {
 			ctx.color = new RGBA(100, 100, 100);
 		}
@@ -278,5 +278,6 @@ void GameRenderer::drawInfectionRate()
 	ctx.outlineThickness = 2;
 	ctx.outlineColor = new RGBA(0, 0, 0);
 
+	// This should be changed to append the current infection rate to the rendered text.
 	GraphicsManager::renderText("Infection Rate: 1", ctx);
 }
