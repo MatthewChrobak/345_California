@@ -8,12 +8,12 @@
 Player::Player()
 {
 	this->pawn = new Pawn();
-	playerCardCounter = 0;
+	
 
 	// Make sure all the card pointers point to null.
-	for (int i = 0; i < MAX_PLAYER_CARDS; i++) {
+/*	for (int i = 0; i < maxPlayerCards; i++) {
 		this->_playerCards[i] = nullptr;
-	}
+	}*/
 }
 
 
@@ -24,7 +24,7 @@ Player::~Player()
 		this->pawn = nullptr;
 	}
 	
-	for (int i = 0; i < MAX_PLAYER_CARDS; i++) {
+	for (int i = 0; i < maxPlayerCards; i++) {
 		if (this->_playerCards[i] != nullptr) {
 			delete this->_playerCards[i];
 		}
@@ -34,10 +34,9 @@ Player::~Player()
 
 void Player::addCard(PlayerCard* card) 
 {
-	for (int i = 0; i < MAX_PLAYER_CARDS; i++) {
+	for (int i = 0; i < maxPlayerCards; i++) {
 		if (this->_playerCards[i] == nullptr) {
 			this->_playerCards[i] = card;
-			playerCardCounter++;
 			break;
 		}
 	}
@@ -47,12 +46,11 @@ void Player::removeCard(int index)
 {
 #ifdef DEBUG
 	// Make sure the index is within the bounds specified.
-	assert(index >= 0 && index < MAX_PLAYER_CARDS);
+	assert(index >= 0 && index < maxPlayerCards);
 #endif
 	if (this->_playerCards[index] != nullptr) {
 		delete this->_playerCards[index];
 		this->_playerCards[index] = nullptr;
-		playerCardCounter--;
 	}
 }
 
@@ -60,12 +58,12 @@ PlayerCard* Player::getCard(int index)
 {
 #ifdef DEBUG
 	// Make sure the index is within the bounds specified.
-	assert(index >= 0 && index < MAX_PLAYER_CARDS);
+	assert(index >= 0 && index < maxPlayerCards);
 #endif
 	return this->_playerCards[index];
 }
 
 int Player::getNumberOfCards()
 {
-	return playerCardCounter;
+	return this->_playerCards.size();
 }

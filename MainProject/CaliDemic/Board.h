@@ -52,7 +52,7 @@ public:
 	*/
 	std::vector<int> infectionCityCards;
 	void infectionCityCardsInitializor();
-	Player& drawCards();
+	void drawCards();
 
 private:
 	CityGraph* _cities;

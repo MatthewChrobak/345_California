@@ -75,6 +75,13 @@ struct ViewCardsAction : public UIButton
 };
 
 
+struct DiscardCards : public UIButton
+{
+	DiscardCards();
+	bool onMouseDown(std::string button, int x, int y);
+};
+
+
 struct PlayerCardsClose : public UIButton
 {
 	PlayerCardsClose();

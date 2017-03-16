@@ -5,8 +5,6 @@
 #include "Frames.h"
 #include "PlayerActions.h"
 #include "CityCard.h"
-#include "City.h"
-#include "PlayerCard.h"
 
 ToggleActionsButton::ToggleActionsButton() : UIButton(CMD_TOGGLE_ACTIONS)
 {
@@ -19,7 +17,7 @@ ToggleActionsButton::ToggleActionsButton() : UIButton(CMD_TOGGLE_ACTIONS)
 	this->top = DRAW_HEIGHT - this->height - 10;
 }
 
-void ToggleActionsButton::onMouseDown(std::string button, int x, int y)
+bool ToggleActionsButton::onMouseDown(std::string button, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_ACTIONS);
 #ifdef DEBUG
@@ -27,10 +25,8 @@ void ToggleActionsButton::onMouseDown(std::string button, int x, int y)
 	assert(element->getObjectType() == UI_TYPE_FRAME);
 #endif
 	element->visible = !element->visible;
+	return true;
 }
-
-
-
 
 
 PlayGameButton::PlayGameButton() : UIButton(CMD_PLAY_GAME_BUTTON)
@@ -45,7 +41,7 @@ PlayGameButton::PlayGameButton() : UIButton(CMD_PLAY_GAME_BUTTON)
 	this->fontSize = 48;
 }
 
-void PlayGameButton::onMouseDown(std::string button, int x, int y)
+bool PlayGameButton::onMouseDown(std::string button, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(TXT_SAVE_NAME);
 #ifdef DEBUG
@@ -60,6 +56,7 @@ void PlayGameButton::onMouseDown(std::string button, int x, int y)
 	{
 		Game::loadOrCreate(text);
 	}
+	return true;
 }
 
 
@@ -75,14 +72,11 @@ DrivePlayerAction::DrivePlayerAction() : UIButton(CMD_PLAYER_ACTION_DRIVE)
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void DrivePlayerAction::onMouseDown(std::string key, int x, int y)
+bool DrivePlayerAction::onMouseDown(std::string key, int x, int y)
 {
-	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
-#ifdef DEBUG
-	assert(element != nullptr);
-	assert(element->getObjectType() == UI_TYPE_FRAME);
-#endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::Drive);
+	GameFrame::PlayerAction = PlayerActions::Drive;
+	GuiManager::showMsgBox("Please click on a city you wish to drive to.");
+	return true;
 }
 
 DirectFlightPlayerAction::DirectFlightPlayerAction() : UIButton(CMD_PLAYER_ACTION_DIRECT_FLIGHT)
@@ -96,14 +90,17 @@ DirectFlightPlayerAction::DirectFlightPlayerAction() : UIButton(CMD_PLAYER_ACTIO
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void DirectFlightPlayerAction::onMouseDown(std::string key, int x, int y)
+bool DirectFlightPlayerAction::onMouseDown(std::string key, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::DirectFlight);
+	GameFrame::PlayerAction = PlayerActions::DirectFlight;
+	((PlayerCardsFrame*)element)->show();
+	return true;
 }
 
 CharterFlightAction::CharterFlightAction() : UIButton(CMD_PLAYER_ACTION_CHARTER_FLIGHT)
@@ -117,14 +114,17 @@ CharterFlightAction::CharterFlightAction() : UIButton(CMD_PLAYER_ACTION_CHARTER_
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void CharterFlightAction::onMouseDown(std::string key, int x, int y)
+bool CharterFlightAction::onMouseDown(std::string key, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::CharterFlight);
+	GameFrame::PlayerAction = PlayerActions::CharterFlight;
+	((PlayerCardsFrame*)element)->show();
+	return true;
 }
 
 ShuttleFlightAction::ShuttleFlightAction() : UIButton(CMD_PLAYER_ACTION_SHUTTLE_FLIGHT)
@@ -138,14 +138,17 @@ ShuttleFlightAction::ShuttleFlightAction() : UIButton(CMD_PLAYER_ACTION_SHUTTLE_
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void ShuttleFlightAction::onMouseDown(std::string key, int x, int y)
+bool ShuttleFlightAction::onMouseDown(std::string key, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::ShuttleFlight);
+	GameFrame::PlayerAction = PlayerActions::ShuttleFlight;
+	((PlayerCardsFrame*)element)->show();
+	return true;
 }
 
 BuildResearchCenterAction::BuildResearchCenterAction() : UIButton(CMD_PLAYER_ACTION_BUILD_RESEARCH_CENTER)
@@ -159,14 +162,17 @@ BuildResearchCenterAction::BuildResearchCenterAction() : UIButton(CMD_PLAYER_ACT
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void BuildResearchCenterAction::onMouseDown(std::string key, int x, int y)
+bool BuildResearchCenterAction::onMouseDown(std::string key, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::BuildResearchCenter);
+	GameFrame::PlayerAction = PlayerActions::BuildResearchCenter;
+	((PlayerCardsFrame*)element)->show();
+	return true;
 }
 
 TreatDiseaseAction::TreatDiseaseAction() : UIButton(CMD_PLAYER_ACTION_TREAT_DISEASE)
@@ -180,14 +186,17 @@ TreatDiseaseAction::TreatDiseaseAction() : UIButton(CMD_PLAYER_ACTION_TREAT_DISE
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
+bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::TreatDisease);
+	GameFrame::PlayerAction = PlayerActions::TreatDisease;
+	((PlayerCardsFrame*)element)->show();
+	return true;
 }
 
 ShareKnowledgeAction::ShareKnowledgeAction() : UIButton(CMD_PLAYER_ACTION_SHARE_KNOWLEDGE)
@@ -201,14 +210,17 @@ ShareKnowledgeAction::ShareKnowledgeAction() : UIButton(CMD_PLAYER_ACTION_SHARE_
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void ShareKnowledgeAction::onMouseDown(std::string key, int x, int y)
+bool ShareKnowledgeAction::onMouseDown(std::string key, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::ShareKnowledge);
+	GameFrame::PlayerAction = PlayerActions::ShareKnowledge;
+	((PlayerCardsFrame*)element)->show();
+	return true;
 }
 
 
@@ -223,14 +235,17 @@ DiscoverCureAction::DiscoverCureAction() : UIButton(CMD_PLAYER_ACTION_DISCOVER_C
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void DiscoverCureAction::onMouseDown(std::string key, int x, int y)
+bool DiscoverCureAction::onMouseDown(std::string key, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::DiscoverCure);
+	GameFrame::PlayerAction = PlayerActions::DiscoverCure;
+	((PlayerCardsFrame*)element)->show();
+	return true;
 }
 
 
@@ -245,17 +260,31 @@ ViewCardsAction::ViewCardsAction() : UIButton(CMD_PLAYER_ACTION_VIEW_CARDS)
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
 
-void ViewCardsAction::onMouseDown(std::string key, int x, int y)
+bool ViewCardsAction::onMouseDown(std::string key, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::ViewCards);
+	GameFrame::PlayerAction = PlayerActions::ViewCards;
+	((PlayerCardsFrame*)element)->show();
+	return true;
 }
 
-
+bool DiscardCards::onMouseDown(std::string key, int x, int y)
+{
+	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
+#ifdef DEBUG
+	assert(element != nullptr);
+	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
+#endif
+	GameFrame::PlayerAction = PlayerActions::DiscardCards;
+	((PlayerCardsFrame*)element)->show();
+	return true;
+}
 
 PlayerCardsClose::PlayerCardsClose() : UIButton(CMD_PLAYER_CARDS_CLOSE)
 {
@@ -267,7 +296,7 @@ PlayerCardsClose::PlayerCardsClose() : UIButton(CMD_PLAYER_CARDS_CLOSE)
 	this->top = 10;
 }
 
-void PlayerCardsClose::onMouseDown(std::string button, int x, int y)
+bool PlayerCardsClose::onMouseDown(std::string button, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
@@ -275,12 +304,13 @@ void PlayerCardsClose::onMouseDown(std::string button, int x, int y)
 	assert(element->getObjectType() == UI_TYPE_FRAME);
 #endif
 	element->visible = false;
+	GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+	return true;
 }
 
 
-PlayerCardsOkay::PlayerCardsOkay(PlayerActions* action, std::vector<int>* cardData) : UIButton(CMD_PLAYER_CARDS_OKAY)
+PlayerCardsOkay::PlayerCardsOkay(std::vector<int>* cardData) : UIButton(CMD_PLAYER_CARDS_OKAY)
 {
-	this->_action = action;
 	this->_cardData = cardData;
 
 	this->surfaceName = "ui\\button.png";
@@ -297,142 +327,269 @@ PlayerCardsOkay::PlayerCardsOkay(PlayerActions* action, std::vector<int>* cardDa
 
 
 
-void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
+bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 {
 	Board* board = Game::getGameBoard();
 	Player& player = board->getCurrentTurnPlayer();
 
-	switch (*this->_action)
+	switch (GameFrame::PlayerAction)
 	{
-		case PlayerActions::Drive:
+	case PlayerActions::DirectFlight:
+		// We should only have one card selected here.
+		if (this->_cardData->size() == 1) {
+
+			// Get the card index.
+			int cardIndex = this->_cardData->at(0);
+			PlayerCard* card = player.getCard(cardIndex);
+
+			// Make sure the card is not null.
+			if (card != nullptr) {
+
+				// Make sure it's a city card.
+				if (card->getType() == PlayerCardType::City_Card) {
+					CityCard* cityCard = (CityCard*)card;
+					int cityIndex = cityCard->cityIndex;
+
+					// Remove it, move the player, and hide the player cards.
+					player.removeCard(cardIndex);
+					player.pawn->cityIndex = cityIndex;
+					decrementActionCounter();
+					GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+					// Reset the player action.
+					GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+				}
+				else {
+					GuiManager::showMsgBox("Please select a city card.");
+				}
+			}
+			else {
+				GuiManager::showMsgBox("Card was null.");
+			}
+		}
+		else {
+			GuiManager::showMsgBox("Please select only one card.");
+		}
 		break;
-		
-		case PlayerActions::DirectFlight:
-			// We should only have one card selected here.
-			if (this->_cardData->size() == 1) {
-				
-				// Get the card index.
-				int cardIndex = this->_cardData->at(0);
-				PlayerCard* card = player.getCard(cardIndex);
 
-				// Make sure the card is not null.
-				if (card != nullptr) {
+	case PlayerActions::CharterFlight:
+		//select at least 1 card
+		if (this->_cardData->size() != 1)
+		{
+			GuiManager::showMsgBox("Please select only one card.");
+		}
+		else
+		{
+			// Get the card index.
+			int cardIndex = this->_cardData->at(0);
+			PlayerCard* card = player.getCard(cardIndex);
 
-					// Make sure it's a city card.
-					if (card->getType() == PlayerCardType::City_Card) {
-						CityCard* cityCard = (CityCard*)card;
-						int cityIndex = cityCard->cityIndex;
-
-						// Remove it, move the player, and hide the player cards.
-						player.removeCard(cardIndex);
-						player.pawn->cityIndex = cityIndex;
-						GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-
-						// TODO: Decrement the player actions.
-					}
-					else {
-						GuiManager::showMsgBox("Please select a city card.");
-					}
-				}
-				else {
-					GuiManager::showMsgBox("Card was null.");
-				}
-			}
-			else {
-				GuiManager::showMsgBox("Please select only one card.");
-			}
-			break;
-		
-		case PlayerActions::CharterFlight:
-			//We should only have one card selected here.
-			if (this->_cardData->size() == 1) {
-				// Get the card index.
-				int cardIndex = this->_cardData->at(0);
-				PlayerCard* card = player.getCard(cardIndex);
-
-				//Make sure the card is not null.
-				if (card != nullptr) {
-					//select atleast 1 card
-					if (this->_cardData->size() != 1) {
-						GuiManager::showMsgBox("Please select only one card.");
-					}
-
-					else
-					{
-						// Get the card index.
-						int cardIndex = this->_cardData->at(0);
-						PlayerCard* card = player.getCard(cardIndex);
-
-						//if the player's current city === selected card move there 
-						if (player.pawn->cityIndex == cardIndex) {
-							int x = cardIndex;
-							player.pawn->cityIndex = x;
-							player.removeCard(cardIndex);
-							GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-						}
-
-						else
-						{
-							GuiManager::showMsgBox("Please select a city card with the same location as your pawn.");
-						}
-					}
-				}
-				else {
-					GuiManager::showMsgBox("Card was null.");
-				}
-			}
-			
-			else
+			//if the player's current city == selected card move there 
+			if (player.pawn->cityIndex == cardIndex)
 			{
-				GuiManager::showMsgBox("Select one card.");
+				int x = cardIndex;
+				player.pawn->cityIndex = x;
+				player.removeCard(cardIndex);
+				decrementActionCounter();
+				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+				//reset player Actions
+				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 			}
 
-			break;
+		}
 
-		case PlayerActions::ShuttleFlight:
-			/*Board*board = Game:: getGameBoard();
-			Player& player = board->getCurrentTurnPlayer();*/
+		break;
+	case PlayerActions::ShuttleFlight:
 
-			//Check if the city at which the pawn is has a research station
-			/*if (player.pawn->) {
-				//If the city at which the pawn is, has a station, the player can click on a city that has a research station
-				if () {//Check if the clicked city has a research station
-					//Move pawn to location
+		/*
+		When the player successfully finishes an action, ensure that the action is reset by writing the line
+		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+		Failure to do so will cause assertions to fail and will cause the application to crash.
+		*/
+		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+
+		break;
+	case PlayerActions::BuildResearchCenter:
+		//select only one card
+		if (this->_cardData->size() != 1)
+			GuiManager::showMsgBox("Please select only one card.");
+
+		//correct selection than check if we have enough research center
+		else
+		{
+			// Get the card index.
+			int cardIndex = this->_cardData->at(0);
+			PlayerCard* card = player.getCard(cardIndex);
+			//check if the card is null or if the card is not city card type
+			if (card != nullptr && card->getType() == PlayerCardType::City_Card)
+			{
+				//check if we have enough research center
+				if (Game::numOfResearchCenter > 0)
+				{
+					if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != true)
+					{
+						//check if the player is current city match with the city card
+						if (player.pawn->cityIndex == cardIndex)
+						{
+							Game::getGameBoard()->getCity(player.pawn->cityIndex)->research = true;
+							player.removeCard(cardIndex);
+							Game::numOfResearchCenter--;
+							decrementActionCounter();
+							//reset player actions
+							GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+						}
+						else
+							GuiManager::showMsgBox("You current position does not match the selected city card.");
+					}
+					else
+						GuiManager::showMsgBox("All research centers have been used.");
 				}
-				else {
-					GuiManager::showMsgBox("Location has no research station.");
+				else
+					GuiManager::showMsgBox("The research facility is already built in this city.");
+			}
+			else
+				GuiManager::showMsgBox("The card is either null or you did not select a city");
+		}
+
+		break;
+	case PlayerActions::TreatDisease:
+		/*
+		When the player successfully finishes an action, ensure that the action is reset by writing the line
+		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+		Failure to do so will cause assertions to fail and will cause the application to crash.
+		*/
+		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+
+		break;
+	case PlayerActions::ShareKnowledge:
+		/*
+		When the player successfully finishes an action, ensure that the action is reset by writing the line
+		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+		Failure to do so will cause assertions to fail and will cause the application to crash.
+		*/
+		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+
+		break;
+	case PlayerActions::DiscoverCure:
+
+		// Ensure that 5 cards were selected.
+		if (this->_cardData->size() == 5) {
+
+			const int totalCards = 5;
+
+			// Get the card index.
+			int cardIndex1 = this->_cardData->at(0);
+			int cardIndex2 = this->_cardData->at(1);
+			int cardIndex3 = this->_cardData->at(2);
+			int cardIndex4 = this->_cardData->at(3);
+			int cardIndex5 = this->_cardData->at(4);
+
+			//int cardIndexArray [] = {cardIndex1, cardIndex2, cardIndex3, cardIndex4, cardIndex5};
+
+			//get the cityColors
+			int cityIndex1 = board->getCity(cardIndex1)->color;
+			int cityIndex2 = board->getCity(cardIndex2)->color;
+			int cityIndex3 = board->getCity(cardIndex3)->color;
+			int cityIndex4 = board->getCity(cardIndex4)->color;
+			int cityIndex5 = board->getCity(cardIndex5)->color;
+
+			int cardIndexArray[] = { cityIndex1, cityIndex2, cityIndex3, cityIndex4, cityIndex5 };
+
+			// Ensure all cards are of the same color.
+			for (int i = 0; i < 5; i++) {
+				for (int j = 0; j < 5; j++) {
+					if (cardIndexArray[i] != cardIndexArray[j]) {
+						GuiManager::showMsgBox("Please select exactly 5 matching cards!");
+						return true;
+					}
 				}
+
+			}
+			// Ensure that we have not yet cured the disease.
+			if (!board->isCured[cityIndex1]) {
+				board->isCured[cityIndex1] = true;
+				GuiManager::showMsgBox("The disease has been cured");
+				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+
+				player.removeCard(cardIndex1);
+				player.removeCard(cardIndex2);
+				player.removeCard(cardIndex3);
+				player.removeCard(cardIndex4);
+				player.removeCard(cardIndex5);
 			}
 			else {
-				GuiManager::showMsgBox("The current city in which you are has no research station.");
-			}*/
-			break;
+				GuiManager::showMsgBox("The disease is already cured!");
+			}
+		}
+		else {
+			GuiManager::showMsgBox("Please select 5 cards.");
+		}
+		return true;
 
-		case PlayerActions::BuildResearchCenter:
-			break;
-		case PlayerActions::TreatDisease:
+		/*
+		When the player successfully finishes an action, ensure that the action is reset by writing the line
+		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+		Failure to do so will cause assertions to fail and will cause the application to crash.
+		*/
+		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 
-			break;
-		case PlayerActions::ShareKnowledge:
-
-			break;
-		case PlayerActions::DiscoverCure:
-			
-
-			break;
-		case PlayerActions::ViewCards:
-			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-			break;
+		break;
+	case PlayerActions::ViewCards:
+		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+		break;
 	}
 
 	//If turn is changed, show this message
 	if (board->playerTurnChange() == true) {
+
+		GuiManager::showMsgBox("Your current hand after picking two cards.");
+		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
+		
+		//Checks the number of cards in player's hand after 2 cards are picked
+		int numberOfCards = player.getNumberOfCards();
+		if (numberOfCards > 7) {
+
+			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false; //Not sure if this needs to be removed and put out again
+			GuiManager::showMsgBox("You have too many cards. Select the ones you wish to delete.");
+			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
+
+			do {
+				if (numberOfCards == 8) {
+					if (this->_cardData->size() != 1) {
+						GuiManager::showMsgBox("Please select only one card to delete");
+					}
+					else {
+						int cardIndex = this->_cardData->at(0);
+						PlayerCard* card = player.getCard(cardIndex);
+
+						player.removeCard(cardIndex);
+						GameFrame::PlayerAction = PlayerActions::DiscardCards;
+					}
+				}
+
+				if (numberOfCards == 9) {
+					if (this->_cardData->size() != 2) {
+						GuiManager::showMsgBox("Please select two cards to delete.");
+					}
+					else {
+						int cardIndex1 = this->_cardData->at(0);
+						int cardIndex2 = this->_cardData->at(1);
+
+						player.removeCard(cardIndex1);
+						player.removeCard(cardIndex2);
+						GameFrame::PlayerAction = PlayerActions::DiscardCards;
+					}
+				}
+			} while (numberOfCards > 7);
+		}
+
 		GuiManager::showMsgBox("End of your turn.");
 	}
+
+
+
+
+	return true;
 }
-
-
-
 
 ToggleMapEditingActions::ToggleMapEditingActions() : UIButton(CMD_TOGGLE_MAP_EDITING_ACTIONS)
 {
@@ -446,7 +603,7 @@ ToggleMapEditingActions::ToggleMapEditingActions() : UIButton(CMD_TOGGLE_MAP_EDI
 	this->top = DRAW_HEIGHT - this->height - 10;
 }
 
-void ToggleMapEditingActions::onMouseDown(std::string button, int x, int y)
+bool ToggleMapEditingActions::onMouseDown(std::string button, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_MAP_EDITING_ACTIONS);
 #ifdef DEBUG
@@ -454,6 +611,7 @@ void ToggleMapEditingActions::onMouseDown(std::string button, int x, int y)
 	assert(element->getObjectType() == UI_TYPE_FRAME);
 #endif
 	element->visible = !element->visible;
+	return true;
 }
 
 SelectNodeAction::SelectNodeAction() : UIButton(CMD_SELECT_NODE)
@@ -466,9 +624,10 @@ SelectNodeAction::SelectNodeAction() : UIButton(CMD_SELECT_NODE)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::SelectNode;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void SelectNodeAction::onMouseDown(std::string button, int x, int y)
+bool SelectNodeAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::SelectNode;
+	return true;
 }
 
 RotateNodeAngleAction::RotateNodeAngleAction() : UIButton(CMD_SELECT_NODE)
@@ -480,9 +639,10 @@ RotateNodeAngleAction::RotateNodeAngleAction() : UIButton(CMD_SELECT_NODE)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::RotateAngle;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void RotateNodeAngleAction::onMouseDown(std::string button, int x, int y)
+bool RotateNodeAngleAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::RotateAngle;
+	return true;
 }
 
 AddNodeAction::AddNodeAction() : UIButton(CMD_ADD_NODE)
@@ -495,9 +655,10 @@ AddNodeAction::AddNodeAction() : UIButton(CMD_ADD_NODE)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::AddNode;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void AddNodeAction::onMouseDown(std::string button, int x, int y)
+bool AddNodeAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::AddNode;
+	return true;
 }
 
 
@@ -512,9 +673,10 @@ MakeNodeBlackAction::MakeNodeBlackAction() : UIButton(CMD_MAKE_NODE_BLACK)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeNodeBlack;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void MakeNodeBlackAction::onMouseDown(std::string button, int x, int y)
+bool MakeNodeBlackAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::MakeNodeBlack;
+	return true;
 }
 
 
@@ -529,9 +691,10 @@ MakeNodeRedAction::MakeNodeRedAction() : UIButton(CMD_MAKE_NODE_RED)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeNodeRed;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void MakeNodeRedAction::onMouseDown(std::string button, int x, int y)
+bool MakeNodeRedAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::MakeNodeRed;
+	return true;
 }
 
 
@@ -545,9 +708,10 @@ MakeNodeYellowAction::MakeNodeYellowAction() : UIButton(CMD_MAKE_NODE_YELLOW)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeNodeYellow;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void MakeNodeYellowAction::onMouseDown(std::string button, int x, int y)
+bool MakeNodeYellowAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::MakeNodeYellow;
+	return true;
 }
 
 
@@ -561,9 +725,10 @@ MakeNodeBlueAction::MakeNodeBlueAction() : UIButton(CMD_MAKE_NODE_BLUE)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeNodeBlue;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void MakeNodeBlueAction::onMouseDown(std::string button, int x, int y)
+bool MakeNodeBlueAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::MakeNodeBlue;
+	return true;
 }
 
 
@@ -577,9 +742,10 @@ ChangeNodeNameAction::ChangeNodeNameAction() : UIButton(CMD_CHANGE_NODE_NAME)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::ChangeNodeName;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void ChangeNodeNameAction::onMouseDown(std::string button, int x, int y)
+bool ChangeNodeNameAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::ChangeNodeName;
+	return true;
 }
 
 
@@ -593,9 +759,10 @@ MakeDirectedEdgeAction::MakeDirectedEdgeAction() : UIButton(CMD_MAKE_DIRECTED_ED
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MakeDirectedEdge;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void MakeDirectedEdgeAction::onMouseDown(std::string button, int x, int y)
+bool MakeDirectedEdgeAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::MakeDirectedEdge;
+	return true;
 }
 
 
@@ -610,9 +777,10 @@ MoveNodeAction::MoveNodeAction() : UIButton(CMD_MOVE_NODE)
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::MoveNode;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void MoveNodeAction::onMouseDown(std::string button, int x, int y)
+bool MoveNodeAction::onMouseDown(std::string button, int x, int y)
 {
 	GameFrame::EditingAction = MapEditingActions::MoveNode;
+	return true;
 }
 
 
@@ -626,7 +794,7 @@ FinishedEditingMapAction::FinishedEditingMapAction() : UIButton(CMD_FINISHED_MAP
 	this->top = FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * MapEditingActions::FinishedEditingMap;
 	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
 }
-void FinishedEditingMapAction::onMouseDown(std::string button, int x, int y)
+bool FinishedEditingMapAction::onMouseDown(std::string button, int x, int y)
 {
 	auto element = GuiManager::getUIElementByName(FRM_GAME_FRAME);
 #ifdef DEBUG
@@ -634,4 +802,5 @@ void FinishedEditingMapAction::onMouseDown(std::string button, int x, int y)
 	assert(element->getObjectType() == UI_TYPE_FRAME);
 #endif
 	((GameFrame*)element)->finishedEditing();
+	return true;
 }

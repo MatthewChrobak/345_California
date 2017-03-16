@@ -2,7 +2,7 @@
 #include "Pawn.h"
 #include "PlayerCard.h"
 
-#define MAX_PLAYER_CARDS 7
+static const int maxPlayerCards = 7;
 
 class Player
 {
@@ -16,11 +16,9 @@ public:
 	PlayerCard* getCard(int index);
 	void removeCard(int index);
 	int getNumberOfCards();
-	
 
 
 private:
-	PlayerCard* _playerCards[MAX_PLAYER_CARDS];
-	int playerCardCounter;
+	vector <PlayerCard*> _playerCards;
 };
 

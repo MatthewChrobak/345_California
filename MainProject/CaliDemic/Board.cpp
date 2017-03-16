@@ -180,17 +180,13 @@ void Board::loadPlayers(std::string playerFile)
 }
 
 //Draw 2 cards
-Player& Board::drawCards()
+void Board::drawCards()
 {
 	for (int i = 0; i < 2; i++)
 	{
-		string f = this->_playerWithdrawPile.top()->getSingleCard();
 		this->_players[this->currentTurnPlayer]->addCard(this->_playerWithdrawPile.top());
 		this->_playerWithdrawPile.pop();
 	}
-
-	GuiManager::showMsgBox("The cards you have drawn are")
-	return *this->_players[Board::currentTurnPlayer];
 }
 
 

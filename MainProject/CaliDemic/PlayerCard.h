@@ -18,7 +18,18 @@ enum PlayerCardType
 	Event_Card
 };
 
+
+
 class PlayerCard {
+
+
+
+
+
+
+
+
+
 
 public:
 	PlayerCardType getType();
