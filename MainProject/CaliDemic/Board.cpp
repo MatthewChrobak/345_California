@@ -205,6 +205,9 @@ void Board::generatePlayerCards()
 
 City* Board::getCity(int index)
 {
+	if (index < 0 || index >= this->getNumCities()) {
+		return nullptr;
+	}
 	return (City*)(this->_cities->getNode(index));
 }
 
@@ -243,11 +246,15 @@ int Board::getNumberOfPlayers()
 this will check the number of action and change turn if it reaches 
 4 actions
 */
-void Board::playerTurnChange()
+bool Board::playerTurnChange()
 {
+	boolean turnChanged = false;
 	if (actionCounter == 0)
 	{
 		this->currentTurnPlayer = ((this->currentTurnPlayer) + 1) % _players.size();
 		resetActionCounter();
+		turnChanged = true;
 	}
+
+	return turnChanged;
 }

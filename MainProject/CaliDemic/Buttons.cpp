@@ -75,12 +75,8 @@ DrivePlayerAction::DrivePlayerAction() : UIButton(CMD_PLAYER_ACTION_DRIVE)
 
 void DrivePlayerAction::onMouseDown(std::string key, int x, int y)
 {
-	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
-#ifdef DEBUG
-	assert(element != nullptr);
-	assert(element->getObjectType() == UI_TYPE_FRAME);
-#endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::Drive);
+	GameFrame::PlayerAction = PlayerActions::Drive;
+	GuiManager::showMsgBox("Please click on a city you wish to drive to.");
 }
 
 DirectFlightPlayerAction::DirectFlightPlayerAction() : UIButton(CMD_PLAYER_ACTION_DIRECT_FLIGHT)
@@ -100,8 +96,10 @@ void DirectFlightPlayerAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::DirectFlight);
+	GameFrame::PlayerAction = PlayerActions::DirectFlight;
+	((PlayerCardsFrame*)element)->show();
 }
 
 CharterFlightAction::CharterFlightAction() : UIButton(CMD_PLAYER_ACTION_CHARTER_FLIGHT)
@@ -121,8 +119,10 @@ void CharterFlightAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::CharterFlight);
+	GameFrame::PlayerAction = PlayerActions::CharterFlight;
+	((PlayerCardsFrame*)element)->show();
 }
 
 ShuttleFlightAction::ShuttleFlightAction() : UIButton(CMD_PLAYER_ACTION_SHUTTLE_FLIGHT)
@@ -142,8 +142,10 @@ void ShuttleFlightAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::ShuttleFlight);
+	GameFrame::PlayerAction = PlayerActions::ShuttleFlight;
+	((PlayerCardsFrame*)element)->show();
 }
 
 BuildResearchCenterAction::BuildResearchCenterAction() : UIButton(CMD_PLAYER_ACTION_BUILD_RESEARCH_CENTER)
@@ -163,8 +165,10 @@ void BuildResearchCenterAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::BuildResearchCenter);
+	GameFrame::PlayerAction = PlayerActions::BuildResearchCenter;
+	((PlayerCardsFrame*)element)->show();
 }
 
 TreatDiseaseAction::TreatDiseaseAction() : UIButton(CMD_PLAYER_ACTION_TREAT_DISEASE)
@@ -184,8 +188,10 @@ void TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::TreatDisease);
+	GameFrame::PlayerAction = PlayerActions::TreatDisease;
+	((PlayerCardsFrame*)element)->show();
 }
 
 ShareKnowledgeAction::ShareKnowledgeAction() : UIButton(CMD_PLAYER_ACTION_SHARE_KNOWLEDGE)
@@ -205,8 +211,10 @@ void ShareKnowledgeAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::ShareKnowledge);
+	GameFrame::PlayerAction = PlayerActions::ShareKnowledge;
+	((PlayerCardsFrame*)element)->show();
 }
 
 
@@ -227,8 +235,10 @@ void DiscoverCureAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::DiscoverCure);
+	GameFrame::PlayerAction = PlayerActions::DiscoverCure;
+	((PlayerCardsFrame*)element)->show();
 }
 
 
@@ -249,8 +259,10 @@ void ViewCardsAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
 #endif
-	((PlayerCardsFrame*)element)->show(PlayerActions::ViewCards);
+	GameFrame::PlayerAction = PlayerActions::ViewCards;
+	((PlayerCardsFrame*)element)->show();
 }
 
 
@@ -276,9 +288,8 @@ void PlayerCardsClose::onMouseDown(std::string button, int x, int y)
 }
 
 
-PlayerCardsOkay::PlayerCardsOkay(PlayerActions* action, std::vector<int>* cardData) : UIButton(CMD_PLAYER_CARDS_OKAY)
+PlayerCardsOkay::PlayerCardsOkay(std::vector<int>* cardData) : UIButton(CMD_PLAYER_CARDS_OKAY)
 {
-	this->_action = action;
 	this->_cardData = cardData;
 
 	this->surfaceName = "ui\\button.png";
@@ -293,18 +304,21 @@ PlayerCardsOkay::PlayerCardsOkay(PlayerActions* action, std::vector<int>* cardDa
 	this->height = CMD_PLAYER_CARDS_OKAY_HEIGHT;
 }
 
+
+
 void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 {
-	switch (*this->_action)
+	Board* board = Game::getGameBoard();
+	Player& player = board->getCurrentTurnPlayer();
+
+	switch (GameFrame::PlayerAction)
 	{
 		case PlayerActions::Drive:
-
-			break;
+		break;
+		
 		case PlayerActions::DirectFlight:
 			// We should only have one card selected here.
 			if (this->_cardData->size() == 1) {
-				Board* board = Game::getGameBoard();
-				Player& player = board->getCurrentTurnPlayer();
 				
 				// Get the card index.
 				int cardIndex = this->_cardData->at(0);
@@ -324,6 +338,8 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 						GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 
 						// TODO: Decrement the player actions.
+						// Reset the player action.
+						GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 					}
 					else {
 						GuiManager::showMsgBox("Please select a city card.");
@@ -337,17 +353,13 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				GuiManager::showMsgBox("Please select only one card.");
 			}
 			break;
+		
 		case PlayerActions::CharterFlight:
-
-			
 			//select atleast 1 card
 			if (this->_cardData->size() != 1){
 				GuiManager::showMsgBox("Please select only one card.");
 			}else
 			{
-						Board* board = Game::getGameBoard();
-						Player& player = board->getCurrentTurnPlayer();
-
 						// Get the card index.
 						int cardIndex = this->_cardData->at(0);
 						PlayerCard* card = player.getCard(cardIndex);
@@ -389,6 +401,11 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 		case PlayerActions::ViewCards:
 			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 			break;
+	}
+
+	//If turn is changed, show this message
+	if (board->playerTurnChange() == true) {
+		GuiManager::showMsgBox("End of your turn.");
 	}
 }
 
