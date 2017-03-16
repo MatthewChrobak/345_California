@@ -152,6 +152,14 @@ void GameRenderer::drawCityNode(City& city)
 			GraphicsManager::renderSurface("nodes\\cube.png", ctx);
 		}
 	}
+
+	// If the city has a research center, render it.
+	if (city.research) {
+		ctx.reset();
+		ctx.position = new Vector2D(city.x - CITY_RENDER_WIDTH / 2 - CITY_RENDER_HEIGHT / 3, city.y - CITY_RENDER_HEIGHT / 2 + CITY_RENDER_HEIGHT / 3);
+		ctx.size = new Vector2D(CITY_RENDER_WIDTH / 3, CITY_RENDER_HEIGHT / 3);
+		GraphicsManager::renderSurface("nodes\\cross.png", ctx);
+	}
 }
 
 void GameRenderer::drawCityName(City& city)
