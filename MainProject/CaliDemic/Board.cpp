@@ -217,6 +217,8 @@ void Board::loadPlayers(std::string playerFile)
 		Player* player = new Player();
 		player->pawn->cityIndex = fs->readInt();
 
+		// TODO: Get the role of the player.
+		
 		// Go through all the player's cards.	
 		for (int playerCardIndex = 0; playerCardIndex < MAX_PLAYER_CARDS; playerCardIndex++) {
 			// Get the type of the card.
