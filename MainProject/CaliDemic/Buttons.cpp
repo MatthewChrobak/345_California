@@ -420,7 +420,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 						if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != true)
 						{
 							//check if the player is current city match with the city card
-							if (player.pawn->cityIndex == cardIndex)
+							if (player.pawn->cityIndex == ((CityCard*)card)->cityIndex)
 							{
 								Game::getGameBoard()->getCity(player.pawn->cityIndex)->research = true;
 								player.removeCard(cardIndex);
@@ -433,10 +433,10 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 								GuiManager::showMsgBox("You current position does not match the selected city card.");
 						}
 						else
-							GuiManager::showMsgBox("All research centers have been used.");
+							GuiManager::showMsgBox("The research facility is already built in this city.");
 					}
 					else
-						GuiManager::showMsgBox("The research facility is already built in this city.");
+						GuiManager::showMsgBox("All research centers have been used.");
 				}
 				else
 					GuiManager::showMsgBox("The card is either null or you did not select a city");
@@ -527,6 +527,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			break;
 		case PlayerActions::ViewCards:
 			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 			break;
 	}
 
