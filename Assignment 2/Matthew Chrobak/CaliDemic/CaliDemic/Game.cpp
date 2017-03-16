@@ -86,12 +86,7 @@ void Game::gameloop()
 	// Continue to loop while the game is not closed.
 	while (Game::getState() != GameState::Closed) {
 
-		tick = std::clock();
-
-		if (tmrGraphics < tick) {
-			GraphicsManager::draw();
-			tmrGraphics = tick + 16;
-		}
+		GraphicsManager::handleInput();
 	}
 
 	Game::destroy();

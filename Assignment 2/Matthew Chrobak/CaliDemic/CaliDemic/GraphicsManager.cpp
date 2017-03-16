@@ -47,3 +47,11 @@ void GraphicsManager::renderText(std::string text, TextContext& ctx)
 #endif
 	GraphicsManager::_system->renderText(text, ctx);
 }
+
+void GraphicsManager::handleInput()
+{
+#ifdef DEBUG
+	assert(GraphicsManager::_system != nullptr);
+#endif
+	GraphicsManager::_system->handleInput();
+}

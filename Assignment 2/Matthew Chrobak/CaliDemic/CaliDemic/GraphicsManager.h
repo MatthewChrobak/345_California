@@ -10,6 +10,7 @@ public:
 	static void draw();
 	static void renderSurface(std::string surfaceName, SurfaceContext& ctx);
 	static void renderText(std::string text, TextContext& ctx);
+	static void handleInput();
 
 private:
 	static GraphicsSystem* _system;

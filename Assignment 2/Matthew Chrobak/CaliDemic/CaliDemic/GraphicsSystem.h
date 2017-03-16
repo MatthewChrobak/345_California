@@ -12,6 +12,7 @@ public:
 	virtual void destroyContext() = 0;
 	virtual void restartContext() = 0;
 	virtual void drawContext() = 0;
+	virtual void handleInput() = 0;
 
 	// Context mutators
 	virtual void setWindowTitle(std::string title) = 0;

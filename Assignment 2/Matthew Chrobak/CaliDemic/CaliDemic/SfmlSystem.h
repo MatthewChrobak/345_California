@@ -17,6 +17,7 @@ namespace SFML
 		void SfmlSystem::destroyContext();
 		void SfmlSystem::restartContext();
 		void SfmlSystem::drawContext();
+		void SfmlSystem::handleInput();
 		void SfmlSystem::renderSurface(std::string text, SurfaceContext& ctx);
 		void SfmlSystem::renderText(std::string text, TextContext& ctx);
 

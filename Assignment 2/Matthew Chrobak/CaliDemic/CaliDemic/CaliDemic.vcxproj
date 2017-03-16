@@ -81,6 +81,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GraphicsManager.cpp" />
     <ClCompile Include="GuiManager.cpp" />
+    <ClCompile Include="Observable.cpp" />
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerCard.cpp" />
@@ -109,6 +110,8 @@
     <ClInclude Include="GameRenderer.h" />
     <ClInclude Include="GuiManager.h" />
     <ClInclude Include="InfectionColors.h" />
+    <ClInclude Include="Observable.h" />
+    <ClInclude Include="Observer.h" />
     <ClInclude Include="Paths.h" />
     <ClInclude Include="Pawn.h" />
     <ClInclude Include="Player.h" />

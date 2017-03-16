@@ -64,6 +64,16 @@ void SfmlSystem::restartContext()
 	this->createContext();
 }
 
+void SfmlSystem::handleInput()
+{
+	// Handle every window event.
+	sf::Event event;
+	while (this->_windowContext->pollEvent(event))
+	{
+		this->handleEvent(event);
+	}
+}
+
 void SfmlSystem::drawContext()
 {
 #ifdef DEBUG
@@ -72,13 +82,6 @@ void SfmlSystem::drawContext()
 
 	// Clear the contents of the backbuffer with a solid color.
 	this->_windowContext->clear(sf::Color(75, 75, 75));
-
-	// Handle every window event.
-	sf::Event event;
-	while (this->_windowContext->pollEvent(event)) 
-	{
-		this->handleEvent(event);
-	}
 
 	// Invoke the method which draws the game.
 	this->drawGame();
