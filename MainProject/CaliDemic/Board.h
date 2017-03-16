@@ -25,6 +25,11 @@ public:
 	void addCity(City* city);
 	City* getCity(int index);
 	int getNumCities();
+	//disease cure boolean
+	//index value indicating disease according it's color...bool array if cured update bool value
+
+	bool isCured[] = {false, false, false, false};
+
 
 	/*
 	This is to change turn once the number of action is reach
