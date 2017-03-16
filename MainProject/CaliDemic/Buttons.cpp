@@ -304,18 +304,21 @@ PlayerCardsOkay::PlayerCardsOkay(std::vector<int>* cardData) : UIButton(CMD_PLAY
 	this->height = CMD_PLAYER_CARDS_OKAY_HEIGHT;
 }
 
+
+
 void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 {
+	Board* board = Game::getGameBoard();
+	Player& player = board->getCurrentTurnPlayer();
+
 	switch (GameFrame::PlayerAction)
 	{
 		case PlayerActions::Drive:
-
-			break;
+		break;
+		
 		case PlayerActions::DirectFlight:
 			// We should only have one card selected here.
 			if (this->_cardData->size() == 1) {
-				Board* board = Game::getGameBoard();
-				Player& player = board->getCurrentTurnPlayer();
 				
 				// Get the card index.
 				int cardIndex = this->_cardData->at(0);
@@ -350,17 +353,13 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				GuiManager::showMsgBox("Please select only one card.");
 			}
 			break;
+		
 		case PlayerActions::CharterFlight:
-
-			
 			//select atleast 1 card
 			if (this->_cardData->size() != 1){
 				GuiManager::showMsgBox("Please select only one card.");
 			}else
 			{
-						Board* board = Game::getGameBoard();
-						Player& player = board->getCurrentTurnPlayer();
-
 						// Get the card index.
 						int cardIndex = this->_cardData->at(0);
 						PlayerCard* card = player.getCard(cardIndex);
@@ -402,6 +401,11 @@ void PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 		case PlayerActions::ViewCards:
 			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 			break;
+	}
+
+	//If turn is changed, show this message
+	if (board->playerTurnChange() == true) {
+		GuiManager::showMsgBox("End of your turn.");
 	}
 }
 
