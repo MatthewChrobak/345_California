@@ -178,10 +178,6 @@ void Board::loadPlayers(std::string playerFile)
 }
 
 
-
-
-
-
 void Board::generatePlayerCards()
 {
 	// Create a vector of city indexes.
