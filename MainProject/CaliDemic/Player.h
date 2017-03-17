@@ -9,7 +9,6 @@ class Player
 {
 public:
 	Pawn* pawn;
-	
 	Player();
 	~Player();
 
@@ -22,7 +21,6 @@ public:
 
 private:
   RoleCard* rc;
-
 	PlayerCard* _playerCards [MAX_PLAYER_CARDS];
 };
 

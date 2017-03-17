@@ -17,6 +17,7 @@ class UIMessageBox : public UIFrame
 {
 public:
 	UIMessageBox();
+	bool onKeyDown(std::string key);
 
 	void addMessage(std::string message);
 	void popMessage();
