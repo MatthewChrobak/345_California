@@ -21,13 +21,7 @@
 #include <assert.h>
 #endif
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-//===============================================================
-=======
-=======
 
->>>>>>> origin/Eastside-Ying-Yang
 void Board::tryStartGame()
 {
 	// Can we start the game?
@@ -37,57 +31,34 @@ void Board::tryStartGame()
 		this->generateGameContentAtStartOfGame();
 	}
 }
-<<<<<<< HEAD
-
-
->>>>>>> refs/remotes/origin/master
-=======
->>>>>>> origin/Eastside-Ying-Yang
 void Board::generateGameContentAtStartOfGame()
 {
+	srand((unsigned)time(0));
 	this->generatePlayerCards();
-
 	// Give each player four cards, while we have cards.
 	for (int playerIndex = 0; playerIndex < this->getNumberOfPlayers(); playerIndex++) {
 		for (int i = 0; i < 4; i++) {
 			if (this->_playerWithdrawPile.size() == 0) {
 				break;
-			} else {
+			}
+			else {
 				this->getPlayer(playerIndex).addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
 				this->_playerWithdrawPile.pop_back();
 			}
 		}
-		int i = RandomNumberGenerator::next(0, 6);
 		// Give each player a random role card.
-		RoleCard *p = new RoleCard(RoleCard::roleCardNames[i]);
+		RoleCard *p = new RoleCard(RoleCard::roleCardNames[rand()%7]);
 		this->getPlayer(playerIndex).setRoleCard(p);
 	}
-	//===========================================================
 	//intializing infectionCardDeck
 	Board::infectionCityCardsInitializor();
-
 
 	//starting the infection with 9 cities (required 9 cities if not null exception)
 	for (int i = 0; i < STARTING_INFECTION_CARD && i < infectionCityCards.size(); i++)
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-		
 		InfectionCard::infectCityCube(infectionCityCards.at(i));
 		Board::discardInfectionCard.push_back(infectionCityCards.at(i));
-		Board::infectionCityCards.erase(infectionCityCards.begin() + i);
-		Board::infectionCityCards.shrink_to_fit();
-		
-=======
-		InfectionCard::infectCityCube(infectionCityCards.at(0));
-		Board::discardInfectionCard.push_back(infectionCityCards.at(0));
 		Board::infectionCityCards.erase(infectionCityCards.begin());
->>>>>>> refs/remotes/origin/master
-=======
-		InfectionCard::infectCityCube(infectionCityCards.at(0));
-		Board::discardInfectionCard.push_back(infectionCityCards.at(0));
-		Board::infectionCityCards.erase(infectionCityCards.begin());
->>>>>>> origin/Eastside-Ying-Yang
 	}
 }
 
@@ -114,18 +85,19 @@ Board::Board(std::string saveFolder)
 	// If we're not editing, load the players.
 	if (!this->_editingMap) {
 		this->loadPlayers(saveFolder + PLAYER_DATA_FILE);
-	} else {
+	}
+	else {
 		GuiManager::showMsgBox("In Map Editing mode. Hit 'Done Editing' to save the map and start playing.");
 	}
 }
 
 Board::~Board()
 {
-	for (unsigned int i = 0; i < this->_players.size();i++)
+	for (unsigned int i = 0; i < this->_players.size(); i++)
 		delete this->_players.at(i);
 
 	while (!this->_playerWithdrawPile.empty()) {
-		delete this->_playerWithdrawPile.at(this->_playerWithdrawPile.size()-1);
+		delete this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1);
 		this->_playerWithdrawPile.pop_back();
 	}
 
@@ -175,7 +147,8 @@ void Board::loadBoardData(std::string boardFile)
 
 		if (type == PlayerCardType::City_Card) {
 			this->_playerWithdrawPile.push_back(new CityCard(fs->readInt()));
-		} else if (type == PlayerCardType::Event_Card) {
+		}
+		else if (type == PlayerCardType::Event_Card) {
 			// This is nonesense.
 			fs->readInt();
 		}
@@ -226,7 +199,8 @@ void Board::saveBoardData(std::string boardFile)
 
 		if (card->getType() == PlayerCardType::City_Card) {
 			fs->write(((CityCard*)card)->cityIndex);
-		} else {
+		}
+		else {
 			fs->write(-1);
 		}
 	}
@@ -343,21 +317,22 @@ void Board::savePlayers(std::string playerFile)
 
 			// If the card is null, write -1 to signify no card type.
 			if (card == nullptr) {
-				
+
 				fs->write(-1);
-			} else {
+			}
+			else {
 				fs->write(card->getType());
 
 				// For now, assume the player just has city cards.
 				switch (card->getType()) {
-					case PlayerCardType::City_Card:
-					{
-						CityCard* cityCard = (CityCard*)card;
-						fs->write(cityCard->cityIndex);
-					}break;
+				case PlayerCardType::City_Card:
+				{
+				 CityCard* cityCard = (CityCard*)card;
+					  fs->write(cityCard->cityIndex);
+				}break;
 				}
 			}
-			
+
 		}
 	}
 
@@ -377,7 +352,7 @@ void Board::loadPlayers(std::string playerFile)
 
 		srand((unsigned)time(NULL)); //always seed your RNG before using it
 
-									 //generate random numbers:
+		//generate random numbers:
 		for (unsigned int i = 0; i<AMOUNT; i++) {
 			bool check; //variable to check or number is already used
 			int n; //variable to store the number in
@@ -386,11 +361,11 @@ void Board::loadPlayers(std::string playerFile)
 				//check or number is already used:
 				check = true;
 				for (unsigned int j = 0; j<i; j++)
-					if (n == value[j]) //if number is already used
-					{
-						check = false; //set check to false
-						break; //no need to check the other elements of value[]
-					}
+				if (n == value[j]) //if number is already used
+				{
+					check = false; //set check to false
+					break; //no need to check the other elements of value[]
+				}
 			} while (!check); //loop until new, unique number is found
 			value[i] = n; //store the generated number in the array
 		}
@@ -436,11 +411,11 @@ void Board::loadPlayers(std::string playerFile)
 			if (cardType != -1) {
 				// What kind of card is it?
 				switch ((PlayerCardType)cardType) {
-					case PlayerCardType::City_Card:
-					{
-						CityCard* card = new CityCard(fs->readInt());
-						player->addCard(card);
-					}break;
+				case PlayerCardType::City_Card:
+				{
+												  CityCard* card = new CityCard(fs->readInt());
+												  player->addCard(card);
+				}break;
 				}
 			}
 		}
@@ -492,7 +467,7 @@ void Board::generatePlayerCards()
 	EventCard* card4 = new EventCard(GovernmentGrant);
 	EventCard* card5 = new EventCard(Forecast);
 
-	std::vector<EventCard*> tempEventVector {card1, card2, card3, card4, card5};
+	std::vector<EventCard*> tempEventVector{ card1, card2, card3, card4, card5 };
 
 	for (unsigned int i = 0; i < tempEventVector.size(); i++) {
 
@@ -550,7 +525,7 @@ int Board::getNumberOfPlayers()
 }
 
 /*
-this will check the number of action and change turn if it reaches 
+this will check the number of action and change turn if it reaches
 4 actions
 */
 bool Board::playerTurnChange()
