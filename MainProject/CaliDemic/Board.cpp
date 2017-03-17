@@ -24,7 +24,7 @@
 void Board::generateGameContentAtStartOfGame()
 {
 	// Give each player four cards, while we have cards.
-	for (unsigned int playerIndex = 0; playerIndex < this->getNumberOfPlayers(); playerIndex++) {
+	for (int playerIndex = 0; playerIndex < this->getNumberOfPlayers(); playerIndex++) {
 		for (int i = 0; i < 4; i++) {
 			if (this->_playerWithdrawPile.size() == 0) {
 				break;
@@ -36,6 +36,8 @@ void Board::generateGameContentAtStartOfGame()
 
 		// Give each player a random role card.
 	}
+	//intializing infectionCardDeck
+	Board::infectionCityCardsInitializor();
 }
 
 /*
@@ -574,22 +576,22 @@ void Board::checkTurn()
 
 	if (Game::getGameBoard()->playerTurnChange() == true)
 	{
-		//Game::getGameBoard()->drawCards();
-		//GuiManager::showMsgBox("Your current hand after picking two cards.");
-		//GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
+		Game::getGameBoard()->drawCards();
+		GuiManager::showMsgBox("Your current hand after picking two cards.");
+		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
 
-		//int numberOfCards = player.getNumberOfCards();
+		int numberOfCards = player.getNumberOfCards();
 
-		//if (numberOfCards >= 6) //You only excess cards only when you draw while you have 6 or more cards
-		//{
-		//	GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
-		//	GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.
-		//	GameFrame::PlayerAction = PlayerActions::DiscardCards;
+		if (numberOfCards >= 6) //You only excess cards only when you draw while you have 6 or more cards
+		{
+			GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
+			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.
+			GameFrame::PlayerAction = PlayerActions::DiscardCards;
 
-		//}
-		////draw infection card and the game will do the infection automatically
-		//Game::getGameBoard()->drawInfectionCard();
-		//GuiManager::showMsgBox("End of your turn.");
+		}
+		//draw infection card and the game will do the infection automatically
+		Game::getGameBoard()->drawInfectionCard();
+		GuiManager::showMsgBox("End of your turn.");
 	}
 }
 

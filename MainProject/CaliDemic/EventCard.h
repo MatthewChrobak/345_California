@@ -1,6 +1,7 @@
 #pragma once
 #include "PlayerCard.h"
-#include <vector>;
+#include <vector>
+
 
 enum EventCardType
 {
