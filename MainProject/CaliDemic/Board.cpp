@@ -2,7 +2,7 @@
 #include "FileStream.h"
 #include "FileSystem.h"
 #include "PlayerActions.h"
-#include "ActionCounter.h"
+
 #include "InfectionCard.h"
 #include "GuiManager.h"
 #include "Game.h"
@@ -13,6 +13,7 @@
 #include <time.h>
 #include "RoleCard.h"
 #include "EventCard.h"
+#include "Frames.h"
 #include "EpidemicCard.h"
 
 #ifdef DEBUG
@@ -30,6 +31,7 @@ void Board::generateGameContentAtStartOfGame()
 			} else {
 				this->getPlayer(playerIndex).addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
 				this->_playerWithdrawPile.pop_back();
+				GuiManager::showMsgBox ("CHEESE");
 			}
 		}
 
@@ -102,7 +104,7 @@ void Board::loadBoardData(std::string boardFile)
 	this->_editingMap = fs->readBool();
 	this->_startGame = fs->readBool();
 	currentTurnPlayer = fs->readInt();
-	actionCounter = fs->readInt();
+	Game::actionCounter = fs->readInt();
 	for (int i = 0; i < InfectionColor::InfectionColor_Length; i++) {
 		this->isCured[i] = fs->readBool();
 	}
@@ -154,7 +156,7 @@ void Board::saveBoardData(std::string boardFile)
 	fs->write(this->_editingMap);
 	fs->write(this->_startGame);
 	fs->write(currentTurnPlayer);
-	fs->write(actionCounter);
+	fs->write(Game::actionCounter);
 	for (int i = 0; i < InfectionColor::InfectionColor_Length; i++) {
 		fs->write(this->isCured[i]);
 	}
@@ -507,10 +509,10 @@ this will check the number of action and change turn if it reaches
 bool Board::playerTurnChange()
 {
 	boolean turnChanged = false;
-	if (actionCounter == 0)
+	if (Game::actionCounter == 0)
 	{
 		this->currentTurnPlayer = ((this->currentTurnPlayer) + 1) % _players.size();
-		resetActionCounter();
+		Game::resetActionCounter();
 		turnChanged = true;
 	}
 
@@ -565,6 +567,33 @@ void Board::submitMap()
 	GuiManager::handleWindowClose();
 }
 
+
+void Board::checkTurn()
+{
+	Board* board = Game::getGameBoard();
+	Player& player = board->getCurrentTurnPlayer();
+
+	if (Game::getGameBoard()->playerTurnChange() == true)
+	{
+		//Game::getGameBoard()->drawCards();
+		//GuiManager::showMsgBox("Your current hand after picking two cards.");
+		//GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
+
+		//int numberOfCards = player.getNumberOfCards();
+
+		//if (numberOfCards >= 6) //You only excess cards only when you draw while you have 6 or more cards
+		//{
+		//	GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
+		//	GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.
+		//	GameFrame::PlayerAction = PlayerActions::DiscardCards;
+
+		//}
+		////draw infection card and the game will do the infection automatically
+		//Game::getGameBoard()->drawInfectionCard();
+		//GuiManager::showMsgBox("End of your turn.");
+	}
+}
+
 int Board::getActualInfectionRate()
 {
 	return this->_infectionRate;
@@ -573,4 +602,5 @@ int Board::getActualInfectionRate()
 void Board::setActualInfectionRate(int value)
 {
 	this->_infectionRate = value;
+
 }
