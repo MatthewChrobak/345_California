@@ -94,6 +94,7 @@ void Board::loadNodes(std::string nodesFile)
 		city->cube[0] = fs->readInt();
 		city->cube[1] = fs->readInt();
 		city->cube[2] = fs->readInt();
+		city->cube[3] = fs->readInt();
 		city->research = fs->readBool();
 		city->color = (InfectionColor)fs->readInt();
 		city->x = fs->readInt();
@@ -127,6 +128,7 @@ void Board::saveNodes(std::string nodesFile)
 		fs->write(city->cube[0]);
 		fs->write(city->cube[1]);
 		fs->write(city->cube[2]);
+		fs->write(city->cube[3]);
 		fs->write(city->research);
 		fs->write(city->color);
 		fs->write(city->x);
