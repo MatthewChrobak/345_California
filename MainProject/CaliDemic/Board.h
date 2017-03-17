@@ -59,7 +59,7 @@ public:
 private:
 	CityGraph* _cities;
 	std::vector<Player*> _players;
-	std::stack<PlayerCard*> _playerWithdrawPile;
+	std::vector<PlayerCard*> _playerWithdrawPile;
 
 	void loadBoardData(std::string boardFile);
 	void saveBoardData(std::string boardFile);
