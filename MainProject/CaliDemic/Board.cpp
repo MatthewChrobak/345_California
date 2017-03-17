@@ -45,7 +45,7 @@ This will initialize the infectionCard deck
 */
 void Board::infectionCityCardsInitializor()
 {
-	for (int i = 0; i < Game::getGameBoard()->getNumCities(); i++)
+	for (int i = 0; i < this->getNumCities(); i++)
 	{
 		infectionCityCards.push_back(i);
 	}

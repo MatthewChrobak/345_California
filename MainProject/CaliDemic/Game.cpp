@@ -179,14 +179,6 @@ void Game::changeState(GameState state)
 	Game::_state = state;
 }
 
-void Game::numOfCubeLeft()
-{
-	std::cout << "Number of yellow cube left: " << numOfYellowCube << std::endl;
-	std::cout << "Number of black cube left: " << numOfBlackCube << std::endl;
-	std::cout << "Number of blue cube left: " << numOfBlueCube << std::endl;
-	std::cout << "Number of red cube left: " << numOfRedCube << std::endl;
-}
-
 void Game::decrementActionCounter()
 {
 	//actionCounter = 1;
