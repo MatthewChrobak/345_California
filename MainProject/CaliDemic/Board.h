@@ -43,6 +43,7 @@ public:
 	int currentTurnPlayer = 0;
 	void drawCards(); // Draw 2 cards from the player deck
 	std::vector<std::string> playerCardDeck;
+	void tryStartGame();
 
 
 	int getInfectionRate();

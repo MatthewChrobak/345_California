@@ -7,6 +7,7 @@
 #include "GuiManager.h"
 #include "EventCard.h"
 #include "EpidemicCard.h"
+#include "Checkboxes.h"
 
 PlayerActions GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 MapEditingActions GameFrame::EditingAction;
@@ -318,6 +319,7 @@ MainMenuFrame::MainMenuFrame() : UIFrame(FRM_MAIN_MENU)
 
 	this->_elements.push_back(new SaveNameTextbox());
 	this->_elements.push_back(new PlayGameButton());
+	this->_elements.push_back(new DefaultMapBox());
 }
 
 
