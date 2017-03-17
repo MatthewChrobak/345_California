@@ -2,7 +2,7 @@
 #include "Pawn.h"
 #include "PlayerCard.h"
 
-static const int maxPlayerCards = 7;
+#define MAX_PLAYER_CARDS 7
 
 class Player
 {
@@ -19,6 +19,6 @@ public:
 
 
 private:
-	vector <PlayerCard*> _playerCards;
+	PlayerCard* _playerCards [MAX_PLAYER_CARDS];
 };
 

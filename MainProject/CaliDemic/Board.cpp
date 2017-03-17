@@ -171,7 +171,7 @@ void Board::savePlayers(std::string playerFile)
 		// TODO: Role data
 		fs->write(player.pawn->cityIndex);
 
-		for (int cardIndex = 0; cardIndex < 7; cardIndex++) {
+		for (int cardIndex = 0; cardIndex < MAX_PLAYER_CARDS; cardIndex++) {
 			PlayerCard* card = player.getCard(cardIndex);
 
 			// If the card is null, write -1 to signify no card type.
@@ -222,7 +222,7 @@ void Board::loadPlayers(std::string playerFile)
 		// TODO: Get the role of the player.
 		
 		// Go through all the player's cards.	
-		for (int playerCardIndex = 0; playerCardIndex < 7; playerCardIndex++) {
+		for (int playerCardIndex = 0; playerCardIndex < MAX_PLAYER_CARDS; playerCardIndex++) {
 			// Get the type of the card.
 			int cardType = fs->readInt();
 

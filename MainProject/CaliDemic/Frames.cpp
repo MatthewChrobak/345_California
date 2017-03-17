@@ -102,7 +102,14 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 			case MapEditingActions::MakeNodeBlue:
 			case MapEditingActions::MakeDirectedEdge:
 				// Get the city from the x/y coordinate.
+				
 				int index = City::getCityIndexFromXY(x, y);
+				
+				if (index < 0)
+				{
+					return true;
+				}
+
 				City* city = board->getCity(index);
 
 				// Make sure it's not null.
