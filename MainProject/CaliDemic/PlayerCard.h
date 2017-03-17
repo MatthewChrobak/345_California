@@ -22,15 +22,6 @@ enum PlayerCardType
 
 class PlayerCard {
 
-
-
-
-
-
-
-
-
-
 public:
 	PlayerCardType getType();
 	virtual void playCard() = 0;
