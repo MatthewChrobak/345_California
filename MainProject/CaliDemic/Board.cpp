@@ -4,6 +4,7 @@
 #include "PlayerActions.h"
 #include "ActionCounter.h"
 #include "InfectionCard.h"
+#include "GuiManager.h"
 #include "Game.h"
 #include <iostream>
 #include <vector>
@@ -94,7 +95,6 @@ void Board::loadNodes(std::string nodesFile)
 		city->cube[0] = fs->readInt();
 		city->cube[1] = fs->readInt();
 		city->cube[2] = fs->readInt();
-		city->cube[3] = fs->readInt();
 		city->research = fs->readBool();
 		city->color = (InfectionColor)fs->readInt();
 		city->x = fs->readInt();
@@ -128,7 +128,6 @@ void Board::saveNodes(std::string nodesFile)
 		fs->write(city->cube[0]);
 		fs->write(city->cube[1]);
 		fs->write(city->cube[2]);
-		fs->write(city->cube[3]);
 		fs->write(city->research);
 		fs->write(city->color);
 		fs->write(city->x);
@@ -379,6 +378,7 @@ void Board::drawInfectionCard()
 	for (int i = 0; i < infectionCardToBeDraw ; i++)
 	{
 		InfectionCard::infectCityCube(infectionCityCards.at(i));
+		GuiManager::showMsgBox("The City name: " + Game::getGameBoard()->getCity(i)->name);
 		Board::discardInfectionCard.push_back(infectionCityCards.at(i));
 		Board::infectionCityCards.erase(infectionCityCards.begin()+i);
 	}
