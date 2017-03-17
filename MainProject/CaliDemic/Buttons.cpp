@@ -76,6 +76,7 @@ bool DrivePlayerAction::onMouseDown(std::string key, int x, int y)
 {
 	GameFrame::PlayerAction = PlayerActions::Drive;
 	GuiManager::showMsgBox("Please click on a city you wish to drive to.");
+
 	return true;
 }
 
@@ -211,6 +212,8 @@ bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 		do {
 			Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor]--;
 			Game::numOfCubeIncrementor(cityColor);
+			Game::decrementActionCounter();
+			Board::checkTurn();
 		} while (Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor] > 0);
 
 		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
@@ -221,6 +224,8 @@ bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 		GuiManager::showMsgBox("An infection cube has been remove in the current city");
 		Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor]--;
 		Game::numOfCubeIncrementor(cityColor);
+		Game::decrementActionCounter();
+		Board::checkTurn();
 		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 	}
 	else
@@ -375,7 +380,8 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 					// Remove it, move the player, and hide the player cards.
 					player.removeCard(cardIndex);
 					player.pawn->cityIndex = cityIndex;
-					decrementActionCounter();
+					Game::decrementActionCounter();
+					Board::checkTurn();
 					GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 					// Reset the player action.
 					GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
@@ -412,7 +418,8 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				int x = cardIndex;
 				player.pawn->cityIndex = x;
 				player.removeCard(cardIndex);
-				decrementActionCounter();
+				Game::decrementActionCounter();
+				Board::checkTurn();
 				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 				//reset player Actions
 				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
@@ -440,8 +447,8 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != true)
 				{
 					GuiManager::showMsgBox("You're operations expert! This is worth one action");
-					decrementActionCounter();
-
+					Game::decrementActionCounter();
+					Board::checkTurn();
 					}
 				else 
 					GuiManager::showMsgBox("The research facility is already built in this city.");
@@ -478,7 +485,8 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 							Game::getGameBoard()->getCity(player.pawn->cityIndex)->research = true;
 							player.removeCard(cardIndex);
 							Game::numOfResearchCenter--;
-							decrementActionCounter();
+							Game::decrementActionCounter();
+							Board::checkTurn();
 							//reset player actions
 							GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 							break;
@@ -559,9 +567,13 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				board->isCured[color] = true;
 				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 				GuiManager::showMsgBox("The disease has been cured.");
+				Game::decrementActionCounter();
+				Board::checkTurn();
 				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-				decrementActionCounter();
-			} else {
+				
+			} 
+			else 
+			{
 				GuiManager::showMsgBox("You need to select " + std::to_string(roleCardIndex) + " cards.");
 			}
 		}
@@ -599,25 +611,25 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 
 	//If turn is changed, show this message
-	if (Game::getGameBoard()->playerTurnChange() == true) 
-	{
-		Game::getGameBoard()->drawCards();
-		GuiManager::showMsgBox("Your current hand after picking two cards.");
-		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
+	//if (Game::getGameBoard()->playerTurnChange() == true) 
+	//{
+	//	Game::getGameBoard()->drawCards();
+	//	GuiManager::showMsgBox("Your current hand after picking two cards.");
+	//	GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
 
-		int numberOfCards = player.getNumberOfCards();
+	//	int numberOfCards = player.getNumberOfCards();
 
-		if (numberOfCards >= 6) //You only excess cards only when you draw while you have 6 or more cards
-		{
-			GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
-			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.
-			GameFrame::PlayerAction = PlayerActions::DiscardCards;
+	//	if (numberOfCards >= 6) //You only excess cards only when you draw while you have 6 or more cards
+	//	{
+	//		GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
+	//		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.
+	//		GameFrame::PlayerAction = PlayerActions::DiscardCards;
 
-		}
-		//draw infection card and the game will do the infection automatically
-		Game::getGameBoard()->drawInfectionCard();
-		GuiManager::showMsgBox("End of your turn.");
-	}
+	//	}
+	//	//draw infection card and the game will do the infection automatically
+	//	Game::getGameBoard()->drawInfectionCard();
+	//	GuiManager::showMsgBox("End of your turn.");
+	//}
 
 	return true;
 }

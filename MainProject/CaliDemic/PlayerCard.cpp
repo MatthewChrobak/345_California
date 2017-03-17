@@ -10,7 +10,7 @@
 #include <stdio.h> 
 #include "FileStream.h"
 #include "FileSystem.h"
-#include "ActionCounter.h"
+
 
 
 void PlayerCard::playCard()
@@ -69,4 +69,3 @@ void PlayerCard::useEpidemic() {
 	//Further functions needed to initiate the effects of picking an epidemic card
 
 }
-

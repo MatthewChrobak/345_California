@@ -13,6 +13,7 @@ int Game::numOfBlackCube = NUM_OF_STARTING_CUBE;
 int Game::numOfRedCube = NUM_OF_STARTING_CUBE;
 int Game::numOfBlueCube = NUM_OF_STARTING_CUBE;
 int Game::numOfResearchCenter = NUM_OF_STARTING_RESEARCH_FACILITY;
+int Game::actionCounter = NUM_OF_MAX_ACTION;
 
 void Game::numOfCubeDecrementor(int cityColor)
 {
@@ -186,3 +187,13 @@ void Game::numOfCubeLeft()
 	std::cout << "Number of red cube left: " << numOfRedCube << std::endl;
 }
 
+void Game::decrementActionCounter()
+{
+	//actionCounter = 1;
+	actionCounter--;
+}
+
+//Resets the number of actions
+void Game::resetActionCounter() {
+	actionCounter = 4;
+}
