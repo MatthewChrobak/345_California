@@ -20,12 +20,22 @@
 #include <assert.h>
 #endif
 
-/*
-This is where game content is generated at the start of the game.
-*/
+
 void Board::generateGameContentAtStartOfGame()
 {
+	// Give each player four cards, while we have cards.
+	for (unsigned int playerIndex = 0; playerIndex < this->getNumberOfPlayers(); playerIndex++) {
+		for (int i = 0; i < 4; i++) {
+			if (this->_playerWithdrawPile.size() == 0) {
+				break;
+			} else {
+				this->getPlayer(playerIndex).addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
+				this->_playerWithdrawPile.pop_back();
+			}
+		}
 
+		// Give each player a random role card.
+	}
 }
 
 /*
@@ -98,9 +108,42 @@ void Board::loadBoardData(std::string boardFile)
 		this->isCured[i] = fs->readBool();
 	}
 
-	// TODO: all player cards.
-	// TODO: all epidemic cards in the withdraw
-	// TODO: all epidemic cards in the discard
+	// Cubes counters and research center.
+	Game::numOfBlackCube = fs->readInt();
+	Game::numOfYellowCube = fs->readInt();
+	Game::numOfBlueCube = fs->readInt();
+	Game::numOfRedCube = fs->readInt();
+	Game::numOfResearchCenter = fs->readInt();
+
+
+	City::outbreakCount = fs->readInt();
+	this->setActualInfectionRate(fs->readInt());
+
+
+	// Read all player cards in the withdraw pile.
+	int numPlayerCards = fs->readInt();
+	for (int i = 0; i < numPlayerCards; i++) {
+		int type = fs->readInt();
+
+		if (type == PlayerCardType::City_Card) {
+			this->_playerWithdrawPile.push_back(new CityCard(fs->readInt()));
+		} else if (type == PlayerCardType::Event_Card) {
+			// This is nonesense.
+			fs->readInt();
+		}
+	}
+
+	// Read all infection cards in the pickup pile.
+	int numInfectionCityCards = fs->readInt();
+	for (int i = 0; i < numInfectionCityCards; i++) {
+		this->infectionCityCards.push_back(fs->readInt());
+	}
+
+	// Read all infection cards in the discard pile.
+	int numInfectionCityCardsDiscard = fs->readInt();
+	for (int i = 0; i < numInfectionCityCardsDiscard; i++) {
+		this->discardInfectionCard.push_back(fs->readInt());
+	}
 
 	delete fs;
 }
@@ -117,9 +160,40 @@ void Board::saveBoardData(std::string boardFile)
 		fs->write(this->isCured[i]);
 	}
 
-	// TODO: all player cards.
-	// TODO: all epidemic cards in the withdraw
-	// TODO: all epidemic cards in the discard
+	// Cubes counters and research center.
+	fs->write(Game::numOfBlackCube);
+	fs->write(Game::numOfYellowCube);
+	fs->write(Game::numOfBlueCube);
+	fs->write(Game::numOfRedCube);
+	fs->write(Game::numOfResearchCenter);
+
+	fs->write(City::outbreakCount);
+	fs->write(this->getActualInfectionRate());
+
+	// Save all the cards in the withdraw pile.
+	fs->write(this->_playerWithdrawPile.size());
+	for (unsigned int i = 0; i < this->_playerWithdrawPile.size(); i++) {
+		PlayerCard* card = this->_playerWithdrawPile.at(i);
+		fs->write(card->getType());
+
+		if (card->getType() == PlayerCardType::City_Card) {
+			fs->write(((CityCard*)card)->cityIndex);
+		} else {
+			fs->write(-1);
+		}
+	}
+
+	// Save all epidemic cards in the withdraw pile.
+	fs->write(this->infectionCityCards.size());
+	for (unsigned int i = 0; i < this->infectionCityCards.size(); i++) {
+		fs->write(this->infectionCityCards.at(i));
+	}
+
+	// Save all the epidemic cards in the discard pile.
+	fs->write(this->discardInfectionCard.size());
+	for (unsigned int i = 0; i < this->discardInfectionCard.size(); i++) {
+		fs->write(this->discardInfectionCard.at(i));
+	}
 
 	delete fs;
 }
@@ -335,8 +409,10 @@ void Board::drawCards()
 {
 	for (int i = 0; i < 2; i++)
 	{
-		this->_players[this->currentTurnPlayer]->addCard(this->_playerWithdrawPile.at(_playerWithdrawPile.size()-1));
-		this->_playerWithdrawPile.pop_back();
+		if (this->_playerWithdrawPile.size() != 0) {
+			this->getCurrentTurnPlayer().addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
+			this->_playerWithdrawPile.pop_back();
+		}
 	}
 }
 
@@ -490,6 +566,7 @@ void Board::submitMap()
 	GuiManager::handleWindowClose();
 }
 
+<<<<<<< HEAD
 void Board::checkTurn()
 {
 	Board* board = Game::getGameBoard();
@@ -514,4 +591,14 @@ void Board::checkTurn()
 		//Game::getGameBoard()->drawInfectionCard();
 		//GuiManager::showMsgBox("End of your turn.");
 	}
+=======
+int Board::getActualInfectionRate()
+{
+	return this->_infectionRate;
+}
+
+void Board::setActualInfectionRate(int value)
+{
+	this->_infectionRate = value;
+>>>>>>> refs/remotes/origin/master
 }

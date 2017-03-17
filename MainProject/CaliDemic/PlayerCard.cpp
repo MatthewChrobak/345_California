@@ -37,82 +37,10 @@ PlayerCard::~PlayerCard()
 {
 }
 
-//Clearing entire vector for next object
-void PlayerCard::clearVector() {
-	playerCards.clear();
-};
-
-// Returns the size of the vector
-int PlayerCard::getVectorSize() {
-	return playerCards.size();
-}
-
-//Game over if playerCardsDeck is empty
-void PlayerCard::playerCardGameOver() {
-	if (playerCardsDeck.size() == 0)
-	{
-		cout << "GAME OVER. YOU RAN OUT OF PLAYER CARDS." << endl;
-		exit(0);
-	}
-}
-
-// Retrieves all the cards from the player's hand as a single string
-string PlayerCard::getPlayerCards() {
-
-	if (playerCards.size() > 0) {
-		string *tempArray = new string[7]; // A temporary array is created in order to properly format the output
-		string listOfCards = playerCards[0];
-
-		if (playerCards.size() > 1) {
-			for ( unsigned int i = 1; i < playerCards.size(); i++) {
-				tempArray[i] = playerCards[i];
-				listOfCards = listOfCards + ", " + tempArray[i];
-			}
-			return listOfCards;
-		}
-	}
-
-	if (playerCards.size() <= 0) {
-		return "You have no more cards to play";
-	}
-	return "";
-}
-
-// Retrieves a single card from the player's hand
-string PlayerCard::getSingleCard(int cardPosition) {
-	return playerCards[cardPosition];
-}
-
-// Removes a single card from the player's hand
-void PlayerCard::removeSingleCard(int cardPosition) {
-	playerCards.erase(playerCards.begin() + cardPosition);
-}
-
-//Retrieves a random card from the player deck for a specified number of times
-void PlayerCard::setPlayerCards(int numberOfCards) {
-
-	for (int i = 0; i < numberOfCards; i++) {
-		
-		srand((unsigned)time(NULL));
-		int value = rand() % (playerCardsDeck.size()); //Get a value from 0 to size of deck
-
-		playerCards.push_back(playerCardsDeck[value]);
-		playerCardsDeck.erase(playerCardsDeck.begin() + value);
-
-	}
-}
 
 //Automatically discards en Epidemic card if the player picks one
 void PlayerCard::useEpidemic() {
-	/*for (unsigned int i = 0; i< playerCards.size(); i++)
-	{
-		if (playerCards[i] == "Epidemic") {
-			playerCards.erase(playerCards.begin() + i);
-		}
-	}
-
-	*/
-
+	
 	int counter = 0;
 	int epidemicInfection = Game::getGameBoard()->infectionCityCards.back();
 	//shrinking the infectionCityCards
@@ -142,6 +70,7 @@ void PlayerCard::useEpidemic() {
 
 }
 
+<<<<<<< HEAD
 
 //Get the description of an event card (if in possession)
 void PlayerCard::getEventDescription() {
@@ -352,3 +281,5 @@ void PlayerCard::buildStationPC() {
 
 }
 
+=======
+>>>>>>> refs/remotes/origin/master
