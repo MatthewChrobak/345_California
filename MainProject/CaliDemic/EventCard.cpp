@@ -39,7 +39,6 @@ std::string EventCard::getEventName()
 		break;
 
 	}
-
 }
 
 std::string EventCard::getSurfaceName()
