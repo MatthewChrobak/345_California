@@ -29,7 +29,7 @@ void InfectionCard::infectCityCube(int city)
 		//this will remove the card from the infectionDeck
 		Game::getGameBoard()->discardInfectionCard.push_back(city);
 		Game::getGameBoard()->infectionCityCards.erase(Game::getGameBoard()->infectionCityCards.begin() + city);
-		//infect the city if it is at the index i
+		//infect the city normally
 		Game::getGameBoard()->getCity(city)->infectCity(city, cityColor);
 		//resize the infection Card deck and Discard pile
 		Game::getGameBoard()->infectionCityCards.shrink_to_fit();
