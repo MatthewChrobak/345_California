@@ -14,6 +14,30 @@ EventCard::EventCard(EventCardType type)
 	this->_cardType = PlayerCardType::Event_Card;
 }
 
+std::string EventCard::getEventName() {
+	switch (this->_eventType) {
+
+	case EventCardType::Airlift:
+		return "Airlift";
+		break;
+
+	case EventCardType::Forecast:
+		return "Forecast";
+		break;
+
+	case EventCardType::GovernmentGrant:
+		return "Government Grant";
+		break;
+
+	case EventCardType::OneQuietNight:
+		return "One Quiet Night";
+		break;
+
+	case EventCardType::ResilientPopulation:
+		return "Resilient Population";
+		break;
+	}
+}
 
 std::string EventCard::getSurfaceName()
 

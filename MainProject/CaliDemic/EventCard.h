@@ -17,6 +17,7 @@ class EventCard : public PlayerCard
 public:
 	EventCard(EventCardType type);
 	~EventCard();
+	string getEventName();
 
 	void playCard();
 	std::string getSurfaceName();
