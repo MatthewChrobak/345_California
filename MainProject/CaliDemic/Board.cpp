@@ -22,8 +22,12 @@
 #endif
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 //===============================================================
 =======
+=======
+
+>>>>>>> origin/Eastside-Ying-Yang
 void Board::tryStartGame()
 {
 	// Can we start the game?
@@ -33,9 +37,12 @@ void Board::tryStartGame()
 		this->generateGameContentAtStartOfGame();
 	}
 }
+<<<<<<< HEAD
 
 
 >>>>>>> refs/remotes/origin/master
+=======
+>>>>>>> origin/Eastside-Ying-Yang
 void Board::generateGameContentAtStartOfGame()
 {
 	this->generatePlayerCards();
@@ -64,6 +71,7 @@ void Board::generateGameContentAtStartOfGame()
 	for (int i = 0; i < STARTING_INFECTION_CARD && i < infectionCityCards.size(); i++)
 	{
 <<<<<<< HEAD
+<<<<<<< HEAD
 		
 		InfectionCard::infectCityCube(infectionCityCards.at(i));
 		Board::discardInfectionCard.push_back(infectionCityCards.at(i));
@@ -75,6 +83,11 @@ void Board::generateGameContentAtStartOfGame()
 		Board::discardInfectionCard.push_back(infectionCityCards.at(0));
 		Board::infectionCityCards.erase(infectionCityCards.begin());
 >>>>>>> refs/remotes/origin/master
+=======
+		InfectionCard::infectCityCube(infectionCityCards.at(0));
+		Board::discardInfectionCard.push_back(infectionCityCards.at(0));
+		Board::infectionCityCards.erase(infectionCityCards.begin());
+>>>>>>> origin/Eastside-Ying-Yang
 	}
 }
 
