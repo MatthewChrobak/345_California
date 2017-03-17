@@ -65,7 +65,7 @@ public:
 private:
 	CityGraph* _cities;
 	std::vector<Player*> _players;
-	std::stack<PlayerCard*> _playerWithdrawPile;
+	std::vector<PlayerCard*> _playerWithdrawPile;
 
 	int _infectionRate = 0;
 
