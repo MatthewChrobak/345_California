@@ -38,6 +38,17 @@ void Board::generateGameContentAtStartOfGame()
 	}
 	//intializing infectionCardDeck
 	Board::infectionCityCardsInitializor();
+	//starting the infection with 9 cities (required 9 cities if not null exception)
+	for (int i = 0; i <  STARTING_INFECTION_CARD ; i++)
+	{
+		if (infectionCityCards.at(i) != NULL)
+		{
+			InfectionCard::infectCityCube(infectionCityCards.at(i));
+			Board::discardInfectionCard.push_back(infectionCityCards.at(i));
+			Board::infectionCityCards.erase(infectionCityCards.begin() + i);
+			Board::infectionCityCards.shrink_to_fit();
+		}
+	}
 }
 
 /*
@@ -544,14 +555,16 @@ void Board::drawInfectionCard()
 {
 	for (int i = 0; i < this->getInfectionRate(); i++)
 	{
-		if (true != isCured[Game::getGameBoard()->getCity(infectionCityCards.at(i))->color])
+		if (infectionCityCards.at(i) != NULL)
 		{
-			InfectionCard::infectCityCube(infectionCityCards.at(i));
-			Board::discardInfectionCard.push_back(infectionCityCards.at(i));
-			Board::infectionCityCards.erase(infectionCityCards.begin() + i);
-			Board::infectionCityCards.shrink_to_fit();
+			if (true != isCured[Game::getGameBoard()->getCity(infectionCityCards.at(i))->color])
+			{
+				InfectionCard::infectCityCube(infectionCityCards.at(i));
+				Board::discardInfectionCard.push_back(infectionCityCards.at(i));
+				Board::infectionCityCards.erase(infectionCityCards.begin() + i);
+				Board::infectionCityCards.shrink_to_fit();
+			}
 		}
-		
 	}
 }
 
