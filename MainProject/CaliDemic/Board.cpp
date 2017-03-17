@@ -20,6 +20,14 @@
 #endif
 
 /*
+This is where game content is generated at the start of the game.
+*/
+void Board::generateGameContentAtStartOfGame()
+{
+
+}
+
+/*
 This will initialize the infectionCard deck
 */
 void Board::infectionCityCardsInitializor()
@@ -33,9 +41,23 @@ void Board::infectionCityCardsInitializor()
 
 Board::Board(std::string saveFolder)
 {
+	// Load the board data.
 	this->loadBoardData(saveFolder + BOARD_DATA_FILE);
 	this->loadNodes(saveFolder + NODES_DATA_FILE);
-	this->loadPlayers(saveFolder + PLAYER_DATA_FILE);
+
+	// If we're not editing, load the players.
+	if (!this->_editingMap) {
+		this->loadPlayers(saveFolder + PLAYER_DATA_FILE);
+	} else {
+		GuiManager::showMsgBox("In Map Editing mode. Hit 'Done Editing' to save the map and start playing.");
+	}
+
+	// Can we start the game?
+	if (this->_startGame) {
+		this->_startGame = false;
+		GuiManager::showMsgBox("The game has started!");
+		this->generateGameContentAtStartOfGame();
+	}
 }
 
 Board::~Board()
@@ -67,12 +89,36 @@ void Board::loadBoardData(std::string boardFile)
 
 	FileStream* fs = FileStream::Open(boardFile, FileMode::Read);
 
+	this->_editingMap = fs->readBool();
+	this->_startGame = fs->readBool();
+	currentTurnPlayer = fs->readInt();
+	actionCounter = fs->readInt();
+	for (int i = 0; i < InfectionColor::InfectionColor_Length; i++) {
+		this->isCured[i] = fs->readBool();
+	}
+
+	// TODO: all player cards.
+	// TODO: all epidemic cards in the withdraw
+	// TODO: all epidemic cards in the discard
+
 	delete fs;
 }
 
 void Board::saveBoardData(std::string boardFile)
 {
-	FileStream* fs = FileStream::Open(boardFile, FileMode::Read);
+	FileStream* fs = FileStream::Open(boardFile, FileMode::Write);
+
+	fs->write(this->_editingMap);
+	fs->write(this->_startGame);
+	fs->write(currentTurnPlayer);
+	fs->write(actionCounter);
+	for (int i = 0; i < InfectionColor::InfectionColor_Length; i++) {
+		fs->write(this->isCured[i]);
+	}
+
+	// TODO: all player cards.
+	// TODO: all epidemic cards in the withdraw
+	// TODO: all epidemic cards in the discard
 
 	delete fs;
 }
@@ -99,6 +145,7 @@ void Board::loadNodes(std::string nodesFile)
 		city->cube[0] = fs->readInt();
 		city->cube[1] = fs->readInt();
 		city->cube[2] = fs->readInt();
+		city->cube[3] = fs->readInt();
 		city->research = fs->readBool();
 		city->color = (InfectionColor)fs->readInt();
 		city->x = fs->readInt();
@@ -132,6 +179,7 @@ void Board::saveNodes(std::string nodesFile)
 		fs->write(city->cube[0]);
 		fs->write(city->cube[1]);
 		fs->write(city->cube[2]);
+		fs->write(city->cube[3]);
 		fs->write(city->research);
 		fs->write(city->color);
 		fs->write(city->x);
@@ -151,6 +199,11 @@ void Board::saveNodes(std::string nodesFile)
 
 void Board::savePlayers(std::string playerFile)
 {
+	// We don't want to save no players.
+	if (this->_players.size() == 0) {
+		return;
+	}
+
 	FileStream* fs = FileStream::Open(playerFile, FileMode::Write);
 
 	fs->write(this->_players.size());
@@ -193,7 +246,6 @@ void Board::loadPlayers(std::string playerFile)
 
 	// If the file does not exist, there's nothing to load.
 	if (!FileSystem::fileExists(playerFile)) {
-
 		//random number gen starts here ->
 		const int AMOUNT = 2; //amount of random numbers that need to be generated
 		const int MAX = 6; //maximum value (of course, this must be at least the same as AMOUNT;
@@ -202,21 +254,19 @@ void Board::loadPlayers(std::string playerFile)
 
 		srand((unsigned)time(NULL)); //always seed your RNG before using it
 
-		//generate random numbers:
-		for (unsigned int i = 0; i<AMOUNT; i++)
-		{
+									 //generate random numbers:
+		for (unsigned int i = 0; i<AMOUNT; i++) {
 			bool check; //variable to check or number is already used
 			int n; //variable to store the number in
-			do
-			{
+			do {
 				n = rand() % MAX;
 				//check or number is already used:
 				check = true;
 				for (unsigned int j = 0; j<i; j++)
 					if (n == value[j]) //if number is already used
 					{
-					check = false; //set check to false
-					break; //no need to check the other elements of value[]
+						check = false; //set check to false
+						break; //no need to check the other elements of value[]
 					}
 			} while (!check); //loop until new, unique number is found
 			value[i] = n; //store the generated number in the array
@@ -419,4 +469,17 @@ void Board::drawInfectionCard()
 		Board::discardInfectionCard.push_back(infectionCityCards.at(i));
 		Board::infectionCityCards.erase(infectionCityCards.begin()+i);
 	}
+}
+
+bool Board::isEditingMap()
+{
+	return this->_editingMap;
+}
+
+void Board::submitMap()
+{
+	this->_editingMap = false;
+	this->_startGame = true;
+	Game::save();
+	GuiManager::handleWindowClose();
 }

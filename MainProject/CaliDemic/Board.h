@@ -20,7 +20,7 @@ public:
 
 	void save(std::string saveFolder);
 	
-	
+	void generateGameContentAtStartOfGame();
 
 	void addCity(City* city);
 	City* getCity(int index);
@@ -59,6 +59,9 @@ public:
 	std::vector<int> discardInfectionCard;
 	void infectionCityCardsInitializor();
 	void drawInfectionCard();
+
+	bool isEditingMap();
+	void submitMap();
 	
 
 
@@ -79,5 +82,10 @@ private:
 	void savePlayers(std::string playerFile);
 
 	void generatePlayerCards();
+
+
+	// Game properties.
+	bool _editingMap = true;
+	bool _startGame = false;
 };
 
