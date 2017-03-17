@@ -42,6 +42,9 @@ public:
 	Player& getPlayer(int index);
 	int getNumberOfPlayers();
 	int currentTurnPlayer = 0;
+	void drawCards(); // Draw 2 cards from the player deck
+	std::vector<std::string> playerCardDeck;
+
 
 	int getInfectionRate();
 	void incremenetInfectionRate();
@@ -55,6 +58,8 @@ public:
 	std::vector<int> infectionCityCards;
 	std::vector<int> discardInfectionCard;
 	void infectionCityCardsInitializor();
+	
+
 
 private:
 	CityGraph* _cities;
