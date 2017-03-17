@@ -25,9 +25,6 @@ public:
 	static GameState getState();
 
 	static Board* getGameBoard();
-	
-	//return the number of cubes left for each color
-	void numOfCubeLeft();
 
 	/*
 	attribute to number of cube for each color

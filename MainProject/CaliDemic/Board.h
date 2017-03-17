@@ -9,7 +9,7 @@
 #include "PlayerCard.h"
 #include "EventCard.h"
 
-
+#define STARTING_INFECTION_CARD 9
 
 class Board
 {
