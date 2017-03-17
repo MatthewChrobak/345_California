@@ -477,26 +477,16 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				GuiManager::showMsgBox("The card is either null or you did not select a city");
 		}
 		return true;
-	
-	case PlayerActions::TreatDisease:
-		/*
-		When the player successfully finishes an action, ensure that the action is reset by writing the line
-		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-		Failure to do so will cause assertions to fail and will cause the application to crash.
-		*/
-		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-		return true;
+     
+		case PlayerActions::ShareKnowledge:
+			/*
+			When the player successfully finishes an action, ensure that the action is reset by writing the line
+			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+			Failure to do so will cause assertions to fail and will cause the application to crash.
+			*/
+			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 
-	case PlayerActions::ShareKnowledge:
-		/*
-		When the player successfully finishes an action, ensure that the action is reset by writing the line
-		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-		Failure to do so will cause assertions to fail and will cause the application to crash.
-		*/
-		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-		return true;
+			return true;
 
 	case PlayerActions::DiscoverCure:
 

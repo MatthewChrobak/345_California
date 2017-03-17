@@ -141,6 +141,20 @@ int main(){
 			<< "\t is been infected with " << city[i]->getCube() << " cube(s)." << endl;
 	}
 	
+	/*
+	delete all the pointers
+	*/
+	delete roleCard;
+	delete playerCard;
+	delete referenceCard;
+	delete roleCard1;
+	delete playerCard1;
+	delete referenceCard1;
+	delete player1;
+	delete player2;
+	delete infect1;
+	delete infect2;
+	delete infect3;
 	//system will be pause at that point
 	system("PAUSE");
 }
