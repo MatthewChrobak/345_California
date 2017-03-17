@@ -4,11 +4,13 @@
 #include "InfectionCard.h"
 #include <iostream>
 #include <string>
+#include "GuiManager.h"
 
 #ifdef DEBUG
 #include <assert.h>
 #endif
 
+int City::outbreakCount = 0;
 
 City::City()
 {
@@ -35,6 +37,14 @@ infection with outbreak of the current passing city.
 */
 void City::infectCityOutBreak(int city)
 {
+	City::outbreakCount += 1;
+
+	if (City::outbreakCount >= 8) {
+		// TODO: Implement a game-over handler here.
+		// TODO: Move this logic (infection handling) to Board.cpp or Game.cpp.
+		GuiManager::showMsgBox("Game Over");
+		return;
+	}
 	/*
 	an iterator that will go through all the nodes connect to the city that is
 	being outbreak and if another city's cube size is rearched, than another outbreak event will 

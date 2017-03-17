@@ -33,6 +33,7 @@ public:
 	int cube[InfectionColor::InfectionColor_Length];
 	bool research = false;
 	bool inverseAngle = false;
+	static int outbreakCount;
 
 	// Retrieves the city if the x/y coordniate hits the city.
 	// Intended to be used with the UI system and mouseclicks.
