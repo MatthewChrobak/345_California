@@ -67,11 +67,20 @@ This will initialize the infectionCard deck
 */
 void Board::infectionCityCardsInitializor()
 {
-	for (int i = 0; i < this->getNumCities(); i++)
+	infectionCityCards.push_back(0);
+	infectionCityCards.push_back(0);
+	infectionCityCards.push_back(0);
+
+	for (int i = 1; i < this->getNumCities(); i++)
 	{
-		infectionCityCards.push_back(i);
-		infectionCityCards.push_back(i);
-		infectionCityCards.push_back(i);
+		int rng = RandomNumberGenerator::next(0, infectionCityCards.size());
+		infectionCityCards.insert(infectionCityCards.begin() + rng, i);
+		
+		rng = RandomNumberGenerator::next(0, infectionCityCards.size());
+		infectionCityCards.insert(infectionCityCards.begin() + rng, i);
+
+		rng = RandomNumberGenerator::next(0, infectionCityCards.size());
+		infectionCityCards.insert(infectionCityCards.begin() + rng, i);
 	}
 	infectionCityCards.shrink_to_fit();
 }
@@ -398,7 +407,6 @@ void Board::loadPlayers(std::string playerFile)
 		Player* player = new Player();
 		player->pawn->cityIndex = fs->readInt();
 
-		// TODO: Get the role of the player.
 		int role = fs->readInt();
 		player->setRoleCard(new RoleCard(RoleCard::roleCardNames[role]));
 
@@ -567,13 +575,18 @@ void Board::drawInfectionCard()
 	{
 		if (infectionCityCards.size() != 0)
 		{
+			// Pick up the card only if it's not cured.
 			if (isCured[Game::getGameBoard()->getCity(infectionCityCards.at(0))->color] != true)
 			{
 				InfectionCard::infectCityCube(infectionCityCards.at(0));
-				Board::discardInfectionCard.push_back(infectionCityCards.at(0));
-				Board::infectionCityCards.erase(infectionCityCards.begin());
-				Board::infectionCityCards.shrink_to_fit();
 			}
+			// Decrement i so we pick another card.
+			i--;
+
+			// Remove it from the pile.
+			Board::discardInfectionCard.push_back(infectionCityCards.at(0));
+			Board::infectionCityCards.erase(infectionCityCards.begin());
+			Board::infectionCityCards.shrink_to_fit();
 		}
 	}
 }
@@ -597,9 +610,9 @@ void Board::checkTurn()
 	Board* board = Game::getGameBoard();
 	Player& player = board->getCurrentTurnPlayer();
 
-	if (Game::getGameBoard()->playerTurnChange() == true)
+	if (board->playerTurnChange() == true)
 	{
-		Game::getGameBoard()->drawCards();
+		board->drawCards();
 		GuiManager::showMsgBox("Your current hand after picking two cards.");
 		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
 

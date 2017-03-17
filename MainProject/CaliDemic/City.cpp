@@ -42,9 +42,8 @@ void City::infectCityOutBreak(int city)
 	City::outbreakCount += 1;
 
 	if (City::outbreakCount >= 8) {
-		// TODO: Implement a game-over handler here.
-		// TODO: Move this logic (infection handling) to Board.cpp or Game.cpp.
 		GuiManager::showMsgBox("Game Over");
+		GuiManager::handleWindowClose();
 		return;
 	}
 	/*
