@@ -46,6 +46,9 @@ public:
 	std::vector<std::string> playerCardDeck;
 
 
+	int getInfectionRate();
+	void incremenetInfectionRate();
+
 	/*
 	bank of all cities that can be infected
 	the idea behind that is if the user decides to make 
@@ -62,6 +65,8 @@ private:
 	CityGraph* _cities;
 	std::vector<Player*> _players;
 	std::stack<PlayerCard*> _playerWithdrawPile;
+
+	int _infectionRate = 0;
 
 	void loadBoardData(std::string boardFile);
 	void saveBoardData(std::string boardFile);

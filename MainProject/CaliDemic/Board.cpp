@@ -6,10 +6,8 @@
 #include "Game.h"
 #include <iostream>
 #include <vector>
-#include "PlayerCard.h"
 #include "CityCard.h"
 #include "RandomNumberGenerator.h"
-#include "GuiManager.h"
 #include <time.h>
 #include "RoleCard.h"
 #ifdef DEBUG
@@ -54,17 +52,6 @@ void Board::save(std::string saveFolder)
 	this->saveBoardData(saveFolder + BOARD_DATA_FILE);
 	this->saveNodes(saveFolder + NODES_DATA_FILE);
 	this->savePlayers(saveFolder + PLAYER_DATA_FILE);
-}
-
-void Board::playerCreation()
-{
-	int numberOfPlayer = 0;
-	std::cout << "How many player do you want to create? " << std::endl;
-	std::cin >> numberOfPlayer;
-
-	for (int i = 0; i < numberOfPlayer; i++)
-		_players.push_back(new Player());
-
 }
 
 void Board::loadBoardData(std::string boardFile)
@@ -167,8 +154,8 @@ void Board::savePlayers(std::string playerFile)
 	for (unsigned int playerIndex = 0; playerIndex < _players.size(); playerIndex++) {
 		Player& player = this->getPlayer(playerIndex);
 
-		// TODO: Role data
 		fs->write(player.pawn->cityIndex);
+		fs->write(player.getRoleCard()->getRoleCardVal());
 
 		for (int cardIndex = 0; cardIndex < MAX_PLAYER_CARDS; cardIndex++) {
 			PlayerCard* card = player.getCard(cardIndex);
@@ -229,31 +216,20 @@ void Board::loadPlayers(std::string playerFile)
 			} while (!check); //loop until new, unique number is found
 			value[i] = n; //store the generated number in the array
 		}
-		//random numberGen ends here
-		std::string roleCardNames[7] = { "The Contingency Planner", "Researcher", "Scientist", "Dispatcher", "Operations Expert"
-			, "Medic", "Quarantine Specialist", };
-		
+
 		//create two roleCards 
-		RoleCard* rc1 = new RoleCard(roleCardNames[value[0]]);
-		RoleCard* rc2 = new RoleCard(roleCardNames[value[1]]);
-
-		//test test
-		std::cout << roleCardNames[value[0]] << "1" << std::endl;
-		std::cout << roleCardNames[value[1]] << "2" << std::endl;
-		
-		//for pawn Color reference 0-6
-		//std::string roleCardC[] = { "Teel", "Brown", "White", "Pink", "Light Green", "Orange", "Dark Green" };
-
-
-
-		this->_players.push_back(new Player());
-		this->_players.push_back(new Player());
-	
+		RoleCard* rc1 = new RoleCard(RoleCard::roleCardNames[value[0]]);
+		RoleCard* rc2 = new RoleCard(RoleCard::roleCardNames[value[1]]);
 
 		//add roleCard to the players
-		this->_players[0]->setRoleCard(rc1);
-		this->_players[1]->setRoleCard(rc1);
+		Player* playerOne = new Player();
+		playerOne->setRoleCard(rc1);
+		this->_players.push_back(playerOne);
 
+
+		Player* playerTwo = new Player();
+		playerTwo->setRoleCard(rc2);
+		this->_players.push_back(playerTwo);
 		return;
 	}
 
@@ -270,7 +246,9 @@ void Board::loadPlayers(std::string playerFile)
 		player->pawn->cityIndex = fs->readInt();
 
 		// TODO: Get the role of the player.
-		
+		int role = fs->readInt();
+		player->setRoleCard(new RoleCard(RoleCard::roleCardNames[role]));
+
 		// Go through all the player's cards.	
 		for (int playerCardIndex = 0; playerCardIndex < MAX_PLAYER_CARDS; playerCardIndex++) {
 			// Get the type of the card.
@@ -294,17 +272,6 @@ void Board::loadPlayers(std::string playerFile)
 
 	delete fs;
 }
-
-//Draw 2 cards
-void Board::drawCards()
-{
-	for (int i = 0; i < 2; i++)
-	{
-		this->_players[this->currentTurnPlayer]->addCard(this->_playerWithdrawPile.top());
-		this->_playerWithdrawPile.pop();
-	}
-}
-
 
 
 void Board::generatePlayerCards()
@@ -330,6 +297,9 @@ void Board::generatePlayerCards()
 
 City* Board::getCity(int index)
 {
+	if (index < 0 || index >= this->getNumCities()) {
+		return nullptr;
+	}
 	return (City*)(this->_cities->getNode(index));
 }
 
@@ -376,8 +346,26 @@ bool Board::playerTurnChange()
 		this->currentTurnPlayer = ((this->currentTurnPlayer) + 1) % _players.size();
 		resetActionCounter();
 		turnChanged = true;
-		drawCards();
 	}
 
 	return turnChanged;
+}
+
+
+int Board::getInfectionRate()
+{
+	if (this->_infectionRate <= 2) {
+		return 2;
+	}
+
+	if (this->_infectionRate <= 4) {
+		return 3;
+	}
+
+	return 4;
+}
+
+void Board::incremenetInfectionRate()
+{
+	this->_infectionRate += 1;
 }
