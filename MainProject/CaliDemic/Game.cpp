@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "FileSystem.h"
+#include "GuiManager.h"
 
 #ifdef DEBUG
 #include <assert.h>
@@ -90,6 +91,13 @@ void Game::loadOrCreate(std::string savename)
 	// Load the game board, and change the game state.
 	Game::_gameBoard = new Board(Game::_saveFolder);
 	Game::changeState(GameState::InGame);
+
+	// Toggle the admin tools if they should be used.
+	if (Game::_gameBoard->isEditingMap()) {
+		GuiManager::getUIElementByName(CMD_TOGGLE_MAP_EDITING_ACTIONS)->visible = true;
+		GuiManager::getUIElementByName(FRM_PLAYER_ACTIONS)->visible = false;
+		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+	}
 }
 
 void Game::save()
