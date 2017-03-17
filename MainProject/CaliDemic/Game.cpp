@@ -21,15 +21,15 @@ void Game::numOfCubeDecrementor(int cityColor)
 	switch (cityColor)
 	{
 	case 0:
-		if (cityColor == InfectionColor::Red)
-			Game::numOfRedCube--;
-		//if the number of cube is equal or below 0, its game over
-		if (Game::numOfRedCube <= 0)
-		{
-			std::cout << "Game Over! no more red cube." << std::endl;
-			exit(0);
-		}
-		break;
+if (cityColor == InfectionColor::Red)
+Game::numOfRedCube--;
+//if the number of cube is equal or below 0, its game over
+if (Game::numOfRedCube <= 0)
+{
+	GuiManager::showMsgBox("No more red cubes. Game over!");
+	GuiManager::handleWindowClose();
+}
+break;
 
 	case 1:
 		if (cityColor == InfectionColor::Blue)
@@ -37,8 +37,8 @@ void Game::numOfCubeDecrementor(int cityColor)
 		//if the number of cube is equal or below 0, its game over
 		if (Game::numOfBlueCube <= 0)
 		{
-			std::cout << "Game Over! no more blue cube." << std::endl;
-			exit(0);
+			GuiManager::showMsgBox("No more blue cubes. Game over!");
+			GuiManager::handleWindowClose();
 		}
 		break;
 
@@ -48,8 +48,8 @@ void Game::numOfCubeDecrementor(int cityColor)
 		//if the number of cube is equal or below 0, its game over
 		if (Game::numOfBlackCube <= 0)
 		{
-			std::cout << "Game Over! no more Black cube." << std::endl;
-			exit(0);
+			GuiManager::showMsgBox("No more black cubes. Game over!");
+			GuiManager::handleWindowClose();
 		}
 		break;
 
@@ -59,8 +59,8 @@ void Game::numOfCubeDecrementor(int cityColor)
 		//if the number of cube is equal or below 0, its game over
 		if (Game::numOfYellowCube <= 0)
 		{
-			std::cout << "Game Over! no more Yellow cube." << std::endl;
-			exit(0);
+			GuiManager::showMsgBox("No more yellow cubes. Game over!");
+			GuiManager::handleWindowClose();
 		}
 		break;
 
@@ -115,13 +115,15 @@ void Game::loadOrCreate(std::string savename)
 	// Assign the new name to the game.
 	Game::_saveFolder = FileSystem::getStartupPath() + GAME_SAVES_FOLDER + savename + "/";
 
+	bool created = false;
 	// Ensure the savegame folder exists.
 	if (!FileSystem::directoryExists(Game::_saveFolder)) {
 		FileSystem::createDirectory(Game::_saveFolder);
+		created = true;
 	}
 
 	// Load the game board, and change the game state.
-	if (((UICheckbox*)GuiManager::getUIElementByName(CHK_DEFAULT_MAP))->isChecked()) {
+	if (((UICheckbox*)GuiManager::getUIElementByName(CHK_DEFAULT_MAP))->isChecked() && created) {
 		Game::_gameBoard = new Board(FileSystem::getStartupPath() + GAME_SAVES_FOLDER + "default/");
 	}
 	else {
