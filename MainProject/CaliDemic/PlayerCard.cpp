@@ -69,6 +69,7 @@ void PlayerCard::useEpidemic() {
 	//Further functions needed to initiate the effects of picking an epidemic card
 
 }
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 
@@ -283,3 +284,5 @@ void PlayerCard::buildStationPC() {
 
 =======
 >>>>>>> refs/remotes/origin/master
+=======
+>>>>>>> origin/Eastside-Ying-Yang

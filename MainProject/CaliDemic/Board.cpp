@@ -567,6 +567,10 @@ void Board::submitMap()
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/Eastside-Ying-Yang
 void Board::checkTurn()
 {
 	Board* board = Game::getGameBoard();
@@ -591,7 +595,11 @@ void Board::checkTurn()
 		//Game::getGameBoard()->drawInfectionCard();
 		//GuiManager::showMsgBox("End of your turn.");
 	}
+<<<<<<< HEAD
 =======
+=======
+
+>>>>>>> origin/Eastside-Ying-Yang
 int Board::getActualInfectionRate()
 {
 	return this->_infectionRate;
@@ -600,5 +608,9 @@ int Board::getActualInfectionRate()
 void Board::setActualInfectionRate(int value)
 {
 	this->_infectionRate = value;
+<<<<<<< HEAD
 >>>>>>> refs/remotes/origin/master
+=======
+
+>>>>>>> origin/Eastside-Ying-Yang
 }
