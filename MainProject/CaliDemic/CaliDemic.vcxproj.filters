@@ -221,9 +221,6 @@
     <ClInclude Include="InfectionColors.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="ArrayGraphNode.h">
-      <Filter>Header Files\Models\Cities\Graphs</Filter>
-    </ClInclude>
     <ClInclude Include="ArrayGraph.h">
       <Filter>Header Files\Models\Cities\Graphs</Filter>
     </ClInclude>
@@ -308,9 +305,6 @@
     <ClInclude Include="PlayerActions.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="ActionCounter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UIMessageBox.h">
       <Filter>Header Files\UI\Elements\Behaviour</Filter>
     </ClInclude>
@@ -319,6 +313,12 @@
     </ClInclude>
     <ClInclude Include="RandomNumberGenerator.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionCounter.h">
+      <Filter>Header Files\Models\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrayGraphNode.h">
+      <Filter>Header Files\IO</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

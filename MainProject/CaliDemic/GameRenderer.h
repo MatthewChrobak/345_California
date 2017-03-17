@@ -16,5 +16,8 @@ private:
 	
 	void drawPlayers();
 	void drawPlayer(Player& player);
+
+	void drawOutbreakMeter();
+	void drawInfectionRate();
 };
 

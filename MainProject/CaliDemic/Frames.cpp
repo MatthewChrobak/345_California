@@ -33,6 +33,14 @@ void GameFrame::showAdminTools()
 	assert(element->getObjectType() == UI_TYPE_BUTTON);
 #endif
 	element->visible = true;
+
+	// Make the other frame invisible.
+	element = GuiManager::getUIElementByName(FRM_PLAYER_ACTIONS);
+#ifdef DEBUG
+	assert(element != nullptr);
+	assert(element->getObjectType() == UI_TYPE_FRAME);
+#endif
+	element->visible = false;
 }
 
 void GameFrame::finishedEditing()

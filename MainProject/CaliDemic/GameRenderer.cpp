@@ -19,6 +19,10 @@ void GameRenderer::drawGame()
 
 	// Render the player.
 	GameRenderer::drawPlayers();
+
+	// Draw the game data.
+	GameRenderer::drawInfectionRate();
+	GameRenderer::drawOutbreakMeter();
 }
 
 
@@ -227,4 +231,53 @@ void GameRenderer::drawPlayer(Player& player)
 		ctx.size = new Vector2D(20, 20);
 		GraphicsManager::renderSurface("pawns\\pawn.png", ctx);
 	}
+}
+
+void GameRenderer::drawOutbreakMeter()
+{
+	SurfaceContext ctx;
+
+	// Get the dimentions of the actual surface.
+	int textureFullHeight = 468;
+	int textureWidth = 100;
+	int textureHeight = textureFullHeight / 9;
+
+	// From the actual dimentions, generate render dimentions.
+	int fullHeight = textureFullHeight / 2;
+	int renderHeight = textureHeight / 2;
+	int renderWidth = textureWidth / 2;
+
+	// Go through all nine nodes and render each one individually.
+	for (int i = 0; i < 9; i++) {
+		ctx.reset();
+		ctx.position = new Vector2D(25, DRAW_HEIGHT - fullHeight - 70 + i * renderHeight);
+		ctx.surfaceRect = new Rect(i * textureHeight, 0, textureWidth, textureHeight);
+		ctx.size = new Vector2D(renderWidth, renderHeight);
+
+		// Darken the color of all nodes except the current outbreak value.
+		// TODO: This should be changed to
+		//
+		// if (i != Game::outbreakValue) {
+		//
+		// or whatever the outbreak value variable is.
+		if (i != 0) {
+			ctx.color = new RGBA(100, 100, 100);
+		}
+
+		GraphicsManager::renderSurface("ui\\outbreakmeter.png", ctx);
+	}
+}
+
+void GameRenderer::drawInfectionRate()
+{
+	TextContext ctx;
+
+	ctx.position = new Vector2D(10, DRAW_HEIGHT - 50);
+	ctx.fontSize = 24;
+	ctx.fillColor = new RGBA(255, 255, 255);
+	ctx.outlineThickness = 2;
+	ctx.outlineColor = new RGBA(0, 0, 0);
+
+	// This should be changed to append the current infection rate to the rendered text.
+	GraphicsManager::renderText("Infection Rate: 1", ctx);
 }
