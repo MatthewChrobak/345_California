@@ -603,7 +603,8 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 				}
 				// Ensure that we have not yet cured the disease.
-				if (!board->isCured[cityIndex1]) {
+				if (!board->isCured[cityIndex1])
+				{
 					board->isCured[cityIndex1] = true;
 					decrementActionCounter();
 					GuiManager::showMsgBox("The disease has been cured");
@@ -615,12 +616,14 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 					GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 
 					
-				} else {
+				} 
+				else
+				{
 					GuiManager::showMsgBox("The disease is already cured!");
-        }
-			}
+				}
 		}
-		else {
+		else 
+		{
 			GuiManager::showMsgBox("Please select 5 cards.");
 		}
 
@@ -657,7 +660,8 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 
 	//If turn is changed, show this message
-	if (board->playerTurnChange() == true) {
+	if (board->playerTurnChange() == true) 
+	{
 
 		GuiManager::showMsgBox("Your current hand after picking two cards.");
 		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
