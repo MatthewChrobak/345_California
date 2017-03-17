@@ -14,6 +14,7 @@
 // TODO: This needs to be cleaned up.
 int main()
 {
+
 #ifdef DEBUG
 	assert(Game::getState() == GameState::MainMenu);
 #endif

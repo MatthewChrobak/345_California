@@ -192,7 +192,6 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 								player.pawn->cityIndex = clickedCityIndex;
 
 								// Reset the player action.
-								// TODO: Decrement the player action count.
 								Game::decrementActionCounter();
 								//If turn is changed, show this message
 								Board::checkTurn();
