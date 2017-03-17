@@ -38,13 +38,11 @@ public:
 	static int numOfResearchCenter;
 
 	static void numOfCubeDecrementor(int cityColor);
+	static void numOfCubeIncrementor(int cityColor);
 
 private:
 	static Board* _gameBoard;
 	static GameState _state;
 	static std::string _saveFolder;
-
-	static void checkDirectories();
-	static void gameloop();
 };
 

@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "FileSystem.h"
+#include "GuiManager.h"
 
 #ifdef DEBUG
 #include <assert.h>
@@ -65,6 +66,36 @@ void Game::numOfCubeDecrementor(int cityColor)
 		break;
 	}
 }
+
+void Game::numOfCubeIncrementor(int cityColor)
+{
+	switch (cityColor)
+	{
+	case 0:
+		if (cityColor == InfectionColor::Red)
+			Game::numOfRedCube++;
+		break;
+
+	case 1:
+		if (cityColor == InfectionColor::Blue)
+			Game::numOfBlueCube++;
+		break;
+
+	case 2:
+		if (cityColor == InfectionColor::Black)
+			Game::numOfBlackCube++;
+		break;
+
+	case 3:
+		if (cityColor == InfectionColor::Yellow)
+			Game::numOfYellowCube++;
+		break;
+
+	default:
+		break;
+	}
+}
+
 Board* Game::_gameBoard = nullptr;
 GameState Game::_state = GameState::MainMenu;
 std::string Game::_saveFolder = "";
@@ -90,6 +121,13 @@ void Game::loadOrCreate(std::string savename)
 	// Load the game board, and change the game state.
 	Game::_gameBoard = new Board(Game::_saveFolder);
 	Game::changeState(GameState::InGame);
+
+	// Toggle the admin tools if they should be used.
+	if (Game::_gameBoard->isEditingMap()) {
+		GuiManager::getUIElementByName(CMD_TOGGLE_MAP_EDITING_ACTIONS)->visible = true;
+		GuiManager::getUIElementByName(FRM_PLAYER_ACTIONS)->visible = false;
+		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+	}
 }
 
 void Game::save()

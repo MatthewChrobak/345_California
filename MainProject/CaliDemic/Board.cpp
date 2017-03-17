@@ -19,6 +19,24 @@
 #include <assert.h>
 #endif
 
+
+void Board::generateGameContentAtStartOfGame()
+{
+	// Give each player four cards, while we have cards.
+	for (unsigned int playerIndex = 0; playerIndex < this->getNumberOfPlayers(); playerIndex++) {
+		for (int i = 0; i < 4; i++) {
+			if (this->_playerWithdrawPile.size() == 0) {
+				break;
+			} else {
+				this->getPlayer(playerIndex).addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
+				this->_playerWithdrawPile.pop_back();
+			}
+		}
+
+		// Give each player a random role card.
+	}
+}
+
 /*
 This will initialize the infectionCard deck
 */
@@ -33,9 +51,23 @@ void Board::infectionCityCardsInitializor()
 
 Board::Board(std::string saveFolder)
 {
+	// Load the board data.
 	this->loadBoardData(saveFolder + BOARD_DATA_FILE);
 	this->loadNodes(saveFolder + NODES_DATA_FILE);
-	this->loadPlayers(saveFolder + PLAYER_DATA_FILE);
+
+	// If we're not editing, load the players.
+	if (!this->_editingMap) {
+		this->loadPlayers(saveFolder + PLAYER_DATA_FILE);
+	} else {
+		GuiManager::showMsgBox("In Map Editing mode. Hit 'Done Editing' to save the map and start playing.");
+	}
+
+	// Can we start the game?
+	if (this->_startGame) {
+		this->_startGame = false;
+		GuiManager::showMsgBox("The game has started!");
+		this->generateGameContentAtStartOfGame();
+	}
 }
 
 Board::~Board()
@@ -67,12 +99,100 @@ void Board::loadBoardData(std::string boardFile)
 
 	FileStream* fs = FileStream::Open(boardFile, FileMode::Read);
 
+	this->_editingMap = fs->readBool();
+	this->_startGame = fs->readBool();
+	currentTurnPlayer = fs->readInt();
+	actionCounter = fs->readInt();
+	for (int i = 0; i < InfectionColor::InfectionColor_Length; i++) {
+		this->isCured[i] = fs->readBool();
+	}
+
+	// Cubes counters and research center.
+	Game::numOfBlackCube = fs->readInt();
+	Game::numOfYellowCube = fs->readInt();
+	Game::numOfBlueCube = fs->readInt();
+	Game::numOfRedCube = fs->readInt();
+	Game::numOfResearchCenter = fs->readInt();
+
+
+	City::outbreakCount = fs->readInt();
+	this->setActualInfectionRate(fs->readInt());
+
+
+	// Read all player cards in the withdraw pile.
+	int numPlayerCards = fs->readInt();
+	for (int i = 0; i < numPlayerCards; i++) {
+		int type = fs->readInt();
+
+		if (type == PlayerCardType::City_Card) {
+			this->_playerWithdrawPile.push_back(new CityCard(fs->readInt()));
+		} else if (type == PlayerCardType::Event_Card) {
+			// This is nonesense.
+			fs->readInt();
+		}
+	}
+
+	// Read all infection cards in the pickup pile.
+	int numInfectionCityCards = fs->readInt();
+	for (int i = 0; i < numInfectionCityCards; i++) {
+		this->infectionCityCards.push_back(fs->readInt());
+	}
+
+	// Read all infection cards in the discard pile.
+	int numInfectionCityCardsDiscard = fs->readInt();
+	for (int i = 0; i < numInfectionCityCardsDiscard; i++) {
+		this->discardInfectionCard.push_back(fs->readInt());
+	}
+
 	delete fs;
 }
 
 void Board::saveBoardData(std::string boardFile)
 {
-	FileStream* fs = FileStream::Open(boardFile, FileMode::Read);
+	FileStream* fs = FileStream::Open(boardFile, FileMode::Write);
+
+	fs->write(this->_editingMap);
+	fs->write(this->_startGame);
+	fs->write(currentTurnPlayer);
+	fs->write(actionCounter);
+	for (int i = 0; i < InfectionColor::InfectionColor_Length; i++) {
+		fs->write(this->isCured[i]);
+	}
+
+	// Cubes counters and research center.
+	fs->write(Game::numOfBlackCube);
+	fs->write(Game::numOfYellowCube);
+	fs->write(Game::numOfBlueCube);
+	fs->write(Game::numOfRedCube);
+	fs->write(Game::numOfResearchCenter);
+
+	fs->write(City::outbreakCount);
+	fs->write(this->getActualInfectionRate());
+
+	// Save all the cards in the withdraw pile.
+	fs->write(this->_playerWithdrawPile.size());
+	for (unsigned int i = 0; i < this->_playerWithdrawPile.size(); i++) {
+		PlayerCard* card = this->_playerWithdrawPile.at(i);
+		fs->write(card->getType());
+
+		if (card->getType() == PlayerCardType::City_Card) {
+			fs->write(((CityCard*)card)->cityIndex);
+		} else {
+			fs->write(-1);
+		}
+	}
+
+	// Save all epidemic cards in the withdraw pile.
+	fs->write(this->infectionCityCards.size());
+	for (unsigned int i = 0; i < this->infectionCityCards.size(); i++) {
+		fs->write(this->infectionCityCards.at(i));
+	}
+
+	// Save all the epidemic cards in the discard pile.
+	fs->write(this->discardInfectionCard.size());
+	for (unsigned int i = 0; i < this->discardInfectionCard.size(); i++) {
+		fs->write(this->discardInfectionCard.at(i));
+	}
 
 	delete fs;
 }
@@ -99,6 +219,7 @@ void Board::loadNodes(std::string nodesFile)
 		city->cube[0] = fs->readInt();
 		city->cube[1] = fs->readInt();
 		city->cube[2] = fs->readInt();
+		city->cube[3] = fs->readInt();
 		city->research = fs->readBool();
 		city->color = (InfectionColor)fs->readInt();
 		city->x = fs->readInt();
@@ -132,6 +253,7 @@ void Board::saveNodes(std::string nodesFile)
 		fs->write(city->cube[0]);
 		fs->write(city->cube[1]);
 		fs->write(city->cube[2]);
+		fs->write(city->cube[3]);
 		fs->write(city->research);
 		fs->write(city->color);
 		fs->write(city->x);
@@ -151,6 +273,11 @@ void Board::saveNodes(std::string nodesFile)
 
 void Board::savePlayers(std::string playerFile)
 {
+	// We don't want to save no players.
+	if (this->_players.size() == 0) {
+		return;
+	}
+
 	FileStream* fs = FileStream::Open(playerFile, FileMode::Write);
 
 	fs->write(this->_players.size());
@@ -193,7 +320,6 @@ void Board::loadPlayers(std::string playerFile)
 
 	// If the file does not exist, there's nothing to load.
 	if (!FileSystem::fileExists(playerFile)) {
-
 		//random number gen starts here ->
 		const int AMOUNT = 2; //amount of random numbers that need to be generated
 		const int MAX = 6; //maximum value (of course, this must be at least the same as AMOUNT;
@@ -202,21 +328,19 @@ void Board::loadPlayers(std::string playerFile)
 
 		srand((unsigned)time(NULL)); //always seed your RNG before using it
 
-		//generate random numbers:
-		for (unsigned int i = 0; i<AMOUNT; i++)
-		{
+									 //generate random numbers:
+		for (unsigned int i = 0; i<AMOUNT; i++) {
 			bool check; //variable to check or number is already used
 			int n; //variable to store the number in
-			do
-			{
+			do {
 				n = rand() % MAX;
 				//check or number is already used:
 				check = true;
 				for (unsigned int j = 0; j<i; j++)
 					if (n == value[j]) //if number is already used
 					{
-					check = false; //set check to false
-					break; //no need to check the other elements of value[]
+						check = false; //set check to false
+						break; //no need to check the other elements of value[]
 					}
 			} while (!check); //loop until new, unique number is found
 			value[i] = n; //store the generated number in the array
@@ -284,8 +408,10 @@ void Board::drawCards()
 {
 	for (int i = 0; i < 2; i++)
 	{
-		this->_players[this->currentTurnPlayer]->addCard(this->_playerWithdrawPile.at(_playerWithdrawPile.size()-1));
-		this->_playerWithdrawPile.pop_back();
+		if (this->_playerWithdrawPile.size() != 0) {
+			this->getCurrentTurnPlayer().addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
+			this->_playerWithdrawPile.pop_back();
+		}
 	}
 }
 
@@ -319,7 +445,8 @@ void Board::generatePlayerCards()
 
 	std::vector<EventCard*> tempEventVector {card1, card2, card3, card4, card5};
 
-	for (int i = 0; i < tempEventVector.size(); i++) {
+	for (unsigned int i = 0; i < tempEventVector.size(); i++) {
+
 		int rng = RandomNumberGenerator::next(0, _playerWithdrawPile.size());
 		this->_playerWithdrawPile.insert(this->_playerWithdrawPile.begin() + rng, tempEventVector[i]);
 	}
@@ -412,11 +539,38 @@ void Board::incremenetInfectionRate()
 //draw infections card at the end of the turn
 void Board::drawInfectionCard()
 {
-	int infectionCardToBeDraw = this->getInfectionRate();
-	for (int i = 0; i < infectionCardToBeDraw ; i++)
+	for (int i = 0; i < this->getInfectionRate(); i++)
 	{
-		InfectionCard::infectCityCube(infectionCityCards.at(i));
-		Board::discardInfectionCard.push_back(infectionCityCards.at(i));
-		Board::infectionCityCards.erase(infectionCityCards.begin()+i);
+		if (true != isCured[Game::getGameBoard()->getCity(infectionCityCards.at(i))->color])
+		{
+			InfectionCard::infectCityCube(infectionCityCards.at(i));
+			Board::discardInfectionCard.push_back(infectionCityCards.at(i));
+			Board::infectionCityCards.erase(infectionCityCards.begin() + i);
+			Board::infectionCityCards.shrink_to_fit();
+		}
+		
 	}
+}
+
+bool Board::isEditingMap()
+{
+	return this->_editingMap;
+}
+
+void Board::submitMap()
+{
+	this->_editingMap = false;
+	this->_startGame = true;
+	Game::save();
+	GuiManager::handleWindowClose();
+}
+
+int Board::getActualInfectionRate()
+{
+	return this->_infectionRate;
+}
+
+void Board::setActualInfectionRate(int value)
+{
+	this->_infectionRate = value;
 }

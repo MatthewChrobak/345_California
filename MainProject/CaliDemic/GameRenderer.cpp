@@ -30,6 +30,10 @@ void GameRenderer::drawGame()
 void GameRenderer::drawPlayers()
 {
 	Board* board = Game::getGameBoard();
+	// Exit out early to avoid problems.
+	if (board->isEditingMap()) {
+		return;
+	}
 	int numPlayers = board->getNumberOfPlayers();
 	Player& currentTurnPlayer = board->getCurrentTurnPlayer();
 

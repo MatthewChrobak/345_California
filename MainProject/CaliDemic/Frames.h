@@ -19,9 +19,6 @@ public:
 	static MapEditingActions EditingAction;
 	static PlayerActions PlayerAction;
 	static int EditNodeIndex;
-
-private:
-	bool _editing = false;
 };
 
 // The frame that holds all player-action buttons in game.

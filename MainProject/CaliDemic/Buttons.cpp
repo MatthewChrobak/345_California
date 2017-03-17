@@ -185,7 +185,7 @@ TreatDiseaseAction::TreatDiseaseAction() : UIButton(CMD_PLAYER_ACTION_TREAT_DISE
 	this->top = FRM_PLAYER_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * PlayerActions::TreatDisease;
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
-
+//TODO: only the city cube color can be remove(the game itself allow to remove any cubes on the city. Thus, we have to modify that in the future)
 bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 {
 	//TODO: FIX THE TREAT DISEASE ****THE PHI****
@@ -198,41 +198,36 @@ bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 	Failure to do so will cause assertions to fail and will cause the application to crash.
 	*/
 	int currentPlayerIndex = player.pawn->cityIndex;
-	//create a city pointer to change cube counter 
-	int playerRoleCardValue = player.getRoleCard()->getRoleCardVal();
+	int cityColor = Game::getGameBoard()->getCity(player.pawn->cityIndex)->color;
 
-	City* tempCity = board->getCity(currentPlayerIndex);
+	/*
+	implementing one function of the medic role
+	the second function is not implemented
+	*/
+	//TODO: Implementation of the medic role completely
+	if (player.getRoleCard()->getRoleCardVal() == 5)
+	{
+		GuiManager::showMsgBox("You're a medic!...Removing all matching cubes! Counts as one action.");
+		do {
+			Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor]--;
+			Game::numOfCubeIncrementor(cityColor);
+		} while (Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor] > 0);
 
-	//check if there's any cube 
-	int counterNoCubes = 0;
-	for (int i = 0; i < 3; i++){
-		//check if medic
-		if (playerRoleCardValue != 5){
-			if (tempCity->cube[i] >= 0){
-				tempCity->cube[i] = -1;
-				counterNoCubes++;
-				GuiManager::showMsgBox("One cube removed");
-				break;
-			}
-		}
-		else if (tempCity->cube[i] >= 0){
-			//start another for loop to find the matching disease value 
-			GuiManager::showMsgBox("You're a medic!...Removing all matching cubes! Counts as one action.");
-			for (int j = 0; j < 3; j++){
-
-				if (tempCity->cube[i] == tempCity->cube[j]){
-					counterNoCubes++;
-					tempCity->cube[j] = -1;
-				}
-			}
-		}
+		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 	}
-
-	if (counterNoCubes == 0){
-		GuiManager::showMsgBox("No cubes to remove!");
+	//if the player is not a medic
+	else if (Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor] > 0)
+	{
+		GuiManager::showMsgBox("An infection cube has been remove in the current city");
+		Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor]--;
+		Game::numOfCubeIncrementor(cityColor);
+		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 	}
-
-	GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+	else
+	{
+		GuiManager::showMsgBox("No Infection cube is at the current city.");
+	}
+	
 	return true;
 }
 
@@ -555,7 +550,8 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				}
 
 				// Remove all the cards.
-				for (int i = 0; i < this->_cardData->size(); i++) {
+
+				for (unsigned int i = 0; i < this->_cardData->size(); i++) {
 					player.removeCard(this->_cardData->at(i));
 				}
 
@@ -608,7 +604,6 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 		Game::getGameBoard()->drawCards();
 		GuiManager::showMsgBox("Your current hand after picking two cards.");
 		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
-
 
 		int numberOfCards = player.getNumberOfCards();
 

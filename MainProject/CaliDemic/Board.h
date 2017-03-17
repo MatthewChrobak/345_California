@@ -20,15 +20,14 @@ public:
 	~Board();
 
 	void save(std::string saveFolder);
-	
-
+	void generateGameContentAtStartOfGame();
 	void addCity(City* city);
 	City* getCity(int index);
 	int getNumCities();
 	//disease cure boolean
 	//index value indicating disease according it's color...bool array if cured update bool value
 
-	bool isCured[4];
+	bool isCured[4]{ false, false, false, false } ;
 	
 
 	/*
@@ -49,6 +48,9 @@ public:
 	int getInfectionRate();
 	void incremenetInfectionRate();
 
+	int getActualInfectionRate();
+	void setActualInfectionRate(int value);
+
 	/*
 	bank of all cities that can be infected
 	the idea behind that is if the user decides to make 
@@ -59,6 +61,9 @@ public:
 	std::vector<int> discardInfectionCard;
 	void infectionCityCardsInitializor();
 	void drawInfectionCard();
+
+	bool isEditingMap();
+	void submitMap();
 	
 
 
@@ -79,5 +84,10 @@ private:
 	void savePlayers(std::string playerFile);
 
 	void generatePlayerCards();
+
+
+	// Game properties.
+	bool _editingMap = true;
+	bool _startGame = false;
 };
 
