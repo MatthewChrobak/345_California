@@ -25,9 +25,7 @@ GameFrame::GameFrame() : UIFrame(FRM_GAME_FRAME)
 }
 
 void GameFrame::showAdminTools()
-{
-	this->_editing = true;
-	
+{	
 	// Make the map tools button visible.
 	auto element = GuiManager::getUIElementByName(CMD_TOGGLE_MAP_EDITING_ACTIONS);
 #ifdef DEBUG
@@ -47,8 +45,6 @@ void GameFrame::showAdminTools()
 
 void GameFrame::finishedEditing()
 {
-	this->_editing = false;
-
 	// Make the map tools button invisible.
 	auto element = GuiManager::getUIElementByName(CMD_TOGGLE_MAP_EDITING_ACTIONS);
 #ifdef DEBUG
@@ -64,6 +60,9 @@ void GameFrame::finishedEditing()
 	assert(element->getObjectType() == UI_TYPE_FRAME);
 #endif
 	element->visible = false;
+
+	// Submit the map.
+	Game::getGameBoard()->submitMap();
 }
 
 bool GameFrame::onMouseDown(std::string button, int x, int y)
@@ -78,7 +77,7 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 		int numCities = board->getNumCities();
 
 		// Are we currently editing the map?
-		if (this->_editing)
+		if (Game::getGameBoard()->isEditingMap())
 		{
 			// Figure out if we did an action that requires clicking on cities.
 			switch (GameFrame::EditingAction) {
@@ -214,7 +213,7 @@ void GameFrame::draw()
 	UIFrame::draw();
 
 	// Are we editing right now?
-	if (this->_editing && Game::getGameBoard()->getNumCities()) {
+	if (Game::getGameBoard()->isEditingMap() && Game::getGameBoard()->getNumCities()) {
 		switch (GameFrame::EditingAction) {
 			case MapEditingActions::SelectNode:
 			case MapEditingActions::MakeDirectedEdge:
@@ -230,12 +229,10 @@ void GameFrame::draw()
 	}
 }
 
-
-
 bool GameFrame::onKeyDown(std::string key)
 {
 	// Are we editing right now?
-	if (this->_editing && Game::getGameBoard()->getNumCities()) {
+	if (Game::getGameBoard()->isEditingMap() && Game::getGameBoard()->getNumCities()) {
 		switch (GameFrame::EditingAction) {
 			case MapEditingActions::ChangeNodeName:
 

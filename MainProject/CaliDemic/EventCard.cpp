@@ -14,9 +14,10 @@ EventCard::EventCard(EventCardType type)
 	this->_cardType = PlayerCardType::Event_Card;
 }
 
-std::string EventCard::getEventName() {
+std::string EventCard::getEventName()
+{
 	switch (this->_eventType) {
-
+	
 	case EventCardType::Airlift:
 		return "Airlift";
 		break;
@@ -36,7 +37,9 @@ std::string EventCard::getEventName() {
 	case EventCardType::ResilientPopulation:
 		return "Resilient Population";
 		break;
+
 	}
+
 }
 
 std::string EventCard::getSurfaceName()
