@@ -477,8 +477,8 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			else
 				GuiManager::showMsgBox("The card is either null or you did not select a city");
 		}
-
 		break;
+      
 		case PlayerActions::ShareKnowledge:
 			/*
 			When the player successfully finishes an action, ensure that the action is reset by writing the line
