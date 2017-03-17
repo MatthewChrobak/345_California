@@ -19,8 +19,8 @@ public:
 	~Board();
 
 	void save(std::string saveFolder);
-	//player creation, it might be modify for future project purpose
-	void playerCreation();
+	
+	
 
 	void addCity(City* city);
 	City* getCity(int index);
@@ -58,6 +58,7 @@ public:
 	std::vector<int> infectionCityCards;
 	std::vector<int> discardInfectionCard;
 	void infectionCityCardsInitializor();
+	void drawInfectionCard();
 	
 
 
