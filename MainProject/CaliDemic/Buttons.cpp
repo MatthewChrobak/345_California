@@ -506,10 +506,6 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 			break;
 
-		case PlayerActions::DiscoverCure:
-		{
-			int requiredCardCount = 5;
-			bool medic = false;
 
 		case PlayerActions::DiscoverCure:
 		{
