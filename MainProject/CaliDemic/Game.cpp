@@ -129,6 +129,9 @@ void Game::loadOrCreate(std::string savename)
 		GuiManager::getUIElementByName(FRM_PLAYER_ACTIONS)->visible = false;
 		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 	}
+
+	// Try and start the game if we can.
+	Game::_gameBoard->tryStartGame();
 }
 
 void Game::save()
