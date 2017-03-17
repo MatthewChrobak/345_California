@@ -44,6 +44,5 @@ private:
 	static Board* _gameBoard;
 	static GameState _state;
 	static std::string _saveFolder;
-
 };
 
