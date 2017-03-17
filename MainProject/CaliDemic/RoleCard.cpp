@@ -5,31 +5,18 @@ DISTINCT PART -> ROLE CARD AND REFERENCE CARD CLASSES.
 #include <iostream>
 #include "RoleCard.h"
 
+std::string RoleCard::roleCardNames[7] = { "The Contingency Planner", "Researcher", "Scientist", "Dispatcher", "Operations Expert", "Medic", "Quarantine Specialist", };
 
-RoleCard::RoleCard(const std::string &roleCardname)
-        : roleCardname(roleCardname){
 
+RoleCard::RoleCard(const std::string &roleCardname) : roleCardname(roleCardname)
+{
     int roleValue = this->getRoleCardNum();
-
     this->setRoleCardVal(roleValue);
 
-    std :: string roleCardC [] = {"Teel", "Brown", "White", "Pink", "Light Green", "Orange", "Dark Green"};
-
-    this->setRoleCardColour(roleCardC[roleValue]);
-
-    std :: cout << "\nInitiating RoleCard..." << std:: endl;
-
-  
-
+	this->setRoleCardColour((RoleCardColors)roleValue);
 }
 
-RoleCard::~RoleCard() {
-
-    std :: cout << "INSIDE RC DESTRUCTOR "<< std :: endl;
-
-
-
-}
+RoleCard::~RoleCard() {}
 
 RoleCard::RoleCard() {}
 
@@ -38,45 +25,35 @@ const std::string &RoleCard::getRoleCardname() const {
 }
 
 void RoleCard::setRoleCardname(const std::string &roleCardname) {
-    RoleCard::roleCardname = roleCardname;
+    this->roleCardname = roleCardname;
 }
 
+int RoleCard::getRoleCardNum()
+{
+	for (int i = 0; i < 7; i++) {
+		if (roleCardNames[i].compare(this->getRoleCardname()) == 0) {
+			return i;
+		}
+	}
 
-
-int RoleCard::getRoleCardNum() {
-
-    std :: string roleCardNames [] = {"The Contingency Planner", "Researcher", "Scientist", "Dispatcher", "Operations Expert"
-            , "Medic" , "Quarantine Specialist", };
-    int switchNum = 0;
-
-    for (int i=0; i<7; i++) {
-
-        if(roleCardNames[i].compare(this->getRoleCardname())==0){
-
-            switchNum = i;
-            //std :: cout << switchNum << std :: endl;
-
-            break;
-        }
-
-    }
-    return switchNum;
+	return -1;
 }
 
 
 int RoleCard::getRoleCardVal() const {
-    return roleCardVal;
+    return this->roleCardVal;
 }
 void RoleCard::setRoleCardVal(int roleCardVal) {
-    RoleCard::roleCardVal = roleCardVal;
+    this->roleCardVal = roleCardVal;
 }
 
 
-
-
-
-
-void RoleCard::setRoleCardColour(const std::string& roleCardColour)
+void RoleCard::setRoleCardColour(const RoleCardColors& roleCardColour)
 {
 	this->roleCardColour = roleCardColour;
+}
+
+RoleCardColors RoleCard::getRoleCardColour() const
+{
+	return roleCardColour;
 }
