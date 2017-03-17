@@ -356,7 +356,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 {
 	Board* board = Game::getGameBoard();
 	Player& player = board->getCurrentTurnPlayer();
-	int roleCardIndex = player.getRoleCard->getroleCardVal();
+	int roleCardIndex = player.getRoleCard()->getRoleCardVal();
 
 	switch (GameFrame::PlayerAction)
 	{
@@ -509,122 +509,64 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			*/
 			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 			break;
+
+
 		case PlayerActions::DiscoverCure:
-			if (roleCardIndex == 5){
-				if (this->_cardData->size() == 4){
-
-					const int totalCards = 4;
-
-
-
-					// Get the card index.
-					int cardIndex1 = this->_cardData->at(0);
-					int cardIndex2 = this->_cardData->at(1);
-					int cardIndex3 = this->_cardData->at(2);
-					int cardIndex4 = this->_cardData->at(3);
-
-
-
-					//get the cityColors
-					int cityIndex1 = board->getCity(cardIndex1)->color;
-					int cityIndex2 = board->getCity(cardIndex2)->color;
-					int cityIndex3 = board->getCity(cardIndex3)->color;
-					int cityIndex4 = board->getCity(cardIndex4)->color;
-
-					int cityCardIndexArray[] = { cityIndex1, cityIndex2, cityIndex3, cityIndex4 };
-
-
-					for (int i = 0; i < totalCards; i++) {
-						for (int j = 0; j < totalCards; j++) {
-							if (cityCardIndexArray[i] != cityCardIndexArray[j]) {
-								GuiManager::showMsgBox("Please select exactly 4 matching cards!");
-								return true;
-							}
-						}
-
-					}
-
-					if (!board->isCured[cityIndex1]) {
-						board->isCured[cityIndex1] = true;
-						decrementActionCounter();
-						GuiManager::showMsgBox("The disease has been cured");
-						
-						player.removeCard(cardIndex1);
-						player.removeCard(cardIndex2);
-						player.removeCard(cardIndex3);
-						player.removeCard(cardIndex4);
-
-						GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-
-						
-					}
-					else {
-						GuiManager::showMsgBox("The disease is already cured!");
-					}
-
-
-				}
-				else 
-					GuiManager::showMsgBox("You're a Medic select 4 matching cards instead!");
-
-			}
-       
-			// Ensure that 5 cards were selected.
-			else if (this->_cardData->size() == 5) {
-				
-				const int totalCards = 5;
-
-				// Get the card index.
-				int cardIndex1 = this->_cardData->at(0);
-				int cardIndex2 = this->_cardData->at(1);
-				int cardIndex3 = this->_cardData->at(2);
-				int cardIndex4 = this->_cardData->at(3);
-				int cardIndex5 = this->_cardData->at(4);
-
-				//int cardIndexArray [] = {cardIndex1, cardIndex2, cardIndex3, cardIndex4, cardIndex5};
-
-				//get the cityColors
-				int cityIndex1 = board->getCity(cardIndex1)->color;
-				int cityIndex2 = board->getCity(cardIndex2)->color;
-				int cityIndex3 = board->getCity(cardIndex3)->color;
-				int cityIndex4 = board->getCity(cardIndex4)->color;
-				int cityIndex5 = board->getCity(cardIndex5)->color;
-
-				int cityCardIndexArray[] = { cityIndex1, cityIndex2, cityIndex3, cityIndex4, cityIndex5 };
-
-				// Ensure all cards are of the same color.
-				for (int i = 0; i < 5; i++) {
-					for (int j = 0; j < 5; j++) {
-						if (cityCardIndexArray[i] != cityCardIndexArray[j]) {
-							GuiManager::showMsgBox("Please select exactly 5 matching cards!");
-							return true;
-						}
-					}
-
-				}
-				// Ensure that we have not yet cured the disease.
-				if (!board->isCured[cityIndex1])
-				{
-					board->isCured[cityIndex1] = true;
-					decrementActionCounter();
-					GuiManager::showMsgBox("The disease has been cured");
-					player.removeCard(cardIndex1);
-					player.removeCard(cardIndex2);
-					player.removeCard(cardIndex3);
-					player.removeCard(cardIndex4);
-					player.removeCard(cardIndex5);
-					GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-
-					
-				} 
-				else
-				{
-					GuiManager::showMsgBox("The disease is already cured!");
-				}
-		}
-		else 
 		{
-			GuiManager::showMsgBox("Please select 5 cards.");
+			int requiredCardCount = 5;
+			bool medic = false;
+
+			// Figure out if we're a medic or not.
+			if (roleCardIndex == 5) {
+				requiredCardCount = 4;
+				medic = true;
+			}
+
+			// Did we select enough cards?
+			if (this->_cardData->size() == requiredCardCount) {
+
+				// Are they all city cards?
+				for (int i = 0; i < requiredCardCount; i++) {
+					if (player.getCard(this->_cardData->at(i))->getType() != PlayerCardType::City_Card) {
+						GuiManager::showMsgBox("You must select city cards only.");
+						return true;
+					}
+				}
+
+				// Ensure they're the same color.
+				for (int i = 1; i < requiredCardCount; i++) {
+					CityCard* cityCard0 = (CityCard*)player.getCard(this->_cardData->at(i - 1));
+					CityCard* cityCard1 = (CityCard*)player.getCard(this->_cardData->at(i));
+					City* city0 = board->getCity(cityCard0->cityIndex);
+					City* city1 = board->getCity(cityCard1->cityIndex);
+
+					if (city0->color ^ city0->color) {
+						GuiManager::showMsgBox("You must select the same color cards.");
+						return true;
+					}
+				}
+
+				// Make sure it hasn't been cured already.
+				InfectionColor color = Game::getGameBoard()->getCity(((CityCard*)player.getCard(this->_cardData->at(0)))->cityIndex)->color;
+				if (board->isCured[color]) {
+					GuiManager::showMsgBox("This disease has already been cured!");
+					return true;
+				}
+
+				// Remove all the cards.
+				for (int i = 0; i < this->_cardData->size(); i++) {
+					player.removeCard(this->_cardData->at(i));
+				}
+
+				// Cure the disease.
+				board->isCured[color] = true;
+				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+				GuiManager::showMsgBox("The disease has been cured.");
+				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+				decrementActionCounter();
+			} else {
+				GuiManager::showMsgBox("You need to select " + std::to_string(roleCardIndex) + " cards.");
+			}
 		}
 
 		/*
