@@ -4,10 +4,10 @@
 #include "City.h"
 #include "Board.h"
 #include "Player.h"
-#include "ActionCounter.h"
 #include <vector>
 #include <stack>
 #include "PlayerCard.h"
+#include "EventCard.h"
 
 
 
@@ -19,9 +19,7 @@ public:
 	~Board();
 
 	void save(std::string saveFolder);
-	
 	void generateGameContentAtStartOfGame();
-
 	void addCity(City* city);
 	City* getCity(int index);
 	int getNumCities();
@@ -30,6 +28,7 @@ public:
 
 	bool isCured[4]{ false, false, false, false } ;
 	
+	static void checkTurn();
 
 	/*
 	This is to change turn once the number of action is reach
@@ -92,3 +91,4 @@ private:
 	bool _startGame = false;
 };
 
+//this a free function to check turn

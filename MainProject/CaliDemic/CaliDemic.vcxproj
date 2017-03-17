@@ -94,7 +94,6 @@
     <ClCompile Include="RoleCard.cpp" />
     <ClCompile Include="SfmlFontManager.cpp" />
     <ClCompile Include="SfmlSystem.cpp" />
-    <ClCompile Include="ActionCounter.cpp" />
     <ClCompile Include="SurfaceContext.cpp" />
     <ClCompile Include="SfmlSurfaceManager.cpp" />
     <ClCompile Include="Textboxes.cpp" />
@@ -124,7 +123,6 @@
     <ClInclude Include="GraphicsSystem.h" />
     <ClInclude Include="GameRenderer.h" />
     <ClInclude Include="GuiManager.h" />
-    <ClInclude Include="ActionCounter.h" />
     <ClInclude Include="InfectionCard.h" />
     <ClInclude Include="InfectionColors.h" />
     <ClInclude Include="MapEditingActions.h" />

@@ -3,6 +3,7 @@
 #include <string>
 
 #define NUM_OF_STARTING_CUBE 24
+#define NUM_OF_MAX_ACTION 4
 #define NUM_OF_STARTING_RESEARCH_FACILITY 6
 
 enum GameState : int
@@ -39,6 +40,11 @@ public:
 
 	static void numOfCubeDecrementor(int cityColor);
 	static void numOfCubeIncrementor(int cityColor);
+
+	static int actionCounter;
+
+	static void decrementActionCounter();
+	static void resetActionCounter();
 
 private:
 	static Board* _gameBoard;
