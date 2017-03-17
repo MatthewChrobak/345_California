@@ -102,7 +102,14 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 			case MapEditingActions::MakeNodeBlue:
 			case MapEditingActions::MakeDirectedEdge:
 				// Get the city from the x/y coordinate.
+				
 				int index = City::getCityIndexFromXY(x, y);
+				
+				if (index < 0)
+				{
+					return true;
+				}
+
 				City* city = board->getCity(index);
 
 				// Make sure it's not null.
@@ -330,7 +337,7 @@ void PlayerCardsFrame::draw()
 	TextContext tCtx;
 
 	// Draw two rows of cards.
-	for (int i = 0; i < MAX_PLAYER_CARDS; i++) {
+	for (int i = 0; i < 7; i++) {
 		// Get the card, and figure out what row and column we're in.
 		PlayerCard* card = player.getCard(i);
 
@@ -406,7 +413,7 @@ bool PlayerCardsFrame::onMouseDown(std::string button, int x, int y)
 	Player& player = Game::getGameBoard()->getCurrentTurnPlayer();
 	
 
-	for (int i = 0; i < MAX_PLAYER_CARDS; i++) {
+	for (int i = 0; i < 7; i++) {
 		// Get the card, and figure out what row and column we're in.
 		PlayerCard* card = player.getCard(i);
 

@@ -16,13 +16,13 @@ public:
 	void addCard(PlayerCard* card);
 	PlayerCard* getCard(int index);
 	void removeCard(int index);
-	RoleCard *getRoleCard() const;
-	void setRoleCard(RoleCard* rc);
-	
+	int getNumberOfCards();
 
 
 private:
-	PlayerCard* _playerCards[MAX_PLAYER_CARDS];
-    RoleCard* rc;
+  RoleCard* rc;
+  RoleCard *getRoleCard() const;
+	void setRoleCard(RoleCard* rc);
+	PlayerCard* _playerCards [MAX_PLAYER_CARDS];
 };
 

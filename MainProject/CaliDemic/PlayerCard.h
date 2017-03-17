@@ -18,7 +18,18 @@ enum PlayerCardType
 	Event_Card
 };
 
+
+
 class PlayerCard {
+
+
+
+
+
+
+
+
+
 
 public:
 	PlayerCardType getType();
@@ -29,11 +40,8 @@ protected:
 	PlayerCardType _cardType;
 
 public:
-	std::vector <string> playerCards;
-
+	vector <string> playerCards;
 	vector <string> playerCardsDeck;
-
-	vector <string> epidemic;
 
 public:
 	PlayerCard();
