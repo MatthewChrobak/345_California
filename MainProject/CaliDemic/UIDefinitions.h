@@ -86,3 +86,9 @@
 #define MSG_BOX_HEIGHT DRAW_HEIGHT
 
 #define CMD_MSG_BOX_ACCEPT "cmdMsgBoxAccept"
+
+
+
+// Checkboxes
+#define UI_TYPE_CHECKBOX "checkbox"
+#define CHK_DEFAULT_MAP "chkDefaultMap"
