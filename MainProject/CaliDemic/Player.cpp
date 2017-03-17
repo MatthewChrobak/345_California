@@ -61,3 +61,13 @@ PlayerCard* Player::getCard(int index)
 #endif
 	return this->_playerCards[index];
 }
+
+//define getters and setters for roleCard
+
+RoleCard *Player::getRoleCard() const {
+	return rc; 
+}
+
+void Player::setRoleCard(RoleCard * newRc) {
+	Player::rc = newRc;
+}
