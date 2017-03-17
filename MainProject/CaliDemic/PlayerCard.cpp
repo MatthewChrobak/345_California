@@ -10,7 +10,7 @@
 #include <stdio.h> 
 #include "FileStream.h"
 #include "FileSystem.h"
-#include "ActionCounter.h"
+
 
 
 void PlayerCard::playCard()
@@ -341,7 +341,7 @@ void PlayerCard::buildStationPC() {
 			}
 		}
 		cout << "A research center has been created at your location." << endl;
-		decrementActionCounter();
+		Game::decrementActionCounter();
 	}
 
 	else {
