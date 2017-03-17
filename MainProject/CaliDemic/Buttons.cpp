@@ -431,6 +431,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 						//check if the player is current city match with the city card
 						if (player.pawn->cityIndex == ((CityCard*)card)->cityIndex)
 						{
+
 							Game::getGameBoard()->getCity(player.pawn->cityIndex)->research = true;
 							player.removeCard(cardIndex);
 							Game::numOfResearchCenter--;
@@ -440,10 +441,10 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 						}
 						else
 							GuiManager::showMsgBox("You current position does not match the selected city card.");
+
 					}
 					else
 						GuiManager::showMsgBox("The research facility is already built in this city.");
-
 				}
 				else
 					GuiManager::showMsgBox("All research centers have been used.");
@@ -451,6 +452,9 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			else
 				GuiManager::showMsgBox("The card is either null or you did not select a city");
 		}
+
+  return true;
+
 		break;
 	
 	case PlayerActions::TreatDisease:
@@ -505,8 +509,8 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 						return true;
 					}
 				}
-
 			}
+
 			// Ensure that we have not yet cured the disease.
 			if (!board->isCured[cityIndex1]) {
 				board->isCured[cityIndex1] = true;
@@ -526,6 +530,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 		else {
 			GuiManager::showMsgBox("Please select 5 cards.");
 		}
+
 		return true;
 
 		/*
