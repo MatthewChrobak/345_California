@@ -15,12 +15,13 @@
 #include "EventCard.h"
 #include "Frames.h"
 #include "EpidemicCard.h"
+#include "RandomNumberGenerator.h"
 
 #ifdef DEBUG
 #include <assert.h>
 #endif
 
-
+//===============================================================
 void Board::generateGameContentAtStartOfGame()
 {
 	// Give each player four cards, while we have cards.
@@ -33,21 +34,23 @@ void Board::generateGameContentAtStartOfGame()
 				this->_playerWithdrawPile.pop_back();
 			}
 		}
-
+		int i = RandomNumberGenerator::next(0, 6);
 		// Give each player a random role card.
+		RoleCard *p = new RoleCard(RoleCard::roleCardNames[i]);
+		this->getPlayer(playerIndex).setRoleCard(p);
 	}
+	//===========================================================
 	//intializing infectionCardDeck
 	Board::infectionCityCardsInitializor();
 	//starting the infection with 9 cities (required 9 cities if not null exception)
 	for (int i = 0; i <  STARTING_INFECTION_CARD ; i++)
 	{
-		if (infectionCityCards.at(i) != NULL)
-		{
-			InfectionCard::infectCityCube(infectionCityCards.at(i));
-			Board::discardInfectionCard.push_back(infectionCityCards.at(i));
-			Board::infectionCityCards.erase(infectionCityCards.begin() + i);
-			Board::infectionCityCards.shrink_to_fit();
-		}
+		
+		InfectionCard::infectCityCube(infectionCityCards.at(i));
+		Board::discardInfectionCard.push_back(infectionCityCards.at(i));
+		Board::infectionCityCards.erase(infectionCityCards.begin() + i);
+		Board::infectionCityCards.shrink_to_fit();
+		
 	}
 }
 
