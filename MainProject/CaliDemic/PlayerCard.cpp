@@ -37,10 +37,81 @@ PlayerCard::~PlayerCard()
 {
 }
 
+//Clearing entire vector for next object
+void PlayerCard::clearVector() {
+	playerCards.clear();
+};
+
+// Returns the size of the vector
+int PlayerCard::getVectorSize() {
+	return playerCards.size();
+}
+
+//Game over if playerCardsDeck is empty
+void PlayerCard::playerCardGameOver() {
+	if (playerCardsDeck.size() == 0)
+	{
+		cout << "GAME OVER. YOU RAN OUT OF PLAYER CARDS." << endl;
+		exit(0);
+	}
+}
+
+// Retrieves all the cards from the player's hand as a single string
+string PlayerCard::getPlayerCards() {
+
+	if (playerCards.size() > 0) {
+		string *tempArray = new string[7]; // A temporary array is created in order to properly format the output
+		string listOfCards = playerCards[0];
+
+		if (playerCards.size() > 1) {
+			for (unsigned int i = 1; i < playerCards.size(); i++) {
+				tempArray[i] = playerCards[i];
+				listOfCards = listOfCards + ", " + tempArray[i];
+			}
+			return listOfCards;
+		}
+	}
+
+	if (playerCards.size() <= 0) {
+		return "You have no more cards to play";
+	}
+	return "";
+}
+
+// Retrieves a single card from the player's hand
+string PlayerCard::getSingleCard(int cardPosition) {
+	return playerCards[cardPosition];
+}
+
+// Removes a single card from the player's hand
+void PlayerCard::removeSingleCard(int cardPosition) {
+	playerCards.erase(playerCards.begin() + cardPosition);
+}
+
+//Retrieves a random card from the player deck for a specified number of times
+void PlayerCard::setPlayerCards(int numberOfCards) {
+
+	for (int i = 0; i < numberOfCards; i++) {
+
+		srand((unsigned)time(NULL));
+		int value = rand() % (playerCardsDeck.size()); //Get a value from 0 to size of deck
+
+		playerCards.push_back(playerCardsDeck[value]);
+		playerCardsDeck.erase(playerCardsDeck.begin() + value);
+
+	}
+}
 
 //Automatically discards en Epidemic card if the player picks one
 void PlayerCard::useEpidemic() {
-	
+	/*for (unsigned int i = 0; i< playerCards.size(); i++)
+	{
+	if (playerCards[i] == "Epidemic") {
+	playerCards.erase(playerCards.begin() + i);
+	}
+	}
+	*/
+
 	int counter = 0;
 	int epidemicInfection = Game::getGameBoard()->infectionCityCards.back();
 	//shrinking the infectionCityCards
@@ -50,7 +121,7 @@ void PlayerCard::useEpidemic() {
 	//infect the draw city three times
 	for (int i = 0; i < 3; i++)
 	{
-		
+
 		if (Game::getGameBoard()->getCity(epidemicInfection)->cube[i] == -1)
 		{
 			counter++;
@@ -69,16 +140,14 @@ void PlayerCard::useEpidemic() {
 	//Further functions needed to initiate the effects of picking an epidemic card
 
 }
-<<<<<<< HEAD
 
-<<<<<<< HEAD
 
 //Get the description of an event card (if in possession)
 void PlayerCard::getEventDescription() {
 
 	int counter = 0; // Counter remains 0 if no event card is found in a player's hand
 
-	//Checks every card in a player's hand to verify if player has an event card
+					 //Checks every card in a player's hand to verify if player has an event card
 	for (unsigned int i = 0; i < playerCards.size(); i++) {
 
 		for (unsigned int i = 0; i < playerCards.size(); i++) {
@@ -154,17 +223,17 @@ void PlayerCard::setPlayerCardDeck() {
 		playerCardsDeck.push_back(fs->readString());
 
 	}
-	
+
 	delete fs;
 
 	//From a file listing all epidemic cards, take each string and store them into playerCardsDeck
 	fs = FileStream::Open(FileSystem::getStartupPath() + "doesn't matter once again...", FileMode::Read);
 
 	for (int i = 0; i < 4; i++) {
-	
+
 		playerCardsDeck.push_back(fs->readString());
 	}
-	
+
 	delete fs;
 
 }
@@ -249,7 +318,7 @@ void PlayerCard::buildStationPC() {
 		cout << "Your current cards are: " << getPlayerCards() << endl;
 		int counter2 = 0; // Increments until 5 to ensure that there are 5 cards discarded
 
-		//The player chooses which cards to use for the construction of a research station
+						  //The player chooses which cards to use for the construction of a research station
 		for (int i = 0; i < 5; i++) {
 			int input;
 			cin >> input;
@@ -271,7 +340,7 @@ void PlayerCard::buildStationPC() {
 			}
 		}
 		cout << "A research center has been created at your location." << endl;
-		Game::decrementActionCounter();
+
 	}
 
 	else {
@@ -281,8 +350,3 @@ void PlayerCard::buildStationPC() {
 	cout << endl;
 
 }
-
-=======
->>>>>>> refs/remotes/origin/master
-=======
->>>>>>> origin/Eastside-Ying-Yang
