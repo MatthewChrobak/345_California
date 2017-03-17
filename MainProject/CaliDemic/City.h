@@ -28,10 +28,10 @@ public:
 	//attributes of City class
 	int x = 0;
 	int y = 0;
-	static const int cubeMaxSize = 3;
+	static const int maxNumOfDiseases = 4;
 	InfectionColor color;
 	std::string name;
-	int cube[cubeMaxSize];
+	int cube[maxNumOfDiseases];
 	bool research = false;
 	bool infected = false;
 	bool inverseAngle = false;
