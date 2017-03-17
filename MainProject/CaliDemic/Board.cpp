@@ -21,8 +21,6 @@ void Board::infectionCityCardsInitializor()
 	for (int i = 0; i < Game::getGameBoard()->getNumCities(); i++)
 	{
 		infectionCityCards.push_back(i);
-		infectionCityCards.push_back(i);
-		infectionCityCards.push_back(i);
 	}
 	infectionCityCards.shrink_to_fit();
 

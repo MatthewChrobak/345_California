@@ -47,8 +47,10 @@ public:
 	bank of all cities that can be infected
 	the idea behind that is if the user decides to make 
 	his own city than we can make his own city's infectionCard
+	and we have an discard pile
 	*/
 	std::vector<int> infectionCityCards;
+	std::vector<int> discardInfectionCard;
 	void infectionCityCardsInitializor();
 
 private:

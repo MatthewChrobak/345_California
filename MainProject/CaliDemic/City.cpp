@@ -12,9 +12,9 @@
 
 City::City()
 {
-	for (int i = 0; i < cubeMaxSize; i++)
+	for (int i = 0; i < InfectionColor::InfectionColor_Length; i++)
 	{
-		this->cube[i] = -1;
+		this->cube[i] = 0;
 	}
 }
 
@@ -28,14 +28,7 @@ normal infection without outbreak
 */
 void City::infectCity(int city, int index)
 {
-	if (this->infected)
-		return;
-	else
-	{
-		this->infected = true;
-		Game::getGameBoard()->getCity(city)->cube[index] = Game::getGameBoard()->getCity(city)->color;
-		this->infected = false;
-	}
+		Game::getGameBoard()->getCity(city)->cube[index]++;
 }
 /*
 infection with outbreak of the current passing city.
@@ -52,7 +45,7 @@ void City::infectCityOutBreak(int city)
 	{
 		//reset the counter to 0 when it break out of the cube index loop.
 		int counter = 0;
-		for (unsigned int j = 0; i < cubeMaxSize; j++, counter++)
+		for (unsigned int j = 0; i < InfectionColor::InfectionColor_Length; j++, counter++)
 		{
 			if (Game::getGameBoard()->getCity(iterator.at(i))->cube[j] == -1)
 			{
