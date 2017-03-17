@@ -21,9 +21,25 @@
 #include <assert.h>
 #endif
 
+<<<<<<< HEAD
 //===============================================================
+=======
+void Board::tryStartGame()
+{
+	// Can we start the game?
+	if (this->_startGame) {
+		this->_startGame = false;
+		GuiManager::showMsgBox("The game has started!");
+		this->generateGameContentAtStartOfGame();
+	}
+}
+
+
+>>>>>>> refs/remotes/origin/master
 void Board::generateGameContentAtStartOfGame()
 {
+	this->generatePlayerCards();
+
 	// Give each player four cards, while we have cards.
 	for (int playerIndex = 0; playerIndex < this->getNumberOfPlayers(); playerIndex++) {
 		for (int i = 0; i < 4; i++) {
@@ -42,15 +58,23 @@ void Board::generateGameContentAtStartOfGame()
 	//===========================================================
 	//intializing infectionCardDeck
 	Board::infectionCityCardsInitializor();
+
+
 	//starting the infection with 9 cities (required 9 cities if not null exception)
-	for (int i = 0; i <  STARTING_INFECTION_CARD ; i++)
+	for (int i = 0; i < STARTING_INFECTION_CARD && i < infectionCityCards.size(); i++)
 	{
+<<<<<<< HEAD
 		
 		InfectionCard::infectCityCube(infectionCityCards.at(i));
 		Board::discardInfectionCard.push_back(infectionCityCards.at(i));
 		Board::infectionCityCards.erase(infectionCityCards.begin() + i);
 		Board::infectionCityCards.shrink_to_fit();
 		
+=======
+		InfectionCard::infectCityCube(infectionCityCards.at(0));
+		Board::discardInfectionCard.push_back(infectionCityCards.at(0));
+		Board::infectionCityCards.erase(infectionCityCards.begin());
+>>>>>>> refs/remotes/origin/master
 	}
 }
 
@@ -61,6 +85,8 @@ void Board::infectionCityCardsInitializor()
 {
 	for (int i = 0; i < this->getNumCities(); i++)
 	{
+		infectionCityCards.push_back(i);
+		infectionCityCards.push_back(i);
 		infectionCityCards.push_back(i);
 	}
 	infectionCityCards.shrink_to_fit();
@@ -77,13 +103,6 @@ Board::Board(std::string saveFolder)
 		this->loadPlayers(saveFolder + PLAYER_DATA_FILE);
 	} else {
 		GuiManager::showMsgBox("In Map Editing mode. Hit 'Done Editing' to save the map and start playing.");
-	}
-
-	// Can we start the game?
-	if (this->_startGame) {
-		this->_startGame = false;
-		GuiManager::showMsgBox("The game has started!");
-		this->generateGameContentAtStartOfGame();
 	}
 }
 
@@ -558,13 +577,13 @@ void Board::drawInfectionCard()
 {
 	for (int i = 0; i < this->getInfectionRate(); i++)
 	{
-		if (infectionCityCards.at(i) != NULL)
+		if (infectionCityCards.size() != 0)
 		{
-			if (true != isCured[Game::getGameBoard()->getCity(infectionCityCards.at(i))->color])
+			if (isCured[Game::getGameBoard()->getCity(infectionCityCards.at(0))->color] != true)
 			{
-				InfectionCard::infectCityCube(infectionCityCards.at(i));
-				Board::discardInfectionCard.push_back(infectionCityCards.at(i));
-				Board::infectionCityCards.erase(infectionCityCards.begin() + i);
+				InfectionCard::infectCityCube(infectionCityCards.at(0));
+				Board::discardInfectionCard.push_back(infectionCityCards.at(0));
+				Board::infectionCityCards.erase(infectionCityCards.begin());
 				Board::infectionCityCards.shrink_to_fit();
 			}
 		}
