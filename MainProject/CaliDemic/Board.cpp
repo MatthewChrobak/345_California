@@ -24,7 +24,6 @@ void Board::infectionCityCardsInitializor()
 		infectionCityCards.push_back(i);
 	}
 	infectionCityCards.shrink_to_fit();
-
 }
 
 Board::Board(std::string saveFolder)
@@ -195,10 +194,10 @@ void Board::loadPlayers(std::string playerFile)
 
 		int value[AMOUNT]; //array to store the random numbers in
 
-		srand(time(NULL)); //always seed your RNG before using it
+		srand((unsigned)time(NULL)); //always seed your RNG before using it
 
 		//generate random numbers:
-		for (int i = 0; i<AMOUNT; i++)
+		for (unsigned int i = 0; i<AMOUNT; i++)
 		{
 			bool check; //variable to check or number is already used
 			int n; //variable to store the number in
@@ -207,7 +206,7 @@ void Board::loadPlayers(std::string playerFile)
 				n = rand() % MAX;
 				//check or number is already used:
 				check = true;
-				for (int j = 0; j<i; j++)
+				for (unsigned int j = 0; j<i; j++)
 					if (n == value[j]) //if number is already used
 					{
 					check = false; //set check to false
@@ -368,4 +367,9 @@ int Board::getInfectionRate()
 void Board::incremenetInfectionRate()
 {
 	this->_infectionRate += 1;
+}
+
+void Board::drawInfectionCard()
+{
+	int infectionCardToBeDraw = this->getInfectionRate();
 }
