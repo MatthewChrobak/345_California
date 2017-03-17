@@ -3,6 +3,7 @@
 #include "FileSystem.h"
 #include "PlayerActions.h"
 #include "ActionCounter.h"
+#include "InfectionCard.h"
 #include "Game.h"
 #include <iostream>
 #include <vector>
@@ -371,7 +372,14 @@ void Board::incremenetInfectionRate()
 	this->_infectionRate += 1;
 }
 
+//draw infections card at the end of the turn
 void Board::drawInfectionCard()
 {
 	int infectionCardToBeDraw = this->getInfectionRate();
+	for (int i = 0; i < infectionCardToBeDraw ; i++)
+	{
+		InfectionCard::infectCityCube(infectionCityCards.at(i));
+		Board::discardInfectionCard.push_back(infectionCityCards.at(i));
+		Board::infectionCityCards.erase(infectionCityCards.begin()+i);
+	}
 }

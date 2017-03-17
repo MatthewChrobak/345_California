@@ -28,6 +28,7 @@ public:
 	//attributes of City class
 	int x = 0;
 	int y = 0;
+
 	InfectionColor color;
 	std::string name;
 	int cube[InfectionColor::InfectionColor_Length];
