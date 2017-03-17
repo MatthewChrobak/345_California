@@ -188,6 +188,7 @@ TreatDiseaseAction::TreatDiseaseAction() : UIButton(CMD_PLAYER_ACTION_TREAT_DISE
 
 bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 {
+	//TODO: FIX THE TREAT DISEASE ****THE PHI****
 	Board* board = Game::getGameBoard();
 	Player& player = board->getCurrentTurnPlayer();
 
@@ -602,7 +603,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 
 	//If turn is changed, show this message
-	if (board->playerTurnChange() == true) 
+	if (Game::getGameBoard()->playerTurnChange() == true) 
 	{
 
 		GuiManager::showMsgBox("Your current hand after picking two cards.");
@@ -618,8 +619,8 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			GameFrame::PlayerAction = PlayerActions::DiscardCards;
 
 		}
-		//City::infectCity()
-
+		//draw infection card and the game will do the infection automatically
+		Game::getGameBoard()->drawInfectionCard();
 		GuiManager::showMsgBox("End of your turn.");
 	}
 

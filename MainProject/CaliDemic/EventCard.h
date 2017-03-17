@@ -1,5 +1,6 @@
 #pragma once
 #include "PlayerCard.h"
+#include <vector>;
 
 enum EventCardType
 {
@@ -9,6 +10,7 @@ enum EventCardType
 	GovernmentGrant,
 	Forecast
 };
+
 
 class EventCard : public PlayerCard
 {

@@ -12,6 +12,9 @@
 #include "RandomNumberGenerator.h"
 #include <time.h>
 #include "RoleCard.h"
+#include "EventCard.h"
+#include "EpidemicCard.h"
+
 #ifdef DEBUG
 #include <assert.h>
 #endif
@@ -41,8 +44,8 @@ Board::~Board()
 		delete this->_players.at(i);
 
 	while (!this->_playerWithdrawPile.empty()) {
-		delete this->_playerWithdrawPile.top();
-		this->_playerWithdrawPile.pop();
+		delete this->_playerWithdrawPile.at(this->_playerWithdrawPile.size()-1);
+		this->_playerWithdrawPile.pop_back();
 	}
 
 	delete this->_cities;
@@ -73,6 +76,7 @@ void Board::saveBoardData(std::string boardFile)
 
 	delete fs;
 }
+
 
 void Board::loadNodes(std::string nodesFile)
 {
@@ -275,6 +279,18 @@ void Board::loadPlayers(std::string playerFile)
 }
 
 
+//Draw 2 cards
+void Board::drawCards()
+{
+	for (int i = 0; i < 2; i++)
+	{
+		this->_players[this->currentTurnPlayer]->addCard(this->_playerWithdrawPile.at(_playerWithdrawPile.size()-1));
+		this->_playerWithdrawPile.pop_back();
+	}
+}
+
+
+//Generates the playerCards deck
 void Board::generatePlayerCards()
 {
 	// Create a vector of city indexes.
@@ -288,11 +304,33 @@ void Board::generatePlayerCards()
 
 		//Add the city to the withdraw pile.
 		CityCard* card = new CityCard(cityIds.at(rng));
-		this->_playerWithdrawPile.push(card);
+		this->_playerWithdrawPile.push_back(card);
 
 		//Remove the id from the vector.
 		cityIds.erase(cityIds.begin() + rng);
 	}
+
+	//Temporarily hard-coding event cards and add them in the deck
+	EventCard* card1 = new EventCard(Airlift);
+	EventCard* card2 = new EventCard(OneQuietNight);
+	EventCard* card3 = new EventCard(ResilientPopulation);
+	EventCard* card4 = new EventCard(GovernmentGrant);
+	EventCard* card5 = new EventCard(Forecast);
+
+	std::vector<EventCard*> tempEventVector {card1, card2, card3, card4, card5};
+
+	for (int i = 0; i < tempEventVector.size(); i++) {
+		int rng = RandomNumberGenerator::next(0, _playerWithdrawPile.size());
+		this->_playerWithdrawPile.insert(this->_playerWithdrawPile.begin() + rng, tempEventVector[i]);
+	}
+
+	//Adding epidemic cards to the player deck
+	for (int i = 0; i < NUMBER_OF_EPIDEMIC; i++) {
+		int rng = RandomNumberGenerator::next(0, _playerWithdrawPile.size());
+		EpidemicCard* epidemicCard = new EpidemicCard();
+		this->_playerWithdrawPile.insert(this->_playerWithdrawPile.begin() + rng, epidemicCard);
+	}
+
 }
 
 
@@ -378,7 +416,6 @@ void Board::drawInfectionCard()
 	for (int i = 0; i < infectionCardToBeDraw ; i++)
 	{
 		InfectionCard::infectCityCube(infectionCityCards.at(i));
-		GuiManager::showMsgBox("The City name: " + Game::getGameBoard()->getCity(i)->name);
 		Board::discardInfectionCard.push_back(infectionCityCards.at(i));
 		Board::infectionCityCards.erase(infectionCityCards.begin()+i);
 	}
