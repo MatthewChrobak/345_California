@@ -23,6 +23,7 @@ void GameRenderer::drawGame()
 	// Draw the game data.
 	GameRenderer::drawInfectionRate();
 	GameRenderer::drawOutbreakMeter();
+	GameRenderer::drawCureMarkers();
 }
 
 
@@ -278,4 +279,59 @@ void GameRenderer::drawInfectionRate()
 
 	// This should be changed to append the current infection rate to the rendered text.
 	GraphicsManager::renderText("Infection Rate: " + std::to_string(Game::getGameBoard()->getInfectionRate()), ctx);
+}
+
+void GameRenderer::drawCureMarkers()
+{
+	SurfaceContext ctx;
+	Board* board = Game::getGameBoard();
+	int drawWidth = 50;
+
+	for (int i = 0; i < InfectionColor::InfectionColor_Length; i++) {
+		ctx.reset();
+		ctx.position = new Vector2D(DRAW_WIDTH / 2 - 2 * drawWidth + i * drawWidth, DRAW_HEIGHT - 60);
+		ctx.size = new Vector2D(drawWidth, drawWidth);
+		
+		if (board->isCured[i]) {
+			switch (i) {
+				case InfectionColor::Black:
+					ctx.color = new RGBA(50, 50, 50);
+					break;
+				case InfectionColor::Blue:
+					ctx.color = new RGBA(0, 0, 255);
+					break;
+				case InfectionColor::Red:
+					ctx.color = new RGBA(255, 0, 0);
+					break;
+				case InfectionColor::Yellow:
+					ctx.color = new RGBA(255, 255, 0);
+					break;
+			}
+			
+		} else {
+			switch (i) {
+				case InfectionColor::Black:
+					ctx.color = new RGBA(10, 10, 10);
+					break;
+				case InfectionColor::Blue:
+					ctx.color = new RGBA(0, 0, 50);
+					break;
+				case InfectionColor::Red:
+					ctx.color = new RGBA(50, 0, 0);
+					break;
+				case InfectionColor::Yellow:
+					ctx.color = new RGBA(50, 50, 0);
+					break;
+			}
+		}
+
+		GraphicsManager::renderSurface("ui\\cure.png", ctx);
+
+		if (board->isCured[i]) {
+			ctx.color->r = 0;
+			ctx.color->g = 255;
+			ctx.color->b = 0;
+			GraphicsManager::renderSurface("ui\\hascure.png", ctx);
+		}
+	}
 }
