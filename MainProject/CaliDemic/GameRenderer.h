@@ -19,5 +19,7 @@ private:
 
 	void drawOutbreakMeter();
 	void drawInfectionRate();
+
+	void drawCureMarkers();
 };
 
