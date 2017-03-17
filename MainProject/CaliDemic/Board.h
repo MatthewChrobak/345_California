@@ -7,6 +7,7 @@
 #include <vector>
 #include <stack>
 #include "PlayerCard.h"
+#include "EventCard.h"
 
 
 
@@ -18,9 +19,7 @@ public:
 	~Board();
 
 	void save(std::string saveFolder);
-	
 	void generateGameContentAtStartOfGame();
-
 	void addCity(City* city);
 	City* getCity(int index);
 	int getNumCities();
@@ -48,6 +47,9 @@ public:
 
 	int getInfectionRate();
 	void incremenetInfectionRate();
+
+	int getActualInfectionRate();
+	void setActualInfectionRate(int value);
 
 	/*
 	bank of all cities that can be infected

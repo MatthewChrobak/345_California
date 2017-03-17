@@ -166,15 +166,6 @@ void GuiManager::handleMouseMove(int x, int y)
 
 void GuiManager::handleKeyDown(std::string key)
 {
-	if (key == "escape") {
-		auto element = GuiManager::getUIElementByName(FRM_GAME_FRAME);
-#ifdef DEBUG
-		assert(element != nullptr);
-		assert(element->getObjectType() == UI_TYPE_FRAME);
-#endif
-		((GameFrame*)element)->showAdminTools();
-	}
-
 	// Pass it off to the MessageBox if it's visible
 	if (GuiManager::_messageBox.visible) {
 		GuiManager::_messageBox.onKeyDown(key);
