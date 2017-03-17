@@ -378,7 +378,6 @@ void Board::drawInfectionCard()
 	for (int i = 0; i < infectionCardToBeDraw ; i++)
 	{
 		InfectionCard::infectCityCube(infectionCityCards.at(i));
-		GuiManager::showMsgBox("The City name: " + Game::getGameBoard()->getCity(i)->name);
 		Board::discardInfectionCard.push_back(infectionCityCards.at(i));
 		Board::infectionCityCards.erase(infectionCityCards.begin()+i);
 	}
