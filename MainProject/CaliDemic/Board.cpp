@@ -393,7 +393,6 @@ void Board::loadPlayers(std::string playerFile)
 		Player* player = new Player();
 		player->pawn->cityIndex = fs->readInt();
 
-		// TODO: Get the role of the player.
 		int role = fs->readInt();
 		player->setRoleCard(new RoleCard(RoleCard::roleCardNames[role]));
 

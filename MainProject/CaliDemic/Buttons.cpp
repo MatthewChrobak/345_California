@@ -76,7 +76,6 @@ bool DrivePlayerAction::onMouseDown(std::string key, int x, int y)
 {
 	GameFrame::PlayerAction = PlayerActions::Drive;
 	GuiManager::showMsgBox("Please click on a city you wish to drive to.");
-
 	return true;
 }
 

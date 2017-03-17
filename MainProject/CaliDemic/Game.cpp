@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "FileSystem.h"
 #include "GuiManager.h"
+#include "UICheckbox.h"
 
 #ifdef DEBUG
 #include <assert.h>
@@ -120,7 +121,13 @@ void Game::loadOrCreate(std::string savename)
 	}
 
 	// Load the game board, and change the game state.
-	Game::_gameBoard = new Board(Game::_saveFolder);
+	if (((UICheckbox*)GuiManager::getUIElementByName(CHK_DEFAULT_MAP))->isChecked()) {
+		Game::_gameBoard = new Board(FileSystem::getStartupPath() + GAME_SAVES_FOLDER + "default/");
+	}
+	else {
+		Game::_gameBoard = new Board(Game::_saveFolder);
+	}
+	
 	Game::changeState(GameState::InGame);
 
 	// Toggle the admin tools if they should be used.
@@ -184,7 +191,6 @@ void Game::changeState(GameState state)
 
 void Game::decrementActionCounter()
 {
-	//actionCounter = 1;
 	actionCounter--;
 }
 
