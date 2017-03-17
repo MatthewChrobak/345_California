@@ -28,6 +28,11 @@ Player::~Player()
 			delete this->_playerCards[i];
 		}
 	}
+
+	if (this->rc != nullptr) {
+		delete this->rc;
+		this->rc = nullptr;
+	}
 }
 
 
@@ -68,6 +73,6 @@ RoleCard *Player::getRoleCard() const {
 	return rc; 
 }
 
-void Player::setRoleCard(RoleCard * newRc) {
+void Player::setRoleCard(RoleCard* newRc) {
 	Player::rc = newRc;
 }
