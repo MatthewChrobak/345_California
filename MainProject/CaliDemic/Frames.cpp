@@ -5,6 +5,8 @@
 #include "PlayerActions.h"
 #include "CityCard.h"
 #include "GuiManager.h"
+#include "EventCard.h"
+#include "EpidemicCard.h"
 
 PlayerActions GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 MapEditingActions GameFrame::EditingAction;
@@ -355,6 +357,13 @@ void PlayerCardsFrame::draw()
 		sCtx.size = new Vector2D(PLAYER_CARD_WIDTH, PLAYER_CARD_HEIGHT);
 		sCtx.position = new Vector2D(PLAYER_CARD_WIDTH * x + 10 * (x + 1), PLAYER_CARD_HEIGHT * y / 2 + 10 * (y + 1) + y * PLAYER_CARD_HEIGHT / 2);
 
+		// Do we render the selector?
+		for (unsigned int cardDataIndex = 0; cardDataIndex < this->_cardData.size(); cardDataIndex++) {
+			if (this->_cardData.at(cardDataIndex) == i) {
+				GraphicsManager::renderSurface("cards\\cardselect.png", sCtx);
+				break;
+			}
+		}
 
 		// Render the card as a city card if it's a city card.
 		if (card->getType() == PlayerCardType::City_Card) {
@@ -363,14 +372,6 @@ void PlayerCardsFrame::draw()
 
 			if (cityIndex >= 0 && cityIndex < Game::getGameBoard()->getNumCities()) {
 				City* city = Game::getGameBoard()->getCity(cityIndex);
-
-				// Do we render the selector?
-				for (unsigned int cardDataIndex = 0; cardDataIndex < this->_cardData.size(); cardDataIndex++) {
-					if (this->_cardData.at(cardDataIndex) == i) {
-						GraphicsManager::renderSurface("cards\\cardselect.png", sCtx);
-						break;
-					}
-				}
 
 				// Modify the color
 				switch (city->color)
@@ -398,6 +399,21 @@ void PlayerCardsFrame::draw()
 				GraphicsManager::renderSurface("cards\\citycard.png", sCtx);
 				GraphicsManager::renderText(city->name, tCtx);
 			}
+		}
+
+		//Render the card as an event card if it's an event card
+		if (card->getType() == PlayerCardType::Event_Card) {
+
+			sCtx.color = new RGBA(255, 178, 102);
+
+			//Render the text in the middle.
+			tCtx.horizontalCenter = true;
+			tCtx.position = new Vector2D(sCtx.position->x + PLAYER_CARD_WIDTH / 2, sCtx.position->y + 25);
+			tCtx.fontSize = 20;
+
+			// Pass if off to the graphics manager to draw.
+			GraphicsManager::renderSurface("cards\\eventcard.png", sCtx);
+			GraphicsManager::renderText(((EventCard*)card)->getEventName(), tCtx);
 		}
 	}
 }

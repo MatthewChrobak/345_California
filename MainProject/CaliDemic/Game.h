@@ -38,6 +38,7 @@ public:
 	static int numOfResearchCenter;
 
 	static void numOfCubeDecrementor(int cityColor);
+	static void numOfCubeIncrementor(int cityColor);
 
 private:
 	static Board* _gameBoard;
