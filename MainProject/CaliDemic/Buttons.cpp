@@ -97,7 +97,7 @@ bool DirectFlightPlayerAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
-	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction || GameFrame::PlayerAction == PlayerActions::Drive);
 #endif
 	GameFrame::PlayerAction = PlayerActions::DirectFlight;
 	((PlayerCardsFrame*)element)->show();
@@ -121,7 +121,7 @@ bool CharterFlightAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
-	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction || GameFrame::PlayerAction == PlayerActions::Drive);
 #endif
 	GameFrame::PlayerAction = PlayerActions::CharterFlight;
 	((PlayerCardsFrame*)element)->show();
@@ -145,7 +145,7 @@ bool ShuttleFlightAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
-	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction || GameFrame::PlayerAction == PlayerActions::Drive);
 #endif
 	GameFrame::PlayerAction = PlayerActions::ShuttleFlight;
 	((PlayerCardsFrame*)element)->show();
@@ -169,7 +169,7 @@ bool BuildResearchCenterAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
-	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction || GameFrame::PlayerAction == PlayerActions::Drive);
 #endif
 	GameFrame::PlayerAction = PlayerActions::BuildResearchCenter;
 	((PlayerCardsFrame*)element)->show();
@@ -189,7 +189,7 @@ TreatDiseaseAction::TreatDiseaseAction() : UIButton(CMD_PLAYER_ACTION_TREAT_DISE
 //TODO: only the city cube color can be remove(the game itself allow to remove any cubes on the city. Thus, we have to modify that in the future)
 bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 {
-	//TODO: FIX THE TREAT DISEASE ****THE PHI****
+	
 	Board* board = Game::getGameBoard();
 	Player& player = board->getCurrentTurnPlayer();
 
@@ -253,7 +253,7 @@ bool ShareKnowledgeAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
-	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction || GameFrame::PlayerAction == PlayerActions::Drive);
 #endif
 	GameFrame::PlayerAction = PlayerActions::ShareKnowledge;
 	((PlayerCardsFrame*)element)->show();
@@ -278,7 +278,7 @@ bool DiscoverCureAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
-	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction || GameFrame::PlayerAction == PlayerActions::Drive);
 #endif
 	GameFrame::PlayerAction = PlayerActions::DiscoverCure;
 	((PlayerCardsFrame*)element)->show();
@@ -303,7 +303,7 @@ bool ViewCardsAction::onMouseDown(std::string key, int x, int y)
 #ifdef DEBUG
 	assert(element != nullptr);
 	assert(element->getObjectType() == UI_TYPE_FRAME);
-	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
+	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction || GameFrame::PlayerAction == PlayerActions::Drive);
 #endif
 	GameFrame::PlayerAction = PlayerActions::ViewCards;
 	((PlayerCardsFrame*)element)->show();
