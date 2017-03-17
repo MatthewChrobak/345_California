@@ -67,8 +67,6 @@ This will initialize the infectionCard deck
 void Board::infectionCityCardsInitializor()
 {
 	infectionCityCards.push_back(0);
-	infectionCityCards.push_back(0);
-	infectionCityCards.push_back(0);
 
 	for (int i = 1; i < this->getNumCities(); i++)
 	{
@@ -81,6 +79,8 @@ void Board::infectionCityCardsInitializor()
 		rng = RandomNumberGenerator::next(0, infectionCityCards.size());
 		infectionCityCards.insert(infectionCityCards.begin() + rng, i);
 	}
+	infectionCityCards.push_back(0);
+	infectionCityCards.push_back(0);
 	infectionCityCards.shrink_to_fit();
 }
 
