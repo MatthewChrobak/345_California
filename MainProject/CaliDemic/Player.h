@@ -1,6 +1,7 @@
 #pragma once
 #include "Pawn.h"
 #include "PlayerCard.h"
+#include "RoleCard.h"
 
 #define MAX_PLAYER_CARDS 7
 
@@ -19,6 +20,9 @@ public:
 
 
 private:
+  RoleCard* rc;
+  RoleCard *getRoleCard() const;
+	void setRoleCard(RoleCard* rc);
 	PlayerCard* _playerCards [MAX_PLAYER_CARDS];
 };
 

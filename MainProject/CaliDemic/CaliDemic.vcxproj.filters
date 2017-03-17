@@ -25,6 +25,9 @@
     <Filter Include="Header Files\Graphics\Sfml">
       <UniqueIdentifier>{d9c959d3-cfda-4f1e-8704-cf63193c6ac1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\IO">
+      <UniqueIdentifier>{f319ec17-a490-455c-a9cf-b613fc2166a6}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\IO">
       <UniqueIdentifier>{f7437700-d5de-4184-b395-0a8effd1a880}</UniqueIdentifier>
     </Filter>
@@ -87,9 +90,6 @@
     </Filter>
     <Filter Include="Source Files\UI\Elements\Elements">
       <UniqueIdentifier>{dfcd0771-dacf-4d58-afe7-36a89c550d35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\IO">
-      <UniqueIdentifier>{f319ec17-a490-455c-a9cf-b613fc2166a6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -198,6 +198,9 @@
     <ClCompile Include="RandomNumberGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RoleCard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsSystem.h">
@@ -220,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="InfectionColors.h">
       <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrayGraphNode.h">
+      <Filter>Header Files\Models\Cities\Graphs</Filter>
     </ClInclude>
     <ClInclude Include="ArrayGraph.h">
       <Filter>Header Files\Models\Cities\Graphs</Filter>
@@ -317,11 +323,19 @@
     <ClInclude Include="ActionCounter.h">
       <Filter>Header Files\Models\Player</Filter>
     </ClInclude>
-    <ClInclude Include="ArrayGraphNode.h">
-      <Filter>Header Files\IO</Filter>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RoleCard.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CaliDemic.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

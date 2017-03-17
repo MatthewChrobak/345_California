@@ -10,7 +10,8 @@
 #include "CityCard.h"
 #include "RandomNumberGenerator.h"
 #include "GuiManager.h"
-
+#include <time.h>
+#include "RoleCard.h"
 #ifdef DEBUG
 #include <assert.h>
 #endif
@@ -202,8 +203,59 @@ void Board::loadPlayers(std::string playerFile)
 
 	// If the file does not exist, there's nothing to load.
 	if (!FileSystem::fileExists(playerFile)) {
+
+		//random number gen starts here ->
+		const int AMOUNT = 2; //amount of random numbers that need to be generated
+		const int MAX = 6; //maximum value (of course, this must be at least the same as AMOUNT;
+
+		int value[AMOUNT]; //array to store the random numbers in
+
+		srand(time(NULL)); //always seed your RNG before using it
+
+		//generate random numbers:
+		for (int i = 0; i<AMOUNT; i++)
+		{
+			bool check; //variable to check or number is already used
+			int n; //variable to store the number in
+			do
+			{
+				n = rand() % MAX;
+				//check or number is already used:
+				check = true;
+				for (int j = 0; j<i; j++)
+					if (n == value[j]) //if number is already used
+					{
+					check = false; //set check to false
+					break; //no need to check the other elements of value[]
+					}
+			} while (!check); //loop until new, unique number is found
+			value[i] = n; //store the generated number in the array
+		}
+		//random numberGen ends here
+		std::string roleCardNames[7] = { "The Contingency Planner", "Researcher", "Scientist", "Dispatcher", "Operations Expert"
+			, "Medic", "Quarantine Specialist", };
+		
+		//create two roleCards 
+		RoleCard* rc1 = new RoleCard(roleCardNames[value[0]]);
+		RoleCard* rc2 = new RoleCard(roleCardNames[value[1]]);
+
+		//test test
+		std::cout << roleCardNames[value[0]] << "1" << std::endl;
+		std::cout << roleCardNames[value[1]] << "2" << std::endl;
+		
+		//for pawn Color reference 0-6
+		//std::string roleCardC[] = { "Teel", "Brown", "White", "Pink", "Light Green", "Orange", "Dark Green" };
+
+
+
 		this->_players.push_back(new Player());
 		this->_players.push_back(new Player());
+	
+
+		//add roleCard to the players
+		this->_players[0]->setRoleCard(rc1);
+		this->_players[1]->setRoleCard(rc1);
+
 		return;
 	}
 

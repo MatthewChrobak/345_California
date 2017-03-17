@@ -188,14 +188,50 @@ TreatDiseaseAction::TreatDiseaseAction() : UIButton(CMD_PLAYER_ACTION_TREAT_DISE
 
 bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 {
-	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
-#ifdef DEBUG
-	assert(element != nullptr);
-	assert(element->getObjectType() == UI_TYPE_FRAME);
-	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction);
-#endif
-	GameFrame::PlayerAction = PlayerActions::TreatDisease;
-	((PlayerCardsFrame*)element)->show();
+	Board* board = Game::getGameBoard();
+	Player& player = board->getCurrentTurnPlayer();
+
+	/*
+	When the player successfully finishes an action, ensure that the action is reset by writing the line
+	GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+	Failure to do so will cause assertions to fail and will cause the application to crash.
+	*/
+	int currentPlayerIndex = player.pawn->cityIndex;
+	//create a city pointer to change cube counter 
+	int playerRoleCardValue = player.getRoleCard()->getRoleCardVal();
+
+	City* tempCity = board->getCity(currentPlayerIndex);
+
+	//check if there's any cube 
+	int counterNoCubes = 0;
+	for (int i = 0; i < 3; i++){
+		//check if medic
+		if (playerRoleCardValue != 5){
+			if (tempCity->cube[i] >= 0){
+				tempCity->cube[i] = -1;
+				counterNoCubes++;
+				GuiManager::showMsgBox("One cube removed");
+				break;
+			}
+		}
+		else if (tempCity->cube[i] >= 0){
+			//start another for loop to find the matching disease value 
+			GuiManager::showMsgBox("You're a medic!...Removing all matching cubes! Counts as one action.");
+			for (int j = 0; j < 3; j++){
+
+				if (tempCity->cube[i] == tempCity->cube[j]){
+					counterNoCubes++;
+					tempCity->cube[j] = -1;
+				}
+			}
+		}
+	}
+
+	if (counterNoCubes == 0){
+		GuiManager::showMsgBox("No cubes to remove!");
+	}
+
+	GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 	return true;
 }
 
@@ -388,7 +424,6 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 		}
 		return true;
-
 	case PlayerActions::ShuttleFlight:
 
 		/*
@@ -399,7 +434,6 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 		return true;
-
 	case PlayerActions::BuildResearchCenter:
 		//select only one card
 		if (this->_cardData->size() != 1)
@@ -419,11 +453,9 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				{
 					if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != true)
 					{
-
 						//check if the player is current city match with the city card
 						if (player.pawn->cityIndex == ((CityCard*)card)->cityIndex)
 						{
-
 							Game::getGameBoard()->getCity(player.pawn->cityIndex)->research = true;
 							player.removeCard(cardIndex);
 							Game::numOfResearchCenter--;
@@ -434,7 +466,6 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 						}
 						else
 							GuiManager::showMsgBox("You current position does not match the selected city card.");
-
 					}
 					else
 						GuiManager::showMsgBox("The research facility is already built in this city.");
@@ -445,7 +476,6 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			else
 				GuiManager::showMsgBox("The card is either null or you did not select a city");
 		}
-
 		return true;
 	
 	case PlayerActions::TreatDisease:

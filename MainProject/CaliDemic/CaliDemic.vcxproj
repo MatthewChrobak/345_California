@@ -19,7 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -91,6 +91,7 @@
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="GameRenderer.cpp" />
     <ClCompile Include="RandomNumberGenerator.cpp" />
+    <ClCompile Include="RoleCard.cpp" />
     <ClCompile Include="SfmlFontManager.cpp" />
     <ClCompile Include="SfmlSystem.cpp" />
     <ClCompile Include="ActionCounter.cpp" />
@@ -133,6 +134,8 @@
     <ClInclude Include="PlayerActions.h" />
     <ClInclude Include="PlayerCard.h" />
     <ClInclude Include="RandomNumberGenerator.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="RoleCard.h" />
     <ClInclude Include="SfmlFontManager.h" />
     <ClInclude Include="SfmlSystem.h" />
     <ClInclude Include="SurfaceContext.h" />
@@ -150,6 +153,9 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CaliDemic.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
