@@ -319,7 +319,7 @@ void Board::generatePlayerCards()
 
 	std::vector<EventCard*> tempEventVector {card1, card2, card3, card4, card5};
 
-	for (int i = 0; i < tempEventVector.size(); i++) {
+	for (unsigned int i = 0; i < tempEventVector.size(); i++) {
 		int rng = RandomNumberGenerator::next(0, _playerWithdrawPile.size());
 		this->_playerWithdrawPile.insert(this->_playerWithdrawPile.begin() + rng, tempEventVector[i]);
 	}
@@ -412,11 +412,15 @@ void Board::incremenetInfectionRate()
 //draw infections card at the end of the turn
 void Board::drawInfectionCard()
 {
-	int infectionCardToBeDraw = this->getInfectionRate();
-	for (int i = 0; i < infectionCardToBeDraw ; i++)
+	for (int i = 0; i < this->getInfectionRate(); i++)
 	{
-		InfectionCard::infectCityCube(infectionCityCards.at(i));
-		Board::discardInfectionCard.push_back(infectionCityCards.at(i));
-		Board::infectionCityCards.erase(infectionCityCards.begin()+i);
+		if (true != isCured[Game::getGameBoard()->getCity(infectionCityCards.at(i))->color])
+		{
+			InfectionCard::infectCityCube(infectionCityCards.at(i));
+			Board::discardInfectionCard.push_back(infectionCityCards.at(i));
+			Board::infectionCityCards.erase(infectionCityCards.begin() + i);
+			Board::infectionCityCards.shrink_to_fit();
+		}
+		
 	}
 }
