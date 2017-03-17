@@ -18,7 +18,6 @@ public:
 	int getNumberOfCards();
 	RoleCard *getRoleCard() const;
 	void setRoleCard(RoleCard* rc);
-	int playerActionTotal = 4;
 
 private:
   RoleCard* rc;
