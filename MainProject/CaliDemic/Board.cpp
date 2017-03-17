@@ -591,6 +591,7 @@ void Board::checkTurn()
 		//Game::getGameBoard()->drawInfectionCard();
 		//GuiManager::showMsgBox("End of your turn.");
 	}
+}
 
 int Board::getActualInfectionRate()
 {
