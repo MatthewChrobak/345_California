@@ -67,3 +67,11 @@ bool UIMessageBoxAccept::onMouseDown(std::string button, int x, int y)
 	GuiManager::popMsgBox();
 	return true;
 }
+
+bool UIMessageBox::onKeyDown(std::string key)
+{
+	if (key == "enter") {
+		GuiManager::popMsgBox();
+	}
+	return true;
+}
