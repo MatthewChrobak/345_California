@@ -49,6 +49,9 @@ public:
 	int getInfectionRate();
 	void incremenetInfectionRate();
 
+	int getActualInfectionRate();
+	void setActualInfectionRate(int value);
+
 	/*
 	bank of all cities that can be infected
 	the idea behind that is if the user decides to make 
