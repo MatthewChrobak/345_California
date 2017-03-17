@@ -23,20 +23,28 @@
 
 void Board::generateGameContentAtStartOfGame()
 {
+	generatePlayerCards();
 	// Give each player four cards, while we have cards.
-	for (unsigned int playerIndex = 0; playerIndex < this->getNumberOfPlayers(); playerIndex++) {
+	for (int playerIndex = 0; playerIndex < this->getNumberOfPlayers(); playerIndex++) {
 		for (int i = 0; i < 4; i++) {
 			if (this->_playerWithdrawPile.size() == 0) {
 				break;
 			} else {
 				this->getPlayer(playerIndex).addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
 				this->_playerWithdrawPile.pop_back();
-				GuiManager::showMsgBox ("CHEESE");
 			}
 		}
 
-		// Give each player a random role card.
+		//To finish
+		RoleCard* rc1 = new RoleCard(RoleCard::roleCardNames[1]);
+		RoleCard* rc2 = new RoleCard(RoleCard::roleCardNames[2]);
+		
+		this->getPlayer(0).setRoleCard(rc1);
+		this->getPlayer(1).setRoleCard(rc2);
+		
 	}
+	//intializing infectionCardDeck
+	Board::infectionCityCardsInitializor();
 }
 
 /*
@@ -44,7 +52,7 @@ This will initialize the infectionCard deck
 */
 void Board::infectionCityCardsInitializor()
 {
-	for (int i = 0; i < Game::getGameBoard()->getNumCities(); i++)
+	for (int i = 0; i < this->getNumCities(); i++)
 	{
 		infectionCityCards.push_back(i);
 	}
@@ -462,7 +470,6 @@ void Board::generatePlayerCards()
 
 }
 
-
 City* Board::getCity(int index)
 {
 	if (index < 0 || index >= this->getNumCities()) {
@@ -575,22 +582,22 @@ void Board::checkTurn()
 
 	if (Game::getGameBoard()->playerTurnChange() == true)
 	{
-		//Game::getGameBoard()->drawCards();
-		//GuiManager::showMsgBox("Your current hand after picking two cards.");
-		//GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
+		Game::getGameBoard()->drawCards();
+		GuiManager::showMsgBox("Your current hand after picking two cards.");
+		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
 
-		//int numberOfCards = player.getNumberOfCards();
+		int numberOfCards = player.getNumberOfCards();
 
-		//if (numberOfCards >= 6) //You only excess cards only when you draw while you have 6 or more cards
-		//{
-		//	GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
-		//	GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.
-		//	GameFrame::PlayerAction = PlayerActions::DiscardCards;
+		if (numberOfCards >= 6) //You only excess cards only when you draw while you have 6 or more cards
+		{
+			GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
+			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.
+			GameFrame::PlayerAction = PlayerActions::DiscardCards;
 
-		//}
-		////draw infection card and the game will do the infection automatically
-		//Game::getGameBoard()->drawInfectionCard();
-		//GuiManager::showMsgBox("End of your turn.");
+		}
+		//draw infection card and the game will do the infection automatically
+		Game::getGameBoard()->drawInfectionCard();
+		GuiManager::showMsgBox("End of your turn.");
 	}
 }
 
