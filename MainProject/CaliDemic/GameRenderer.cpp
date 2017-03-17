@@ -279,5 +279,5 @@ void GameRenderer::drawInfectionRate()
 	ctx.outlineColor = new RGBA(0, 0, 0);
 
 	// This should be changed to append the current infection rate to the rendered text.
-	GraphicsManager::renderText("Infection Rate: 1", ctx);
+	GraphicsManager::renderText("Infection Rate: " + std::to_string(Game::getGameBoard()->getInfectionRate()), ctx);
 }
