@@ -260,7 +260,7 @@ void GameRenderer::drawOutbreakMeter()
 		// if (i != Game::outbreakValue) {
 		//
 		// or whatever the outbreak value variable is.
-		if (i != 0) {
+		if (i != City::outbreakCount) {
 			ctx.color = new RGBA(100, 100, 100);
 		}
 
