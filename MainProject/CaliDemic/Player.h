@@ -9,7 +9,6 @@ class Player
 {
 public:
 	Pawn* pawn;
-	
 	Player();
 	~Player();
 
@@ -17,12 +16,12 @@ public:
 	PlayerCard* getCard(int index);
 	void removeCard(int index);
 	int getNumberOfCards();
+	RoleCard *getRoleCard() const;
+	void setRoleCard(RoleCard* rc);
 
 
 private:
   RoleCard* rc;
-  RoleCard *getRoleCard() const;
-	void setRoleCard(RoleCard* rc);
 	PlayerCard* _playerCards [MAX_PLAYER_CARDS];
 };
 
