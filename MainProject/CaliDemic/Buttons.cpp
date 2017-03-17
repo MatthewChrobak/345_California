@@ -602,7 +602,8 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 
 	//If turn is changed, show this message
-	if (board->playerTurnChange() == true) {
+	if (board->playerTurnChange() == true) 
+	{
 
 		GuiManager::showMsgBox("Your current hand after picking two cards.");
 		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
