@@ -66,6 +66,36 @@ void Game::numOfCubeDecrementor(int cityColor)
 		break;
 	}
 }
+
+void Game::numOfCubeIncrementor(int cityColor)
+{
+	switch (cityColor)
+	{
+	case 0:
+		if (cityColor == InfectionColor::Red)
+			Game::numOfRedCube++;
+		break;
+
+	case 1:
+		if (cityColor == InfectionColor::Blue)
+			Game::numOfBlueCube++;
+		break;
+
+	case 2:
+		if (cityColor == InfectionColor::Black)
+			Game::numOfBlackCube++;
+		break;
+
+	case 3:
+		if (cityColor == InfectionColor::Yellow)
+			Game::numOfYellowCube++;
+		break;
+
+	default:
+		break;
+	}
+}
+
 Board* Game::_gameBoard = nullptr;
 GameState Game::_state = GameState::MainMenu;
 std::string Game::_saveFolder = "";

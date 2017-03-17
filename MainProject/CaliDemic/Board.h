@@ -28,7 +28,7 @@ public:
 	//disease cure boolean
 	//index value indicating disease according it's color...bool array if cured update bool value
 
-	bool isCured[4];
+	bool isCured[4]{ false, false, false, false } ;
 	
 
 	/*
