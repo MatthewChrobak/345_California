@@ -8,6 +8,7 @@
 #include <vector>
 #include <stack>
 #include "PlayerCard.h"
+#include "EventCard.h"
 
 
 
@@ -19,9 +20,7 @@ public:
 	~Board();
 
 	void save(std::string saveFolder);
-	
 	void generateGameContentAtStartOfGame();
-
 	void addCity(City* city);
 	City* getCity(int index);
 	int getNumCities();

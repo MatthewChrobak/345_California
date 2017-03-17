@@ -341,7 +341,7 @@ void PlayerCard::buildStationPC() {
 			}
 		}
 		cout << "A research center has been created at your location." << endl;
-		decrementActionCounter();
+	
 	}
 
 	else {
