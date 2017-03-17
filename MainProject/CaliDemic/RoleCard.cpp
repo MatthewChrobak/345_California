@@ -10,7 +10,7 @@ std::string RoleCard::roleCardNames[7] = { "The Contingency Planner", "Researche
 
 RoleCard::RoleCard(const std::string &roleCardname) : roleCardname(roleCardname)
 {
-    int roleValue = this->getRoleCardNum();
+    int roleValue = this->getRoleCardNum();	
     this->setRoleCardVal(roleValue);
 
 	this->setRoleCardColour((RoleCardColors)roleValue);

@@ -15,10 +15,12 @@
 #include "EventCard.h"
 #include "Frames.h"
 #include "EpidemicCard.h"
+#include "RandomNumberGenerator.h"
 
 #ifdef DEBUG
 #include <assert.h>
 #endif
+
 
 void Board::tryStartGame()
 {
@@ -29,8 +31,6 @@ void Board::tryStartGame()
 		this->generateGameContentAtStartOfGame();
 	}
 }
-
-
 void Board::generateGameContentAtStartOfGame()
 {
 	this->generatePlayerCards();
@@ -45,9 +45,12 @@ void Board::generateGameContentAtStartOfGame()
 				this->_playerWithdrawPile.pop_back();
 			}
 		}
-
+		int i = RandomNumberGenerator::next(0, 6);
 		// Give each player a random role card.
+		RoleCard *p = new RoleCard(RoleCard::roleCardNames[i]);
+		this->getPlayer(playerIndex).setRoleCard(p);
 	}
+	//===========================================================
 	//intializing infectionCardDeck
 	Board::infectionCityCardsInitializor();
 
