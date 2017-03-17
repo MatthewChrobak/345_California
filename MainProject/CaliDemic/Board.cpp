@@ -370,6 +370,7 @@ void Board::generatePlayerCards()
 	std::vector<EventCard*> tempEventVector {card1, card2, card3, card4, card5};
 
 	for (unsigned int i = 0; i < tempEventVector.size(); i++) {
+
 		int rng = RandomNumberGenerator::next(0, _playerWithdrawPile.size());
 		this->_playerWithdrawPile.insert(this->_playerWithdrawPile.begin() + rng, tempEventVector[i]);
 	}

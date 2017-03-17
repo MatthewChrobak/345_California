@@ -506,6 +506,10 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 			break;
 
+		case PlayerActions::DiscoverCure:
+		{
+			int requiredCardCount = 5;
+			bool medic = false;
 
 		case PlayerActions::DiscoverCure:
 		{
@@ -550,6 +554,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				}
 
 				// Remove all the cards.
+
 				for (unsigned int i = 0; i < this->_cardData->size(); i++) {
 					player.removeCard(this->_cardData->at(i));
 				}
