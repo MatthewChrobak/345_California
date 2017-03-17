@@ -19,8 +19,8 @@ public:
 	~Board();
 
 	void save(std::string saveFolder);
-	//player creation, it might be modify for future project purpose
-	void playerCreation();
+	
+	
 
 	void addCity(City* city);
 	City* getCity(int index);
@@ -42,19 +42,32 @@ public:
 	Player& getPlayer(int index);
 	int getNumberOfPlayers();
 	int currentTurnPlayer = 0;
+	void drawCards(); // Draw 2 cards from the player deck
+	std::vector<std::string> playerCardDeck;
+
+
+	int getInfectionRate();
+	void incremenetInfectionRate();
 
 	/*
 	bank of all cities that can be infected
 	the idea behind that is if the user decides to make 
 	his own city than we can make his own city's infectionCard
+	and we have an discard pile
 	*/
 	std::vector<int> infectionCityCards;
+	std::vector<int> discardInfectionCard;
 	void infectionCityCardsInitializor();
+	void drawInfectionCard();
+	
+
 
 private:
 	CityGraph* _cities;
 	std::vector<Player*> _players;
 	std::stack<PlayerCard*> _playerWithdrawPile;
+
+	int _infectionRate = 0;
 
 	void loadBoardData(std::string boardFile);
 	void saveBoardData(std::string boardFile);

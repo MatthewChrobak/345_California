@@ -14,9 +14,9 @@ int City::outbreakCount = 0;
 
 City::City()
 {
-	for (int i = 0; i < cubeMaxSize; i++)
+	for (int i = 0; i < InfectionColor::InfectionColor_Length; i++)
 	{
-		this->cube[i] = -1;
+		this->cube[i] = 0;
 	}
 }
 
@@ -30,20 +30,14 @@ normal infection without outbreak
 */
 void City::infectCity(int city, int index)
 {
-	if (this->infected)
-		return;
-	else
-	{
-		this->infected = true;
-		Game::getGameBoard()->getCity(city)->cube[index] = Game::getGameBoard()->getCity(city)->color;
-		this->infected = false;
-	}
+		Game::getGameBoard()->getCity(city)->cube[index]++;
 }
 /*
 infection with outbreak of the current passing city.
 */
 void City::infectCityOutBreak(int city)
 {
+	GuiManager::showMsgBox("OH NO! AN OUTBREAK OCCURRED!!!");
 	City::outbreakCount += 1;
 
 	if (City::outbreakCount >= 8) {
@@ -58,29 +52,21 @@ void City::infectCityOutBreak(int city)
 	happen. A counter is use to recursively call the infectCityOutbreak if the cube is full.
 	*/
 	auto iterator = Game::getGameBoard()->getCity(city)->getAdjacentNodes();
+	int currentOutbreakCityColor = Game::getGameBoard()->getCity(city)->color;
 	for (unsigned int i = 0; i < iterator.size(); i++)
 	{
-		//reset the counter to 0 when it break out of the cube index loop.
-		int counter = 0;
-		for (unsigned int j = 0; i < cubeMaxSize; j++, counter++)
+		if (Game::getGameBoard()->getCity(iterator.at(i))->cube[currentOutbreakCityColor] < 3)
 		{
-			if (Game::getGameBoard()->getCity(iterator.at(i))->cube[j] == -1)
-			{
-				Game::getGameBoard()->getCity(iterator.at(i))->cube[j] = Game::getGameBoard()->getCity(city)->color;
-				//decrement the num of cube
-				int cityColor = Game::getGameBoard()->getCity(city)->color;
-				Game::numOfCubeDecrementor(cityColor);
-				break;
-			}
-			/*
-			if the counter reached the limit then another outbreak will happen
-			*/
-			if (counter > 3)
-			{
-				infectCityOutBreak(iterator.at(i));
-			}
-
+			Game::getGameBoard()->getCity(iterator.at(i))->cube[currentOutbreakCityColor]++;
+			//decrement the num of cube
+			Game::numOfCubeDecrementor(currentOutbreakCityColor);
+			break;
 		}
+		/*
+		Another outbreak could occur if the capacity of the cube color exceed three
+		*/
+		else
+			infectCityOutBreak(iterator.at(i));
 	}
 }
 

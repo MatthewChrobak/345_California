@@ -29,9 +29,6 @@ bool ToggleActionsButton::onMouseDown(std::string button, int x, int y)
 }
 
 
-
-
-
 PlayGameButton::PlayGameButton() : UIButton(CMD_PLAY_GAME_BUTTON)
 {
 	this->width = DRAW_WIDTH / 2;
@@ -312,8 +309,6 @@ bool ViewCardsAction::onMouseDown(std::string key, int x, int y)
 	return true;
 }
 
-
-
 PlayerCardsClose::PlayerCardsClose() : UIButton(CMD_PLAYER_CARDS_CLOSE)
 {
 	this->surfaceName = "ui\\close.png";
@@ -355,6 +350,8 @@ PlayerCardsOkay::PlayerCardsOkay(std::vector<int>* cardData) : UIButton(CMD_PLAY
 
 
 
+
+
 bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 {
 	Board* board = Game::getGameBoard();
@@ -386,6 +383,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 					GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 					// Reset the player action.
 					GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+					break;
 				}
 				else {
 					GuiManager::showMsgBox("Please select a city card.");
@@ -398,7 +396,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 		else {
 			GuiManager::showMsgBox("Please select only one card.");
 		}
-		break;
+		return true;
 
 	case PlayerActions::CharterFlight:
 		//select at least 1 card
@@ -422,11 +420,11 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 				//reset player Actions
 				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+				break;
 			}
 
 		}
-
-		break;
+		return true;
 	case PlayerActions::ShuttleFlight:
 
 		/*
@@ -434,9 +432,9 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 		Failure to do so will cause assertions to fail and will cause the application to crash.
 		*/
+		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-
-		break;
+		return true;
 	case PlayerActions::BuildResearchCenter:
 
 
@@ -487,6 +485,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 							decrementActionCounter();
 							//reset player actions
 							GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+							break;
 						}
 						else
 							GuiManager::showMsgBox("You current position does not match the selected city card.");
@@ -500,8 +499,8 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			else
 				GuiManager::showMsgBox("The card is either null or you did not select a city");
 		}
-
-		break;
+		return true;
+     
 		case PlayerActions::ShareKnowledge:
 			/*
 			When the player successfully finishes an action, ensure that the action is reset by writing the line
@@ -509,7 +508,6 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			Failure to do so will cause assertions to fail and will cause the application to crash.
 			*/
 			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-
 			break;
 		case PlayerActions::DiscoverCure:
 			if (roleCardIndex == 5){
@@ -619,28 +617,63 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 					
 				} else {
 					GuiManager::showMsgBox("The disease is already cured!");
-				}
-			} else {
-				GuiManager::showMsgBox("Please select 5 cards.");
+        }
 			}
-			return true;
-      
-			/*
-			When the player successfully finishes an action, ensure that the action is reset by writing the line
-			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-			Failure to do so will cause assertions to fail and will cause the application to crash.
-			*/
-			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+		}
+		else {
+			GuiManager::showMsgBox("Please select 5 cards.");
+		}
 
-			break;
-		case PlayerActions::ViewCards:
-			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-			break;
+		/*
+		When the player successfully finishes an action, ensure that the action is reset by writing the line
+		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+		Failure to do so will cause assertions to fail and will cause the application to crash.
+		*/
+		return true;
+
+	case PlayerActions::ViewCards:
+		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+		return true;
+
+
+	case PlayerActions::DiscardCards:
+		int numberOfCards = player.getNumberOfCards();
+		int numberOfDiscards = (numberOfCards + 2) % 7;
+
+		if (this->_cardData->size() == numberOfDiscards) {
+
+			for (int i = 0; i < numberOfDiscards; i++)
+			{
+				int cardIndex1 = this->_cardData->at(0);
+				player.removeCard(cardIndex1);
+			}
+		}
+		else {
+			GuiManager::showMsgBox("You must select " + std::to_string(numberOfCards) + " cards.");
+		}
+		break;
 	}
+
 
 	//If turn is changed, show this message
 	if (board->playerTurnChange() == true) {
+
+		GuiManager::showMsgBox("Your current hand after picking two cards.");
+		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
+
+
+		int numberOfCards = player.getNumberOfCards();
+
+		if (numberOfCards >= 6) //You only excess cards only when you draw while you have 6 or more cards
+		{
+			GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
+			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.
+			GameFrame::PlayerAction = PlayerActions::DiscardCards;
+
+		}
+		//City::infectCity()
+
 		GuiManager::showMsgBox("End of your turn.");
 	}
 

@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "PlayerCard.h"
 
 #ifdef DEBUG
 #include <assert.h>
@@ -7,7 +8,7 @@
 Player::Player()
 {
 	this->pawn = new Pawn();
-
+	
 
 	// Make sure all the card pointers point to null.
 	for (int i = 0; i < MAX_PLAYER_CARDS; i++) {
@@ -27,6 +28,11 @@ Player::~Player()
 		if (this->_playerCards[i] != nullptr) {
 			delete this->_playerCards[i];
 		}
+	}
+
+	if (this->rc != nullptr) {
+		delete this->rc;
+		this->rc = nullptr;
 	}
 }
 
@@ -62,12 +68,25 @@ PlayerCard* Player::getCard(int index)
 	return this->_playerCards[index];
 }
 
+int Player::getNumberOfCards()
+{
+	int counter = 0;
+	for (int i = 0; i < MAX_PLAYER_CARDS; i++)
+	{
+		if (this->_playerCards[i] != nullptr)
+		{
+			counter++;
+		}
+	}
+	return counter;
+}
+
 //define getters and setters for roleCard
 
 RoleCard *Player::getRoleCard() const {
 	return rc; 
 }
 
-void Player::setRoleCard(RoleCard * newRc) {
+void Player::setRoleCard(RoleCard* newRc) {
 	Player::rc = newRc;
 }

@@ -127,32 +127,31 @@ void GameRenderer::drawCityNode(City& city)
 	// Pass it off to the graphics manager to render it.
 	GraphicsManager::renderSurface("nodes\\node.png", ctx);
 	
-	int cubeHeight = CITY_RENDER_HEIGHT / 3;
+	int cubeHeight = CITY_RENDER_HEIGHT / 4;
 
 	//update Counter the when there's a cube value 
-	for (int i = 0; i < 3; i++){
-		if (city.cube[i] >= 0){
+	for (int color = 0; color < InfectionColor::InfectionColor_Length; color++) {
+		for (int i = 0; i < city.cube[color]; i++) {
 			// Reset the context.
 			ctx.reset();
-			ctx.position = new Vector2D(city.x + CITY_RENDER_WIDTH / 2, city.y - CITY_RENDER_HEIGHT / 2 + i * cubeHeight);
+			ctx.position = new Vector2D(city.x + CITY_RENDER_WIDTH / 2 + i * 5, city.y - CITY_RENDER_HEIGHT / 2 + color * cubeHeight);
 			ctx.size = new Vector2D(cubeHeight, cubeHeight);
 
-			int cubeColor = city.cube[i];
-			switch (cubeColor) {
-			case InfectionColor::Red:
-				ctx.color = new RGBA(255, 0, 0);
-				break;
-			case InfectionColor::Blue:
-				ctx.color = new RGBA(0, 0, 255);
-				break;
-			case InfectionColor::Yellow:
-				ctx.color = new RGBA(255, 255, 0);
-				break;
-			case InfectionColor::Black:
-				ctx.color = new RGBA(0, 0, 0);
-				break;
+			switch (color) {
+				case InfectionColor::Red:
+					ctx.color = new RGBA(255, 0, 0);
+					break;
+				case InfectionColor::Blue:
+					ctx.color = new RGBA(0, 0, 255);
+					break;
+				case InfectionColor::Yellow:
+					ctx.color = new RGBA(255, 255, 0);
+					break;
+				case InfectionColor::Black:
+					ctx.color = new RGBA(50, 50, 50);
+					break;
 			}
-		
+
 			GraphicsManager::renderSurface("nodes\\cube.png", ctx);
 		}
 	}
@@ -255,11 +254,6 @@ void GameRenderer::drawOutbreakMeter()
 		ctx.size = new Vector2D(renderWidth, renderHeight);
 
 		// Darken the color of all nodes except the current outbreak value.
-		// TODO: This should be changed to
-		//
-		// if (i != Game::outbreakValue) {
-		//
-		// or whatever the outbreak value variable is.
 		if (i != City::outbreakCount) {
 			ctx.color = new RGBA(100, 100, 100);
 		}
@@ -279,5 +273,5 @@ void GameRenderer::drawInfectionRate()
 	ctx.outlineColor = new RGBA(0, 0, 0);
 
 	// This should be changed to append the current infection rate to the rendered text.
-	GraphicsManager::renderText("Infection Rate: 1", ctx);
+	GraphicsManager::renderText("Infection Rate: " + std::to_string(Game::getGameBoard()->getInfectionRate()), ctx);
 }

@@ -9,21 +9,19 @@ class Player
 {
 public:
 	Pawn* pawn;
-	
 	Player();
 	~Player();
 
 	void addCard(PlayerCard* card);
 	PlayerCard* getCard(int index);
 	void removeCard(int index);
+	int getNumberOfCards();
 	RoleCard *getRoleCard() const;
 	void setRoleCard(RoleCard* rc);
-	
 	int playerActionTotal = 4;
 
-
 private:
-	PlayerCard* _playerCards[MAX_PLAYER_CARDS];
-    RoleCard* rc;
+  RoleCard* rc;
+	PlayerCard* _playerCards [MAX_PLAYER_CARDS];
 };
 
