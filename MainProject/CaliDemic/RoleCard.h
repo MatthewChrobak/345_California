@@ -38,28 +38,6 @@ public:
 
     void setRoleCardname(const std::string &roleCardname);
 
-    friend std::ostream &operator<<(std::ostream &os, const RoleCard &card);
-
-    ///Discription of the current role card
-    ///@param
-    void roleCardDesc();
-
-    ///useRoleCard Calls the methods, according to the role card Value
-    ///@param
-    void useRoleCard();
-
-
-
-    ///methods for roleCards
-
-    //ignore Methods
-    void useTheContingencyPlanner ();
-    void useResearcher();
-    void useScientist();
-    void useDispatcher();
-    void useOperationsExpert();
-    void useMedic();
-    void useContainmentSpecialist();
 
 
 };
