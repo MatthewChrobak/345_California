@@ -1,6 +1,4 @@
-//
-// Created by Nahian Pathan on 2017-03-21.
-//
+//pixelsOccupied
 
 #include "Board.h"
 typedef MyGraph::vertex_descriptor VertexID;
