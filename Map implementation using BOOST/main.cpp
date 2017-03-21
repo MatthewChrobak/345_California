@@ -21,17 +21,17 @@ int main()
 
     Board board;
 
-//    board.graph;
+//    board.getGraph();
     vector<VertexID> v1;
 
-    VertexID vID1 = add_vertex(board.graph);
-    VertexID vID2= add_vertex(board.graph);
-    VertexID vID3= add_vertex(board.graph);
+    VertexID vID1 = add_vertex(board.getGraph());
+    VertexID vID2= add_vertex(board.getGraph());
+    VertexID vID3= add_vertex(board.getGraph());
 
 
-    board.graph[vID1].setCityName("Montreal");
-    board.graph[vID2].setCityName("Atlanta");
-    board.graph[vID3].setCityName("Tunis");
+    board.getGraph()[vID1].setCityName("Montreal");
+    board.getGraph()[vID2].setCityName("Atlanta");
+    board.getGraph()[vID3].setCityName("Tunis");
 
 
 
@@ -39,26 +39,26 @@ int main()
     v1.push_back(vID2);
     EdgeID edge;
     bool ok;
-    boost::tie(edge, ok) = boost::add_edge(vID1,vID2, board.graph);
-    boost::tie(edge, ok) = boost::add_edge(vID1,vID3, board.graph); // boost::add_edge gives a std::pair<EdgeID,bool>. It's complicated to write, so boost::tie does it for us.
+    boost::tie(edge, ok) = boost::add_edge(vID1,vID2, board.getGraph());
+    boost::tie(edge, ok) = boost::add_edge(vID1,vID3, board.getGraph()); // boost::add_edge gives a std::pair<EdgeID,bool>. It's complicated to write, so boost::tie does it for us.
 
     // boost::add_edge gives a std::pair<EdgeID,bool>. It's complicated to write, so boost::tie does it for us.
     if (ok)  // make sure there wasn't any error (duplicates, maybe)
-        board.graph[edge].setDistance(4);
+        board.getGraph()[edge].setDistance(4);
 
 
     //find vertex with a cityname!
     MyGraph::vertex_iterator vertexIt, vertexEnd;
-    boost::tie(vertexIt, vertexEnd) = vertices(board.graph);
+    boost::tie(vertexIt, vertexEnd) = vertices(board.getGraph());
     for (; vertexIt != vertexEnd; ++vertexIt){
         VertexID vertexID = *vertexIt; // dereference vertexIt, get the ID
-        Vertex & vertex = board.graph[vertexID];
+        Vertex & vertex = board.getGraph()[vertexID];
         //cout << vertex.getCityName() << endl;
         if ((vertex.getCityName()).compare("Montreal") ==0){
 
             cout << " hello there " << endl;
 
-        } 
+        } // Gotcha
     }
 
     //find neigbours!
@@ -66,27 +66,20 @@ int main()
     MyGraph::vertex_iterator i, end;
     //MyGraph::vertex_iterator vertexIt, vertexEnd;
 
-    boost::tie(vertexIt, vertexEnd) = vertices(board.graph);
+    cout << "\nFinding connections -" << endl;
+    boost::tie(vertexIt, vertexEnd) = vertices(board.getGraph());
     for (; vertexIt != vertexEnd; ++vertexIt) {
-        boost::tie(neighbourIt, neighbourEnd) = adjacent_vertices(*vertexIt, board.graph);
-        cout << board.graph[*vertexIt].getCityName() << " Connected to ->"<< endl;
+        boost::tie(neighbourIt, neighbourEnd) = adjacent_vertices(*vertexIt, board.getGraph());
+        cout << board.getGraph()[*vertexIt].getCityName() << " Connected to ->"<< endl;
         for (; neighbourIt != neighbourEnd; neighbourIt++) {
 
-            cout << board.graph[*neighbourIt].getCityName() << endl;
+            cout << board.getGraph()[*neighbourIt].getCityName() << endl;
 
         }
     }
 
 
     //MyGraph::vertex_iterator vertexIt, vertexEnd;
-    boost::tie(vertexIt, vertexEnd) = vertices(board.graph);
-
-    for (; vertexIt != vertexEnd; ++vertexIt) {
-
-        cout << "-------------------------" << endl;
-        board.graph[*vertexIt];
-
-    }
 
     int x = vID2;
     cout << x << endl;
@@ -109,7 +102,7 @@ int main()
 
     for (int i=0; i<12; i++){
 
-        cout<< "ADDING CITY ->" << blueCities[i] << " to graph" << endl;
+        //cout<< "ADDING CITY ->" << blueCities[i] << " to graph" << endl;
         board.addCity(blueCities[i]);
 
 
@@ -120,16 +113,16 @@ int main()
 
 
 
-    boost :: tie (edge, ok) = add_edge(vertex(0,board.graph),vertex(5,board.graph),board.graph);
-    boost :: tie (edge, ok) = add_edge(vertex(0,board.graph),vertex(6,board.graph),board.graph);
-    boost :: tie (edge, ok) = add_edge(vertex(0,board.graph),vertex(7,board.graph),board.graph);
+    boost :: tie (edge, ok) = add_edge(vertex(0,board.getGraph()),vertex(5,board.getGraph()),board.getGraph());
+    boost :: tie (edge, ok) = add_edge(vertex(0,board.getGraph()),vertex(6,board.getGraph()),board.getGraph());
+    boost :: tie (edge, ok) = add_edge(vertex(0,board.getGraph()),vertex(7,board.getGraph()),board.getGraph());
 
 
 
 
 
 
-    cout << num_vertices(board.graph) << endl;
+    cout << "\nTotal number vertices ->"<<  num_vertices(board.getGraph()) << endl;
 
 
 
@@ -137,24 +130,28 @@ int main()
 
 
 
+    cout << "\nFinding connections again, ONLY MONTREAL [0] is connected to manyCities for now" << endl;
+
+    boost::tie(vertexIt, vertexEnd) = vertices(board.getGraph());
     for (; vertexIt != vertexEnd; ++vertexIt) {
-
-        boost::tie(neighbourIt, neighbourEnd) = adjacent_vertices(*vertexIt, board.graph);
-        cout << board.graph[*vertexIt].getCityName() << " Connected to ->"<< endl;
+        boost::tie(neighbourIt, neighbourEnd) = adjacent_vertices(*vertexIt, board.getGraph());
+        cout << board.getGraph()[*vertexIt].getCityName() << " Connected to ->"<< endl;
         for (; neighbourIt != neighbourEnd; neighbourIt++) {
 
-            cout << board.graph[*neighbourIt].getCityName() << endl;
+            cout << board.getGraph()[*neighbourIt].getCityName() << endl;
 
         }
     }
 
+
+    cout << "\nPrinting all the current Cities" << endl;
     board.printMapContent();
 
    // MyGraph::vertex_iterator vertexIt, vertexEnd;
-    boost::tie(vertexIt, vertexEnd) = vertices(board.graph);
+    boost::tie(vertexIt, vertexEnd) = vertices(board.getGraph());
     for (; vertexIt != vertexEnd; ++vertexIt){
         VertexID vertexID = *vertexIt; // dereference vertexIt, get the ID
-        Vertex & vertex = board.graph[vertexID];
+        Vertex & vertex = board.getGraph()[vertexID];
         //cout << vertex.getCityName() << endl;
         if ((vertex.getCityName()).compare("Atlanta") ==0){
 
@@ -162,36 +159,11 @@ int main()
             cout << " Found Atanta! " << endl;
             cout << vertexID << endl;
 
-        } 
+        } // Gotcha
     }
 
 
     cout << "bUE" << endl;
-    //boost::tie(neighbourIt, neighbourEnd) = adjacent_vertices( vID1, graph );
-
-  //  MyGraph::vertex_iterator i, end;
-
-   /* for (boost::tie(i, end) = boost::vertices(graph); i != end; i++) {
-       // AdjacencyIterator ai, a_end;
-*/
-
-       // }
-   // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
