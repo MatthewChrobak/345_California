@@ -36,7 +36,7 @@ endif()
 
 # Link SFML
 if (SFML_ROOT)
-	set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules/")
+	set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/${SFML_ROOT}/cmake/Modules/")
 	find_package(SFML REQUIRED system window graphics audio)
 	if (SFML_FOUND)
 		include_directories(${SFML_INCLUDE_DIR})
