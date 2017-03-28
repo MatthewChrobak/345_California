@@ -31,7 +31,7 @@ normal infection without outbreak
 void City::infectCity(int city, int index)
 {
 	Game::getGameBoard()->getCity(city)->cube[index]++;
-	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(city)->name + "is infected" );
+	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(city)->name + " is infected" );
 }
 /*
 infection with outbreak of the current passing city.
