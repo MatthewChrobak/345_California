@@ -5,11 +5,11 @@ cmake_minimum_required(VERSION 3.6)
 project (Pandemic)
 set(EXECUTABLE_NAME "Pandemic")
 
-# The source files associated with the project.
-set(SOURCE_FILES
-	"src/source/program.cpp"
+# Include all files.
+file(GLOB SOURCE_FILES
+	"src/*.h"
+	"src/*.cpp"
 )
-
 
 # Figure out what OS we're using.
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
@@ -28,7 +28,16 @@ add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
 if (CMAKE_CXX_COMPILER_ID MATCHES "CLANG")
 	set(SFML_ROOT "libraries/SFML-2.4.2-osx-clang/")
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-	set(SFML_ROOT "libraries/SFML-2.4.2-vs14-64/")
+	# It's Visual Studio. What version?
+	if (MSVC_VERSION MATCHES "1800")
+		set(SFML_ROOT "libraries/SFML-2.4.2-windows-vs12-64-bit/")
+	elseif (MSVC_VERSION MATCHES "1900")
+		set(SFML_ROOT "libraries/SFML-2.4.2-windows-vs14-64-bit/")
+	elseif (MSVC_VERSION MATCHES "1910")
+		set(SFML_ROOT "libraries/SFML-2.4.2-windows-vs14-64-bit/")
+	else()
+		message("Unknown version of MSVC")
+	endif()
 else()
 	message ("Unknown compiler - SFML's Root was not set.")
 endif()
