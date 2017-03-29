@@ -10,7 +10,7 @@
 
 namespace SFML
 {
-	class SfmlSystem : public GraphicsSystem, private SurfaceManager, GameRenderer, FontManager
+	class SfmlSystem : public GraphicsSystem, private SfmlSurfaceManager, GameRenderer, SfmlFontManager
 	{
 	public:
 		SfmlSystem(std::string title, unsigned int contextWidth, unsigned int contextHeight, unsigned int windowWidth, unsigned int windowHeight);
