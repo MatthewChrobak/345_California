@@ -21,6 +21,6 @@ namespace SFML
 
 	private:
 		std::map<std::string, sf::Texture*>* _surfaces;
-		void _loadTextures(std::string path);
+		void _loadTexturesInPath(std::string path);
 	};
 }

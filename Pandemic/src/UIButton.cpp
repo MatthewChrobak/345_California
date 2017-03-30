@@ -6,7 +6,7 @@
 
 UIButton::UIButton(std::string elementName) : UIElement(elementName)
 {
-	this->horizontalCenter = true;
+	this->setHorizontalCenter(true);
 }
 
 UIButton::~UIButton()
@@ -22,8 +22,8 @@ void UIButton::draw()
 			GuiManager::getMouseY() >= this->top && GuiManager::getMouseY() <= this->top + this->height)
 	{
 		SurfaceContext ctx;
-		ctx.position = new Vector2D(this->left, this->top);
-		ctx.size = new Vector2D(this->width, this->height);
+		ctx.setPosition(this->left, this->top);
+		ctx.setRenderSize(this->width, this->height);
 		GraphicsManager::renderSurface(this->hoverSurfaceName, ctx);
 	}
 	else {
@@ -31,8 +31,8 @@ void UIButton::draw()
 	}
 
 	// Position the text in the center.
-	this->position = new Vector2D(this->left + (this->width / 2),
-		this->top + (this->height - this->fontSize) / 2);
+	this->setPosition(this->left + (this->width / 2),
+		this->top + (this->height - this->getFontSize()) / 2);
 
 	GraphicsManager::renderText(this->caption, *this);
 }

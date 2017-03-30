@@ -12,8 +12,6 @@
 class GraphicsSystem
 {
 public:
-	virtual ~GraphicsSystem();
-
 	// Window-context events
 	virtual void destroyContext() = 0;
 	virtual void restartContext() = 0;

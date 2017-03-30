@@ -15,7 +15,10 @@ public:
 	static bool directoryExists(std::string directory);
 	static void createDirectory(std::string directory);
 
-	static std::string getStartupUpath();
-	static std::vector<std::string> getFile(std::string directory);
+	static std::string getStartupPath();
+	static std::vector<std::string> getFiles(std::string directory);
 	static std::vector<std::string> getDirectories(std::string directory);
+
+private:
+	static std::string _startupPath;
 };

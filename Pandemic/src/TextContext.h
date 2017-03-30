@@ -11,22 +11,24 @@ class TextOutline
 {
 public:
 	~TextOutline();
+	void reset();
 
 	void setThickness(float thickness);
 	void setColor(RGBA& color);
+	void setColor(int r, int g, int b);
+	void setColor(int r, int g, int b, int a);
 
 	float getThickness() const;
 	RGBA* getColor() const;
 
 private:
 	float _thickness = 1.0f;
-	RGBA* color = nullptr;
+	RGBA* _color = nullptr;
 };
 
 class TextContext : public CommonContext
 {
 public:
-	TextContext();
 	virtual ~TextContext() override;
 	virtual void reset() override;
 
@@ -34,10 +36,10 @@ public:
 	void setHorizontalCenter(bool value);
 	void setFont(const char* fontFileName);
 	void setFontColor(RGBA& color);
-	void setFontColor(char r, char g, char b);
-	void setFontColor(char r, char g, char b, char a);
+	void setFontColor(int r, int g, int b);
+	void setFontColor(int r, int g, int b, int a);
 
-	TextOutline& getOutline() const;
+	TextOutline& getOutline();
 	RGBA* getFontColor() const;
 	unsigned int getFontSize() const;
 	bool getHorizontalCenter() const;

@@ -41,8 +41,8 @@ void UITextbox::draw()
 		}
 	}
 	
-	this->position = new Vector2D(this->left, 
-		this->top + (this->height - this->fontSize) / 2);
+	this->setPosition(this->left,
+		this->top + (this->height - this->getFontSize()) / 2);
 	GraphicsManager::renderText(renderText, *this);
 }
 

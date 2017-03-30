@@ -52,24 +52,27 @@ class RGBA
 {
 public:
 	RGBA();
-	RGBA(char r, char g, char b);
-	RGBA(char r, char g, char b, char a);
+	RGBA(int r, int g, int b);
+	RGBA(int r, int g, int b, int a);
 
-	void setR(char r);
-	void setG(char g);
-	void setB(char b);
-	void setA(char a); 
+	void set(int r, int g, int b);
+	void set(int r, int g, int b, int a);
+
+	void setR(int r);
+	void setG(int g);
+	void setB(int b);
+	void setA(int a);
 	
-	char getR() const;
-	char getG() const;
-	char getB() const;
-	char getA() const;
+	int getR() const;
+	int getG() const;
+	int getB() const;
+	int getA() const;
 
 private:
-	char _r;
-	char _g;
-	char _b;
-	char _a;
+	int _r;
+	int _g;
+	int _b;
+	int _a;
 };
 
 class CommonContext

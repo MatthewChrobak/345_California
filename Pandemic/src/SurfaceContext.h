@@ -21,13 +21,14 @@ public:
 
 	void setSurfaceRect(int top, int left, int width, int height);
 	void setRenderSize(int width, int height);
-	void setColor(char r, char g, char b);
-	void setColor(char r, char g, char b, char a);
+	void setColor(RGBA& color);
+	void setColor(int r, int g, int b);
+	void setColor(int r, int g, int b, int a);
 	void setRotation(float rotation);
 
 private:
-	Rect* surfaceRect = nullptr;
-	Vector2D* renderSize = nullptr;
-	RGBA* color = nullptr;
-	float rotation = 0.0f;
+	Rect* _surfaceRect = nullptr;
+	Vector2D* _renderSize = nullptr;
+	RGBA* _color = nullptr;
+	float _rotation = 0.0f;
 };

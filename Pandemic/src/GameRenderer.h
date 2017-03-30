@@ -7,6 +7,8 @@
 #pragma once
 #include "SurfaceContext.h"
 #include "TextContext.h"
+#include "Player.h"
+#include "City.h"
 
 class GameRenderer
 {

@@ -7,6 +7,8 @@
 #pragma once
 #include "GraphicsSystem.h"
 
+#define DRAW_WIDTH 960
+#define DRAW_HEIGHT 640
 
 class GraphicsManager
 {

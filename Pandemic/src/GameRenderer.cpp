@@ -53,7 +53,7 @@ void GameRenderer::drawPlayers()
 void GameRenderer::drawBackground()
 {
 	SurfaceContext ctx;
-	ctx.size = new Vector2D(DRAW_WIDTH, DRAW_HEIGHT);
+	ctx.setRenderSize(DRAW_WIDTH, DRAW_HEIGHT);
 	GraphicsManager::renderSurface("backgrounds\\world.png", ctx);
 }
 
@@ -97,8 +97,8 @@ void GameRenderer::drawCities()
 
 					// It is. Render it.
 					SurfaceContext ctx;
-					ctx.position = new Vector2D(city->x - (CITY_RENDER_WIDTH / 2), city->y - (CITY_RENDER_HEIGHT / 2));
-					ctx.size = new Vector2D(CITY_RENDER_WIDTH, CITY_RENDER_HEIGHT);
+					ctx.setPosition(city->x - (CITY_RENDER_WIDTH / 2), city->y - (CITY_RENDER_HEIGHT / 2));
+					ctx.setRenderSize(CITY_RENDER_WIDTH, CITY_RENDER_HEIGHT);
 
 					GraphicsManager::renderSurface("ui\\selectbox.png", ctx);
 				}
@@ -110,22 +110,22 @@ void GameRenderer::drawCities()
 void GameRenderer::drawCityNode(City& city)
 {
 	SurfaceContext ctx;
-	ctx.position = new Vector2D(city.x - (CITY_RENDER_WIDTH / 2), city.y - (CITY_RENDER_HEIGHT / 2));
-	ctx.size = new Vector2D(CITY_RENDER_WIDTH, CITY_RENDER_HEIGHT);
+	ctx.setPosition(city.x - (CITY_RENDER_WIDTH / 2), city.y - (CITY_RENDER_HEIGHT / 2));
+	ctx.setRenderSize(CITY_RENDER_WIDTH, CITY_RENDER_HEIGHT);
 
 	// Assign the appropriate color.
 	switch (city.color) {
 	case InfectionColor::Red:
-		ctx.color = new RGBA(255, 0, 0);
+		ctx.setColor(255, 0, 0);
 		break;
 	case InfectionColor::Blue:
-		ctx.color = new RGBA(0, 0, 255);
+		ctx.setColor(0, 0, 255);
 		break;
 	case InfectionColor::Yellow:
-		ctx.color = new RGBA(255, 255, 0);
+		ctx.setColor(255, 255, 0);
 		break;
 	case InfectionColor::Black:
-		ctx.color = new RGBA(0, 0, 0);
+		ctx.setColor(0, 0, 0);
 		break;
 	}
 
@@ -139,21 +139,21 @@ void GameRenderer::drawCityNode(City& city)
 		for (int i = 0; i < city.cube[color]; i++) {
 			// Reset the context.
 			ctx.reset();
-			ctx.position = new Vector2D(city.x + CITY_RENDER_WIDTH / 2 + i * 5, city.y - CITY_RENDER_HEIGHT / 2 + color * cubeHeight);
-			ctx.size = new Vector2D(cubeHeight, cubeHeight);
+			ctx.setPosition(city.x + CITY_RENDER_WIDTH / 2 + i * 5, city.y - CITY_RENDER_HEIGHT / 2 + color * cubeHeight);
+			ctx.setRenderSize(cubeHeight, cubeHeight);
 
 			switch (color) {
 				case InfectionColor::Red:
-					ctx.color = new RGBA(255, 0, 0);
+					ctx.setColor(255, 0, 0);
 					break;
 				case InfectionColor::Blue:
-					ctx.color = new RGBA(0, 0, 255);
+					ctx.setColor(0, 0, 255);
 					break;
 				case InfectionColor::Yellow:
-					ctx.color = new RGBA(255, 255, 0);
+					ctx.setColor(55, 255, 0);
 					break;
 				case InfectionColor::Black:
-					ctx.color = new RGBA(50, 50, 50);
+					ctx.setColor(50, 50, 50);
 					break;
 			}
 
@@ -164,8 +164,8 @@ void GameRenderer::drawCityNode(City& city)
 	// If the city has a research center, render it.
 	if (city.research) {
 		ctx.reset();
-		ctx.position = new Vector2D(city.x - CITY_RENDER_WIDTH / 2 - CITY_RENDER_HEIGHT / 3, city.y - CITY_RENDER_HEIGHT / 2 + CITY_RENDER_HEIGHT / 3);
-		ctx.size = new Vector2D(CITY_RENDER_WIDTH / 3, CITY_RENDER_HEIGHT / 3);
+		ctx.setPosition(city.x - CITY_RENDER_WIDTH / 2 - CITY_RENDER_HEIGHT / 3, city.y - CITY_RENDER_HEIGHT / 2 + CITY_RENDER_HEIGHT / 3);
+		ctx.setRenderSize(CITY_RENDER_WIDTH / 3, CITY_RENDER_HEIGHT / 3);
 		GraphicsManager::renderSurface("nodes\\cross.png", ctx);
 	}
 }
@@ -174,10 +174,10 @@ void GameRenderer::drawCityName(City& city)
 {
 	// Rrender the name of the city just underneath it.
 	TextContext ctx;
-	ctx.fillColor = new RGBA(255, 255, 255);
-	ctx.horizontalCenter = true;
-	ctx.position = new Vector2D(city.x, city.y + (CITY_RENDER_HEIGHT / 2));
-	ctx.fontSize = 9;
+	ctx.setFontColor(255, 255, 255);
+	ctx.setHorizontalCenter(true);
+	ctx.setPosition(city.x, city.y + (CITY_RENDER_HEIGHT / 2));
+	ctx.setFontSize(9);
 
 	// Pass it off to the graphics manager to render it.
 	GraphicsManager::renderText(city.name, ctx);
@@ -212,9 +212,9 @@ void GameRenderer::drawCityConnections(City& city)
 
 		// Reset and adjust the context.
 		ctx.reset();
-		ctx.size = new Vector2D((int)hypLength, lineHeight);
-		ctx.rotation = (float)degrees;
-		ctx.position = new Vector2D(city.x, city.y);
+		ctx.setRenderSize((int)hypLength, lineHeight);
+		ctx.setRotation((float)degrees);
+		ctx.setPosition(city.x, city.y);
 
 		// Pass the context off to the graphics manager to render it.
 		GraphicsManager::renderSurface("nodes\\line.png", ctx);
@@ -231,8 +231,8 @@ void GameRenderer::drawPlayer(Player& player)
 		SurfaceContext ctx;
 
 		// Set the position of the player.
-		ctx.position = new Vector2D(city->x - 10, city->y - 20);
-		ctx.size = new Vector2D(20, 20);
+		ctx.setPosition(city->x - 10, city->y - 20);
+		ctx.setRenderSize(20, 20);
 		GraphicsManager::renderSurface("pawns\\pawn.png", ctx);
 	}
 }
@@ -254,13 +254,13 @@ void GameRenderer::drawOutbreakMeter()
 	// Go through all nine nodes and render each one individually.
 	for (int i = 0; i < 9; i++) {
 		ctx.reset();
-		ctx.position = new Vector2D(25, DRAW_HEIGHT - fullHeight - 70 + i * renderHeight);
-		ctx.surfaceRect = new Rect(i * textureHeight, 0, textureWidth, textureHeight);
-		ctx.size = new Vector2D(renderWidth, renderHeight);
+		ctx.setPosition(25, DRAW_HEIGHT - fullHeight - 70 + i * renderHeight);
+		ctx.setSurfaceRect(i * textureHeight, 0, textureWidth, textureHeight);
+		ctx.setRenderSize(renderWidth, renderHeight);
 
 		// Darken the color of all nodes except the current outbreak value.
 		if (i != City::outbreakCount) {
-			ctx.color = new RGBA(100, 100, 100);
+			ctx.setColor(100, 100, 100);
 		}
 
 		GraphicsManager::renderSurface("ui\\outbreakmeter.png", ctx);
@@ -271,11 +271,11 @@ void GameRenderer::drawInfectionRate()
 {
 	TextContext ctx;
 
-	ctx.position = new Vector2D(10, DRAW_HEIGHT - 50);
-	ctx.fontSize = 24;
-	ctx.fillColor = new RGBA(255, 255, 255);
-	ctx.outlineThickness = 2;
-	ctx.outlineColor = new RGBA(0, 0, 0);
+	ctx.setPosition(10, DRAW_HEIGHT - 50);
+	ctx.setFontSize(24);
+	ctx.setFontColor(255, 255, 255);
+	ctx.getOutline().setThickness(2);
+	ctx.getOutline().setColor(0, 0, 0);
 
 	// This should be changed to append the current infection rate to the rendered text.
 	GraphicsManager::renderText("Infection Rate: " + std::to_string(Game::getGameBoard()->getInfectionRate()), ctx);
@@ -289,38 +289,38 @@ void GameRenderer::drawCureMarkers()
 
 	for (int i = 0; i < InfectionColor::InfectionColor_Length; i++) {
 		ctx.reset();
-		ctx.position = new Vector2D(DRAW_WIDTH / 2 - 2 * drawWidth + i * drawWidth, DRAW_HEIGHT - 60);
-		ctx.size = new Vector2D(drawWidth, drawWidth);
+		ctx.setPosition(DRAW_WIDTH / 2 - 2 * drawWidth + i * drawWidth, DRAW_HEIGHT - 60);
+		ctx.setRenderSize(drawWidth, drawWidth);
 		
 		if (board->isCured[i]) {
 			switch (i) {
 				case InfectionColor::Black:
-					ctx.color = new RGBA(50, 50, 50);
+					ctx.setColor(50, 50, 50);
 					break;
 				case InfectionColor::Blue:
-					ctx.color = new RGBA(0, 0, 255);
+					ctx.setColor(0, 0, 255);
 					break;
 				case InfectionColor::Red:
-					ctx.color = new RGBA(255, 0, 0);
+					ctx.setColor(255, 0, 0);
 					break;
 				case InfectionColor::Yellow:
-					ctx.color = new RGBA(255, 255, 0);
+					ctx.setColor(255, 255, 0);
 					break;
 			}
 			
 		} else {
 			switch (i) {
 				case InfectionColor::Black:
-					ctx.color = new RGBA(10, 10, 10);
+					ctx.setColor(10, 10, 10);
 					break;
 				case InfectionColor::Blue:
-					ctx.color = new RGBA(0, 0, 50);
+					ctx.setColor(0, 0, 50);
 					break;
 				case InfectionColor::Red:
-					ctx.color = new RGBA(50, 0, 0);
+					ctx.setColor(50, 0, 0);
 					break;
 				case InfectionColor::Yellow:
-					ctx.color = new RGBA(50, 50, 0);
+					ctx.setColor(50, 50, 0);
 					break;
 			}
 		}
@@ -328,9 +328,9 @@ void GameRenderer::drawCureMarkers()
 		GraphicsManager::renderSurface("ui\\cure.png", ctx);
 
 		if (board->isCured[i]) {
-			ctx.color->r = 0;
-			ctx.color->g = 255;
-			ctx.color->b = 0;
+			ctx.getColor()->setR(0);
+			ctx.getColor()->setG(255);
+			ctx.getColor()->setB(0);
 			GraphicsManager::renderSurface("ui\\hascure.png", ctx);
 		}
 	}
