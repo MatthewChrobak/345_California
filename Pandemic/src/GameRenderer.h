@@ -1,5 +1,14 @@
+/*!
+	Author: Matthew Chrobak
+	Contributors:
+
+	Purpose: Utilizes the render and text context classes to specify how the game should be rendered.
+*/
 #pragma once
-#include "Game.h"
+#include "SurfaceContext.h"
+#include "TextContext.h"
+#include "Player.h"
+#include "City.h"
 
 class GameRenderer
 {
@@ -13,7 +22,7 @@ private:
 	void drawCityNode(City& city);
 	void drawCityConnections(City& city);
 	void drawCityName(City& city);
-	
+
 	void drawPlayers();
 	void drawPlayer(Player& player);
 
@@ -22,4 +31,3 @@ private:
 
 	void drawCureMarkers();
 };
-

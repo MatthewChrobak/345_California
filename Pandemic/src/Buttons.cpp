@@ -34,11 +34,11 @@ PlayGameButton::PlayGameButton() : UIButton(CMD_PLAY_GAME_BUTTON)
 	this->width = DRAW_WIDTH / 2;
 	this->height = 50;
 	this->caption = "play game";
-	this->outlineColor = new RGBA(0, 0, 0);
-	this->outlineThickness = 2;
+	this->getOutline().setColor(0, 0, 0);
+	this->getOutline().setThickness(2);
 	this->left = this->width - this->width / 2;
 	this->top = DRAW_HEIGHT / 2 + 150;
-	this->fontSize = 48;
+	this->setFontSize(48);
 }
 
 bool PlayGameButton::onMouseDown(std::string button, int x, int y)
@@ -338,9 +338,9 @@ PlayerCardsOkay::PlayerCardsOkay(std::vector<int>* cardData) : UIButton(CMD_PLAY
 
 	this->surfaceName = "ui\\button.png";
 	this->caption = "Okay";
-	this->outlineThickness = 2;
-	this->outlineColor = new RGBA(0, 0, 0);
-	this->horizontalCenter = true;
+	this->getOutline().setThickness(2);
+	this->getOutline().setColor(0, 0, 0);
+	this->setHorizontalCenter(true);
 
 	this->left = CMD_PLAYER_CARDS_OKAY_LEFT;
 	this->top = CMD_PLAYER_CARDS_OKAY_TOP;

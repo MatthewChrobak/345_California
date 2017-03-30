@@ -1,4 +1,5 @@
 #include "FileSystem.h"
+#include <Windows.h>
 
 std::string FileSystem::_startupPath = std::string();
 
@@ -49,11 +50,6 @@ std::vector<std::string> FileSystem::getFiles(std::string directory)
 			// Search for the next file.
 		} while (FindNextFile(searchHandle, &searchData));
 	}
-	else {
-		std::cout << "Error" << std::endl;
-		std::cout << searchHandle << std::endl;
-		std::cout << GetLastError() << std::endl;
-	}
 
 	return files;
 }
@@ -79,26 +75,11 @@ std::vector<std::string> FileSystem::getDirectories(std::string directory)
 			// Search for the next file.
 		} while (FindNextFile(searchHandle, &searchData));
 	}
-	else {
-		std::cout << "Error" << std::endl;
-		std::cout << searchHandle << std::endl;
-		std::cout << GetLastError() << std::endl;
-	}
-
 	return files;
-}
-
-std::vector<std::string> FileSystem::_getFolderContents(std::string directory, const int attribute)
-{
-	// TODO:	Take in a comparison function, ideally something like isFile() or isDirectory()
-	//			to purify the files.
-	std::vector<std::string> x;
-	return x;
 }
 
 void FileSystem::createDirectory(std::string directory)
 {
 	if (!CreateDirectory(directory.c_str(), NULL)) {
-		std::cout << "[createLocalDirectory] FAILED" << std::endl;
 	}
 }
