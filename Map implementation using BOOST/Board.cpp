@@ -3,10 +3,8 @@
 #include "Board.h"
 #include "boost/random.hpp"
 #include "boost/generator_iterator.hpp"
-#include <cmath>
 #include <iomanip>
 #include <random>
-#include <utility>
 #include <boost/graph/connected_components.hpp>
 
 using namespace std;
@@ -25,9 +23,9 @@ void Board::addCity(std::string cityName) {
 
     std::mt19937 rng(std::random_device{}());
     std::uniform_int_distribution<> distRed(0, 10);
-    std::uniform_int_distribution<> distYellow(10, 20);
-    std::uniform_int_distribution<> distGreen(20, 30);
-    std::uniform_int_distribution<> distBlue(30, 40);
+    std::uniform_int_distribution<> distYellow(5, 15);
+    std::uniform_int_distribution<> distGreen(10, 20);
+    std::uniform_int_distribution<> distBlue(15, 25);
 
 
 
@@ -48,7 +46,7 @@ void Board::addCity(std::string cityName) {
 
 
     if(counter == 0) {
-        cout << "Adding city..." << endl;
+        //cout << "Adding city..." << endl;
 //        Color color = blue;
         VertexID vIDTemp = add_vertex(graph);
         graph[vIDTemp].setCityName(cityName);
@@ -103,9 +101,9 @@ void Board::addCity(std::string cityName) {
 
 
 
-        cout<< graph[vIDTemp].getCityName() << " added into the map with color " << graph[vIDTemp].getCityColor() <<
+        /*cout<< graph[vIDTemp].getCityName() << " added into the map with color " << graph[vIDTemp].getCityColor() <<
             "\nIt has vertexID# "<< x << ", coordinates (x,y) =  (" << graph[vIDTemp].getCoords().first
-         << ", " << graph[vIDTemp].getCoords().second <<  ")"<< endl;
+         << ", " << graph[vIDTemp].getCoords().second <<  ")"<< endl;*/
 
     }
 
@@ -152,12 +150,12 @@ VertexID Board::cityExists(std::string cityName) {
             cout << "\nFound " << cityName << endl;
             cout << "Vertex ID# "<< vertexID << endl;
 
-            Vertex &vertex = graph[1];
-
-            cout << vertex.getCityName()<< endl;
 
             return vertexID;
+
         } // Gotcha
+
+
     }
 
 
@@ -186,15 +184,15 @@ void Board::searchAdjecentCities(std::string cityName) {
     MyGraph::vertex_iterator vertexIt, vertexEnd;
     MyGraph::adjacency_iterator neighbourIt, neighbourEnd;
 
-    cout << "\nFinding connections -" << endl;
+    //cout << "\nFinding connections -" << endl;
     tie(vertexIt, vertexEnd) = vertices(graph);
     for (; vertexIt != vertexEnd; ++vertexIt) {
 
         tie(neighbourIt, neighbourEnd) = adjacent_vertices(*vertexIt, graph);
 
         if (graph[*vertexIt].getCityName().compare(cityName) == 0) {
-            cout << graph[*vertexIt].getCityName() << " in the map. Finding the connected cities now..." << endl;
-            cout << "It is connected to ->" << endl;
+            //cout << graph[*vertexIt].getCityName() << " in the map. Finding the connected cities now..." << endl;
+            //cout << "It is connected to ->" << endl;
             for (; neighbourIt != neighbourEnd; neighbourIt++) {
                 cout << graph[*neighbourIt].getCityName() << endl;
 
@@ -249,6 +247,7 @@ void Board::infectCity(InfectionCard cityToBeInfected) {
 
 Board::Board() {
 
+   // cout << "Intializing a board " << endl;
 
 
 }
@@ -291,24 +290,26 @@ void Board::addEdges() {
 
                     //if(p1.second == p2.second)  {
                         tie(edge, ok) = add_edge(vertexID, vertexID2, graph);
-                        cout << "Connected " << vertex.getCityName() << " and " << vertex2.getCityName() << endl;
-                        cout << edge << endl;
+                        //cout << "Connected " << vertex.getCityName() << " and " << vertex2.getCityName() << endl;
+                        //cout << edge << endl;
                         edgeCounter++;
 
-                    std::vector<int> component(num_vertices(graph));
-                    int num = connected_components(graph, &component[0]);
-                    std::vector<int>::size_type i;
-                    cout << "Total number of components: " << num << endl;
-                    if (edgeCounter == 0){
-                        tie(edge, ok) = add_edge(vertexID, vertexID2, graph);
-                        cout << "Connected " << vertex.getCityName() << " and " << vertex2.getCityName() << endl;
-                        cout << edge << endl;
-                        edgeCounter++;
-                        continue;
+
+                    if (edgeCounter > 4){
+                        //cout << edgeCounter << endl;
+                        break;
                     }
 
-
                 }
+
+                /*if (edgeCounter == 0){
+                    bool ok;
+                    tie(edge, ok) = add_edge(vertexID, vertexID2, graph);
+                    cout << "Connected " << vertex.getCityName() << " and " << vertex2.getCityName() << endl;
+                    cout << edge << endl;
+                    edgeCounter++;
+                    continue;
+                }*/
 
             }
 
@@ -325,6 +326,78 @@ void Board::addEdges() {
 double Board::distance(pair<int, int> lhs, pair<int, int> rhs) {
 
     return hypot(lhs.first - rhs.first, lhs.second - rhs.second);
+
+}
+
+void Board::initializeCity() {
+    //cout << "\nAdding multiple cities - " << endl;
+
+
+    vector<string> cities
+            {
+                    "Atlanta",      // blueCities[0]
+                    "Chicago",
+                    "Essen",
+                    "London",
+                    "Madrid",       // blueCities[4]
+                    "Milan",
+                    "New York",
+                    "Paris",
+                    "San Francisco",// blueCities [8]
+                    "St Petersburg",
+                    "Montreal",
+                    "Washington",
+                    "Bogota",       // yellowCities[0]
+                    "Buenos Aires",
+                    "Johannesburg",
+                    "Khartoum",
+                    "Kinshasa",     // yellowCities[4]
+                    "Lagos",
+                    "Lima",
+                    "Los Angeles",
+                    "Mexico",  // yellowCities[8]
+                    "Miami",
+                    "Santiago",
+                    "Sao Paulo",
+                    "Algiers",      // blackCities[0]
+                    "Baghdad",
+                    "Cairo",
+                    "Chennai",
+                    "Delhi",        // blackCities[4]
+                    "Istanbul",
+                    "Karachi",
+                    "Kolkata",
+                    "Moscow",       // blackCities[8]
+                    "Mumbai",
+                    "Riyadh",
+                    "Tehran",
+                    "Bangkok",      // redCities[0]
+                    "Beijing",
+                    "Ho Chi Minh",
+                    "Hong Kong",
+                    "Jakarta",      // redCities[4]
+                    "Manila",
+                    "Osaka",
+                    "Seoul",
+                    "Shanghai",     // redCities[8]
+                    "Sydney",
+                    "Taipei",
+                    "Tokyo"
+            };
+
+    for (int i = 0; i < cities.size(); i++) {
+
+        //cout<< "ADDING CITY ->" << blueCities[i] << " to graph" << endl;
+        addCity(cities[i]);
+
+
+    }
+
+}
+
+Board::~Board() {
+
+    //cout << "Deleting board" << endl;
 
 }
 

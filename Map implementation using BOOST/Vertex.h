@@ -5,7 +5,6 @@
 #define BOARD_BOOST_VERTEX_H
 
 #include <iostream>
-#include "Color.h"
 #include "vector"
 using namespace std;
 class Vertex {
@@ -14,6 +13,9 @@ class Vertex {
     std :: string cityColor;
     constexpr static double nearby = 5;
     pair<int, int> coords;
+    int* cubeCotainer = new int[4];
+    bool hasResearchCentre;
+
 public:
     static const double getNearby();
 
@@ -21,19 +23,13 @@ public:
 
     void setCoords( pair<int, int> &coords);
 
-public:
     const std::string &getCityColor() const;
 
     void setCityColor(const std::string &cityColor);
 
-private:
-    int* cubeCotainer = new int[4];
-    bool hasResearchCentre;
-
-
-public:
-
     Vertex();
+
+    friend ostream &operator<<(ostream &os, const Vertex &vertex);
 
     bool isHasResearchCentre() const;
 

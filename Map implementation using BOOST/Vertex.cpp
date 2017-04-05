@@ -75,4 +75,9 @@ void Vertex::setCoords( pair<int, int> &coords) {
     Vertex::coords = coords;
 }
 
+ostream &operator<<(ostream &os, const Vertex &vertex) {
+    os << "cityName: " << vertex.cityName << " cityColor: " << vertex.cityColor << " cubeCotainer: " << vertex.cubeCotainer << " hasResearchCentre: " << vertex.hasResearchCentre;
+    return os;
+}
+
 

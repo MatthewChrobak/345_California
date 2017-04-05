@@ -39,6 +39,9 @@ public:
 
     Board();
 
+    virtual ~Board();
+
+    void initializeCity();
     void addCity(std:: string cityName);
     void printMapContent();
     VertexID cityExists(std :: string cityName);
