@@ -28,6 +28,8 @@ int main() {
     cout << "\nTotal number edges ->" << num_edges(pe->getBoard()->getGraph()) << endl;
 
 
+    //Strategy design pattern starts here
+    //Create players cards to to test DirectFlight
     PlayerCard pc1("Montreal");
     PlayerCard pc2("Atlanta");
     PlayerCard pc3("Chicago");
@@ -36,31 +38,40 @@ int main() {
     PlayerCard pc6("Madrid");
 
     vector <PlayerCard*> pcVector = {&pc1,&pc2,&pc3,&pc4,&pc5,&pc6};
-
+    //setup the current location
     Pawn* pawn1 = new Pawn(pe->getBoard());
 
+    //Objects of the player actions
     DirectFlightAction directFlightAction;
     DiscoverCure discoverCure;
+    //array of actions
     PlayerAction* pcArray [] = {&directFlightAction, &discoverCure};
-
+    //new player
     Player* p = new Player;
 
-
+    //set the variables to player
     p->setCurrentLocation(pawn1);
     p->setPlayerCard(pcVector);
     p->setPlayerAction(pcArray[0]);
 
+    //location before using action
     cout << p->getCurrentLocation()->getCurrentCity()->getCityName() << endl;
-
+    //use action
     p->usePlayerAction();
-
+    //location after using action
     cout << p->getCurrentLocation()->getCurrentCity()->getCityName() << endl;
 
-    //Decorater class
+    //decorator class
+    //another player to test the implementation
+    Player* p2 = new Player();
+    //Decorate player action
     PlayerRoleCard* playerRoleCard = new Scientist(pcArray[1]);
+    p2->setPlayerAction(pcArray[1]);
     p->setPlayerAction(playerRoleCard);
+    cout << "\nPlayer 1 (Scientist)" << endl;
     p->usePlayerAction();
-
+    cout << "\nPlayer 2 (non-scientist) " << endl;
+    p2->usePlayerAction();
 
 
 
@@ -68,6 +79,7 @@ int main() {
 
     delete playerRoleCard;
     delete p;
+    delete p2;
     delete pe;
     cout << "\nProgram ended" << endl;
 
