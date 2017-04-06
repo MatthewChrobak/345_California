@@ -24,8 +24,8 @@ public:
 	bool readBool();
 
 private:
-	std::ifstream* _inputFileStream;
-	std::ofstream* _outputFileStream;
+	std::ifstream* _inputFileStream = nullptr;
+	std::ofstream* _outputFileStream = nullptr;
 
 	FileStream();
 };

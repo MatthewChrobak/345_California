@@ -536,7 +536,7 @@ this will check the number of action and change turn if it reaches
 */
 bool Board::playerTurnChange()
 {
-	boolean turnChanged = false;
+	bool turnChanged = false;
 	if (Game::actionCounter == 0)
 	{
 		this->currentTurnPlayer = ((this->currentTurnPlayer) + 1) % _players.size();

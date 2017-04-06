@@ -52,8 +52,8 @@ void UIElement::draw()
 	// Make sure there's a surface to render.
 	if (this->surfaceName.length() != 0) {
 		SurfaceContext ctx;
-		ctx.position = new Vector2D(this->left, this->top);
-		ctx.size = new Vector2D(this->width, this->height);
+		ctx.setPosition(this->left, this->top);
+		ctx.setRenderSize(this->width, this->height);
 		GraphicsManager::renderSurface(this->surfaceName, ctx);
 	}
 }

@@ -224,8 +224,8 @@ void GameFrame::draw()
 			case MapEditingActions::MoveNode:
 				SurfaceContext ctx;
 				City* city = Game::getGameBoard()->getCity(GameFrame::EditNodeIndex);
-				ctx.position = new Vector2D(city->x - (CITY_RENDER_WIDTH / 2), city->y - (CITY_RENDER_HEIGHT / 2));
-				ctx.size = new Vector2D(CITY_RENDER_WIDTH, CITY_RENDER_HEIGHT);
+				ctx.setPosition(city->x - (CITY_RENDER_WIDTH / 2), city->y - (CITY_RENDER_HEIGHT / 2));
+				ctx.setRenderSize(CITY_RENDER_WIDTH, CITY_RENDER_HEIGHT);
 				GraphicsManager::renderSurface("ui\\selectbox.png", ctx);
 				break;
 		}
@@ -358,8 +358,8 @@ void PlayerCardsFrame::draw()
 		tCtx.reset();
 		sCtx.reset();
 
-		sCtx.size = new Vector2D(PLAYER_CARD_WIDTH, PLAYER_CARD_HEIGHT);
-		sCtx.position = new Vector2D(PLAYER_CARD_WIDTH * x + 10 * (x + 1), PLAYER_CARD_HEIGHT * y / 2 + 10 * (y + 1) + y * PLAYER_CARD_HEIGHT / 2);
+		sCtx.setRenderSize(PLAYER_CARD_WIDTH, PLAYER_CARD_HEIGHT);
+		sCtx.setPosition(PLAYER_CARD_WIDTH * x + 10 * (x + 1), PLAYER_CARD_HEIGHT * y / 2 + 10 * (y + 1) + y * PLAYER_CARD_HEIGHT / 2);
 
 		// Do we render the selector?
 		for (unsigned int cardDataIndex = 0; cardDataIndex < this->_cardData.size(); cardDataIndex++) {
@@ -381,23 +381,23 @@ void PlayerCardsFrame::draw()
 				switch (city->color)
 				{
 				case InfectionColor::Black:
-					sCtx.color = new RGBA(100, 100, 100);
+					sCtx.setColor(100, 100, 100);
 					break;
 				case InfectionColor::Blue:
-					sCtx.color = new RGBA(0, 0, 255);
+					sCtx.setColor(0, 0, 255);
 					break;
 				case InfectionColor::Red:
-					sCtx.color = new RGBA(255, 0, 0);
+					sCtx.setColor(255, 0, 0);
 					break;
 				case InfectionColor::Yellow:
-					sCtx.color = new RGBA(255, 255, 0);
+					sCtx.setColor(255, 255, 0);
 					break;
 				}
 
 				// Render the text in the middle.
-				tCtx.horizontalCenter = true;
-				tCtx.position = new Vector2D(sCtx.position->x + PLAYER_CARD_WIDTH / 2, sCtx.position->y + 25);
-				tCtx.fontSize = 18;
+				tCtx.setHorizontalCenter(true);
+				tCtx.setPosition(sCtx.getPosition()->getX() + PLAYER_CARD_WIDTH / 2, sCtx.getPosition()->getY() + 25);
+				tCtx.setFontSize(18);
 
 				// Pass it off to the graphics manager to draw.
 				GraphicsManager::renderSurface("cards\\citycard.png", sCtx);
@@ -408,12 +408,12 @@ void PlayerCardsFrame::draw()
 		//Render the card as an event card if it's an event card
 		if (card->getType() == PlayerCardType::Event_Card) {
 
-			sCtx.color = new RGBA(255, 178, 102);
+			sCtx.setColor(255, 178, 102);
 
 			//Render the text in the middle.
-			tCtx.horizontalCenter = true;
-			tCtx.position = new Vector2D(sCtx.position->x + PLAYER_CARD_WIDTH / 2, sCtx.position->y + 25);
-			tCtx.fontSize = 20;
+			tCtx.setHorizontalCenter(true);
+			tCtx.setPosition(sCtx.getPosition()->getX() + PLAYER_CARD_WIDTH / 2, sCtx.getPosition()->getY() + 25);
+			tCtx.setFontSize(20);
 
 			// Pass if off to the graphics manager to draw.
 			GraphicsManager::renderSurface("cards\\eventcard.png", sCtx);
@@ -542,7 +542,7 @@ void MapEditingActionsFrame::draw()
 
 	// Highlight the selected tool.
 	SurfaceContext ctx;
-	ctx.size = new Vector2D(FRM_MAP_EDITING_ACTIONS_WIDTH, CMD_PLAYER_ACTION_BUTTON_HEIGHT);
-	ctx.position = new Vector2D(FRM_MAP_EDITING_ACTIONS_LEFT, FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * GameFrame::EditingAction);
+	ctx.setRenderSize(FRM_MAP_EDITING_ACTIONS_WIDTH, CMD_PLAYER_ACTION_BUTTON_HEIGHT);
+	ctx.setPosition(FRM_MAP_EDITING_ACTIONS_LEFT, FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * GameFrame::EditingAction);
 	GraphicsManager::renderSurface("ui\\lightbox.png", ctx);
 }

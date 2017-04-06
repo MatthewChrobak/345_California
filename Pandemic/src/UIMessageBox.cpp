@@ -18,10 +18,10 @@ void UIMessageBox::draw()
 	// Draw the message if there is one.
 	if (!this->_messages.empty()) {
 		TextContext ctx;
-		ctx.fontSize = 24;
-		ctx.horizontalCenter = true;
-		ctx.fillColor = new RGBA(0, 0, 0);
-		ctx.position = new Vector2D(this->width / 2, this->height / 2);
+		ctx.setFontSize(24);
+		ctx.setHorizontalCenter(true);
+		ctx.setFontColor(RGBA(0, 0, 0));
+		ctx.setPosition(this->width / 2, this->height / 2);
 		GraphicsManager::renderText(this->_messages.front(), ctx);
 	}
 }
@@ -51,10 +51,10 @@ void UIMessageBox::popMessage()
 UIMessageBoxAccept::UIMessageBoxAccept() : UIButton(CMD_MSG_BOX_ACCEPT)
 {
 	this->caption = "Okay";
-	this->outlineThickness = 2;
-	this->outlineColor = new RGBA(0, 0, 0);
-	this->fontSize = 36;
-	this->horizontalCenter = true;
+	this->getOutline().setThickness(2);
+	this->getOutline().setColor(0, 0, 0);
+	this->setFontSize(36);
+	this->setHorizontalCenter(true);
 
 	this->width = 200;
 	this->height = 50;

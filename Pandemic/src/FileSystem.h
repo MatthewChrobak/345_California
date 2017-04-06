@@ -1,6 +1,11 @@
+/*!
+	Author: Matthew Chrobak
+	Contributors:
+
+	Purpose: Provides basic file-system utility methods.
+*/
 #pragma once
-#include <windows.h>
-#include <iostream>
+#include <string>
 #include <vector>
 
 class FileSystem
@@ -13,9 +18,4 @@ public:
 	static std::string getStartupPath();
 	static std::vector<std::string> getFiles(std::string directory);
 	static std::vector<std::string> getDirectories(std::string directory);
-
-private:
-	static std::string _startupPath;
-	static std::vector<std::string> _getFolderContents(std::string directory, const int attribute);
 };
-

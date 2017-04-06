@@ -1,5 +1,5 @@
 #include "GraphicsManager.h"
-#include "SfmlSystem.h"
+#include "SfmlGraphicsSystem.h"
 #include "GuiManager.h"
 #ifdef DEBUG
 #include <assert.h>
@@ -9,7 +9,7 @@ GraphicsSystem* GraphicsManager::_system = nullptr;
 
 void GraphicsManager::initialize()
 {
-	GraphicsManager::_system = new SFML::SfmlSystem("Pandemic", DRAW_WIDTH, DRAW_HEIGHT, GuiManager::WindowWidth, GuiManager::WindowHeight);
+	GraphicsManager::_system = new SFML::SfmlGraphicsSystem("Pandemic", DRAW_WIDTH, DRAW_HEIGHT, GuiManager::WindowWidth, GuiManager::WindowHeight);
 }
 
 void GraphicsManager::draw()
