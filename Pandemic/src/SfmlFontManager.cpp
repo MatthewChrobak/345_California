@@ -22,7 +22,7 @@ SfmlFontManager::~SfmlFontManager()
 
 void SfmlFontManager::_loadFontsInPath(std::string path)
 {
-	std::vector<std::string> files = FileSystem::getFiles(path + "*");
+	std::vector<std::string> files = FileSystem::getFiles(path);
 
 	// Go through all of the font files in the folder.
 	for (unsigned int i = 0; i < files.size(); i++) {

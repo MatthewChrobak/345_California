@@ -22,14 +22,14 @@ SfmlSurfaceManager::~SfmlSurfaceManager()
 
 void SfmlSurfaceManager::_loadTexturesInPath(std::string path)
 {
-	std::vector<std::string> directories = FileSystem::getDirectories(path + "*");
+	std::vector<std::string> directories = FileSystem::getDirectories(path);
 
 	// Go through all the directories in the graphics folder.
 	for (unsigned int i = 0; i < directories.size(); i++) {
 		std::string subDirectory = directories.at(i) + "\\";
 
 		// Get all the files in the sub-directory.
-		std::vector<std::string> files = FileSystem::getFiles(path + subDirectory + "*");
+		std::vector<std::string> files = FileSystem::getFiles(path + subDirectory);
 
 		for (unsigned int j = 0; j < files.size(); j++) {
 			std::string relativeFilepath = subDirectory + files.at(j);

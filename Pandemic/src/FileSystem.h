@@ -18,7 +18,4 @@ public:
 	static std::string getStartupPath();
 	static std::vector<std::string> getFiles(std::string directory);
 	static std::vector<std::string> getDirectories(std::string directory);
-
-private:
-	static std::string _startupPath;
 };
