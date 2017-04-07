@@ -195,7 +195,7 @@
     <ClCompile Include="src\ArrayGraph.cpp">
       <Filter>Source Files\Models\Cities\ArrayGraph</Filter>
     </ClCompile>
-    <ClCompile Include="Observable.cpp">
+    <ClCompile Include="src\Observable.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
   </ItemGroup>
@@ -326,11 +326,11 @@
     <ClInclude Include="src\RoleCard.h">
       <Filter>Header Files\Models\To Be Sorted</Filter>
     </ClInclude>
-    <ClInclude Include="Observable.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="Observer.h">
+    <ClInclude Include="src\Observer.h">
       <Filter>Header Files\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Observable.h">
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

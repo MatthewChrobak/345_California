@@ -145,7 +145,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Observable.cpp" />
     <ClCompile Include="src\ArrayGraph.cpp" />
     <ClCompile Include="src\ArrayGraphNode.cpp" />
     <ClCompile Include="src\Board.cpp" />
@@ -165,6 +164,7 @@
     <ClCompile Include="src\GraphicsManager.cpp" />
     <ClCompile Include="src\GuiManager.cpp" />
     <ClCompile Include="src\InfectionCard.cpp" />
+    <ClCompile Include="src\Observable.cpp" />
     <ClCompile Include="src\Pawn.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\PlayerCard.cpp" />
@@ -185,8 +185,6 @@
     <ClCompile Include="src\UITextbox.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Observable.h" />
-    <ClInclude Include="Observer.h" />
     <ClInclude Include="src\ArrayGraph.h" />
     <ClInclude Include="src\ArrayGraphNode.h" />
     <ClInclude Include="src\Board.h" />
@@ -209,6 +207,8 @@
     <ClInclude Include="src\InfectionCard.h" />
     <ClInclude Include="src\InfectionColors.h" />
     <ClInclude Include="src\MapEditingActions.h" />
+    <ClInclude Include="src\Observable.h" />
+    <ClInclude Include="src\Observer.h" />
     <ClInclude Include="src\Paths.h" />
     <ClInclude Include="src\Pawn.h" />
     <ClInclude Include="src\Player.h" />
