@@ -195,14 +195,14 @@ void CommonContext::setPosition(int x, int y)
 	}
 	else {
 		// Otherwise, create a new one.
-		this->setPosition(new Vector2D(x, y));
+		this->_renderPosition = new Vector2D(x, y);
 	}
 }
 
 void CommonContext::setPosition(Vector2D* ptr)
 {
 #ifdef DEBUG
-	assert(this->_renderPosition != nullptr);
+	assert(this->_renderPosition == nullptr);
 #endif
 	this->_renderPosition = ptr;
 }
