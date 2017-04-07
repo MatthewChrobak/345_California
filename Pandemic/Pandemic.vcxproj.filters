@@ -67,27 +67,30 @@
     <Filter Include="Source Files\Controllers\MainMenu">
       <UniqueIdentifier>{f1a8de8d-b431-413b-8247-9f5951d98f62}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Models\Cities">
+      <UniqueIdentifier>{d8a0c6f2-4d91-4a57-a201-6c8e488b63bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\Cities\ArrayGraph">
+      <UniqueIdentifier>{629ad37b-b340-4357-bdfc-9896a33ad6db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\To Be Sorted">
+      <UniqueIdentifier>{d8b23dd6-5a11-44ac-a902-2ebed2548490}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Cities">
+      <UniqueIdentifier>{fa428aa5-7401-4273-84f2-8080ddda10d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Cities\ArrayGraph">
+      <UniqueIdentifier>{6eb55916-3ca5-4c7d-81fc-6d9cbc74d94e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Program.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ArrayGraph.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ArrayGraphNode.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
     <ClCompile Include="src\Board.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
-    <ClCompile Include="src\City.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
     <ClCompile Include="src\CityCard.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CityGraph.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="src\EventCard.cpp">
@@ -180,6 +183,21 @@
     <ClCompile Include="src\RandomNumberGenerator.cpp">
       <Filter>Source Files\IO</Filter>
     </ClCompile>
+    <ClCompile Include="src\CityGraph.cpp">
+      <Filter>Source Files\Models\Cities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\City.cpp">
+      <Filter>Source Files\Models\Cities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ArrayGraphNode.cpp">
+      <Filter>Source Files\Models\Cities\ArrayGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ArrayGraph.cpp">
+      <Filter>Source Files\Models\Cities\ArrayGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="Observable.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MapEditingActions.h">
@@ -187,30 +205,6 @@
     </ClInclude>
     <ClInclude Include="src\PlayerActions.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ArrayGraph.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ArrayGraphNode.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Board.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="src\City.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CityCard.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CityGraph.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="src\EpidemicCard.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="src\EventCard.h">
-      <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="src\FileStream.h">
       <Filter>Header Files\IO</Filter>
@@ -281,32 +275,62 @@
     <ClInclude Include="src\SfmlSurfaceManager.h">
       <Filter>Header Files\Views\Sfml</Filter>
     </ClInclude>
-    <ClInclude Include="src\RoleCard.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="src\PlayerCard.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Pawn.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Player.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="src\InfectionColors.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="src\InfectionCard.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
     <ClInclude Include="src\Textboxes.h">
       <Filter>Header Files\Controllers</Filter>
     </ClInclude>
     <ClInclude Include="src\RandomNumberGenerator.h">
       <Filter>Header Files\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ArrayGraph.h">
+      <Filter>Header Files\Models\Cities\ArrayGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ArrayGraphNode.h">
+      <Filter>Header Files\Models\Cities\ArrayGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\City.h">
+      <Filter>Header Files\Models\Cities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CityGraph.h">
+      <Filter>Header Files\Models\Cities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Board.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CityCard.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EpidemicCard.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EventCard.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\InfectionCard.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\InfectionColors.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pawn.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Player.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlayerCard.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RoleCard.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="Observable.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Header Files\Views</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

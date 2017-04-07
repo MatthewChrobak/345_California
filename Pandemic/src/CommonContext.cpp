@@ -183,7 +183,7 @@ void CommonContext::reset()
 {
 	if (this->getPosition() != nullptr) {
 		delete this->getPosition();
-		this->setPosition(nullptr);
+		this->_renderPosition = nullptr;
 	}
 }
 
