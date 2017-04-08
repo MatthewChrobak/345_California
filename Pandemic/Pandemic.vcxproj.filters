@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\IO">
+      <UniqueIdentifier>{aafba1b5-eb2a-4f70-b136-f2e105f17021}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models">
+      <UniqueIdentifier>{4eb99e84-6c22-4f3f-a14a-021d659470c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controllers">
+      <UniqueIdentifier>{5bb7e21a-290b-44a8-ab08-fba11ceaebc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Views">
+      <UniqueIdentifier>{4c2ae993-9ba6-4e07-91c5-e657f9079837}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Views\Sfml">
+      <UniqueIdentifier>{56a0f0f5-8140-400f-892b-68e7f6a3fac7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Views\Contexts">
+      <UniqueIdentifier>{b99c09c6-f8dc-4018-a12f-c71ab14b5f7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controllers\MainMenu">
+      <UniqueIdentifier>{ff9b1c8e-05e8-4926-b05d-0b81defda11d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controllers\InGame">
+      <UniqueIdentifier>{16faaab0-1235-4a65-8175-0dd33166a4a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controllers\Elements">
+      <UniqueIdentifier>{063ad9f1-38ed-4aa3-a4d4-ef3cb288bf9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\IO">
+      <UniqueIdentifier>{584a625e-885f-4092-81ec-83a5468bfd34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models">
+      <UniqueIdentifier>{7f09c223-2d15-4329-994d-2d6aeda5b1de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Views">
+      <UniqueIdentifier>{66a8fa31-77a7-4a4e-aa7e-fac942978d0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controllers">
+      <UniqueIdentifier>{3d1da0fc-1c9c-4bc1-b09d-096b5e92adc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Views\Contexts">
+      <UniqueIdentifier>{5acd9413-e8b1-416c-82a9-ae653bb23210}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Views\Sfml">
+      <UniqueIdentifier>{68c9e435-828c-47f6-88cb-582d33f753c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controllers\Elements">
+      <UniqueIdentifier>{0a2e26cf-af28-475a-98db-340130d99e6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controllers\InGame">
+      <UniqueIdentifier>{9d0643d5-623b-42e8-bb6a-01095dbddc5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controllers\MainMenu">
+      <UniqueIdentifier>{f1a8de8d-b431-413b-8247-9f5951d98f62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\Cities">
+      <UniqueIdentifier>{d8a0c6f2-4d91-4a57-a201-6c8e488b63bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\Cities\ArrayGraph">
+      <UniqueIdentifier>{629ad37b-b340-4357-bdfc-9896a33ad6db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\To Be Sorted">
+      <UniqueIdentifier>{d8b23dd6-5a11-44ac-a902-2ebed2548490}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Cities">
+      <UniqueIdentifier>{fa428aa5-7401-4273-84f2-8080ddda10d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Cities\ArrayGraph">
+      <UniqueIdentifier>{6eb55916-3ca5-4c7d-81fc-6d9cbc74d94e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Program.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Board.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CityCard.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EventCard.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Buttons.cpp">
+      <Filter>Source Files\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Frames.cpp">
+      <Filter>Source Files\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Checkboxes.cpp">
+      <Filter>Source Files\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileStream.cpp">
+      <Filter>Source Files\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileSystem.cpp">
+      <Filter>Source Files\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EpidemicCard.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InfectionCard.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pawn.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlayerCard.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Player.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RoleCard.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameRenderer.cpp">
+      <Filter>Source Files\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GraphicsManager.cpp">
+      <Filter>Source Files\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GuiManager.cpp">
+      <Filter>Source Files\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Textboxes.cpp">
+      <Filter>Source Files\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CommonContext.cpp">
+      <Filter>Source Files\Views\Contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SurfaceContext.cpp">
+      <Filter>Source Files\Views\Contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TextContext.cpp">
+      <Filter>Source Files\Views\Contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SfmlFontManager.cpp">
+      <Filter>Source Files\Views\Sfml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SfmlGraphicsSystem.cpp">
+      <Filter>Source Files\Views\Sfml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SfmlSurfaceManager.cpp">
+      <Filter>Source Files\Views\Sfml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIButton.cpp">
+      <Filter>Source Files\Controllers\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UICheckbox.cpp">
+      <Filter>Source Files\Controllers\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIElement.cpp">
+      <Filter>Source Files\Controllers\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIFrame.cpp">
+      <Filter>Source Files\Controllers\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIMessageBox.cpp">
+      <Filter>Source Files\Controllers\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UITextbox.cpp">
+      <Filter>Source Files\Controllers\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RandomNumberGenerator.cpp">
+      <Filter>Source Files\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CityGraph.cpp">
+      <Filter>Source Files\Models\Cities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\City.cpp">
+      <Filter>Source Files\Models\Cities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ArrayGraphNode.cpp">
+      <Filter>Source Files\Models\Cities\ArrayGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ArrayGraph.cpp">
+      <Filter>Source Files\Models\Cities\ArrayGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Observable.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\MapEditingActions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlayerActions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FileStream.h">
+      <Filter>Header Files\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FileSystem.h">
+      <Filter>Header Files\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Paths.h">
+      <Filter>Header Files\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Buttons.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Checkboxes.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Frames.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GuiManager.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIButton.h">
+      <Filter>Header Files\Controllers\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UICheckbox.h">
+      <Filter>Header Files\Controllers\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIDefinitions.h">
+      <Filter>Header Files\Controllers\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIElement.h">
+      <Filter>Header Files\Controllers\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIFrame.h">
+      <Filter>Header Files\Controllers\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIMessageBox.h">
+      <Filter>Header Files\Controllers\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UITextbox.h">
+      <Filter>Header Files\Controllers\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CommonContext.h">
+      <Filter>Header Files\Views\Contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TextContext.h">
+      <Filter>Header Files\Views\Contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SurfaceContext.h">
+      <Filter>Header Files\Views\Contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameRenderer.h">
+      <Filter>Header Files\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GraphicsManager.h">
+      <Filter>Header Files\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GraphicsSystem.h">
+      <Filter>Header Files\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SfmlFontManager.h">
+      <Filter>Header Files\Views\Sfml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SfmlGraphicsSystem.h">
+      <Filter>Header Files\Views\Sfml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SfmlSurfaceManager.h">
+      <Filter>Header Files\Views\Sfml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Textboxes.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RandomNumberGenerator.h">
+      <Filter>Header Files\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ArrayGraph.h">
+      <Filter>Header Files\Models\Cities\ArrayGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ArrayGraphNode.h">
+      <Filter>Header Files\Models\Cities\ArrayGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\City.h">
+      <Filter>Header Files\Models\Cities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CityGraph.h">
+      <Filter>Header Files\Models\Cities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Board.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CityCard.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EpidemicCard.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EventCard.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\InfectionCard.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\InfectionColors.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pawn.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Player.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlayerCard.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RoleCard.h">
+      <Filter>Header Files\Models\To Be Sorted</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Observer.h">
+      <Filter>Header Files\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Observable.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
