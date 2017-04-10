@@ -13,10 +13,6 @@ private:
 	int blueInfectedCube = 0;
 
 public:
-	vector<Observer*> *observers;
-	void attach(Observer* o);
-	void detach(Observer* o);
-	void notify();
 	City();
 	~City();
 	int getCityID();

@@ -14,6 +14,31 @@ GameResources::~GameResources()
 
 }
 
+void GameResources::attach(Observer* o)
+{
+	this->observers->push_back(o);
+}
+
+void GameResources::detach(Observer* o)
+{
+	for (unsigned int i = 0; i < this->observers->size(); i++)
+	{
+		if ((this->observers->at(i)) == o)
+		{
+			cout << "Observer " << (this->observers->at(i)) << " is deleted" << endl;
+			this->observers->erase(this->observers->begin() + i);
+		}
+	}
+}
+
+void GameResources::notify()
+{
+	for (unsigned int i = 0; i < this->observers->size(); i++)
+	{
+		this->observers->at(i)->update();
+	}
+}
+
 void GameResources::update()
 {
 
