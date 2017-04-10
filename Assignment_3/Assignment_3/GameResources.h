@@ -1,9 +1,10 @@
 #pragma once
 #include "Decorator.h"
+#include "Observer.h"
 
 #define NUM_CUBE 24
 
-class GameResources : virtual public Decorator	
+class GameResources : virtual public Decorator, public Observer
 {
 private:
 	int redCube = NUM_CUBE;
@@ -17,8 +18,11 @@ private:
 
 public:
 	GameResources();
+
 	~GameResources();
 
+	void update();
+	void display();
 	virtual void getNumber();
 };
 

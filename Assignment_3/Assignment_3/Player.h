@@ -1,16 +1,18 @@
 #pragma once
-#include "Card.h"
+#include "Decorator.h"
+#include "Subject.h"
+#include "InfectionCard.h"
 
-class Player : virtual public Decorator
+class Player : virtual public Decorator, public Subject
 {
 private:
-	Card *card;
+	InfectionCard *card;
 
 public:
 	Player();
 	~Player();
 
-	Card getPlayerCard();
+	InfectionCard getPlayerCard();
 	virtual void getNumber();
 };
 

@@ -3,7 +3,7 @@
 
 Player::Player()
 {
-	card = new Card();
+	card = new InfectionCard();
 }
 
 
@@ -11,7 +11,12 @@ Player::~Player()
 {
 }
 
-Card Player::getPlayerCard()
+InfectionCard Player::getPlayerCard()
 {
 	return (*card);
+}
+
+void Player::getNumber()
+{
+
 }
