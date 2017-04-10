@@ -6,7 +6,6 @@ Player::Player()
 	card = new InfectionCard();
 }
 
-
 Player::~Player()
 {
 }
@@ -19,4 +18,8 @@ InfectionCard Player::getPlayerCard()
 void Player::getNumber()
 {
 
+}
+
+void Player::update()
+{
 }

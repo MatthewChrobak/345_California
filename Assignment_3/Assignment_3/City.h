@@ -1,9 +1,8 @@
 #pragma once
 #include "Decorator.h"
-#include "Subject.h"
+#include "Observer.h"
 
-
-class City : virtual public Decorator, public Subject
+class City : virtual public Decorator, public Observer
 {
 private:
 	int IDcityNumber = 0;
@@ -13,13 +12,15 @@ private:
 	int blueInfectedCube = 0;
 
 public:
-	vector<Observer*> *observers;
-	void attach(Observer* o);
-	void detach(Observer* o);
-	void notify();
 	City();
 	~City();
 	int getCityID();
+	void update();
+	void cityInfected();
 	virtual void getNumber();
+	void setRedInfectedCube();
+	void setYellowInfectedCube();
+	void setBlueInfectedCube();
+	void setBlackInfectedCube();
 };
 
