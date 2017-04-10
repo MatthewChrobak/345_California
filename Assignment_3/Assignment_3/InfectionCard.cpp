@@ -13,4 +13,5 @@ InfectionCard::~InfectionCard()
 
 void InfectionCard::getNumber()
 {
+
 }

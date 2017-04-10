@@ -1,7 +1,6 @@
 #pragma once
 #include "Decorator.h"
 #include "Observer.h"
-#include <vector>
 
 #define NUM_CUBE 24
 
@@ -18,10 +17,6 @@ private:
 
 
 public:
-	vector<Observer*> *observers;
-	void attach(Observer* o);
-	void detach(Observer* o);
-	void notify();
 	GameResources();
 	~GameResources();
 
