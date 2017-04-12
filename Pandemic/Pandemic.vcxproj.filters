@@ -198,6 +198,12 @@
     <ClCompile Include="src\Observable.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
+    <ClCompile Include="src\PlayerAction.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlayerRoleCard.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MapEditingActions.h">
@@ -330,6 +336,12 @@
       <Filter>Header Files\Views</Filter>
     </ClInclude>
     <ClInclude Include="src\Observable.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlayerAction.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlayerRoleCard.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
   </ItemGroup>

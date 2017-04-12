@@ -75,7 +75,6 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 
 	if (button == "left") {
 		Board* board = Game::getGameBoard();
-		int numCities = board->getNumCities();
 
 		// Are we currently editing the map?
 		if (Game::getGameBoard()->isEditingMap())
@@ -170,43 +169,48 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 				break;
 			}
 		} 
-		else {
+		/*
+		else 
+		{
+			
 			// Are we currently trying to do an action?
 			if (GameFrame::PlayerAction != PlayerActions::NoPlayerAction) {
 
-				switch (GameFrame::PlayerAction) 
+				switch (GameFrame::PlayerAction)
 				{
 					// Are we trying to move?
-					case PlayerActions::Drive:
-					{
-						Player& player = board->getCurrentTurnPlayer();
-						int playerCityIndex = player.pawn->cityIndex;
+				case PlayerActions::Drive:
+				{
+					Player& player = board->getCurrentTurnPlayer();
+					int playerCityIndex = player.pawn->cityIndex;
 
-						// Make sure we're within the valid bounds.
-						if (playerCityIndex >= 0 && playerCityIndex < numCities) {
-							City* playerCity = board->getCity(playerCityIndex);
-							int clickedCityIndex = City::getCityIndexFromXY(x, y);
+					// Make sure we're within the valid bounds.
+					if (playerCityIndex >= 0 && playerCityIndex < numCities) {
+						City* playerCity = board->getCity(playerCityIndex);
+						int clickedCityIndex = City::getCityIndexFromXY(x, y);
 
-							// If the city is an adjacent city, move us.
-							if (playerCity->isAdjacent(clickedCityIndex)) {
-								player.pawn->cityIndex = clickedCityIndex;
+						// If the city is an adjacent city, move us.
+						if (playerCity->isAdjacent(clickedCityIndex)) {
+							player.pawn->cityIndex = clickedCityIndex;
 
-								// Reset the player action.
-								Game::decrementActionCounter();
-								//If turn is changed, show this message
-								Board::checkTurn();
-								GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-								break;
-							}
+							// Reset the player action.
+							Game::decrementActionCounter();
+							//If turn is changed, show this message
+							Board::checkTurn();
+							GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+							break;
 						}
-						break;
 					}
-					default:
-						GuiManager::showMsgBox("Tried to perform an action on " + GameFrame::PlayerAction);
-						break;
+					break;
+				}
+				default:
+					GuiManager::showMsgBox("Tried to perform an action on " + GameFrame::PlayerAction);
+					break;
 				}
 			}
+			
 		}
+		*/
 	}
 	return true;
 }
