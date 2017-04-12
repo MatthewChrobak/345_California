@@ -578,8 +578,6 @@ void Board::drawInfectionCard()
 			{
 				InfectionCard::infectCityCube(infectionCityCards.at(0));
 			}
-			// Decrement i so we pick another card.
-			i--;
 
 			// Remove it from the pile.
 			Board::discardInfectionCard.push_back(infectionCityCards.at(0));
