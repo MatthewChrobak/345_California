@@ -18,8 +18,6 @@ public:
 	City();
 	~City();
 
-	void infectCity(int city,int index);
-	static void infectCityOutBreak(int city);
 	void buildResearchFacility();
 
 	// Determines whether or not the city index is within the adjacency list.

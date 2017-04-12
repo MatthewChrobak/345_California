@@ -22,13 +22,14 @@ void InfectionCard::infectCityCube(int cityIndex)
 	City* city = board->getCity(cityIndex);
 	int color = city->color;
 
-	// Is there less than three cubes for the color?
-	if (city->cube[color] < 3) {
-		city->infectCity(cityIndex, color);
+	if (city->cube[color] < 3)
+	{
+		InfectionCard::infectCity(cityIndex, color);
 		Game::numOfCubeDecrementor(color);
 	}
-	else {
-		city->infectCityOutBreak(cityIndex);
+	else
+	{
+		InfectionCard::infectCity(cityIndex, color);
 	}
 }
 /*

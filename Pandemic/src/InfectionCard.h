@@ -10,8 +10,8 @@ public:
 	~InfectionCard();
 
 	static void infectCityCube(int city);
-	void infectCity(int city, int index);
-	void infectCityOutBreak(int city);
+	static void infectCity(int city, int index);
+	static void infectCityOutBreak(int city);
 
 };
 
