@@ -68,6 +68,10 @@ void GameFrame::finishedEditing()
 
 bool GameFrame::onMouseDown(std::string button, int x, int y)
 {
+	Board* board = Game::getGameBoard();
+	Player& player = board->getCurrentTurnPlayer();
+	int roleCardIndex = player.getRoleCard()->getRoleCardVal();
+	int numCities = board->getNumCities();
 	// Maybe we can exit out early.
 	if (UIFrame::onMouseDown(button, x, y)) {
 		return true;
@@ -169,7 +173,7 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 				break;
 			}
 		} 
-		/*
+		
 		else 
 		{
 			
@@ -210,7 +214,7 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 			}
 			
 		}
-		*/
+		
 	}
 	return true;
 }

@@ -556,14 +556,39 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 		return true;
      
 		case PlayerActions::ShareKnowledge:
-			/*
-			When the player successfully finishes an action, ensure that the action is reset by writing the line
-			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-			Failure to do so will cause assertions to fail and will cause the application to crash.
-			*/
-			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-			break;
+		{
 
+		//TODO: THE PHI FIX THIS
+			int numOfPlayerInSameCity = 0;
+			int nextPlayerIndex;
+			for (int i = 0; i < Game::getGameBoard()->getNumberOfPlayers(); i++)
+			{
+				nextPlayerIndex = (Game::getGameBoard()->currentTurnPlayer + 1) % Game::getGameBoard()->getNumberOfPlayers();
+				if (playerCityIndex == nextPlayerIndex)
+				{
+					numOfPlayerInSameCity++;
+				}
+			}
+			if (numOfPlayerInSameCity > 1)
+			{
+				GuiManager::showMsgBox("Shared knowledge is possible.");
+				/*
+				When the player successfully finishes an action, ensure that the action is reset by writing the line
+				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+				Failure to do so will cause assertions to fail and will cause the application to crash.
+				*/
+				Game::decrementActionCounter();
+				Board::checkTurn();
+				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+				//reset player Actions
+				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+			}
+			else
+			{
+				GuiManager::showMsgBox("No other players are at the current city, shared knowledge is not possible.");
+			}
+		}
+		return true;
 
 		case PlayerActions::DiscoverCure:
 		{
