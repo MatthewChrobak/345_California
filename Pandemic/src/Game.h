@@ -14,7 +14,7 @@ enum GameState : int
 	GameState_Length
 };
 
-class Game
+class Game 
 {
 public:
 	static void loadOrCreate(std::string savename);

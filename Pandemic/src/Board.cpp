@@ -547,7 +547,6 @@ bool Board::playerTurnChange()
 	return turnChanged;
 }
 
-
 int Board::getInfectionRate()
 {
 	if (this->_infectionRate <= 2) {

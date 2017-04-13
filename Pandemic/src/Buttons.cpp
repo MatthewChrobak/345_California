@@ -140,6 +140,7 @@ ShuttleFlightAction::ShuttleFlightAction() : UIButton(CMD_PLAYER_ACTION_SHUTTLE_
 
 bool ShuttleFlightAction::onMouseDown(std::string key, int x, int y)
 {
+	/*
 	auto element = GuiManager::getUIElementByName(FRM_PLAYER_CARDS);
 #ifdef DEBUG
 	assert(element != nullptr);
@@ -148,6 +149,9 @@ bool ShuttleFlightAction::onMouseDown(std::string key, int x, int y)
 #endif
 	GameFrame::PlayerAction = PlayerActions::ShuttleFlight;
 	((PlayerCardsFrame*)element)->show();
+	*/
+	GameFrame::PlayerAction = PlayerActions::ShuttleFlight;
+	GuiManager::showMsgBox("Please select a city with a research center");
 	return true;
 }
 
@@ -348,18 +352,42 @@ PlayerCardsOkay::PlayerCardsOkay(std::vector<int>* cardData) : UIButton(CMD_PLAY
 	this->height = CMD_PLAYER_CARDS_OKAY_HEIGHT;
 }
 
-
-
-
-
 bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 {
 	Board* board = Game::getGameBoard();
 	Player& player = board->getCurrentTurnPlayer();
 	int roleCardIndex = player.getRoleCard()->getRoleCardVal();
+	int numCities = board->getNumCities();
+	int playerCityIndex = player.pawn->cityIndex;
 
 	switch (GameFrame::PlayerAction)
 	{
+	case PlayerActions::Drive:
+	{
+
+		// Make sure we're within the valid bounds.
+		if (playerCityIndex >= 0 && playerCityIndex < numCities) {
+			City* playerCity = board->getCity(playerCityIndex);
+			int clickedCityIndex = City::getCityIndexFromXY(x, y);
+
+			// If the city is an adjacent city, move us.
+			if (playerCity->isAdjacent(clickedCityIndex)) {
+				player.pawn->cityIndex = clickedCityIndex;
+
+				Game::decrementActionCounter();
+				Board::checkTurn();
+				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+				// Reset the player action.
+				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+				break;
+			}
+			else
+			{
+				GuiManager::showMsgBox("Not within bound please click a adjacent city.");
+			}
+		}
+		return true;
+	}
 	case PlayerActions::DirectFlight:
 		// We should only have one card selected here.
 		if (this->_cardData->size() == 1) {
@@ -427,38 +455,52 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 		}
 		return true;
-	case PlayerActions::ShuttleFlight:
-
 		/*
-		When the player successfully finishes an action, ensure that the action is reset by writing the line
-		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-		Failure to do so will cause assertions to fail and will cause the application to crash.
 		*/
-		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+	case PlayerActions::ShuttleFlight:
+		if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != false)
+		{
+			int clickedCityIndex = City::getCityIndexFromXY(x, y);
+			if (Game::getGameBoard()->getCity(clickedCityIndex)->research == true)
+			{
+				player.pawn->cityIndex = clickedCityIndex;
+				/*
+				When the player successfully finishes an action, ensure that the action is reset by writing the line
+				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+				Failure to do so will cause assertions to fail and will cause the application to crash.
+				*/
+				Game::decrementActionCounter();
+				Board::checkTurn();
+				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+				//reset player Actions
+				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+			}
+			else
+				GuiManager::showMsgBox("Invalid choice, the city does not have a research center.");
+		}
+		else
+			GuiManager::showMsgBox("There is no research center at your current city. ");
 		return true;
 	case PlayerActions::BuildResearchCenter:
 
 
-		if (roleCardIndex == 4){
+		if (roleCardIndex == 4)
+		{
 			if (Game::numOfResearchCenter > 0)
 			{
 				if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != true)
 				{
 					GuiManager::showMsgBox("You're operations expert! This is worth one action");
+					Game::getGameBoard()->getCity(player.pawn->cityIndex)->research = true;
+					Game::numOfResearchCenter--;
 					Game::decrementActionCounter();
 					Board::checkTurn();
-					}
-				else 
-					GuiManager::showMsgBox("The research facility is already built in this city.");
-
-			}
-			else 
-				GuiManager::showMsgBox("All research centers have been used.");
-
+					//reset player actions
+					GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+				}
+			}	
 		}
-		
-		
+
 		
 		//select only one card
 		else if (this->_cardData->size() != 1)
@@ -505,14 +547,39 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 		return true;
      
 		case PlayerActions::ShareKnowledge:
-			/*
-			When the player successfully finishes an action, ensure that the action is reset by writing the line
-			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-			Failure to do so will cause assertions to fail and will cause the application to crash.
-			*/
-			GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-			break;
+		{
 
+		//TODO: THE PHI FIX THIS
+			int numOfPlayerInSameCity = 0;
+			int nextPlayerIndex = 0;
+			for (int i = 0; i < Game::getGameBoard()->getNumberOfPlayers(); i++)
+			{	
+
+				if (playerCityIndex == nextPlayerIndex)
+				{
+					numOfPlayerInSameCity++;
+				}
+			}
+			if (numOfPlayerInSameCity > 1)
+			{
+				GuiManager::showMsgBox("Shared knowledge is possible.");
+				/*
+				When the player successfully finishes an action, ensure that the action is reset by writing the line
+				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+				Failure to do so will cause assertions to fail and will cause the application to crash.
+				*/
+				Game::decrementActionCounter();
+				Board::checkTurn();
+				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+				//reset player Actions
+				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+			}
+			else
+			{
+				GuiManager::showMsgBox("No other players are at the current city, shared knowledge is not possible.");
+			}
+		}
+		return true;
 
 		case PlayerActions::DiscoverCure:
 		{

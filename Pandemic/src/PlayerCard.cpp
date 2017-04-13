@@ -133,7 +133,7 @@ void PlayerCard::useEpidemic() {
 	//if the draw city is not been infect three times that mean that there is an outbreak
 	if (counter < 3)
 	{
-		City::infectCityOutBreak(epidemicInfection);
+		InfectionCard::infectCityOutBreak(epidemicInfection);
 	}
 
 

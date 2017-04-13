@@ -7,6 +7,5 @@ public:
 	Pawn();
 	~Pawn();
 
-	bool existingStation();
 };
 
