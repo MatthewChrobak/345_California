@@ -151,7 +151,7 @@ bool ShuttleFlightAction::onMouseDown(std::string key, int x, int y)
 	((PlayerCardsFrame*)element)->show();
 	*/
 	GameFrame::PlayerAction = PlayerActions::ShuttleFlight;
-	GuiManager::showMsgBox("Please click on a city you wish to shuttleFlight to.");
+	GuiManager::showMsgBox("Please select a city with a research center");
 	return true;
 }
 
@@ -458,12 +458,10 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 		/*
 		*/
 	case PlayerActions::ShuttleFlight:
-
 		if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != false)
 		{
-			GuiManager::showMsgBox("Please select a city with a research center");
 			int clickedCityIndex = City::getCityIndexFromXY(x, y);
-			if (Game::getGameBoard()->getCity(clickedCityIndex)->research==true)
+			if (Game::getGameBoard()->getCity(clickedCityIndex)->research == true)
 			{
 				player.pawn->cityIndex = clickedCityIndex;
 				/*
@@ -478,38 +476,31 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 			}
 			else
-			{
 				GuiManager::showMsgBox("Invalid choice, the city does not have a research center.");
-			}
-				
 		}
 		else
-		{
 			GuiManager::showMsgBox("There is no research center at your current city. ");
-		}
 		return true;
 	case PlayerActions::BuildResearchCenter:
 
 
-		if (roleCardIndex == 4){
+		if (roleCardIndex == 4)
+		{
 			if (Game::numOfResearchCenter > 0)
 			{
 				if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != true)
 				{
 					GuiManager::showMsgBox("You're operations expert! This is worth one action");
+					Game::getGameBoard()->getCity(player.pawn->cityIndex)->research = true;
+					Game::numOfResearchCenter--;
 					Game::decrementActionCounter();
 					Board::checkTurn();
-					}
-				else 
-					GuiManager::showMsgBox("The research facility is already built in this city.");
-
-			}
-			else 
-				GuiManager::showMsgBox("All research centers have been used.");
-
+					//reset player actions
+					GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+				}
+			}	
 		}
-		
-		
+
 		
 		//select only one card
 		else if (this->_cardData->size() != 1)
@@ -560,10 +551,10 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 		//TODO: THE PHI FIX THIS
 			int numOfPlayerInSameCity = 0;
-			int nextPlayerIndex;
+			int nextPlayerIndex = 0;
 			for (int i = 0; i < Game::getGameBoard()->getNumberOfPlayers(); i++)
-			{
-				nextPlayerIndex = (Game::getGameBoard()->currentTurnPlayer + 1) % Game::getGameBoard()->getNumberOfPlayers();
+			{	
+
 				if (playerCityIndex == nextPlayerIndex)
 				{
 					numOfPlayerInSameCity++;

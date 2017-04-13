@@ -207,6 +207,31 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 					}
 					break;
 				}
+				case PlayerActions::ShuttleFlight:
+
+					if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != false)
+					{
+						int clickedCityIndex = City::getCityIndexFromXY(x, y);
+						if (Game::getGameBoard()->getCity(clickedCityIndex)->research == true)
+						{
+							player.pawn->cityIndex = clickedCityIndex;
+							/*
+							When the player successfully finishes an action, ensure that the action is reset by writing the line
+							GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+							Failure to do so will cause assertions to fail and will cause the application to crash.
+							*/
+							Game::decrementActionCounter();
+							Board::checkTurn();
+							GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+							//reset player Actions
+							GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+						}
+						else
+							GuiManager::showMsgBox("Invalid choice, the city does not have a research center.");
+					}
+					else
+						GuiManager::showMsgBox("There is no research center at your current city. ");
+					return true;
 				default:
 					GuiManager::showMsgBox("Tried to perform an action on " + GameFrame::PlayerAction);
 					break;
