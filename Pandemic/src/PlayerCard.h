@@ -22,6 +22,8 @@ enum PlayerCardType
 
 class PlayerCard {
 
+private: std::vector<PlayerCard*> _playerWithdrawPile;
+
 public:
 	PlayerCardType getType();
 	virtual void playCard() = 0;
@@ -35,3 +37,4 @@ public:
 	~PlayerCard();
 
 };
+

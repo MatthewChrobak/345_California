@@ -21,6 +21,7 @@
 #include <assert.h>
 #endif
 
+int Board::_infectionRate = INFECTION_RATE;
 
 void Board::tryStartGame()
 {
@@ -40,7 +41,8 @@ void Board::generateGameContentAtStartOfGame()
 		for (int i = 0; i < 4; i++) {
 			if (this->_playerWithdrawPile.size() == 0) {
 				break;
-			} else {
+			}
+			else {
 				this->getPlayer(playerIndex).addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
 				this->_playerWithdrawPile.pop_back();
 			}
@@ -50,13 +52,38 @@ void Board::generateGameContentAtStartOfGame()
 		RoleCard *p = new RoleCard(RoleCard::roleCardNames[i]);
 		this->getPlayer(playerIndex).setRoleCard(p);
 	}
+
+	//===========================================================
+	//Adding epidemic cards to the player deck
+	for (int i = 0; i < NUMBER_OF_EPIDEMIC; i++) {
+		int rng = RandomNumberGenerator::next(0, _playerWithdrawPile.size());
+		EpidemicCard* epidemicCard = new EpidemicCard();
+		this->_playerWithdrawPile.insert(this->_playerWithdrawPile.begin() + rng, epidemicCard);
+	}
+
 	//===========================================================
 	//intializing infectionCardDeck
 	Board::infectionCityCardsInitializor();
 
 
 	//starting the infection with 9 cities (required 9 cities if not null exception)
-	for (int i = 0; i < STARTING_INFECTION_CARD && i < infectionCityCards.size(); i++)
+	//(TEMPORARY IMPLEMENTATION): First three cities have three cubes, next three have
+	//two cubes and last three have 1 cube.
+	for (int i = 0; i < 3 && i < infectionCityCards.size(); i++)
+	{
+		InfectionCard::infectCityCubeThree(infectionCityCards.at(0));
+		Board::discardInfectionCard.push_back(infectionCityCards.at(0));
+		Board::infectionCityCards.erase(infectionCityCards.begin());
+	}
+
+	for (int i = 0; i < 3 && i < infectionCityCards.size(); i++)
+	{
+		InfectionCard::infectCityCubeTwo(infectionCityCards.at(0));
+		Board::discardInfectionCard.push_back(infectionCityCards.at(0));
+		Board::infectionCityCards.erase(infectionCityCards.begin());
+	}
+
+	for (int i = 0; i < 3 && i < infectionCityCards.size(); i++)
 	{
 		InfectionCard::infectCityCube(infectionCityCards.at(0));
 		Board::discardInfectionCard.push_back(infectionCityCards.at(0));
@@ -145,6 +172,9 @@ void Board::loadBoardData(std::string boardFile)
 	Game::numOfRedCube = fs->readInt();
 	Game::numOfResearchCenter = fs->readInt();
 
+	// Infection Rate
+	Board::_infectionRate = fs->readInt();
+
 
 	City::outbreakCount = fs->readInt();
 	this->setActualInfectionRate(fs->readInt());
@@ -196,6 +226,9 @@ void Board::saveBoardData(std::string boardFile)
 	fs->write(Game::numOfBlueCube);
 	fs->write(Game::numOfRedCube);
 	fs->write(Game::numOfResearchCenter);
+
+	// Infection rate
+	fs->write(Board::_infectionRate);
 
 	fs->write(City::outbreakCount);
 	fs->write(this->getActualInfectionRate());
@@ -439,8 +472,20 @@ void Board::drawCards()
 	for (int i = 0; i < 2; i++)
 	{
 		if (this->_playerWithdrawPile.size() != 0) {
-			this->getCurrentTurnPlayer().addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
-			this->_playerWithdrawPile.pop_back();
+
+			//If the card drawn is an epidemic card, play it and remove it from the player's hand
+			if (this->_playerWithdrawPile.back()->getType() == Epidemic_Card)
+			{
+				EpidemicCard::drawingEpidemicCard();
+				this->_playerWithdrawPile.pop_back();
+				GuiManager::showMsgBox("EPIDEMIC CARD DRAWN TROLOLOLOLO");
+			}
+
+			else {
+				this->getCurrentTurnPlayer().addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
+				this->_playerWithdrawPile.pop_back();
+			}
+
 		}
 	}
 }
@@ -479,13 +524,6 @@ void Board::generatePlayerCards()
 
 		int rng = RandomNumberGenerator::next(0, _playerWithdrawPile.size());
 		this->_playerWithdrawPile.insert(this->_playerWithdrawPile.begin() + rng, tempEventVector[i]);
-	}
-
-	//Adding epidemic cards to the player deck
-	for (int i = 0; i < NUMBER_OF_EPIDEMIC; i++) {
-		int rng = RandomNumberGenerator::next(0, _playerWithdrawPile.size());
-		EpidemicCard* epidemicCard = new EpidemicCard();
-		this->_playerWithdrawPile.insert(this->_playerWithdrawPile.begin() + rng, epidemicCard);
 	}
 
 }
@@ -561,9 +599,9 @@ int Board::getInfectionRate()
 	return 4;
 }
 
-void Board::incremenetInfectionRate()
+void Board::incrementInfectionRate()
 {
-	this->_infectionRate += 1;
+	_infectionRate += 1;
 }
 
 //draw infections card at the end of the turn
@@ -578,13 +616,39 @@ void Board::drawInfectionCard()
 			{
 				InfectionCard::infectCityCube(infectionCityCards.at(0));
 			}
-
+	
 			// Remove it from the pile.
 			Board::discardInfectionCard.push_back(infectionCityCards.at(0));
 			Board::infectionCityCards.erase(infectionCityCards.begin());
 			Board::infectionCityCards.shrink_to_fit();
 		}
 	}
+}
+
+//Function to draw the last infection card (to be used with epidemic card)
+void Board::drawLastInfectionCard()
+{
+	if (infectionCityCards.size() != 0)
+	{
+		InfectionCard::infectLastCity(infectionCityCards.back());
+	}
+	Board::discardInfectionCard.push_back(infectionCityCards.back());
+	Board::infectionCityCards.erase(infectionCityCards.begin());
+	Board::infectionCityCards.shrink_to_fit();
+}
+
+//Function to shuffle the discarded infection cards (to be used when epidemic card is drawn)
+void Board::shuffleDiscardedInfectionDeck() 
+{
+	//At every loop, take a random card in the discarded pile and insert it at the beginning of the original deck
+	for (int i = 0; i < this->discardInfectionCard.size(); i++)
+	{
+		int rng = RandomNumberGenerator::next(0, this->discardInfectionCard.size());
+		infectionCityCards.insert(this->infectionCityCards.begin(), this->discardInfectionCard[rng]);
+	}
+
+	//Clear the discarded infection cards deck after all cards have been placed back in the original deck.
+	this->discardInfectionCard.clear();
 }
 
 bool Board::isEditingMap()

@@ -16,6 +16,9 @@ InfectionCard::~InfectionCard()
 {
 }
 
+
+
+//Infect a city with 1 cube
 void InfectionCard::infectCityCube(int cityIndex)
 {
 	Board* board = Game::getGameBoard();
@@ -30,4 +33,40 @@ void InfectionCard::infectCityCube(int cityIndex)
 	else {
 		city->infectCityOutBreak(cityIndex);
 	}
+}
+
+//Infect a city with three cubes
+void InfectionCard::infectCityCubeThree(int cityIndex)
+{
+	Board* board = Game::getGameBoard();
+	City* city = board->getCity(cityIndex);
+	int color = city->color;
+
+	city->infectCityThree(cityIndex, color);
+	Game::numOfCubeDecrementor(color);
+	
+}
+
+//Infect a city with two cubes
+void InfectionCard::infectCityCubeTwo(int cityIndex)
+{
+	Board* board = Game::getGameBoard();
+	City* city = board->getCity(cityIndex);
+	int color = city->color;
+
+	city->infectCityTwo(cityIndex, color);
+	Game::numOfCubeDecrementor(color);
+}
+
+
+
+void InfectionCard::infectLastCity(int lastCity)
+{
+	Board* board = Game::getGameBoard();
+	City* city = board->getCity(lastCity);
+	int color = city->color;
+
+	city->infectCity(lastCity, color);
+	Game::numOfCubeDecrementor(color);
+
 }
