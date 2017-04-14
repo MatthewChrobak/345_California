@@ -471,7 +471,6 @@ void Board::drawCards()
 			{
 				EpidemicCard::drawingEpidemicCard();
 				this->_playerWithdrawPile.pop_back();
-				GuiManager::showMsgBox("EPIDEMIC CARD DRAWN TROLOLOLOLO");
 			}
 
 			else {
@@ -625,7 +624,6 @@ void Board::drawLastInfectionCard()
 	{
 		InfectionCard::infectLastCity(infectionCityCards.back());
 	}
-	GuiManager::showMsgBox("WLUIENHLIUWEHNWIUEL" + Game::getGameBoard()->getCity(infectionCityCards.back())->name);
 	Board::discardInfectionCard.push_back(infectionCityCards.back());
 	Board::infectionCityCards.erase(infectionCityCards.begin());
 	Board::infectionCityCards.shrink_to_fit();
