@@ -134,7 +134,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>libraries\boost_1_63_0;libraries\SFML-2.4.2-windows-vc12-64-bit\SFML-2.4.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>libraries\boost_1_63_0;libraries\SFML-2.4.2-windows-vc12-64-bit\SFML-2.4.2\include;%(AdditionalIncludeDirectories);libraries\SFML-2.4.2-windows-vc14-64-bit\SFML-2.4.2\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
