@@ -8,6 +8,7 @@
 #include "Game.h"
 #include <iostream>
 #include <vector>
+#include <string>
 #include "CityCard.h"
 #include "RandomNumberGenerator.h"
 #include <time.h>
@@ -478,6 +479,7 @@ void Board::drawCards()
 			}
 
 			else {
+
 				this->getCurrentTurnPlayer().addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
 				this->_playerWithdrawPile.pop_back();
 				this->_playerWithdrawPile.shrink_to_fit();
@@ -677,7 +679,8 @@ void Board::checkTurn()
 
 	if (board->playerTurnChange() == true)
 	{
-		
+		string name = player.getRoleCard()->roleCardNames[player.getRoleCard()->getRoleCardVal()];
+		GuiManager::showMsgBox("My role is: " + name);
 		board->drawCards();
 		GuiManager::showMsgBox("Your current hand after picking two cards.");
 		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
