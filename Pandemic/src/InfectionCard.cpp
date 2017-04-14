@@ -28,16 +28,12 @@ void InfectionCard::infectCityCube(int cityIndex)
 	if (city->cube[color] < 3)
 	{
 		InfectionCard::infectCity(cityIndex, color);
-
-		Game::numOfCubeDecrementor(color);
 	}
 	else
 	{
-		InfectionCard::infectCity(cityIndex, color);
+		InfectionCard::infectCityOutBreak(cityIndex);
 	}
 }
-
-
 
 void InfectionCard::infectLastCity(int lastCity)
 {
@@ -45,7 +41,13 @@ void InfectionCard::infectLastCity(int lastCity)
 	City* city = board->getCity(lastCity);
 	int color = city->color;
 
-	city->infectCityThree(lastCity, color);
+	//Infect that city with 3 cubes
+	for (int i = 0; i < 3; i++)
+	{
+		Game::getGameBoard()->getCity(lastCity)->cube[color]++;
+	}
+	
+	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(lastCity)->name + " is infected");
 	Game::numOfCubeDecrementor(color);
 
 }
@@ -59,11 +61,13 @@ void InfectionCard::infectCity(int city, int index)
 	Game::numOfCubeDecrementor(index);
 	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(city)->name + " is infected.");
 }
+
 /*
 infection with outbreak of the current passing city.
 */
 void InfectionCard::infectCityOutBreak(int city)
 {
+	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(city)->name + " is infected.");
 	GuiManager::showMsgBox("OH NO! AN OUTBREAK OCCURRED!!!");
 	City::outbreakCount += 1;
 
@@ -86,7 +90,7 @@ void InfectionCard::infectCityOutBreak(int city)
 			Game::getGameBoard()->getCity(iterator.at(i))->cube[currentOutbreakCityColor]++;
 			//decrement the num of cube
 			Game::numOfCubeDecrementor(currentOutbreakCityColor);
-			break;
+			
 		}
 		/*
 		Another outbreak could occur if the capacity of the cube color exceed three
@@ -95,4 +99,5 @@ void InfectionCard::infectCityOutBreak(int city)
 			infectCityOutBreak(iterator.at(i));
 	}
 }
+
 

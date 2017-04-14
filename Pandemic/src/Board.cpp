@@ -99,6 +99,7 @@ void Board::infectionCityCardsInitializor()
 {
 	infectionCityCards.push_back(0);
 
+	//Changed to 0
 	for (int i = 1; i < this->getNumCities(); i++)
 	{
 		int rng = RandomNumberGenerator::next(0, infectionCityCards.size());
@@ -482,7 +483,6 @@ void Board::drawCards()
 	}
 }
 
-
 //Generates the playerCards deck
 void Board::generatePlayerCards()
 {
@@ -621,10 +621,10 @@ void Board::drawLastInfectionCard()
 {
 	if (infectionCityCards.size() != 0)
 	{
-		InfectionCard::infectLastCity(infectionCityCards.back());
+		InfectionCard::infectLastCity(infectionCityCards.size()-1);
 	}
 	Board::discardInfectionCard.push_back(infectionCityCards.back());
-	Board::infectionCityCards.erase(infectionCityCards.begin());
+	Board::infectionCityCards.erase(infectionCityCards.begin() + infectionCityCards.size()-1);
 	Board::infectionCityCards.shrink_to_fit();
 }
 
