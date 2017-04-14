@@ -46,7 +46,9 @@ struct PlayerCardsFrame : public UIFrame
 	void show();
 
 private:
+
 	std::vector<int> _cardData;
+
 };
 
 // The frame that contains the map-editing actions.

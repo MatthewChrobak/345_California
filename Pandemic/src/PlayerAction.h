@@ -13,9 +13,10 @@ public:
 
 };
 
-class DirectFlightAction: public PlayerAction{
+class DirectFlightAction1: public PlayerAction{
 
-    std ::string name = "DirectFlightAction";
+
+    std ::string name = "DirectFlight";
 
 public:
     void doAction(Player* player);
@@ -24,7 +25,7 @@ public:
 
 };
 
-class BuildResearchStation: public PlayerAction{
+class BuildResearchStation1: public PlayerAction{
 
     std ::string name = "BuildResearchStation";
 
@@ -36,7 +37,7 @@ public:
 
 };
 
-class TreatDisease: public PlayerAction{
+class TreatDisease1: public PlayerAction{
 
     std ::string name = "TreatDisease";
 
@@ -48,7 +49,7 @@ public:
 
 };
 
-class ShareKnowledge: public PlayerAction{
+class ShareKnowledge1: public PlayerAction{
 
 
     std ::string name = "ShareKnowledge";
@@ -61,7 +62,7 @@ public:
 
 };
 
-class DiscoverCure: public PlayerAction{
+class DiscoverCure1: public PlayerAction{
 
     std ::string name = "DiscoverCure";
 
@@ -74,7 +75,7 @@ public:
 
 };
 
-class Drive: public PlayerAction{
+class Drive1: public PlayerAction{
 
     std ::string name = "Drive/Ferry";
 
@@ -87,7 +88,7 @@ public:
 
 };
 
-class CharterFlight: public PlayerAction{
+class CharterFlight1: public PlayerAction{
 
     std ::string name = "CharterFlight";
 
@@ -99,7 +100,7 @@ public:
 
 
 };
-class ShuttleFlight: public PlayerAction{
+class ShuttleFlight1: public PlayerAction{
 
     std ::string name = "ShuttleFlight";
 
