@@ -68,7 +68,6 @@ void InfectionCard::infectCityOutBreak(int city)
 			Game::getGameBoard()->getCity(iterator.at(i))->cube[currentOutbreakCityColor]++;
 			//decrement the num of cube
 			Game::numOfCubeDecrementor(currentOutbreakCityColor);
-			break;
 		}
 		/*
 		Another outbreak could occur if the capacity of the cube color exceed three
