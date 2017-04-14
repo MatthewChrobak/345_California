@@ -25,61 +25,6 @@ City::~City()
 {
 }
 
-/*
-normal infection without outbreak
-*/
-void City::infectCity(int city, int index)
-{
-	Game::getGameBoard()->getCity(city)->cube[index]++;
-	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(city)->name + " is infected" );
-}
-
-//normal infection (3 cubes) without outbreak
-void City::infectCityThree(int city, int index)
-{
-	for (int i = 0; i < 3; i++)
-	{
-		Game::getGameBoard()->getCity(city)->cube[index]++;
-	}
-	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(city)->name + " is infected");
-}
-
-/*
-infection with outbreak of the current passing city.
-*/
-void City::infectCityOutBreak(int city)
-{
-	GuiManager::showMsgBox("OH NO! AN OUTBREAK OCCURRED!!!");
-	City::outbreakCount += 1;
-
-	if (City::outbreakCount >= 8) {
-		GuiManager::showMsgBox("Game Over");
-		GuiManager::handleWindowClose();
-		return;
-	}
-	/*
-	an iterator that will go through all the nodes connect to the city that is
-	being outbreak and if another city's cube size is rearched, than another outbreak event will 
-	happen. A counter is use to recursively call the infectCityOutbreak if the cube is full.
-	*/
-	auto iterator = Game::getGameBoard()->getCity(city)->getAdjacentNodes();
-	int currentOutbreakCityColor = Game::getGameBoard()->getCity(city)->color;
-	for (unsigned int i = 0; i < iterator.size(); i++)
-	{
-		if (Game::getGameBoard()->getCity(iterator.at(i))->cube[currentOutbreakCityColor] < 3)
-		{
-			Game::getGameBoard()->getCity(iterator.at(i))->cube[currentOutbreakCityColor]++;
-			//decrement the num of cube
-			Game::numOfCubeDecrementor(currentOutbreakCityColor);
-		}
-		/*
-		Another outbreak could occur if the capacity of the cube color exceed three
-		*/
-		else
-			infectCityOutBreak(iterator.at(i));
-	}
-}
-
 void City::buildResearchFacility()
 {
 	if (this->research == false)

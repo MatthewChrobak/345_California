@@ -33,6 +33,7 @@ public:
 
 	/*
 	This is to change turn once the number of action is reach
+	holding the next player index
 	*/
 	bool playerTurnChange();
 	/*
