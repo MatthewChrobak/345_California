@@ -548,7 +548,6 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
      
 		case PlayerActions::ShareKnowledge:
 		{
-
 		//TODO: THE PHI FIX THIS
 			int numOfPlayerInSameCity = 0;
 			int nextPlayerIndex;
@@ -565,6 +564,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			if (numOfPlayerInSameCity > 1)
 			{
 				GuiManager::showMsgBox("Shared knowledge is possible.");
+
 				/*
 				When the player successfully finishes an action, ensure that the action is reset by writing the line
 				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
