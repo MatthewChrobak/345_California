@@ -623,6 +623,8 @@ void Board::checkTurn()
 
     if (board->playerTurnChange())
     {
+        
+        ///TODO:: FIX LOGIC
         board->drawCards();
         GuiManager::showMsgBox("Your current hand after picking two cards.");
         GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
