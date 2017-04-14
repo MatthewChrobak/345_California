@@ -192,9 +192,9 @@ TreatDiseaseAction::TreatDiseaseAction() : UIButton(CMD_PLAYER_ACTION_TREAT_DISE
 //TODO: only the city cube color can be remove(the game itself allow to remove any cubes on the city. Thus, we have to modify that in the future)
 bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 {
-	
-	Board* board = Game::getGameBoard();
-	Player& player = board->getCurrentTurnPlayer();
+	auto game = Game::getInstance();
+	auto board = game.getBoard();
+	Player& player = board.getCurrentTurnPlayer();
 
 	/*
 	When the player successfully finishes an action, ensure that the action is reset by writing the line
@@ -202,7 +202,7 @@ bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 	Failure to do so will cause assertions to fail and will cause the application to crash.
 	*/
 	int currentPlayerIndex = player.pawn->cityIndex;
-	int cityColor = Game::getGameBoard()->getCity(player.pawn->cityIndex)->color;
+	int cityColor = board.getCity(player.pawn->cityIndex)->color;
 
 	/*
 	implementing one function of the medic role
@@ -213,21 +213,21 @@ bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 	{
 		GuiManager::showMsgBox("You're a medic!...Removing all matching cubes! Counts as one action.");
 		do {
-			Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor]--;
-			Game::numOfCubeIncrementor(cityColor);
-			Game::decrementActionCounter();
+			board.getCity(currentPlayerIndex)->cube[cityColor]--;
+			game.numOfCubeIncrementor(cityColor);
+			game.decrementActionCounter();
 			Board::checkTurn();
-		} while (Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor] > 0);
+		} while (board.getCity(currentPlayerIndex)->cube[cityColor] > 0);
 
 		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 	}
 	//if the player is not a medic
-	else if (Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor] > 0)
+	else if (board.getCity(currentPlayerIndex)->cube[cityColor] > 0)
 	{
 		GuiManager::showMsgBox("An infection cube has been remove in the current city");
-		Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor]--;
-		Game::numOfCubeIncrementor(cityColor);
-		Game::decrementActionCounter();
+		board.getCity(currentPlayerIndex)->cube[cityColor]--;
+		game.numOfCubeIncrementor(cityColor);
+		game.decrementActionCounter();
 		Board::checkTurn();
 		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 	}
@@ -354,10 +354,11 @@ PlayerCardsOkay::PlayerCardsOkay(std::vector<int>* cardData) : UIButton(CMD_PLAY
 
 bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 {
-	Board* board = Game::getGameBoard();
-	Player& player = board->getCurrentTurnPlayer();
+	auto game = Game::getInstance();
+	auto board = game.getBoard();
+	Player& player = board.getCurrentTurnPlayer();
 	int roleCardIndex = player.getRoleCard()->getRoleCardVal();
-	int numCities = board->getNumCities();
+	int numCities = board.getNumCities();
 	int playerCityIndex = player.pawn->cityIndex;
 
 	switch (GameFrame::PlayerAction)
@@ -367,14 +368,14 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 		// Make sure we're within the valid bounds.
 		if (playerCityIndex >= 0 && playerCityIndex < numCities) {
-			City* playerCity = board->getCity(playerCityIndex);
+			City* playerCity = board.getCity(playerCityIndex);
 			int clickedCityIndex = City::getCityIndexFromXY(x, y);
 
 			// If the city is an adjacent city, move us.
 			if (playerCity->isAdjacent(clickedCityIndex)) {
 				player.pawn->cityIndex = clickedCityIndex;
 
-				Game::decrementActionCounter();
+				game.decrementActionCounter();
 				Board::checkTurn();
 				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 				// Reset the player action.
@@ -407,7 +408,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 					// Remove it, move the player, and hide the player cards.
 					player.removeCard(cardIndex);
 					player.pawn->cityIndex = cityIndex;
-					Game::decrementActionCounter();
+					game.decrementActionCounter();
 					Board::checkTurn();
 					GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 					// Reset the player action.
@@ -445,7 +446,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				int x = cardIndex;
 				player.pawn->cityIndex = x;
 				player.removeCard(cardIndex);
-				Game::decrementActionCounter();
+				game.decrementActionCounter();
 				Board::checkTurn();
 				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 				//reset player Actions
@@ -458,10 +459,10 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 		/*
 		*/
 	case PlayerActions::ShuttleFlight:
-		if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != false)
+		if (board.getCity(player.pawn->cityIndex)->research != false)
 		{
 			int clickedCityIndex = City::getCityIndexFromXY(x, y);
-			if (Game::getGameBoard()->getCity(clickedCityIndex)->research == true)
+			if (board.getCity(clickedCityIndex)->research == true)
 			{
 				player.pawn->cityIndex = clickedCityIndex;
 				/*
@@ -469,7 +470,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 				Failure to do so will cause assertions to fail and will cause the application to crash.
 				*/
-				Game::decrementActionCounter();
+				game.decrementActionCounter();
 				Board::checkTurn();
 				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 				//reset player Actions
@@ -486,14 +487,14 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 		if (roleCardIndex == 4)
 		{
-			if (Game::numOfResearchCenter > 0)
+			if (game.numOfResearchCenter > 0)
 			{
-				if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != true)
+				if (board.getCity(player.pawn->cityIndex)->research != true)
 				{
 					GuiManager::showMsgBox("You're operations expert! This is worth one action");
-					Game::getGameBoard()->getCity(player.pawn->cityIndex)->research = true;
-					Game::numOfResearchCenter--;
-					Game::decrementActionCounter();
+					board.getCity(player.pawn->cityIndex)->research = true;
+					game.numOfResearchCenter--;
+					game.decrementActionCounter();
 					Board::checkTurn();
 					//reset player actions
 					GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
@@ -516,17 +517,17 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			if (card != nullptr && card->getType() == PlayerCardType::City_Card)
 			{
 				//check if we have enough research center
-				if (Game::numOfResearchCenter > 0)
+				if (game.numOfResearchCenter > 0)
 				{
-					if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != true)
+					if (board.getCity(player.pawn->cityIndex)->research != true)
 					{
 						//check if the player is current city match with the city card
 						if (player.pawn->cityIndex == ((CityCard*)card)->cityIndex)
 						{
-							Game::getGameBoard()->getCity(player.pawn->cityIndex)->research = true;
+							board.getCity(player.pawn->cityIndex)->research = true;
 							player.removeCard(cardIndex);
-							Game::numOfResearchCenter--;
-							Game::decrementActionCounter();
+							game.numOfResearchCenter--;
+							game.decrementActionCounter();
 							Board::checkTurn();
 							//reset player actions
 							GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
@@ -552,9 +553,9 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 			int numOfPlayerInSameCity = 0;
 			int nextPlayerIndex;
 
-			for (int i = 0; i < Game::getGameBoard()->getNumberOfPlayers(); i++)
+			for (int i = 0; i < board.getNumberOfPlayers(); i++)
 			{
-				Player& nextPlayer = Game::getGameBoard()->getPlayer(i);
+				Player& nextPlayer = board.getPlayer(i);
 				nextPlayerIndex = nextPlayer.pawn->cityIndex;
 				if (playerCityIndex == nextPlayerIndex)
 				{
@@ -581,7 +582,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 						GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 						Failure to do so will cause assertions to fail and will cause the application to crash.
 						*/
-						Game::decrementActionCounter();
+						game.decrementActionCounter();
 						Board::checkTurn();
 						GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 						//reset player Actions
@@ -620,8 +621,8 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				for (int i = 1; i < requiredCardCount; i++) {
 					CityCard* cityCard0 = (CityCard*)player.getCard(this->_cardData->at(i - 1));
 					CityCard* cityCard1 = (CityCard*)player.getCard(this->_cardData->at(i));
-					City* city0 = board->getCity(cityCard0->cityIndex);
-					City* city1 = board->getCity(cityCard1->cityIndex);
+					City* city0 = board.getCity(cityCard0->cityIndex);
+					City* city1 = board.getCity(cityCard1->cityIndex);
 
 					if (city0->color ^ city0->color) {
 						GuiManager::showMsgBox("You must select the same color cards.");
@@ -630,8 +631,8 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				}
 
 				// Make sure it hasn't been cured already.
-				InfectionColor color = Game::getGameBoard()->getCity(((CityCard*)player.getCard(this->_cardData->at(0)))->cityIndex)->color;
-				if (board->isCured[color]) {
+				InfectionColor color = board.getCity(((CityCard*)player.getCard(this->_cardData->at(0)))->cityIndex)->color;
+				if (board.isCured[color]) {
 					GuiManager::showMsgBox("This disease has already been cured!");
 					return true;
 				}
@@ -643,10 +644,10 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				}
 
 				// Cure the disease.
-				board->isCured[color] = true;
+				board.isCured[color] = true;
 				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 				GuiManager::showMsgBox("The disease has been cured.");
-				Game::decrementActionCounter();
+				game.decrementActionCounter();
 				Board::checkTurn();
 				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 				
@@ -690,9 +691,9 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 
 	//If turn is changed, show this message
-	//if (Game::getGameBoard()->playerTurnChange() == true) 
+	//if (board.playerTurnChange() == true) 
 	//{
-	//	Game::getGameBoard()->drawCards();
+	//	board.drawCards();
 	//	GuiManager::showMsgBox("Your current hand after picking two cards.");
 	//	GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
 
@@ -706,7 +707,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 	//	}
 	//	//draw infection card and the game will do the infection automatically
-	//	Game::getGameBoard()->drawInfectionCard();
+	//	board.drawInfectionCard();
 	//	GuiManager::showMsgBox("End of your turn.");
 	//}
 

@@ -46,17 +46,19 @@ bool City::isAdjacent(int index)
 
 City* City::getCityFromXY(int x, int y)
 {
+	auto board = Game::getInstance().getBoard();
+
 	// Get the city index.
 	int index = City::getCityIndexFromXY(x, y);
 
 #ifdef DEBUG
 	// If we're in debug mode, and we're not within the bounds, throw an exception.
-	assert(index != -1 && index < Game::getGameBoard()->getNumCities());
+	assert(index != -1 && index < board.getNumCities());
 #endif
 	
 	// Make sure we're within valid bounds.
-	if (index >= 0 && index < Game::getGameBoard()->getNumCities()) {
-		return Game::getGameBoard()->getCity(index);
+	if (index >= 0 && index < board.getNumCities()) {
+		return board.getCity(index);
 	} else {
 		return nullptr;
 	}
@@ -65,18 +67,15 @@ City* City::getCityFromXY(int x, int y)
 int City::getCityIndexFromXY(int x, int y)
 {
 	// Get the game board, and the number of cities.
-	Board* board = Game::getGameBoard();
-#ifdef DEBUG
-	assert(board != nullptr);
-#endif
-	int numCities = board->getNumCities();
+	auto board = Game::getInstance().getBoard();
+	int numCities = board.getNumCities();
 
 	// Figure out what the width and height of the city is.
 	int halfWidth = CITY_RENDER_WIDTH / 2;
 	int halfHeight = CITY_RENDER_HEIGHT / 2;
 
 	for (int i = 0; i < numCities; i++) {
-		City* city = board->getCity(i);
+		City* city = board.getCity(i);
 
 		// The x/y coordinate is their centerpoint.
 		int centerX = city->x;

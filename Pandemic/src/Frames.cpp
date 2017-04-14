@@ -46,6 +46,8 @@ void GameFrame::showAdminTools()
 
 void GameFrame::finishedEditing()
 {
+	auto board = Game::getInstance().getBoard();
+
 	// Make the map tools button invisible.
 	auto element = GuiManager::getUIElementByName(CMD_TOGGLE_MAP_EDITING_ACTIONS);
 #ifdef DEBUG
@@ -63,31 +65,30 @@ void GameFrame::finishedEditing()
 	element->visible = false;
 
 	// Submit the map.
-	Game::getGameBoard()->submitMap();
+	board.submitMap();
 }
 
 bool GameFrame::onMouseDown(std::string button, int x, int y)
 {
-	Board* board = Game::getGameBoard();
-	Player& player = board->getCurrentTurnPlayer();
+	auto game = Game::getInstance();
+	auto board = game.getBoard();
+	Player& player = board.getCurrentTurnPlayer();
 	int roleCardIndex = player.getRoleCard()->getRoleCardVal();
-	int numCities = board->getNumCities();
+	int numCities = board.getNumCities();
 	// Maybe we can exit out early.
 	if (UIFrame::onMouseDown(button, x, y)) {
 		return true;
 	}
 
 	if (button == "left") {
-		Board* board = Game::getGameBoard();
-
 		// Are we currently editing the map?
-		if (Game::getGameBoard()->isEditingMap())
+		if (board.isEditingMap())
 		{
 			// Figure out if we did an action that requires clicking on cities.
 			switch (GameFrame::EditingAction) {
 				// Move the node.
 				case MapEditingActions::MoveNode: {
-					City* city = Game::getGameBoard()->getCity(GameFrame::EditNodeIndex);
+					City* city = board.getCity(GameFrame::EditNodeIndex);
 					city->x = x;
 					city->y = y;
 				}
@@ -96,7 +97,7 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 				City* city = new City();
 				city->x = x;
 				city->y = y;
-				Game::getGameBoard()->addCity(city);
+				board.addCity(city);
 				break;
 			}
 			case MapEditingActions::RotateAngle:
@@ -115,7 +116,7 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 					return true;
 				}
 
-				City* city = board->getCity(index);
+				City* city = board.getCity(index);
 
 				// Make sure it's not null.
 				if (city != nullptr) {
@@ -133,7 +134,7 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 							City* newCity = new City();
 							newCity->x = x;
 							newCity->y = y;
-							board->addCity(newCity);
+							board.addCity(newCity);
 						}
 						break;
 
@@ -158,7 +159,7 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 							// Add the edges.
 						case MapEditingActions::MakeDirectedEdge:
 						{
-							City* primaryCity = Game::getGameBoard()->getCity(GameFrame::EditNodeIndex);
+							City* primaryCity = board.getCity(GameFrame::EditNodeIndex);
 
 							// Connect them only if they're different.
 							if (index != GameFrame::EditNodeIndex) {
@@ -185,12 +186,12 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 					// Are we trying to move?
 				case PlayerActions::Drive:
 				{
-					Player& player = board->getCurrentTurnPlayer();
+					Player& player = board.getCurrentTurnPlayer();
 					int playerCityIndex = player.pawn->cityIndex;
 
 					// Make sure we're within the valid bounds.
 					if (playerCityIndex >= 0 && playerCityIndex < numCities) {
-						City* playerCity = board->getCity(playerCityIndex);
+						City* playerCity = board.getCity(playerCityIndex);
 						int clickedCityIndex = City::getCityIndexFromXY(x, y);
 
 						// If the city is an adjacent city, move us.
@@ -198,7 +199,7 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 							player.pawn->cityIndex = clickedCityIndex;
 
 							// Reset the player action.
-							Game::decrementActionCounter();
+							game.decrementActionCounter();
 							//If turn is changed, show this message
 							Board::checkTurn();
 							GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
@@ -209,10 +210,10 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 				}
 				case PlayerActions::ShuttleFlight:
 
-					if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != false)
+					if (board.getCity(player.pawn->cityIndex)->research != false)
 					{
 						int clickedCityIndex = City::getCityIndexFromXY(x, y);
-						if (Game::getGameBoard()->getCity(clickedCityIndex)->research == true)
+						if (board.getCity(clickedCityIndex)->research == true)
 						{
 							player.pawn->cityIndex = clickedCityIndex;
 							/*
@@ -220,7 +221,7 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 							GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 							Failure to do so will cause assertions to fail and will cause the application to crash.
 							*/
-							Game::decrementActionCounter();
+							game.decrementActionCounter();
 							Board::checkTurn();
 							GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 							//reset player Actions
@@ -248,15 +249,17 @@ void GameFrame::draw()
 {
 	UIFrame::draw();
 
+	auto board = Game::getInstance().getBoard();
+
 	// Are we editing right now?
-	if (Game::getGameBoard()->isEditingMap() && Game::getGameBoard()->getNumCities()) {
+	if (board.isEditingMap() && board.getNumCities()) {
 		switch (GameFrame::EditingAction) {
 			case MapEditingActions::SelectNode:
 			case MapEditingActions::MakeDirectedEdge:
 			case MapEditingActions::ChangeNodeName:
 			case MapEditingActions::MoveNode:
 				SurfaceContext ctx;
-				City* city = Game::getGameBoard()->getCity(GameFrame::EditNodeIndex);
+				City* city = board.getCity(GameFrame::EditNodeIndex);
 				ctx.setPosition(city->x - (CITY_RENDER_WIDTH / 2), city->y - (CITY_RENDER_HEIGHT / 2));
 				ctx.setRenderSize(CITY_RENDER_WIDTH, CITY_RENDER_HEIGHT);
 				GraphicsManager::renderSurface("ui\\selectbox.png", ctx);
@@ -267,13 +270,15 @@ void GameFrame::draw()
 
 bool GameFrame::onKeyDown(std::string key)
 {
+	auto board = Game::getInstance().getBoard();
+
 	// Are we editing right now?
-	if (Game::getGameBoard()->isEditingMap() && Game::getGameBoard()->getNumCities()) {
+	if (board.isEditingMap() && board.getNumCities()) {
 		switch (GameFrame::EditingAction) {
 			case MapEditingActions::ChangeNodeName:
 
 				// Get the city object.
-				City* city = Game::getGameBoard()->getCity(GameFrame::EditNodeIndex);
+				City* city = board.getCity(GameFrame::EditNodeIndex);
 
 				// Is the input a non-character?
 				if (key.size() != 1) {
@@ -369,8 +374,10 @@ PlayerCardsFrame::PlayerCardsFrame() : UIFrame(FRM_PLAYER_CARDS)
 void PlayerCardsFrame::draw()
 {
 	UIFrame::draw();
+	
+	auto board = Game::getInstance().getBoard();
 
-	Player& player = Game::getGameBoard()->getCurrentTurnPlayer();
+	Player& player = board.getCurrentTurnPlayer();
 	SurfaceContext sCtx;
 	TextContext tCtx;
 
@@ -407,8 +414,8 @@ void PlayerCardsFrame::draw()
 			// Get the city from its index.
 			int cityIndex = ((CityCard*)card)->cityIndex;
 
-			if (cityIndex >= 0 && cityIndex < Game::getGameBoard()->getNumCities()) {
-				City* city = Game::getGameBoard()->getCity(cityIndex);
+			if (cityIndex >= 0 && cityIndex < board.getNumCities()) {
+				City* city = board.getCity(cityIndex);
 
 				// Modify the color
 				switch (city->color)
@@ -457,12 +464,14 @@ void PlayerCardsFrame::draw()
 
 bool PlayerCardsFrame::onMouseDown(std::string button, int x, int y)
 {
+	auto board = Game::getInstance().getBoard();
+
 	// Maybe we can exit out early.
 	if (UIFrame::onMouseDown(button, x, y)) {
 		return true;
 	}
 
-	Player& player = Game::getGameBoard()->getCurrentTurnPlayer();
+	Player& player = board.getCurrentTurnPlayer();
 	
 
 	for (int i = 0; i < 7; i++) {

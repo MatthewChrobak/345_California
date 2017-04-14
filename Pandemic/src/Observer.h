@@ -6,9 +6,15 @@
 */
 #pragma once
 
+enum UpdateType : int
+{
+	Attatch_Update,
+	Notify_Update
+};
+
 class Observer
 {
 public:
-	virtual void update(void* subject) = 0;
+	virtual void update(void* subject, UpdateType type) = 0;
 };
 

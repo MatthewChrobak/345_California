@@ -31,7 +31,7 @@ void DirectFlightAction::doAction(Player *player) {
                 // Remove it, move the player, and hide the player cards.
                 player->removeCard(cardIndex);
                 player->pawn->cityIndex = cityIndex;
-                Game::decrementActionCounter();
+                board.decrementActionCounter();
                 Board::checkTurn();
                 GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
                 // Reset the player action.

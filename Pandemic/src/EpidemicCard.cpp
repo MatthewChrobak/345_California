@@ -33,10 +33,12 @@ void EpidemicCard::drawingEpidemicCard()
 	//Increment the infection rate
 	Board::incrementInfectionRate();
 
+	auto board = Game::getInstance().getBoard();
+
 	//Draw the last infection card and place 3 cubes on it
-	Game::getGameBoard()->drawLastInfectionCard();
+	board.drawLastInfectionCard();
 
 	//Shuffle the discarded pile and place it back in the original deck
-	Game::getGameBoard()->shuffleDiscardedInfectionDeck();
+	board.shuffleDiscardedInfectionDeck();
 }
 

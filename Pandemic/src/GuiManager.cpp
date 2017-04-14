@@ -17,11 +17,11 @@ UIMessageBox GuiManager::_messageBox;
 
 void GuiManager::initialize()
 {
-	auto menuScene = &GuiManager::_uiElements[(int)GameState::MainMenu];
+	auto menuScene = &GuiManager::_uiElements[(int)GameState::MainMenu_GameState];
 	menuScene->push_back(new MainMenuFrame());
 
 
-	auto gameScene = &GuiManager::_uiElements[(int)GameState::InGame];	
+	auto gameScene = &GuiManager::_uiElements[(int)GameState::InGame_GameState];	
 	gameScene->push_back(new GameFrame());
 }
 
@@ -39,15 +39,16 @@ void GuiManager::destroy()
 
 void GuiManager::handleWindowClose()
 {
-	switch (Game::getState())
+	auto game = Game::getInstance();
+	switch (game.getState())
 	{
-		case GameState::InGame:
-			Game::destroy();
-			Game::changeState(GameState::MainMenu);
+		case GameState::InGame_GameState:
+			game.destroy();
+			game.changeState(GameState::MainMenu_GameState);
 			break;
-		case GameState::MainMenu:
+		case GameState::MainMenu_GameState:
 			// Close the game.
-			Game::changeState(GameState::Closed);
+			game.changeState(GameState::Closed_GameState);
 			break;
 	}
 }
@@ -221,7 +222,7 @@ void GuiManager::convertCoords(int* x, int* y)
 
 std::vector<UIElement*>* GuiManager::getCurrentSceneUIElements()
 {
-	return &GuiManager::_uiElements[(int)Game::getState()];
+	return &GuiManager::_uiElements[(int)Game::getInstance().getState()];
 }
 
 UIElement* GuiManager::getUIElementByName(std::string name)

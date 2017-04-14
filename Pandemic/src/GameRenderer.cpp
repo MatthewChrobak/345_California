@@ -7,7 +7,7 @@
 void GameRenderer::drawGame()
 {
 	// Make sure we're actually in game.
-	if (Game::getState() != GameState::InGame) {
+	if (Game::getInstance().getState() != GameState::InGame_GameState) {
 		return;
 	}
 
@@ -30,17 +30,17 @@ void GameRenderer::drawGame()
 
 void GameRenderer::drawPlayers()
 {
-	Board* board = Game::getGameBoard();
+	auto board = Game::getInstance().getBoard();
 	// Exit out early to avoid problems.
-	if (board->isEditingMap()) {
+	if (board.isEditingMap()) {
 		return;
 	}
-	int numPlayers = board->getNumberOfPlayers();
-	Player& currentTurnPlayer = board->getCurrentTurnPlayer();
+	int numPlayers = board.getNumberOfPlayers();
+	Player& currentTurnPlayer = board.getCurrentTurnPlayer();
 
 	// Draw every player except the current turn.
 	for (int i = 0; i < numPlayers; i++) {
-		Player& player = board->getPlayer(i);
+		Player& player = board.getPlayer(i);
 		if (&currentTurnPlayer != &player) {
 			GameRenderer::drawPlayer(player);
 		}
@@ -60,17 +60,17 @@ void GameRenderer::drawBackground()
 void GameRenderer::drawCities()
 {
 	// Get the game board and the number of cities.
-	Board* board = Game::getGameBoard();
-	int numCities = board->getNumCities();
+	auto board = Game::getInstance().getBoard();
+	int numCities = board.getNumCities();
 
 	// Draw all the connections so that they appear under the nodes.
 	for (int i = 0; i < numCities; i++) {
-		GameRenderer::drawCityConnections(*board->getCity(i));
+		GameRenderer::drawCityConnections(*board.getCity(i));
 	}
 
 	// Draw all the nodes and their names.
 	for (int i = 0; i < numCities; i++) {
-		City* city = board->getCity(i);
+		City* city = board.getCity(i);
 		GameRenderer::drawCityNode(*city);
 		GameRenderer::drawCityName(*city);
 	}
@@ -78,13 +78,13 @@ void GameRenderer::drawCities()
 	// Are we currently trying to do an action?
 	if (GameFrame::PlayerAction == PlayerActions::Drive) {
 		// We're trying to drive. Make sure we know what cities we can go to.
-		Player& player = board->getCurrentTurnPlayer();
+		Player& player = board.getCurrentTurnPlayer();
 		int playerCityIndex = player.pawn->cityIndex;
 
 		// Is it a valid city?
-		if (playerCityIndex >= 0 && playerCityIndex < board->getNumCities()) {
+		if (playerCityIndex >= 0 && playerCityIndex < board.getNumCities()) {
 			// Get the city and its adjacent nodes.
-			City* playerCity = board->getCity(playerCityIndex);
+			City* playerCity = board.getCity(playerCityIndex);
 			auto adjacentCities = playerCity->getAdjacentNodes();
 
 			// Loop through every city.
@@ -92,8 +92,8 @@ void GameRenderer::drawCities()
 				int cityIndex = adjacentCities.at(i);
 
 				// Is it a valid city?
-				if (cityIndex >= 0 && cityIndex < board->getNumCities()) {
-					City* city = board->getCity(cityIndex);
+				if (cityIndex >= 0 && cityIndex < board.getNumCities()) {
+					City* city = board.getCity(cityIndex);
 
 					// It is. Render it.
 					SurfaceContext ctx;
@@ -186,12 +186,13 @@ void GameRenderer::drawCityName(City& city)
 void GameRenderer::drawCityConnections(City& city)
 {
 	SurfaceContext ctx;
+	auto board = Game::getInstance().getBoard();
 
 	// Get all the nodes connected to the city.
 	auto adjacentNodes = city.getAdjacentNodes();
 
 	for (unsigned int i = 0; i < adjacentNodes.size(); i++) {
-		City* adjacentNode = Game::getGameBoard()->getCity(adjacentNodes.at(i));
+		City* adjacentNode = board.getCity(adjacentNodes.at(i));
 
 		// Get the width of the hypotenuse between this city and its adjacent node.
 		int width = adjacentNode->x - city.x;
@@ -223,11 +224,12 @@ void GameRenderer::drawCityConnections(City& city)
 
 void GameRenderer::drawPlayer(Player& player)
 {
+	auto board = Game::getInstance().getBoard();
 	int cityIndex = player.pawn->cityIndex;
 
 	// Ensure that the city index is within the bounds of the graph.
-	if (cityIndex >= 0 && cityIndex < Game::getGameBoard()->getNumCities()) {
-		City* city = Game::getGameBoard()->getCity(cityIndex);
+	if (cityIndex >= 0 && cityIndex < board.getNumCities()) {
+		City* city = board.getCity(cityIndex);
 		SurfaceContext ctx;
 
 		// Set the position of the player.
@@ -270,6 +272,7 @@ void GameRenderer::drawOutbreakMeter()
 void GameRenderer::drawInfectionRate()
 {
 	TextContext ctx;
+	auto board = Game::getInstance().getBoard();
 
 	ctx.setPosition(10, DRAW_HEIGHT - 50);
 	ctx.setFontSize(24);
@@ -278,13 +281,13 @@ void GameRenderer::drawInfectionRate()
 	ctx.getOutline().setColor(0, 0, 0);
 
 	// This should be changed to append the current infection rate to the rendered text.
-	GraphicsManager::renderText("Infection Rate: " + std::to_string(Game::getGameBoard()->getInfectionRate()), ctx);
+	GraphicsManager::renderText("Infection Rate: " + std::to_string(board.getInfectionRate()), ctx);
 }
 
 void GameRenderer::drawCureMarkers()
 {
 	SurfaceContext ctx;
-	Board* board = Game::getGameBoard();
+	auto board = Game::getInstance().getBoard();
 	int drawWidth = 50;
 
 	for (int i = 0; i < InfectionColor::InfectionColor_Length; i++) {
@@ -292,7 +295,7 @@ void GameRenderer::drawCureMarkers()
 		ctx.setPosition(DRAW_WIDTH / 2 - 2 * drawWidth + i * drawWidth, DRAW_HEIGHT - 60);
 		ctx.setRenderSize(drawWidth, drawWidth);
 		
-		if (board->isCured[i]) {
+		if (board.isCured[i]) {
 			switch (i) {
 				case InfectionColor::Black:
 					ctx.setColor(50, 50, 50);
@@ -327,7 +330,7 @@ void GameRenderer::drawCureMarkers()
 
 		GraphicsManager::renderSurface("ui\\cure.png", ctx);
 
-		if (board->isCured[i]) {
+		if (board.isCured[i]) {
 			ctx.getColor()->setR(0);
 			ctx.getColor()->setG(255);
 			ctx.getColor()->setB(0);

@@ -11,10 +11,10 @@
 class Observable
 {
 public:
-	void attach(Observer* observer);
-	void detatch(Observer* observer);
+	virtual void attach(Observer* observer);
+	virtual void detatch(Observer* observer);
 
-	virtual void notify();
+	virtual void notify(UpdateType type);
 
 private:
 	std::vector<Observer*> _observers;

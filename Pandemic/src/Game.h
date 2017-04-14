@@ -1,51 +1,55 @@
-#pragma once
-#include "Board.h"
-#include <string>
+/*!
+	Author: Matthew Chrobak
+	Contributors:
 
-#define NUM_OF_STARTING_CUBE 24
-#define NUM_OF_MAX_ACTION 4
-#define NUM_OF_STARTING_RESEARCH_FACILITY 6
+	Purpose: Provides a single instance of a game through the singleton pattern.
+*/
+
+#pragma once
+#include "Controller.h"
+#include "Board.h"
 
 enum GameState : int
 {
-	MainMenu,
-	InGame,
-	Closed,
-	GameState_Length
+	Startup_GameState,
+	MainMenu_GameState,
+	InGame_GameState,
+	Closed_GameState,
+	GameState_Length // TODO: Only exists for backward compatability. Remove later on.
 };
 
-class Game 
+class Game
 {
 public:
-	static void loadOrCreate(std::string savename);
-	static void destroy();
-	static void save();
+	static Game& getInstance();
+	Controller& getController();
+	Board& getBoard();
 
-	static void changeState(GameState state);
-	static GameState getState();
+	GameState getState();
+	void changeState(GameState state);
 
-	static Board* getGameBoard();
+	int numOfCubes[4];
+	int numOfResearchCenter;
 
-	/*
-	attribute to number of cube for each color
-	*/
-	static int numOfYellowCube;
-	static int numOfBlackCube;
-	static int numOfBlueCube;
-	static int numOfRedCube;
-	static int numOfResearchCenter;
+	void numOfCubeDecrementor(int cityColor);
+	void numOfCubeIncrementor(int cityColor);
 
-	static void numOfCubeDecrementor(int cityColor);
-	static void numOfCubeIncrementor(int cityColor);
+	int actionCounter;
 
-	static int actionCounter;
+	void decrementActionCounter();
+	void resetActionCounter();
 
-	static void decrementActionCounter();
-	static void resetActionCounter();
+
 
 private:
-	static Board* _gameBoard;
-	static GameState _state;
-	static std::string _saveFolder;
-};
+	// The static variable containing the game instance.
+	static Game* _game;
+	// A private constructor to prevent any instantiation.
+	Game();
+	void SwapController(Controller* controller);
 
+	// Instance fields pertaining to the game.
+	Board* _board;
+	Controller* _controller;
+	GameState _state;
+};

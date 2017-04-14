@@ -3,7 +3,6 @@
 #ifdef DEBUG
 #include <assert.h>
 #endif
-using namespace SFML;
 
 SfmlFontManager::SfmlFontManager(std::string path)
 {

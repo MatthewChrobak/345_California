@@ -21,8 +21,8 @@ InfectionCard::~InfectionCard()
 //Infect a city with 1 cube
 void InfectionCard::infectCityCube(int cityIndex)
 {
-	Board* board = Game::getGameBoard();
-	City* city = board->getCity(cityIndex);
+	auto board = Game::getInstance().getBoard();
+	City* city = board.getCity(cityIndex);
 	int color = city->color;
 
 	if (city->cube[color] < 3)
@@ -37,18 +37,19 @@ void InfectionCard::infectCityCube(int cityIndex)
 
 void InfectionCard::infectLastCity(int lastCity)
 {
-	Board* board = Game::getGameBoard();
-	City* city = board->getCity(lastCity);
+	auto game = Game::getInstance();
+	auto board = game.getBoard();
+	City* city = board.getCity(lastCity);
 	int color = city->color;
 
 	//Infect that city with 3 cubes
 	for (int i = 0; i < 3; i++)
 	{
-		Game::getGameBoard()->getCity(lastCity)->cube[color]++;
+		board.getCity(lastCity)->cube[color]++;
 	}
 	
-	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(lastCity)->name + " is infected");
-	Game::numOfCubeDecrementor(color);
+	GuiManager::showMsgBox("The city: " + board.getCity(lastCity)->name + " is infected");
+	game.numOfCubeDecrementor(color);
 
 }
 
@@ -57,9 +58,11 @@ normal infection without outbreak
 */
 void InfectionCard::infectCity(int city, int index)
 {
-	Game::getGameBoard()->getCity(city)->cube[index]++;
-	Game::numOfCubeDecrementor(index);
-	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(city)->name + " is infected.");
+	auto game = Game::getInstance();
+	auto board = game.getBoard();
+	board.getCity(city)->cube[index]++;
+	game.numOfCubeDecrementor(index);
+	GuiManager::showMsgBox("The city: " + board.getCity(city)->name + " is infected.");
 }
 
 /*
@@ -67,7 +70,9 @@ infection with outbreak of the current passing city.
 */
 void InfectionCard::infectCityOutBreak(int city)
 {
-	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(city)->name + " is infected.");
+	auto game = Game::getInstance();
+	auto board = game.getBoard();
+	GuiManager::showMsgBox("The city: " + board.getCity(city)->name + " is infected.");
 	GuiManager::showMsgBox("OH NO! AN OUTBREAK OCCURRED!!!");
 	City::outbreakCount += 1;
 
@@ -81,15 +86,15 @@ void InfectionCard::infectCityOutBreak(int city)
 	being outbreak and if another city's cube size is rearched, than another outbreak event will
 	happen. A counter is use to recursively call the infectCityOutbreak if the cube is full.
 	*/
-	auto iterator = Game::getGameBoard()->getCity(city)->getAdjacentNodes();
-	int currentOutbreakCityColor = Game::getGameBoard()->getCity(city)->color;
+	auto iterator = board.getCity(city)->getAdjacentNodes();
+	int currentOutbreakCityColor = board.getCity(city)->color;
 	for (unsigned int i = 0; i < iterator.size(); i++)
 	{
-		if (Game::getGameBoard()->getCity(iterator.at(i))->cube[currentOutbreakCityColor] < 3)
+		if (board.getCity(iterator.at(i))->cube[currentOutbreakCityColor] < 3)
 		{
-			Game::getGameBoard()->getCity(iterator.at(i))->cube[currentOutbreakCityColor]++;
+			board.getCity(iterator.at(i))->cube[currentOutbreakCityColor]++;
 			//decrement the num of cube
-			Game::numOfCubeDecrementor(currentOutbreakCityColor);
+			game.numOfCubeDecrementor(currentOutbreakCityColor);
 		}
 		/*
 		Another outbreak could occur if the capacity of the cube color exceed three

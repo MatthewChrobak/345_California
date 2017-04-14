@@ -1,80 +1,22 @@
 #pragma once
-#include "Game.h"
 #include <iostream>
-#include "GuiManager.h"
-#include "GraphicsManager.h"
-#include "FileSystem.h"
-#include "Paths.h"
+#include "Game.h"
 #include <ctime>
 
 #ifdef DEBUG
 #include <assert.h>
 #endif
 
-// TODO: This needs to be cleaned up.
 int main()
 {
+	// Create a new instance of the game.
+	auto game = Game::getInstance();
+	game.changeState(GameState::MainMenu_GameState);
 
-#ifdef DEBUG
-	assert(Game::getState() == GameState::MainMenu);
-#endif
-
-	// Make sure the proper folders exist.
-
-	// Ensure the saves folder exists.
-	if (!FileSystem::directoryExists(FileSystem::getStartupPath() + GAME_SAVES_FOLDER)) {
-		FileSystem::createDirectory(FileSystem::getStartupPath() + GAME_SAVES_FOLDER);
+	// While the game is running
+	while (game.getState() != GameState::Closed_GameState)
+	{
+		// draw the controller.
+		game.getController().draw();
 	}
-
-	// Ensure the graphics folder exists.
-	if (!FileSystem::directoryExists(FileSystem::getStartupPath() + GRAPHICS_PATH)) {
-		FileSystem::createDirectory(FileSystem::getStartupPath() + GRAPHICS_PATH);
-	}
-
-	// Ensure that the font folder exists.
-	if (!FileSystem::directoryExists(FileSystem::getStartupPath() + FONTS_PATH)) {
-		FileSystem::createDirectory(FileSystem::getStartupPath() + FONTS_PATH);
-	}
-
-
-
-	// Initialize the GUI system.
-	GuiManager::initialize();
-
-	// Initialize the graphics system.
-	GraphicsManager::initialize();
-
-
-
-
-
-
-
-	int tick = 0, tmrGraphics = 0;
-
-	// Continue to loop while the game is not closed.
-	while (Game::getState() != GameState::Closed) {
-
-		tick = std::clock();
-
-		if (tmrGraphics < tick) {
-			GraphicsManager::draw();
-			tmrGraphics = tick + 16;
-		}
-	}
-
-
-
-
-
-#ifdef DEBUG
-	// Only destroy the game if we're flagged to.
-	assert(Game::getState() == GameState::Closed);
-#endif
-
-	// Destroy the graphics system.
-	GraphicsManager::destroy();
-
-	// Destroy the UI system.
-	GuiManager::destroy();
 }

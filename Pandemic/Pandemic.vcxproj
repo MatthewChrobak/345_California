@@ -154,6 +154,7 @@
     <ClCompile Include="src\CityCard.cpp" />
     <ClCompile Include="src\CityGraph.cpp" />
     <ClCompile Include="src\CommonContext.cpp" />
+    <ClCompile Include="src\Drawable.cpp" />
     <ClCompile Include="src\EpidemicCard.cpp" />
     <ClCompile Include="src\EventCard.cpp" />
     <ClCompile Include="src\FileStream.cpp" />
@@ -164,6 +165,8 @@
     <ClCompile Include="src\GraphicsManager.cpp" />
     <ClCompile Include="src\GuiManager.cpp" />
     <ClCompile Include="src\InfectionCard.cpp" />
+    <ClCompile Include="src\MainMenuController.cpp" />
+    <ClCompile Include="src\MainMenuView.cpp" />
     <ClCompile Include="src\Observable.cpp" />
     <ClCompile Include="src\Pawn.cpp" />
     <ClCompile Include="src\Player.cpp" />
@@ -172,9 +175,13 @@
     <ClCompile Include="src\PlayerRoleCard.cpp" />
     <ClCompile Include="src\Program.cpp" />
     <ClCompile Include="src\RandomNumberGenerator.cpp" />
+    <ClCompile Include="src\RenderView.cpp" />
+    <ClCompile Include="src\Resource.cpp" />
+    <ClCompile Include="src\ResourceIndexer.cpp" />
     <ClCompile Include="src\RoleCard.cpp" />
     <ClCompile Include="src\SfmlFontManager.cpp" />
     <ClCompile Include="src\SfmlGraphicsSystem.cpp" />
+    <ClCompile Include="src\SfmlRenderView.cpp" />
     <ClCompile Include="src\SfmlSurfaceManager.cpp" />
     <ClCompile Include="src\SurfaceContext.cpp" />
     <ClCompile Include="src\Textboxes.cpp" />
@@ -185,6 +192,7 @@
     <ClCompile Include="src\UIFrame.cpp" />
     <ClCompile Include="src\UIMessageBox.cpp" />
     <ClCompile Include="src\UITextbox.cpp" />
+    <ClCompile Include="src\View.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ArrayGraph.h" />
@@ -196,6 +204,8 @@
     <ClInclude Include="src\CityCard.h" />
     <ClInclude Include="src\CityGraph.h" />
     <ClInclude Include="src\CommonContext.h" />
+    <ClInclude Include="src\Controller.h" />
+    <ClInclude Include="src\Drawable.h" />
     <ClInclude Include="src\EpidemicCard.h" />
     <ClInclude Include="src\EventCard.h" />
     <ClInclude Include="src\FileStream.h" />
@@ -208,6 +218,8 @@
     <ClInclude Include="src\GuiManager.h" />
     <ClInclude Include="src\InfectionCard.h" />
     <ClInclude Include="src\InfectionColors.h" />
+    <ClInclude Include="src\MainMenuController.h" />
+    <ClInclude Include="src\MainMenuView.h" />
     <ClInclude Include="src\MapEditingActions.h" />
     <ClInclude Include="src\Observable.h" />
     <ClInclude Include="src\Observer.h" />
@@ -219,9 +231,14 @@
     <ClInclude Include="src\PlayerCard.h" />
     <ClInclude Include="src\PlayerRoleCard.h" />
     <ClInclude Include="src\RandomNumberGenerator.h" />
+    <ClInclude Include="src\RenderController.h" />
+    <ClInclude Include="src\RenderView.h" />
+    <ClInclude Include="src\Resource.h" />
+    <ClInclude Include="src\ResourceIndexer.h" />
     <ClInclude Include="src\RoleCard.h" />
     <ClInclude Include="src\SfmlFontManager.h" />
     <ClInclude Include="src\SfmlGraphicsSystem.h" />
+    <ClInclude Include="src\SfmlRenderView.h" />
     <ClInclude Include="src\SfmlSurfaceManager.h" />
     <ClInclude Include="src\SurfaceContext.h" />
     <ClInclude Include="src\Textboxes.h" />
@@ -233,6 +250,7 @@
     <ClInclude Include="src\UIFrame.h" />
     <ClInclude Include="src\UIMessageBox.h" />
     <ClInclude Include="src\UITextbox.h" />
+    <ClInclude Include="src\View.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

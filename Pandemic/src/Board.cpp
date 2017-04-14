@@ -153,21 +153,22 @@ void Board::loadBoardData(std::string boardFile)
 	}
 
 	FileStream* fs = FileStream::Open(boardFile, FileMode::Read);
+	auto game = Game::getInstance();
 
 	this->_editingMap = fs->readBool();
 	this->_startGame = fs->readBool();
 	currentTurnPlayer = fs->readInt();
-	Game::actionCounter = fs->readInt();
+	game.actionCounter = fs->readInt();
 	for (int i = 0; i < InfectionColor::InfectionColor_Length; i++) {
 		this->isCured[i] = fs->readBool();
 	}
 
 	// Cubes counters and research center.
-	Game::numOfBlackCube = fs->readInt();
-	Game::numOfYellowCube = fs->readInt();
-	Game::numOfBlueCube = fs->readInt();
-	Game::numOfRedCube = fs->readInt();
-	Game::numOfResearchCenter = fs->readInt();
+	game.numOfCubes[0] = fs->readInt();
+	game.numOfCubes[1] = fs->readInt();
+	game.numOfCubes[2] = fs->readInt();
+	game.numOfCubes[3] = fs->readInt();
+	game.numOfResearchCenter = fs->readInt();
 
 	// Infection Rate
 	Board::_infectionRate = fs->readInt();
@@ -208,21 +209,22 @@ void Board::loadBoardData(std::string boardFile)
 void Board::saveBoardData(std::string boardFile)
 {
 	FileStream* fs = FileStream::Open(boardFile, FileMode::Write);
+	auto game = Game::getInstance();
 
 	fs->write(this->_editingMap);
 	fs->write(this->_startGame);
 	fs->write(currentTurnPlayer);
-	fs->write(Game::actionCounter);
+	fs->write(game.actionCounter);
 	for (int i = 0; i < InfectionColor::InfectionColor_Length; i++) {
 		fs->write(this->isCured[i]);
 	}
 
 	// Cubes counters and research center.
-	fs->write(Game::numOfBlackCube);
-	fs->write(Game::numOfYellowCube);
-	fs->write(Game::numOfBlueCube);
-	fs->write(Game::numOfRedCube);
-	fs->write(Game::numOfResearchCenter);
+	fs->write(game.numOfCubes[0]);
+	fs->write(game.numOfCubes[1]);
+	fs->write(game.numOfCubes[2]);
+	fs->write(game.numOfCubes[3]);
+	fs->write(game.numOfResearchCenter);
 
 	// Infection rate
 	fs->write(Board::_infectionRate);
@@ -569,11 +571,13 @@ this will check the number of action and change turn if it reaches
 */
 bool Board::playerTurnChange()
 {
+	auto game = Game::getInstance();
+
 	bool turnChanged = false;
-	if (Game::actionCounter == 0)
+	if (game.actionCounter == 0)
 	{
 		this->currentTurnPlayer = ((this->currentTurnPlayer) + 1) % _players.size();
-		Game::resetActionCounter();
+		game.resetActionCounter();
 		turnChanged = true;
 	}
 
@@ -601,12 +605,14 @@ void Board::incrementInfectionRate()
 //draw infections card at the end of the turn
 void Board::drawInfectionCard()
 {
+	auto board = Game::getInstance().getBoard();
+
 	for (int i = 0; i < this->getInfectionRate(); i++)
 	{
 		if (infectionCityCards.size() != 0)
 		{
 			// Pick up the card only if it's not cured.
-			if (isCured[Game::getGameBoard()->getCity(infectionCityCards.at(0))->color] != true)
+			if (isCured[board.getCity(infectionCityCards.at(0))->color] != true)
 			{
 				InfectionCard::infectCityCube(infectionCityCards.at(0));
 			}
@@ -666,13 +672,13 @@ void Board::submitMap()
 
 void Board::checkTurn()
 {
-	Board* board = Game::getGameBoard();
-	Player& player = board->getCurrentTurnPlayer();
+	auto board = Game::getInstance().getBoard();
+	Player& player = board.getCurrentTurnPlayer();
 
-	if (board->playerTurnChange() == true)
+	if (board.playerTurnChange() == true)
 	{
 		
-		board->drawCards();
+		board.drawCards();
 		GuiManager::showMsgBox("Your current hand after picking two cards.");
 		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
 
@@ -686,7 +692,7 @@ void Board::checkTurn()
 
 		}
 		//draw infection card and the game will do the infection automatically
-		Game::getGameBoard()->drawInfectionCard();
+		board.drawInfectionCard();
 		GuiManager::showMsgBox("End of your turn.");
 	}
 }

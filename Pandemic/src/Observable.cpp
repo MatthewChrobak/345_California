@@ -48,13 +48,13 @@ void Observable::detatch(Observer* observer)
 #endif
 }
 
-void Observable::notify()
+void Observable::notify(UpdateType type)
 {
 	for (unsigned int i = 0; i < this->_observers.size(); i++) {
 #ifdef DEBUG
 		// Make sure the collection does not contain any null observers.
 		assert(this->_observers.at(i) != nullptr);
-		this->_observers.at(i)->update(this);
+		this->_observers.at(i)->update(this, type);
 #endif
 	}
 }

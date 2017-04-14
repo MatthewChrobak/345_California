@@ -3,7 +3,6 @@
 #ifdef DEBUG
 #include <assert.h>
 #endif
-using namespace SFML;
 
 SfmlSurfaceManager::SfmlSurfaceManager(std::string path)
 {
