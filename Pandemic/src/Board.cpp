@@ -8,6 +8,7 @@
 #include "Game.h"
 #include <iostream>
 #include <vector>
+#include <string>
 #include "CityCard.h"
 #include "RandomNumberGenerator.h"
 #include <time.h>
@@ -51,6 +52,16 @@ void Board::generateGameContentAtStartOfGame()
 		// Give each player a random role card.
 		RoleCard *p = new RoleCard(RoleCard::roleCardNames[i]);
 		this->getPlayer(playerIndex).setRoleCard(p);
+		
+	}
+
+	/*
+	show the role for every players
+	*/
+	for (int i = 0; i < getNumberOfPlayers(); i++)
+	{
+		string role = this->getPlayer(i).getRoleCard()->roleCardNames[this->getPlayer(i).getRoleCard()->getRoleCardVal()];
+		GuiManager::showMsgBox("Player " + std::to_string(i) + " role is: " + role);
 	}
 
 	//===========================================================
@@ -101,11 +112,11 @@ This will initialize the infectionCard deck
 void Board::infectionCityCardsInitializor()
 {
 	infectionCityCards.push_back(0);
-
+	int rng;
 	//Changed to 0
 	for (int i = 1; i < this->getNumCities(); i++)
 	{
-		int rng = RandomNumberGenerator::next(0, infectionCityCards.size());
+		rng = RandomNumberGenerator::next(0, infectionCityCards.size());
 		infectionCityCards.insert(infectionCityCards.begin() + rng, i);
 	}
 	infectionCityCards.shrink_to_fit();
@@ -478,8 +489,10 @@ void Board::drawCards()
 			}
 
 			else {
+
 				this->getCurrentTurnPlayer().addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
 				this->_playerWithdrawPile.pop_back();
+				this->_playerWithdrawPile.shrink_to_fit();
 			}
 
 		}
@@ -603,7 +616,12 @@ void Board::drawInfectionCard()
 {
 	for (int i = 0; i < this->getInfectionRate(); i++)
 	{
-		if (infectionCityCards.size() != 0)
+		if (infectionCityCards.size()<=2)
+		{
+			GuiManager::showMsgBox("Less than 2 infection cards in the infection deck, you lost!");
+			GuiManager::handleWindowClose();
+		}
+		else if (infectionCityCards.size() != 0)
 		{
 			// Pick up the card only if it's not cured.
 			if (isCured[Game::getGameBoard()->getCity(infectionCityCards.at(0))->color] != true)
@@ -671,7 +689,8 @@ void Board::checkTurn()
 
 	if (board->playerTurnChange() == true)
 	{
-		
+		string name = player.getRoleCard()->roleCardNames[player.getRoleCard()->getRoleCardVal()];
+		GuiManager::showMsgBox("My role is: " + name);
 		board->drawCards();
 		GuiManager::showMsgBox("Your current hand after picking two cards.");
 		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
