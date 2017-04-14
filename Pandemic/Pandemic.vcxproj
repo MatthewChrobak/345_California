@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\BoardBuilder.cpp" />
     <ClCompile Include="src\ArrayGraph.cpp" />
     <ClCompile Include="src\ArrayGraphNode.cpp" />
     <ClCompile Include="src\Board.cpp" />
@@ -195,6 +196,7 @@
     <ClCompile Include="src\View.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BoardBuilder.h" />
     <ClInclude Include="src\ArrayGraph.h" />
     <ClInclude Include="src\ArrayGraphNode.h" />
     <ClInclude Include="src\Board.h" />

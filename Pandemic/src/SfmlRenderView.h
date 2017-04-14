@@ -19,6 +19,10 @@ public:
 	virtual void draw();
 	virtual void display();
 
+protected:
+	void renderSurface(std::string text, SurfaceContext& ctx);
+	void renderText(std::string text, TextContext& ctx);
+
 private:
 	sf::RenderWindow* _windowContext;
 	sf::Vector2u _originalWindowSize;
@@ -27,6 +31,4 @@ private:
 	std::string mousebuttonToString(sf::Mouse::Button button);
 
 	void handleEvents();
-	void renderSurface(std::string text, SurfaceContext& ctx);
-	void renderText(std::string text, TextContext& ctx);
 };
