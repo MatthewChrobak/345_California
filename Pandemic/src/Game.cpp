@@ -16,6 +16,7 @@ int Game::numOfBlueCube = NUM_OF_STARTING_CUBE;
 int Game::numOfResearchCenter = NUM_OF_STARTING_RESEARCH_FACILITY;
 int Game::actionCounter = NUM_OF_MAX_ACTION;
 
+
 void Game::numOfCubeDecrementor(int cityColor)
 {
 	switch (cityColor)

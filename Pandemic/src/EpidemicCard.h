@@ -2,6 +2,7 @@
 #include "PlayerCard.h"
 #include <string>
 
+
 #define NUMBER_OF_EPIDEMIC 6
 
 class EpidemicCard : public PlayerCard
@@ -12,5 +13,6 @@ public:
 
 	void playCard();
 	std::string getSurfaceName();
+	static void drawingEpidemicCard();
 };
 

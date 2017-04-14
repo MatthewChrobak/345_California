@@ -21,6 +21,7 @@
 #include <assert.h>
 #endif
 
+int Board::_infectionRate = INFECTION_RATE;
 
 void Board::tryStartGame()
 {
@@ -40,7 +41,8 @@ void Board::generateGameContentAtStartOfGame()
 		for (int i = 0; i < 4; i++) {
 			if (this->_playerWithdrawPile.size() == 0) {
 				break;
-			} else {
+			}
+			else {
 				this->getPlayer(playerIndex).addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
 				this->_playerWithdrawPile.pop_back();
 			}
@@ -50,11 +52,25 @@ void Board::generateGameContentAtStartOfGame()
 		RoleCard *p = new RoleCard(RoleCard::roleCardNames[i]);
 		this->getPlayer(playerIndex).setRoleCard(p);
 	}
+
+	//===========================================================
+	//Adding epidemic cards to the player deck
+	for (int i = 0; i < NUMBER_OF_EPIDEMIC; i++) {
+		int rng = RandomNumberGenerator::next(0, _playerWithdrawPile.size());
+		EpidemicCard* epidemicCard = new EpidemicCard();
+		this->_playerWithdrawPile.insert(this->_playerWithdrawPile.begin() + rng, epidemicCard);
+	}
+
 	//===========================================================
 	//intializing infectionCardDeck
 	Board::infectionCityCardsInitializor();
 
 	//starting the infection with 9 cities (required 9 cities if not null exception)
+<<<<<<< HEAD
+	//(TEMPORARY IMPLEMENTATION): First three cities have three cubes, next three have
+	//two cubes and last three have 1 cube.
+=======
+>>>>>>> refs/remotes/origin/master
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
 			InfectionCard::infectCityCube(infectionCityCards.at(0));
@@ -86,9 +102,8 @@ This will initialize the infectionCard deck
 void Board::infectionCityCardsInitializor()
 {
 	infectionCityCards.push_back(0);
-	infectionCityCards.push_back(0);
-	infectionCityCards.push_back(0);
 
+	//Changed to 0
 	for (int i = 1; i < this->getNumCities(); i++)
 	{
 		int rng = RandomNumberGenerator::next(0, infectionCityCards.size());
@@ -155,6 +170,9 @@ void Board::loadBoardData(std::string boardFile)
 	Game::numOfRedCube = fs->readInt();
 	Game::numOfResearchCenter = fs->readInt();
 
+	// Infection Rate
+	Board::_infectionRate = fs->readInt();
+
 
 	City::outbreakCount = fs->readInt();
 	this->setActualInfectionRate(fs->readInt());
@@ -206,6 +224,9 @@ void Board::saveBoardData(std::string boardFile)
 	fs->write(Game::numOfBlueCube);
 	fs->write(Game::numOfRedCube);
 	fs->write(Game::numOfResearchCenter);
+
+	// Infection rate
+	fs->write(Board::_infectionRate);
 
 	fs->write(City::outbreakCount);
 	fs->write(this->getActualInfectionRate());
@@ -449,12 +470,22 @@ void Board::drawCards()
 	for (int i = 0; i < 2; i++)
 	{
 		if (this->_playerWithdrawPile.size() != 0) {
-			this->getCurrentTurnPlayer().addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
-			this->_playerWithdrawPile.pop_back();
+
+			//If the card drawn is an epidemic card, play it and remove it from the player's hand
+			if (this->_playerWithdrawPile.back()->getType() == Epidemic_Card)
+			{
+				EpidemicCard::drawingEpidemicCard();
+				this->_playerWithdrawPile.pop_back();
+			}
+
+			else {
+				this->getCurrentTurnPlayer().addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
+				this->_playerWithdrawPile.pop_back();
+			}
+
 		}
 	}
 }
-
 
 //Generates the playerCards deck
 void Board::generatePlayerCards()
@@ -489,13 +520,6 @@ void Board::generatePlayerCards()
 
 		int rng = RandomNumberGenerator::next(0, _playerWithdrawPile.size());
 		this->_playerWithdrawPile.insert(this->_playerWithdrawPile.begin() + rng, tempEventVector[i]);
-	}
-
-	//Adding epidemic cards to the player deck
-	for (int i = 0; i < NUMBER_OF_EPIDEMIC; i++) {
-		int rng = RandomNumberGenerator::next(0, _playerWithdrawPile.size());
-		EpidemicCard* epidemicCard = new EpidemicCard();
-		this->_playerWithdrawPile.insert(this->_playerWithdrawPile.begin() + rng, epidemicCard);
 	}
 
 }
@@ -570,9 +594,9 @@ int Board::getInfectionRate()
 	return 4;
 }
 
-void Board::incremenetInfectionRate()
+void Board::incrementInfectionRate()
 {
-	this->_infectionRate += 1;
+	_infectionRate += 1;
 }
 
 //draw infections card at the end of the turn
@@ -587,15 +611,44 @@ void Board::drawInfectionCard()
 			{
 				InfectionCard::infectCityCube(infectionCityCards.at(0));
 			}
-			// Decrement i so we pick another card.
-			i--;
-
+	
 			// Remove it from the pile.
 			Board::discardInfectionCard.push_back(infectionCityCards.at(0));
 			Board::infectionCityCards.erase(infectionCityCards.begin());
 			Board::infectionCityCards.shrink_to_fit();
 		}
 	}
+}
+
+//Function to draw the last infection card (to be used with epidemic card)
+void Board::drawLastInfectionCard()
+{
+	if (infectionCityCards.size() != 0)
+	{
+		InfectionCard::infectLastCity(infectionCityCards.size()-1);
+	}
+	Board::discardInfectionCard.push_back(infectionCityCards.back());
+	Board::infectionCityCards.erase(infectionCityCards.begin() + infectionCityCards.size()-1);
+	Board::infectionCityCards.shrink_to_fit();
+}
+
+//Function to shuffle the discarded infection cards (to be used when epidemic card is drawn)
+void Board::shuffleDiscardedInfectionDeck() 
+{
+	//At every loop, take a random card in the discarded pile and insert it at the beginning of the original deck
+	for (int i = 0; i < this->discardInfectionCard.size(); i++)
+	{
+		int rng = RandomNumberGenerator::next(0, this->discardInfectionCard.size());
+		infectionCityCards.insert(this->infectionCityCards.begin(), this->discardInfectionCard[rng]);
+	}
+
+	std::string g = std::to_string(infectionCityCards.size());
+	GuiManager::showMsgBox("SIZE OF INFECTIONCITYCARDS AFTER EPIDEMIC" + g);
+
+	//Clear the discarded infection cards deck after all cards have been placed back in the original deck.
+	this->discardInfectionCard.clear();
+	std::string h = std::to_string(discardInfectionCard.size());
+	GuiManager::showMsgBox("SIZE OF DISCARDCARDS AFTER EPIDEMIC" + h);
 }
 
 bool Board::isEditingMap()
@@ -626,7 +679,7 @@ void Board::checkTurn()
 
 		int numberOfCards = player.getNumberOfCards();
 
-		if (numberOfCards >= 6) //You only excess cards only when you draw while you have 6 or more cards
+		if (numberOfCards > 7) //You only excess cards if you have more than 7 cards after drawing
 		{
 			GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
 			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.

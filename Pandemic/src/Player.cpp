@@ -76,6 +76,7 @@ int Player::getNumberOfCards()
 		if (this->_playerCards[i] != nullptr)
 		{
 			counter++;
+			
 		}
 	}
 	return counter;

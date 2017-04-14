@@ -10,6 +10,7 @@
 #include "EventCard.h"
 
 #define STARTING_INFECTION_CARD 9
+#define INFECTION_RATE 0
 
 class Board
 {
@@ -49,7 +50,7 @@ public:
 
 
 	int getInfectionRate();
-	void incremenetInfectionRate();
+	static void incrementInfectionRate();
 
 	int getActualInfectionRate();
 	void setActualInfectionRate(int value);
@@ -64,6 +65,8 @@ public:
 	std::vector<int> discardInfectionCard;
 	void infectionCityCardsInitializor();
 	void drawInfectionCard();
+	void drawLastInfectionCard();
+	void shuffleDiscardedInfectionDeck();
 
 	bool isEditingMap();
 	void submitMap();
@@ -76,7 +79,7 @@ private:
 	std::vector<PlayerCard*> _playerWithdrawPile;
 	std::vector<int> playerIndex;
 
-	int _infectionRate = 0;
+	static int _infectionRate;
 
 	void loadBoardData(std::string boardFile);
 	void saveBoardData(std::string boardFile);
