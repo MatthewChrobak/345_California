@@ -66,11 +66,10 @@ void Board::generateGameContentAtStartOfGame()
 	Board::infectionCityCardsInitializor();
 
 	//starting the infection with 9 cities (required 9 cities if not null exception)
-<<<<<<< HEAD
 	//(TEMPORARY IMPLEMENTATION): First three cities have three cubes, next three have
 	//two cubes and last three have 1 cube.
-=======
->>>>>>> refs/remotes/origin/master
+
+
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
 			InfectionCard::infectCityCube(infectionCityCards.at(0));
