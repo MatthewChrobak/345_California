@@ -552,10 +552,12 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 		//TODO: THE PHI FIX THIS
 			int numOfPlayerInSameCity = 0;
 			int nextPlayerIndex;
+			
 			for (int i = 0; i < Game::getGameBoard()->getNumberOfPlayers(); i++)
 			{	
-				nextPlayerIndex = (Game::getGameBoard()->currentTurnPlayer + 1) % (Game::getGameBoard()->getNumberOfPlayers());
-				if (playerCityIndex == nextPlayerIndex)
+				Player& nextPlayer = Game::getGameBoard()->getPlayer(i);
+				nextPlayerIndex = nextPlayer.pawn->cityIndex;
+				if (playerCityIndex==nextPlayerIndex)
 				{
 					numOfPlayerInSameCity++;
 				}
