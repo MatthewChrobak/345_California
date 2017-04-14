@@ -69,23 +69,24 @@ void Board::generateGameContentAtStartOfGame()
 	//starting the infection with 9 cities (required 9 cities if not null exception)
 	//(TEMPORARY IMPLEMENTATION): First three cities have three cubes, next three have
 	//two cubes and last three have 1 cube.
-	for (int i = 0; i < 3 && i < infectionCityCards.size(); i++)
-	{
-		InfectionCard::infectCityCubeThree(infectionCityCards.at(0));
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			InfectionCard::infectCityCube(infectionCityCards.at(0));
+		}
 		Board::discardInfectionCard.push_back(infectionCityCards.at(0));
 		Board::infectionCityCards.erase(infectionCityCards.begin());
 	}
-
-	for (int i = 0; i < 3 && i < infectionCityCards.size(); i++)
-	{
-		InfectionCard::infectCityCubeTwo(infectionCityCards.at(0));
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 2; j++) {
+			InfectionCard::infectCityCube(infectionCityCards.at(0));
+		}
 		Board::discardInfectionCard.push_back(infectionCityCards.at(0));
 		Board::infectionCityCards.erase(infectionCityCards.begin());
 	}
-
-	for (int i = 0; i < 3 && i < infectionCityCards.size(); i++)
-	{
-		InfectionCard::infectCityCube(infectionCityCards.at(0));
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 1; j++) {
+			InfectionCard::infectCityCube(infectionCityCards.at(0));
+		}
 		Board::discardInfectionCard.push_back(infectionCityCards.at(0));
 		Board::infectionCityCards.erase(infectionCityCards.begin());
 	}
@@ -97,18 +98,10 @@ This will initialize the infectionCard deck
 void Board::infectionCityCardsInitializor()
 {
 	infectionCityCards.push_back(0);
-	infectionCityCards.push_back(0);
-	infectionCityCards.push_back(0);
 
 	for (int i = 1; i < this->getNumCities(); i++)
 	{
 		int rng = RandomNumberGenerator::next(0, infectionCityCards.size());
-		infectionCityCards.insert(infectionCityCards.begin() + rng, i);
-		
-		rng = RandomNumberGenerator::next(0, infectionCityCards.size());
-		infectionCityCards.insert(infectionCityCards.begin() + rng, i);
-
-		rng = RandomNumberGenerator::next(0, infectionCityCards.size());
 		infectionCityCards.insert(infectionCityCards.begin() + rng, i);
 	}
 	infectionCityCards.shrink_to_fit();
@@ -632,6 +625,7 @@ void Board::drawLastInfectionCard()
 	{
 		InfectionCard::infectLastCity(infectionCityCards.back());
 	}
+	GuiManager::showMsgBox("WLUIENHLIUWEHNWIUEL" + Game::getGameBoard()->getCity(infectionCityCards.back())->name);
 	Board::discardInfectionCard.push_back(infectionCityCards.back());
 	Board::infectionCityCards.erase(infectionCityCards.begin());
 	Board::infectionCityCards.shrink_to_fit();
@@ -647,8 +641,13 @@ void Board::shuffleDiscardedInfectionDeck()
 		infectionCityCards.insert(this->infectionCityCards.begin(), this->discardInfectionCard[rng]);
 	}
 
+	std::string g = std::to_string(infectionCityCards.size());
+	GuiManager::showMsgBox("SIZE OF INFECTIONCITYCARDS AFTER EPIDEMIC" + g);
+
 	//Clear the discarded infection cards deck after all cards have been placed back in the original deck.
 	this->discardInfectionCard.clear();
+	std::string h = std::to_string(discardInfectionCard.size());
+	GuiManager::showMsgBox("SIZE OF DISCARDCARDS AFTER EPIDEMIC" + h);
 }
 
 bool Board::isEditingMap()
@@ -678,7 +677,7 @@ void Board::checkTurn()
 
 		int numberOfCards = player.getNumberOfCards();
 
-		if (numberOfCards >= 6) //You only excess cards only when you draw while you have 6 or more cards
+		if (numberOfCards > 7) //You only excess cards if you have more than 7 cards after drawing
 		{
 			GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
 			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.

@@ -19,7 +19,6 @@ public:
 	~City();
 
 	void infectCity(int city,int index);
-	void infectCityTwo(int city, int index);
 	void infectCityThree(int city, int index);
 	static void infectCityOutBreak(int city);
 	void buildResearchFacility();

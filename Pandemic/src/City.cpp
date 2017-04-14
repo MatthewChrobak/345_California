@@ -31,25 +31,17 @@ normal infection without outbreak
 void City::infectCity(int city, int index)
 {
 	Game::getGameBoard()->getCity(city)->cube[index]++;
-	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(city)->name + "is infected" );
+	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(city)->name + " is infected" );
 }
 
+//normal infection (3 cubes) without outbreak
 void City::infectCityThree(int city, int index)
 {
 	for (int i = 0; i < 3; i++)
 	{
 		Game::getGameBoard()->getCity(city)->cube[index]++;
 	}
-	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(city)->name + "is infected");
-}
-
-void City::infectCityTwo(int city, int index)
-{
-	for (int i = 0; i < 2; i++)
-	{
-		Game::getGameBoard()->getCity(city)->cube[index]++;
-	}
-	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(city)->name + "is infected");
+	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(city)->name + " is infected");
 }
 
 /*
