@@ -52,6 +52,16 @@ void Board::generateGameContentAtStartOfGame()
 		// Give each player a random role card.
 		RoleCard *p = new RoleCard(RoleCard::roleCardNames[i]);
 		this->getPlayer(playerIndex).setRoleCard(p);
+		
+	}
+
+	/*
+	show the role for every players
+	*/
+	for (int i = 0; i < getNumberOfPlayers(); i++)
+	{
+		string role = this->getPlayer(i).getRoleCard()->roleCardNames[this->getPlayer(i).getRoleCard()->getRoleCardVal()];
+		GuiManager::showMsgBox("Player " + std::to_string(i) + " role is: " + role);
 	}
 
 	//===========================================================
