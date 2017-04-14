@@ -54,14 +54,30 @@ void Board::generateGameContentAtStartOfGame()
 	//intializing infectionCardDeck
 	Board::infectionCityCardsInitializor();
 
-
 	//starting the infection with 9 cities (required 9 cities if not null exception)
-	for (int i = 0; i < STARTING_INFECTION_CARD && i < infectionCityCards.size(); i++)
-	{
-		InfectionCard::infectCityCube(infectionCityCards.at(0));
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			InfectionCard::infectCityCube(infectionCityCards.at(0));
+		}
 		Board::discardInfectionCard.push_back(infectionCityCards.at(0));
 		Board::infectionCityCards.erase(infectionCityCards.begin());
 	}
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 2; j++) {
+			InfectionCard::infectCityCube(infectionCityCards.at(0));
+		}
+		Board::discardInfectionCard.push_back(infectionCityCards.at(0));
+		Board::infectionCityCards.erase(infectionCityCards.begin());
+	}
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 1; j++) {
+			InfectionCard::infectCityCube(infectionCityCards.at(0));
+		}
+		Board::discardInfectionCard.push_back(infectionCityCards.at(0));
+		Board::infectionCityCards.erase(infectionCityCards.begin());
+	}
+	
+	
 }
 
 /*
@@ -76,12 +92,6 @@ void Board::infectionCityCardsInitializor()
 	for (int i = 1; i < this->getNumCities(); i++)
 	{
 		int rng = RandomNumberGenerator::next(0, infectionCityCards.size());
-		infectionCityCards.insert(infectionCityCards.begin() + rng, i);
-		
-		rng = RandomNumberGenerator::next(0, infectionCityCards.size());
-		infectionCityCards.insert(infectionCityCards.begin() + rng, i);
-
-		rng = RandomNumberGenerator::next(0, infectionCityCards.size());
 		infectionCityCards.insert(infectionCityCards.begin() + rng, i);
 	}
 	infectionCityCards.shrink_to_fit();
@@ -609,6 +619,7 @@ void Board::checkTurn()
 
 	if (board->playerTurnChange() == true)
 	{
+		
 		board->drawCards();
 		GuiManager::showMsgBox("Your current hand after picking two cards.");
 		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;

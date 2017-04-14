@@ -23,6 +23,7 @@ public:
 	void addCity(City* city);
 	City* getCity(int index);
 	int getNumCities();
+	
 	//disease cure boolean
 	//index value indicating disease according it's color...bool array if cured update bool value
 
@@ -73,6 +74,7 @@ private:
 	CityGraph* _cities;
 	std::vector<Player*> _players;
 	std::vector<PlayerCard*> _playerWithdrawPile;
+	std::vector<int> playerIndex;
 
 	int _infectionRate = 0;
 
