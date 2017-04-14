@@ -65,10 +65,12 @@ void Board::generateGameContentAtStartOfGame()
 	//intializing infectionCardDeck
 	Board::infectionCityCardsInitializor();
 
-
 	//starting the infection with 9 cities (required 9 cities if not null exception)
+<<<<<<< HEAD
 	//(TEMPORARY IMPLEMENTATION): First three cities have three cubes, next three have
 	//two cubes and last three have 1 cube.
+=======
+>>>>>>> refs/remotes/origin/master
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
 			InfectionCard::infectCityCube(infectionCityCards.at(0));
@@ -90,6 +92,8 @@ void Board::generateGameContentAtStartOfGame()
 		Board::discardInfectionCard.push_back(infectionCityCards.at(0));
 		Board::infectionCityCards.erase(infectionCityCards.begin());
 	}
+	
+	
 }
 
 /*
@@ -668,6 +672,7 @@ void Board::checkTurn()
 
 	if (board->playerTurnChange() == true)
 	{
+		
 		board->drawCards();
 		GuiManager::showMsgBox("Your current hand after picking two cards.");
 		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
