@@ -215,10 +215,9 @@ bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 		do {
 			Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor]--;
 			Game::numOfCubeIncrementor(cityColor);
-			Game::decrementActionCounter();
-			Board::checkTurn();
 		} while (Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor] > 0);
-
+		Game::decrementActionCounter();
+		Board::checkTurn();
 		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 	}
 	//if the player is not a medic
@@ -493,6 +492,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 					GuiManager::showMsgBox("You're operations expert! This is worth one action");
 					Game::getGameBoard()->getCity(player.pawn->cityIndex)->research = true;
 					Game::numOfResearchCenter--;
+					GuiManager::showMsgBox("A research center has been built");
 					Game::decrementActionCounter();
 					Board::checkTurn();
 					//reset player actions

@@ -101,11 +101,11 @@ This will initialize the infectionCard deck
 void Board::infectionCityCardsInitializor()
 {
 	infectionCityCards.push_back(0);
-
+	int rng;
 	//Changed to 0
 	for (int i = 1; i < this->getNumCities(); i++)
 	{
-		int rng = RandomNumberGenerator::next(0, infectionCityCards.size());
+		rng = RandomNumberGenerator::next(0, infectionCityCards.size());
 		infectionCityCards.insert(infectionCityCards.begin() + rng, i);
 	}
 	infectionCityCards.shrink_to_fit();
@@ -480,6 +480,7 @@ void Board::drawCards()
 			else {
 				this->getCurrentTurnPlayer().addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
 				this->_playerWithdrawPile.pop_back();
+				this->_playerWithdrawPile.shrink_to_fit();
 			}
 
 		}
@@ -603,7 +604,12 @@ void Board::drawInfectionCard()
 {
 	for (int i = 0; i < this->getInfectionRate(); i++)
 	{
-		if (infectionCityCards.size() != 0)
+		if (infectionCityCards.size()<=2)
+		{
+			GuiManager::showMsgBox("Less than 2 infection cards in the infection deck, you lost!");
+			GuiManager::handleWindowClose();
+		}
+		else if (infectionCityCards.size() != 0)
 		{
 			// Pick up the card only if it's not cured.
 			if (isCured[Game::getGameBoard()->getCity(infectionCityCards.at(0))->color] != true)
