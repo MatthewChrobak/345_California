@@ -24,11 +24,11 @@ public:
 	void addCity(City* city);
 	City* getCity(int index);
 	int getNumCities();
-	
 	//disease cure boolean
 	//index value indicating disease according it's color...bool array if cured update bool value
 
 	bool isCured[4];
+	bool oneQuietNight = false; //In case the player plays a One Quiet Night card
 	
 	static void checkTurn();
 
@@ -44,7 +44,7 @@ public:
 	Player& getPlayer(int index);
 	int getNumberOfPlayers();
 	int currentTurnPlayer = 0;
-	void drawCards(); // Draw 2 cards from the player deck
+	void drawCards(Player& player); // Draw 2 cards from the player deck
 	std::vector<std::string> playerCardDeck;
 	void tryStartGame();
 
@@ -67,6 +67,7 @@ public:
 	void drawInfectionCard();
 	void drawLastInfectionCard();
 	void shuffleDiscardedInfectionDeck();
+	int drawTopInfectionCard();
 
 	bool isEditingMap();
 	void submitMap();
@@ -96,6 +97,7 @@ private:
 	// Game properties.
 	bool _editingMap = true;
 	bool _startGame = false;
+
 };
 
 //this a free function to check turn

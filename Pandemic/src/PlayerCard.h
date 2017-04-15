@@ -5,29 +5,37 @@
 #include <iostream>
 #include <random>
 
-using std::string;
-using std::vector;
-using std::cin;
-using std::cout;
-using std::endl;
 
-enum PlayerCardType
+enum PlayerCardType : int
 {
 	City_Card,
 	Epidemic_Card,
 	Event_Card
 };
 
+enum EventCardType
+{
+	Airlift,
+	OneQuietNight,
+	ResilientPopulation,
+	GovernmentGrant,
+	Forecast
+};
 
 
-class PlayerCard {
+class PlayerCard 
+{
 
-private: std::vector<PlayerCard*> _playerWithdrawPile;
+private: 
+	std::vector<PlayerCard*> _playerWithdrawPile;
 
 public:
 	PlayerCardType getType();
-	virtual void playCard() = 0;
-	virtual std::string getSurfaceName() = 0;
+	virtual void playCard();
+	virtual std::string getSurfaceName();
+	virtual EventCardType getEventType();
+	virtual void eventAction(PlayerCard* card);
+
 
 protected:
 	PlayerCardType _cardType;

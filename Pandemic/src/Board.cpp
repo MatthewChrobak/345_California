@@ -66,11 +66,6 @@ void Board::generateGameContentAtStartOfGame()
 	Board::infectionCityCardsInitializor();
 
 	//starting the infection with 9 cities (required 9 cities if not null exception)
-<<<<<<< HEAD
-	//(TEMPORARY IMPLEMENTATION): First three cities have three cubes, next three have
-	//two cubes and last three have 1 cube.
-=======
->>>>>>> refs/remotes/origin/master
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
 			InfectionCard::infectCityCube(infectionCityCards.at(0));
@@ -465,7 +460,7 @@ void Board::loadPlayers(std::string playerFile)
 
 
 //Draw 2 cards
-void Board::drawCards()
+void Board::drawCards(Player& player)
 {
 	for (int i = 0; i < 2; i++)
 	{
@@ -479,7 +474,7 @@ void Board::drawCards()
 			}
 
 			else {
-				this->getCurrentTurnPlayer().addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
+				player.addCard(this->_playerWithdrawPile.at(this->_playerWithdrawPile.size() - 1));
 				this->_playerWithdrawPile.pop_back();
 			}
 
@@ -620,6 +615,16 @@ void Board::drawInfectionCard()
 	}
 }
 
+//Draws the top infection card (used with EventCard)
+int Board::drawTopInfectionCard()
+{
+	int temp = infectionCityCards.at(0);
+	Board::infectionCityCards.erase(infectionCityCards.begin());
+	infectionCityCards.shrink_to_fit();
+	return temp;
+}
+
+
 //Function to draw the last infection card (to be used with epidemic card)
 void Board::drawLastInfectionCard()
 {
@@ -642,13 +647,8 @@ void Board::shuffleDiscardedInfectionDeck()
 		infectionCityCards.insert(this->infectionCityCards.begin(), this->discardInfectionCard[rng]);
 	}
 
-	std::string g = std::to_string(infectionCityCards.size());
-	GuiManager::showMsgBox("SIZE OF INFECTIONCITYCARDS AFTER EPIDEMIC" + g);
-
 	//Clear the discarded infection cards deck after all cards have been placed back in the original deck.
 	this->discardInfectionCard.clear();
-	std::string h = std::to_string(discardInfectionCard.size());
-	GuiManager::showMsgBox("SIZE OF DISCARDCARDS AFTER EPIDEMIC" + h);
 }
 
 bool Board::isEditingMap()
@@ -673,7 +673,7 @@ void Board::checkTurn()
 	if (board->playerTurnChange() == true)
 	{
 		
-		board->drawCards();
+		board->drawCards(player);
 		GuiManager::showMsgBox("Your current hand after picking two cards.");
 		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
 
@@ -684,7 +684,6 @@ void Board::checkTurn()
 			GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
 			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.
 			GameFrame::PlayerAction = PlayerActions::DiscardCards;
-
 		}
 		//draw infection card and the game will do the infection automatically
 		Game::getGameBoard()->drawInfectionCard();
