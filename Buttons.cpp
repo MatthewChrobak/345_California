@@ -133,7 +133,6 @@ ShuttleFlightAction::ShuttleFlightAction() : UIButton(CMD_PLAYER_ACTION_SHUTTLE_
     this->hoverSurfaceName = "ui/lightbox.png";
     this->width = FRM_PLAYER_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
-
     this->top = FRM_PLAYER_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * PlayerActions::ShuttleFlight;
     this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
@@ -199,38 +198,38 @@ bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
     */
     int currentPlayerIndex = player.pawn->cityIndex;
     int cityColor = Game::getGameBoard()->getCity(player.pawn->cityIndex)->color;
+    // check if there's any cubes on the city
+    int counter = 0;
+    for (int i=0; i<5;i++){
+        if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->cube[i] > -1){
+            counter++;
+        }
+    }
+    if (counter ==0){
 
-    /*
-    implementing one function of the medic role
-    the second function is not implemented
-    */
-    //TODO: Implementation of the medic role completely
+        GuiManager::showMsgBox("No infections to treat");
+        GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+        return true;
+    }
+
+
     if (player.getRoleCard()->getRoleCardVal() == 5)
     {
-        GuiManager::showMsgBox("You're a medic!...Removing all matching cubes! Counts as one action.");
-        do {
-            Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor]--;
-            Game::numOfCubeIncrementor(cityColor);
-            Game::decrementActionCounter();
-            Board::checkTurn();
-        } while (Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor] > 0);
 
+        //set it to Medic's modified treat disease
+        player.setPlayerAction(player.getPlayerActionList()[2]);
+        player.usePlayerAction();
         GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
     }
         //if the player is not a medic
-    else if (Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor] > 0)
-    {
-        GuiManager::showMsgBox("An infection cube has been remove in the current city");
-        Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor]--;
-        Game::numOfCubeIncrementor(cityColor);
-        Game::decrementActionCounter();
-        Board::checkTurn();
-        GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-    }
     else
     {
-        GuiManager::showMsgBox("No Infection cube is at the current city.");
+
+        player.usePlayerAction("TreatDisease");
+        GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+
     }
+
 
     return true;
 }
@@ -356,14 +355,21 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 {
     Board* board = Game::getGameBoard();
     Player& player = board->getCurrentTurnPlayer();
+
+    RoleCard* rc1 = new RoleCard("OperationsExpert");
+    player.setRoleCard(rc1);
+
     int roleCardIndex = player.getRoleCard()->getRoleCardVal();
+    int playerCityIndex = player.pawn->cityIndex;
+
+    int numCities = board->getNumCities();
 
 
     // new temp player to test new implementation
-    //Player* player1 = board->getCurrentPlayer();
+    Player* player1 = board->getCurrentPlayer();
+    int newIndex = player1->getRoleCard()->getRoleCardVal();
 
-    switch (GameFrame::PlayerAction)
-    {
+    switch (GameFrame::PlayerAction) {
         case PlayerActions::DirectFlight:
 
             // We should only have one card selected here.
@@ -372,63 +378,64 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
                 // Get the card index.
                 int cardIndex = this->_cardData->at(0);
 
-                PlayerCard* card = player.getCard(cardIndex);
+                PlayerCard *card = player.getCard(cardIndex);
 
                 // Make sure the card is not null.
 
                 // Make sure it's a city card.
-                    if (card->getType() == PlayerCardType::City_Card) {
-                        //get the card value selected to used in the playerAction
-                        player.getCardsSelected().push_back(cardIndex);
-                        //moves to the player.cpp then to playerAction.cpp here
-                        player.usePlayerAction("DirectFlight");
-                        //clear out the vector after selecting
-                        player.getCardsSelected().clear();
-                        GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-                        GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+                if (card->getType() == PlayerCardType::City_Card) {
+                    //get the card value selected to used in the playerAction
+                    player.getCardsSelected().push_back(cardIndex);
+                    //moves to the player.cpp then to playerAction.cpp here
+                    player.usePlayerAction("DirectFlight");
+                    GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+                    GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 
-                        break;
-                    }
-                    else {
-                        GuiManager::showMsgBox("Please select a city card.");
-                    }
+                    break;
+                } else {
+                    GuiManager::showMsgBox("Please select a city card.");
+                }
 
-            }
-            else {
+            } else {
                 GuiManager::showMsgBox("Please select only one card.");
             }
             return true;
 
 
-
         case PlayerActions::CharterFlight:
+            // We should only have one card selected here.
+            if (this->_cardData->size() == 1) {
 
-
-            //select at least 1 card
-            if (this->_cardData->size() != 1)
-            {
-                GuiManager::showMsgBox("Please select only one card.");
-            }
-            else
-            {
                 // Get the card index.
                 int cardIndex = this->_cardData->at(0);
-                PlayerCard* card = player.getCard(cardIndex);
+                PlayerCard *card = player.getCard(cardIndex);
 
-                //if the player's current city == selected card move there
-                if (player.pawn->cityIndex == cardIndex)
-                {
-                    int x = cardIndex;
-                    player.pawn->cityIndex = x;
-                    player.removeCard(cardIndex);
-                    Game::decrementActionCounter();
-                    Board::checkTurn();
+                // Make sure the card is not null.
+
+                // Make sure it's a city card.
+                if (card->getType() == PlayerCardType::City_Card) {
                     GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-                    //reset player Actions
-                    GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+
+                    ///TODO
+                    int clickedCityIndex = City::getCityIndexFromXY(GuiManager::getMouseX(), GuiManager::getMouseY());
+
+                    if (playerCityIndex >= 0 && playerCityIndex < numCities) {
+                        City *playerCity = board->getCity(playerCityIndex);
+                        int clickedCityIndex = City::getCityIndexFromXY(x, y);
+                    }
+
+                    // done checking
+                    player.getCardsSelected().push_back(cardIndex);
+                    player.getCardsSelected().push_back(clickedCityIndex);
+                    player.usePlayerAction("CharterFlight");
+
                     break;
+                } else {
+                    GuiManager::showMsgBox("Please select a city card.");
                 }
 
+            } else {
+                GuiManager::showMsgBox("Please select only one card.");
             }
             return true;
         case PlayerActions::ShuttleFlight:
@@ -442,71 +449,45 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
             GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
             return true;
         case PlayerActions::BuildResearchCenter:
+            //first check if the RC are still there...otherwise there's no point in using this method
+            if (Game::numOfResearchCenter > 0) {
+
+                //int x = player.getRoleCard()->getRoleCardVal();
+                    //select only one card
+                 if (this->_cardData->size() != 1)
+                    GuiManager::showMsgBox("Please select only one card.");
+
+                    //correct selection
+                else {
+                    // Get the card index.
+                    int cardIndex = this->_cardData->at(0);
+                    PlayerCard *card = player.getCard(cardIndex);
+                    if (roleCardIndex == 4) {
+
+                            player.getCardsSelected().push_back(cardIndex);
+                            player.setPlayerAction(player.getPlayerActionList()[1]);
+                            player.usePlayerAction();
 
 
-
-            if (roleCardIndex == 4){
-                if (Game::numOfResearchCenter > 0)
-                {
-                    if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != true)
-                    {
-                        GuiManager::showMsgBox("You're operations expert! This is worth one action");
-                        Game::decrementActionCounter();
-                        Board::checkTurn();
                     }
-                    else
-                        GuiManager::showMsgBox("The research facility is already built in this city.");
+                    //check if the card is null or if the card is not city card type
+                    else if (card != nullptr && card->getType() == PlayerCardType::City_Card) {
+
+                        player.usePlayerAction("BuildResearchStation");
+
+                    } else
+                        GuiManager::showMsgBox("The card is either null or you did not select a city");
+
 
                 }
-                else
-                    GuiManager::showMsgBox("All research centers have been used.");
-
             }
-
-
-
-                //select only one card
-            else if (this->_cardData->size() != 1)
-                GuiManager::showMsgBox("Please select only one card.");
-
-                //correct selection than check if we have enough research center
-            else
-            {
-                // Get the card index.
-                int cardIndex = this->_cardData->at(0);
-                PlayerCard* card = player.getCard(cardIndex);
-                //check if the card is null or if the card is not city card type
-                if (card != nullptr && card->getType() == PlayerCardType::City_Card)
-                {
-                    //check if we have enough research center
-                    if (Game::numOfResearchCenter > 0)
-                    {
-                        if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != true)
-                        {
-                            //check if the player is current city match with the city card
-                            if (player.pawn->cityIndex == ((CityCard*)card)->cityIndex)
-                            {
-                                Game::getGameBoard()->getCity(player.pawn->cityIndex)->research = true;
-                                player.removeCard(cardIndex);
-                                Game::numOfResearchCenter--;
-                                Game::decrementActionCounter();
-                                Board::checkTurn();
-                                //reset player actions
-                                GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-                                break;
-                            }
-                            else
-                                GuiManager::showMsgBox("You current position does not match the selected city card.");
-                        }
-                        else
-                            GuiManager::showMsgBox("The research facility is already built in this city.");
-                    }
-                    else
-                        GuiManager::showMsgBox("All research centers have been used.");
-                }
-                else
-                    GuiManager::showMsgBox("The card is either null or you did not select a city");
+            else {
+                GuiManager::showMsgBox("All research centers have been used.");
             }
+            //clear player card seleted vector
+            player.getCardsSelected().clear();
+            //reset player actions
+            GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
             return true;
 
         case PlayerActions::ShareKnowledge:
@@ -529,6 +510,8 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
                 requiredCardCount = 4;
                 medic = true;
             }
+            //vector of cities to be used later
+            std:: vector<CityCard*> tempCityVector;
 
             // Did we select enough cards?
             if (this->_cardData->size() == requiredCardCount) {
@@ -537,49 +520,63 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
                 for (int i = 0; i < requiredCardCount; i++) {
                     if (player.getCard(this->_cardData->at(i))->getType() != PlayerCardType::City_Card) {
                         GuiManager::showMsgBox("You must select city cards only.");
+                        //clear out the vector of cards selected in case invalid selections
+                        player.getCardsSelected().clear();
+                        tempCityVector.clear();
                         return true;
                     }
+                    else
+                    {
+                        //add all the cards selected by the player
+                        int temp = this->_cardData->at(i);
+                        player.getCardsSelected().push_back(temp);
+                        //populate cityCard vector to check colors later
+                        CityCard* tempCityCard = (CityCard*)player.getCard(this->_cardData->at(i));
+                        tempCityVector.push_back(tempCityCard);
+
+                    }
+
                 }
+
+
 
                 // Ensure they're the same color.
-                for (int i = 1; i < requiredCardCount; i++) {
-                    CityCard* cityCard0 = (CityCard*)player.getCard(this->_cardData->at(i - 1));
-                    CityCard* cityCard1 = (CityCard*)player.getCard(this->_cardData->at(i));
-                    City* city0 = board->getCity(cityCard0->cityIndex);
-                    City* city1 = board->getCity(cityCard1->cityIndex);
+                for (int i = 0; i < requiredCardCount; i++) {
+                    for (int j=0; j< requiredCardCount; j++) {
+                        City *cityi = board->getCity(tempCityVector[i]->cityIndex);
+                        City *cityj = board->getCity(tempCityVector[j]->cityIndex);
 
-                    if (city0->color ^ city0->color) {
-                        GuiManager::showMsgBox("You must select the same color cards.");
-                        return true;
+                        if (cityi->color != cityj->color) {
+                            GuiManager::showMsgBox("You must select the same color cards.");
+                            player.getCardsSelected().clear();
+                            return true;
+                        }
                     }
                 }
 
-                // Make sure it hasn't been cured already.
-                InfectionColor color = Game::getGameBoard()->getCity(((CityCard*)player.getCard(this->_cardData->at(0)))->cityIndex)->color;
-                if (board->isCured[color]) {
-                    GuiManager::showMsgBox("This disease has already been cured!");
-                    return true;
+                // if all checks cleared call player actions
+
+                if (medic){
+
+                    player.setPlayerAction(player.getPlayerActionList()[6]);
+                    player.usePlayerAction();
+
                 }
-
-                // Remove all the cards.
-
-                for (unsigned int i = 0; i < this->_cardData->size(); i++) {
-                    player.removeCard(this->_cardData->at(i));
-                }
-
-                // Cure the disease.
-                board->isCured[color] = true;
-                GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-                GuiManager::showMsgBox("The disease has been cured.");
-                Game::decrementActionCounter();
-                Board::checkTurn();
-                GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+                else
+                    player.usePlayerAction("DiscoverCure");
 
             }
             else
             {
                 GuiManager::showMsgBox("You need to select " + std::to_string(roleCardIndex) + " cards.");
             }
+
+
+            player.getCardsSelected().clear();
+            //reset player actions
+            GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+            return true;
+
         }
 
             /*
@@ -587,7 +584,6 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
             GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
             Failure to do so will cause assertions to fail and will cause the application to crash.
             */
-            return true;
 
         case PlayerActions::ViewCards:
             GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
