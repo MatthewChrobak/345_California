@@ -54,7 +54,7 @@ void GameRenderer::drawBackground()
 {
 	SurfaceContext ctx;
 	ctx.setRenderSize(DRAW_WIDTH, DRAW_HEIGHT);
-	GraphicsManager::renderSurface("backgrounds\\world.png", ctx);
+	GraphicsManager::getInstance().renderSurface("backgrounds\\world.png", ctx);
 }
 
 void GameRenderer::drawCities()
@@ -100,7 +100,7 @@ void GameRenderer::drawCities()
 					ctx.setPosition(city->x - (CITY_RENDER_WIDTH / 2), city->y - (CITY_RENDER_HEIGHT / 2));
 					ctx.setRenderSize(CITY_RENDER_WIDTH, CITY_RENDER_HEIGHT);
 
-					GraphicsManager::renderSurface("ui\\selectbox.png", ctx);
+					GraphicsManager::getInstance().renderSurface("ui\\selectbox.png", ctx);
 				}
 			}
 		}
@@ -130,7 +130,7 @@ void GameRenderer::drawCityNode(City& city)
 	}
 
 	// Pass it off to the graphics manager to render it.
-	GraphicsManager::renderSurface("nodes\\node.png", ctx);
+	GraphicsManager::getInstance().renderSurface("nodes\\node.png", ctx);
 	
 	int cubeHeight = CITY_RENDER_HEIGHT / 4;
 
@@ -157,7 +157,7 @@ void GameRenderer::drawCityNode(City& city)
 					break;
 			}
 
-			GraphicsManager::renderSurface("nodes\\cube.png", ctx);
+			GraphicsManager::getInstance().renderSurface("nodes\\cube.png", ctx);
 		}
 	}
 
@@ -166,7 +166,7 @@ void GameRenderer::drawCityNode(City& city)
 		ctx.reset();
 		ctx.setPosition(city.x - CITY_RENDER_WIDTH / 2 - CITY_RENDER_HEIGHT / 3, city.y - CITY_RENDER_HEIGHT / 2 + CITY_RENDER_HEIGHT / 3);
 		ctx.setRenderSize(CITY_RENDER_WIDTH / 3, CITY_RENDER_HEIGHT / 3);
-		GraphicsManager::renderSurface("nodes\\cross.png", ctx);
+		GraphicsManager::getInstance().renderSurface("nodes\\cross.png", ctx);
 	}
 }
 
@@ -180,7 +180,7 @@ void GameRenderer::drawCityName(City& city)
 	ctx.setFontSize(9);
 
 	// Pass it off to the graphics manager to render it.
-	GraphicsManager::renderText(city.name, ctx);
+	GraphicsManager::getInstance().renderText(city.name, ctx);
 }
 
 void GameRenderer::drawCityConnections(City& city)
@@ -217,7 +217,7 @@ void GameRenderer::drawCityConnections(City& city)
 		ctx.setPosition(city.x, city.y);
 
 		// Pass the context off to the graphics manager to render it.
-		GraphicsManager::renderSurface("nodes\\line.png", ctx);
+		GraphicsManager::getInstance().renderSurface("nodes\\line.png", ctx);
 	}
 }
 
@@ -233,7 +233,7 @@ void GameRenderer::drawPlayer(Player& player)
 		// Set the position of the player.
 		ctx.setPosition(city->x - 10, city->y - 20);
 		ctx.setRenderSize(20, 20);
-		GraphicsManager::renderSurface("pawns\\pawn.png", ctx);
+		GraphicsManager::getInstance().renderSurface("pawns\\pawn.png", ctx);
 	}
 }
 
@@ -263,7 +263,7 @@ void GameRenderer::drawOutbreakMeter()
 			ctx.setColor(100, 100, 100);
 		}
 
-		GraphicsManager::renderSurface("ui\\outbreakmeter.png", ctx);
+		GraphicsManager::getInstance().renderSurface("ui\\outbreakmeter.png", ctx);
 	}
 }
 
@@ -278,7 +278,7 @@ void GameRenderer::drawInfectionRate()
 	ctx.getOutline().setColor(0, 0, 0);
 
 	// This should be changed to append the current infection rate to the rendered text.
-	GraphicsManager::renderText("Infection Rate: " + std::to_string(Game::getGameBoard()->getInfectionRate()), ctx);
+	GraphicsManager::getInstance().renderText("Infection Rate: " + std::to_string(Game::getGameBoard()->getInfectionRate()), ctx);
 }
 
 void GameRenderer::drawCureMarkers()
@@ -325,13 +325,13 @@ void GameRenderer::drawCureMarkers()
 			}
 		}
 
-		GraphicsManager::renderSurface("ui\\cure.png", ctx);
+		GraphicsManager::getInstance().renderSurface("ui\\cure.png", ctx);
 
 		if (board->isCured[i]) {
 			ctx.getColor()->setR(0);
 			ctx.getColor()->setG(255);
 			ctx.getColor()->setB(0);
-			GraphicsManager::renderSurface("ui\\hascure.png", ctx);
+			GraphicsManager::getInstance().renderSurface("ui\\hascure.png", ctx);
 		}
 	}
 }

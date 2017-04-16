@@ -259,7 +259,7 @@ void GameFrame::draw()
 				City* city = Game::getGameBoard()->getCity(GameFrame::EditNodeIndex);
 				ctx.setPosition(city->x - (CITY_RENDER_WIDTH / 2), city->y - (CITY_RENDER_HEIGHT / 2));
 				ctx.setRenderSize(CITY_RENDER_WIDTH, CITY_RENDER_HEIGHT);
-				GraphicsManager::renderSurface("ui\\selectbox.png", ctx);
+				GraphicsManager::getInstance().renderSurface("ui\\selectbox.png", ctx);
 				break;
 		}
 	}
@@ -397,7 +397,7 @@ void PlayerCardsFrame::draw()
 		// Do we render the selector?
 		for (unsigned int cardDataIndex = 0; cardDataIndex < this->_cardData.size(); cardDataIndex++) {
 			if (this->_cardData.at(cardDataIndex) == i) {
-				GraphicsManager::renderSurface("cards\\cardselect.png", sCtx);
+				GraphicsManager::getInstance().renderSurface("cards\\cardselect.png", sCtx);
 				break;
 			}
 		}
@@ -433,8 +433,8 @@ void PlayerCardsFrame::draw()
 				tCtx.setFontSize(18);
 
 				// Pass it off to the graphics manager to draw.
-				GraphicsManager::renderSurface("cards\\citycard.png", sCtx);
-				GraphicsManager::renderText(city->name, tCtx);
+				GraphicsManager::getInstance().renderSurface("cards\\citycard.png", sCtx);
+				GraphicsManager::getInstance().renderText(city->name, tCtx);
 			}
 		}
 
@@ -449,8 +449,8 @@ void PlayerCardsFrame::draw()
 			tCtx.setFontSize(20);
 
 			// Pass if off to the graphics manager to draw.
-			GraphicsManager::renderSurface("cards\\eventcard.png", sCtx);
-			GraphicsManager::renderText(((EventCard*)card)->getEventName(), tCtx);
+			GraphicsManager::getInstance().renderSurface("cards\\eventcard.png", sCtx);
+			GraphicsManager::getInstance().renderText(((EventCard*)card)->getEventName(), tCtx);
 		}
 	}
 }
@@ -577,5 +577,5 @@ void MapEditingActionsFrame::draw()
 	SurfaceContext ctx;
 	ctx.setRenderSize(FRM_MAP_EDITING_ACTIONS_WIDTH, CMD_PLAYER_ACTION_BUTTON_HEIGHT);
 	ctx.setPosition(FRM_MAP_EDITING_ACTIONS_LEFT, FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * GameFrame::EditingAction);
-	GraphicsManager::renderSurface("ui\\lightbox.png", ctx);
+	GraphicsManager::getInstance().renderSurface("ui\\lightbox.png", ctx);
 }
