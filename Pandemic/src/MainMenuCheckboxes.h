@@ -3,5 +3,5 @@
 
 struct DefaultMapBox : public UICheckbox
 {
-	DefaultMapBox();
+	DefaultMapBox(UIElement* parent);
 };

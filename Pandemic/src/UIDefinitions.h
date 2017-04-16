@@ -1,11 +1,10 @@
-#include "GraphicsManager.h"
 #include "MapEditingActions.h"
 
 // Buttons
 #define UI_TYPE_BUTTON "button"
 #define CMD_TOGGLE_ACTIONS "cmdToggleActions"
-#define CMD_TOGGLE_ACTIONS_WIDTH 100;
-#define CMD_TOGGLE_ACITONS_HEIGHT 100;
+#define CMD_TOGGLE_ACTIONS_WIDTH 100
+#define CMD_TOGGLE_ACITONS_HEIGHT 100
 
 #define CMD_PLAYER_ACTION_BUTTON_HEIGHT 50
 #define CMD_PLAY_GAME_BUTTON "cmdPlayGameButton"

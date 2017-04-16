@@ -3,22 +3,31 @@
 #include <functional>
 #include <assert.h>
 #include "UIDefinitions.h"
+#include "Observable.h"
 
-class UIElement
+class UIElement : public Observable
 {
 public:
-	UIElement(std::string elementName);
+	UIElement(UIElement* parent, std::string elementName);
 	~UIElement();
 
-	static const std::string GuiSurfacePath;
+	void setSurfaceName(std::string name);
+	std::string getSurfaceName();
 
-	std::string surfaceName = "";
-	int width = 0;
-	int height = 0;
-	int top = 0;
-	int left = 0;
+	void setWidth(int width);
+	int getWidth();
 
-	bool visible = true;
+	void setHeight(int height);
+	int getHeight();
+
+	void setTop(int top);
+	int getTop();
+
+	void setLeft(int left);
+	int getLeft();
+
+	void setVisible(bool visible);
+	bool getVisible();
 
 	virtual bool onMouseDown(std::string button, int x, int y);
 	virtual bool onMouseUp(std::string button, int x, int y);
@@ -36,11 +45,21 @@ public:
 	void giveHover();
 	void resetHover();
 
+	void showMsgBox(std::string message);
+
 protected:
 	bool hasFocus = false;
 	bool hasHover = false;
+	UIElement* baseParent;
 
 private:
 	std::string _elementName;
-};
 
+	std::string _surfaceName = "";
+	int _width = 0;
+	int _height = 0;
+	int _top = 0;
+	int _left = 0;
+
+	bool _visible = true;
+};

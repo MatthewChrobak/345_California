@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "MainMenuController.h"
+#include "GameController.h"
 
 #ifdef DEBUG
 #include <assert.h>
@@ -50,6 +51,7 @@ void Game::changeState(GameState state)
 #ifdef DEBUG
 			assert(this->getState() == GameState::MainMenu_GameState);
 #endif
+			SwapController(nullptr);
 			break;
 
 		// Are we trying to get into the game?
@@ -57,7 +59,7 @@ void Game::changeState(GameState state)
 #ifdef DEBUG
 			assert(this->getState() == GameState::MainMenu_GameState);
 #endif
-
+			SwapController(new GameController());
 			break;
 
 		// Are we trying to get to the main menu?
@@ -73,6 +75,7 @@ void Game::changeState(GameState state)
 #ifdef DEBUG
 			assert(this->getState() == GameState::Closed_GameState);
 #endif
+			SwapController(nullptr);
 			break;
 	};
 }

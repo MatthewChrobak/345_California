@@ -1,5 +1,4 @@
 #include "EventCard.h"
-#include "GraphicsManager.h"
 #include <iostream>
 
 

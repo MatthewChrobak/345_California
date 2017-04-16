@@ -1,11 +1,13 @@
 #include "UIElement.h"
 #include "SurfaceContext.h"
-#include "GraphicsManager.h"
+
+#include "UIMessageBox.h"
 
 
-UIElement::UIElement(std::string name)
+UIElement::UIElement(UIElement* parent, std::string name)
 {
 	this->_elementName = name;
+	this->baseParent = parent;
 }
 
 
@@ -50,11 +52,11 @@ UIElement* UIElement::getElementByName(std::string name)
 void UIElement::draw()
 {
 	// Make sure there's a surface to render.
-	if (this->surfaceName.length() != 0) {
+	if (this->_surfaceName.length() != 0) {
 		SurfaceContext ctx;
-		ctx.setPosition(this->left, this->top);
-		ctx.setRenderSize(this->width, this->height);
-		GraphicsManager::renderSurface(this->surfaceName, ctx);
+		ctx.setPosition(this->getLeft(), this->getTop());
+		ctx.setRenderSize(this->getWidth(), this->getHeight());
+		GraphicsManager::renderSurface(this->_surfaceName, ctx);
 	}
 }
 
@@ -76,4 +78,71 @@ void UIElement::resetHover()
 void UIElement::giveHover()
 {
 	this->hasHover = true;
+}
+
+
+
+void UIElement::setSurfaceName(std::string name)
+{
+	this->_surfaceName = name;
+}
+
+std::string UIElement::getSurfaceName()
+{
+	return this->_surfaceName;
+}
+
+
+void UIElement::setWidth(int width)
+{
+	this->_width = width;
+}
+
+int UIElement::getWidth()
+{
+	return this->_width;
+}
+
+
+void UIElement::setHeight(int height)
+{
+	this->_height = height;
+}
+
+int UIElement::getHeight()
+{
+	return this->_height;
+}
+
+void UIElement::setTop(int top)
+{
+	this->_top = top;
+}
+int UIElement::getTop()
+{
+	return this->_top;
+}
+
+void UIElement::setLeft(int left)
+{
+	this->_left = left;
+}
+int UIElement::getLeft()
+{
+	return this->_left;
+}
+
+void UIElement::setVisible(bool visible)
+{
+	this->_visible = visible;
+}
+
+bool UIElement::getVisible()
+{
+	return this->_visible;
+}
+
+void UIElement::showMsgBox(std::string message)
+{
+	((UIMessageBox*)this->baseParent->getElementByName(MSG_BOX))->addMessage(message);
 }

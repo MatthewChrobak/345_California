@@ -5,7 +5,7 @@
 class UIFrame : public UIElement
 {
 public:
-	UIFrame(std::string elementName);
+	UIFrame(UIElement* parent, std::string elementName);
 	~UIFrame();
 
 	bool onMouseDown(std::string button, int x, int y);

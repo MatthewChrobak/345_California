@@ -7,7 +7,7 @@
 class UIMessageBoxAccept : public UIButton
 {
 public:
-	UIMessageBoxAccept();
+	UIMessageBoxAccept(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
@@ -16,7 +16,7 @@ public:
 class UIMessageBox : public UIFrame
 {
 public:
-	UIMessageBox();
+	UIMessageBox(UIElement* parent);
 	bool onKeyDown(std::string key);
 
 	void addMessage(std::string message);

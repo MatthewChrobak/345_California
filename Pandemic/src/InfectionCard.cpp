@@ -48,7 +48,7 @@ void InfectionCard::infectLastCity(int lastCity)
 		board.getCity(lastCity)->cube[color]++;
 	}
 	
-	GuiManager::showMsgBox("The city: " + board.getCity(lastCity)->name + " is infected");
+	// TODO: MVC DOES NOT ALLOW THIS:  GuiManager::showMsgBox("The city: " + board.getCity(lastCity)->name + " is infected");
 	game.numOfCubeDecrementor(color);
 
 }
@@ -62,7 +62,7 @@ void InfectionCard::infectCity(int city, int index)
 	auto board = game.getBoard();
 	board.getCity(city)->cube[index]++;
 	game.numOfCubeDecrementor(index);
-	GuiManager::showMsgBox("The city: " + board.getCity(city)->name + " is infected.");
+	// TODO: MVC DOES NOT ALLOW THIS:  GuiManager::showMsgBox("The city: " + board.getCity(city)->name + " is infected.");
 }
 
 /*
@@ -72,13 +72,13 @@ void InfectionCard::infectCityOutBreak(int city)
 {
 	auto game = Game::getInstance();
 	auto board = game.getBoard();
-	GuiManager::showMsgBox("The city: " + board.getCity(city)->name + " is infected.");
-	GuiManager::showMsgBox("OH NO! AN OUTBREAK OCCURRED!!!");
+	// TODO: MVC DOES NOT ALLOW THIS:  GuiManager::showMsgBox("The city: " + board.getCity(city)->name + " is infected.");
+	// TODO: MVC DOES NOT ALLOW THIS:  GuiManager::showMsgBox("OH NO! AN OUTBREAK OCCURRED!!!");
 	City::outbreakCount += 1;
 
 	if (City::outbreakCount >= 8) {
-		GuiManager::showMsgBox("Game Over");
-		GuiManager::handleWindowClose();
+		// TODO: MVC DOES NOT ALLOW THIS:  GuiManager::showMsgBox("Game Over");
+		// TODO: MVC DOES NOT ALLOW THIS:  GuiManager::handleWindowClose();
 		return;
 	}
 	/*

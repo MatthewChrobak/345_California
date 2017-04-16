@@ -1,8 +1,9 @@
 #include "GameRenderer.h"
 #include "SurfaceContext.h"
-#include "GraphicsManager.h"
+
 #include "GuiManager.h"
-#include "Frames.h"
+#include "GameFrames.h"
+#include "Game.h"
 
 void GameRenderer::drawGame()
 {

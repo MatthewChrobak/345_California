@@ -6,10 +6,11 @@
 class UITextbox : public UIElement, public TextContext
 {
 public:
-	UITextbox(std::string elementName);
+	UITextbox(UIElement* parent, std::string elementName);
 	~UITextbox();
 
-	std::string text;
+	void setText(std::string value);
+	std::string getText();
 
 	std::string getObjectType();
 	void draw();
@@ -17,5 +18,6 @@ public:
 
 private:
 	int tickCursor;
+	std::string _text;
 };
 

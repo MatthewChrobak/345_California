@@ -1,14 +1,14 @@
 #include "UIMessageBox.h"
 #include "GuiManager.h"
 
-UIMessageBox::UIMessageBox() : UIFrame(MSG_BOX)
+UIMessageBox::UIMessageBox(UIElement* parent) : UIFrame(parent, MSG_BOX)
 {
-	this->surfaceName = "ui\\textbox.png";
-	this->width = MSG_BOX_WIDTH;
-	this->height = MSG_BOX_HEIGHT;
-	this->visible = false;
+	this->setSurfaceName("ui\\textbox.png");
+	this->setWidth(MSG_BOX_WIDTH);
+	this->setHeight(MSG_BOX_HEIGHT);
+	this->setVisible(false);
 
-	this->_elements.push_back(new UIMessageBoxAccept());
+	this->_elements.push_back(new UIMessageBoxAccept(parent));
 }
 
 void UIMessageBox::draw()
@@ -21,7 +21,7 @@ void UIMessageBox::draw()
 		ctx.setFontSize(24);
 		ctx.setHorizontalCenter(true);
 		ctx.setFontColor(RGBA(0, 0, 0));
-		ctx.setPosition(this->width / 2, this->height / 2);
+		ctx.setPosition(this->getWidth() / 2, this->getHeight() / 2);
 		GraphicsManager::renderText(this->_messages.front(), ctx);
 	}
 }
@@ -31,7 +31,7 @@ void UIMessageBox::addMessage(std::string message)
 {
 	// Add the message to the queue and make sure we're visible.
 	this->_messages.push(message);
-	this->visible = true;
+	this->setVisible(true);
 }
 
 void UIMessageBox::popMessage()
@@ -43,23 +43,23 @@ void UIMessageBox::popMessage()
 
 	// If we're empty, make us invisible.
 	if (this->_messages.empty()) {
-		this->visible = false;
+		this->setVisible(false);
 	}
 }
 
 
-UIMessageBoxAccept::UIMessageBoxAccept() : UIButton(CMD_MSG_BOX_ACCEPT)
+UIMessageBoxAccept::UIMessageBoxAccept(UIElement* parent) : UIButton(parent, CMD_MSG_BOX_ACCEPT)
 {
-	this->caption = "Okay";
+	this->setCaption("Okay");
 	this->getOutline().setThickness(2);
 	this->getOutline().setColor(0, 0, 0);
 	this->setFontSize(36);
 	this->setHorizontalCenter(true);
 
-	this->width = 200;
-	this->height = 50;
-	this->left = MSG_BOX_WIDTH / 2 - this->width / 2;
-	this->top = MSG_BOX_HEIGHT / 2 + this->height;
+	this->setWidth(200);
+	this->setHeight(50);
+	this->setLeft(MSG_BOX_WIDTH / 2 - this->getWidth() / 2);
+	this->setTop(MSG_BOX_HEIGHT / 2 + this->getHeight());
 }
 
 bool UIMessageBoxAccept::onMouseDown(std::string button, int x, int y)

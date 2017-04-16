@@ -1,20 +1,11 @@
 #pragma once
 #include "UIButton.h"
-#include "PlayerActions.h"
-#include <vector>
 
 // The button that's meant to toggle the visibility of the player actions frame
 // while in game.
 struct ToggleActionsButton : public UIButton
 {
-	ToggleActionsButton();
-	bool onMouseDown(std::string button, int x, int y);
-};
-
-// The button that's meant to transition the game from the main menu to the game.
-struct PlayGameButton : public UIButton
-{
-	PlayGameButton();
+	ToggleActionsButton(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
@@ -22,61 +13,61 @@ struct PlayGameButton : public UIButton
 // Buttons in the player actions menu.
 struct DrivePlayerAction : public UIButton
 {
-	DrivePlayerAction();
+	DrivePlayerAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct DirectFlightPlayerAction : public UIButton
 {
-	DirectFlightPlayerAction();
+	DirectFlightPlayerAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct CharterFlightAction : public UIButton
 {
-	CharterFlightAction();
+	CharterFlightAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct ShuttleFlightAction : public UIButton
 {
-	ShuttleFlightAction();
+	ShuttleFlightAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct BuildResearchCenterAction : public UIButton
 {
-	BuildResearchCenterAction();
+	BuildResearchCenterAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct TreatDiseaseAction : public UIButton
 {
-	TreatDiseaseAction();
+	TreatDiseaseAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct ShareKnowledgeAction : public UIButton
 {
-	ShareKnowledgeAction();
+	ShareKnowledgeAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct DiscoverCureAction : public UIButton
 {
-	DiscoverCureAction();
+	DiscoverCureAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct ViewCardsAction : public UIButton
 {
-	ViewCardsAction();
+	ViewCardsAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct PlayerCardsClose : public UIButton
 {
-	PlayerCardsClose();
+	PlayerCardsClose(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
@@ -93,72 +84,72 @@ private:
 
 struct ToggleMapEditingActions : public UIButton
 {
-	ToggleMapEditingActions();
+	ToggleMapEditingActions(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct MoveNodeAction : public UIButton
 {
-	MoveNodeAction();
+	MoveNodeAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct SelectNodeAction : public UIButton
 {
-	SelectNodeAction();
+	SelectNodeAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct AddNodeAction : public UIButton
 {
-	AddNodeAction();
+	AddNodeAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct MakeNodeBlackAction : public UIButton
 {
-	MakeNodeBlackAction();
+	MakeNodeBlackAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct MakeNodeRedAction : public UIButton
 {
-	MakeNodeRedAction();
+	MakeNodeRedAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct MakeNodeYellowAction : public UIButton
 {
-	MakeNodeYellowAction();
+	MakeNodeYellowAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct MakeNodeBlueAction : public UIButton
 {
-	MakeNodeBlueAction();
+	MakeNodeBlueAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct ChangeNodeNameAction : public UIButton
 {
-	ChangeNodeNameAction();
+	ChangeNodeNameAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct MakeDirectedEdgeAction : public UIButton
 {
-	MakeDirectedEdgeAction();
+	MakeDirectedEdgeAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct RotateNodeAngleAction : public UIButton
 {
-	RotateNodeAngleAction();
+	RotateNodeAngleAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
 
 struct FinishedEditingMapAction : public UIButton
 {
-	FinishedEditingMapAction();
+	FinishedEditingMapAction(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };

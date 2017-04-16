@@ -4,7 +4,7 @@
 class UICheckbox : public UIElement
 {
 public:
-	UICheckbox(std::string name);
+	UICheckbox(UIElement* parent, std::string name);
 	bool isChecked();
 	bool onMouseDown(std::string button, int x, int y);
 	void draw();

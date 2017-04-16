@@ -1,5 +1,4 @@
 #include "EpidemicCard.h"
-#include "GraphicsManager.h"
 #include "Board.h"
 #include "InfectionCard.h"
 #include <iostream>

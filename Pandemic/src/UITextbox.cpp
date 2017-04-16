@@ -1,9 +1,9 @@
 #include "UITextbox.h"
-#include "GraphicsManager.h"
+
 #include <ctime>
 
 
-UITextbox::UITextbox(std::string elementName) : UIElement(elementName)
+UITextbox::UITextbox(UIElement* parent, std::string elementName) : UIElement(parent, elementName)
 {
 	this->tickCursor = std::clock();
 }
@@ -23,7 +23,7 @@ void UITextbox::draw()
 	// Draw the background.
 	UIElement::draw();
 
-	std::string renderText = this->text;
+	std::string renderText = this->getText();
 	int timeDifference = std::clock() - this->tickCursor;
 
 	// Figure out if we have the focus.
@@ -41,8 +41,8 @@ void UITextbox::draw()
 		}
 	}
 	
-	this->setPosition(this->left,
-		this->top + (this->height - this->getFontSize()) / 2);
+	this->setPosition(this->getLeft(),
+		this->getTop() + (this->getHeight() - this->getFontSize()) / 2);
 	GraphicsManager::renderText(renderText, *this);
 }
 
@@ -53,8 +53,8 @@ bool UITextbox::onKeyDown(std::string key)
 
 		if (key == "backspace") {
 			// Can we even backspace?
-			if (this->text.size() != 0) {
-				this->text = this->text.substr(0, this->text.size() - 1);
+			if (this->getText().size() != 0) {
+				this->setText(this->getText().substr(0, this->getText().size() - 1));
 				return true;
 			}
 		}
@@ -63,6 +63,16 @@ bool UITextbox::onKeyDown(std::string key)
 		return true;
 	}
 
-	this->text += key;
+	this->setText(this->getText() + key);
 	return true;
+}
+
+void UITextbox::setText(std::string value)
+{
+	this->_text = value;
+}
+
+std::string UITextbox::getText()
+{
+	return this->_text;
 }

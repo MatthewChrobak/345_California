@@ -1,5 +1,5 @@
 #include "CityCard.h"
-#include "GraphicsManager.h"
+
 #include "Game.h"
 #include <iostream>
 

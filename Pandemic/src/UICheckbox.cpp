@@ -1,6 +1,6 @@
 #include "UICheckbox.h"
 
-UICheckbox::UICheckbox(std::string name) : UIElement(name)
+UICheckbox::UICheckbox(UIElement* parent, std::string name) : UIElement(parent, name)
 {
 
 }
@@ -24,8 +24,8 @@ void UICheckbox::draw()
 		// Make sure there's a surface to render.
 		if (this->checkedSurfaceName.length() != 0) {
 			SurfaceContext ctx;
-			ctx.setPosition(this->left, this->top);
-			ctx.setRenderSize(this->width, this->height);
+			ctx.setPosition(this->getLeft(), this->getTop());
+			ctx.setRenderSize(this->getWidth(), this->getHeight());
 			GraphicsManager::renderSurface(this->checkedSurfaceName, ctx);
 			return;
 		}

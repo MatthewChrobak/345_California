@@ -103,11 +103,35 @@
     <Filter Include="Source Files\Models\Cards">
       <UniqueIdentifier>{9ed41bf5-7b5f-438e-ac88-4c665a4aa8d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Models\Elements">
+    <Filter Include="Header Files\Models\UI">
+      <UniqueIdentifier>{063ad9f1-38ed-4aa3-a4d4-ef3cb288bf9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\UI\Elements">
+      <UniqueIdentifier>{d9897602-8798-450c-bd3a-b5765da99cec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\UI\Behaviour">
+      <UniqueIdentifier>{1ff707db-0262-4667-8d36-0ab0ce3c1071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\UI">
       <UniqueIdentifier>{0a2e26cf-af28-475a-98db-340130d99e6b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Models\Elements">
-      <UniqueIdentifier>{063ad9f1-38ed-4aa3-a4d4-ef3cb288bf9d}</UniqueIdentifier>
+    <Filter Include="Source Files\Models\UI\Behaviour">
+      <UniqueIdentifier>{de59f2a2-9304-4f72-9989-545f7ec2aac2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\UI\Elements">
+      <UniqueIdentifier>{1a32ac5d-8579-44e6-bde1-19a785ce2e91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\UI\Elements\MainMenu">
+      <UniqueIdentifier>{9d5d892d-eec8-4c36-bb30-2c3c30fde6dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\UI\Elements\MainMenu">
+      <UniqueIdentifier>{4d72eac9-9810-4a5c-9117-9d6c8ed8713d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\UI\Elements\Game">
+      <UniqueIdentifier>{9f64cbfc-a3ea-47d3-aa7a-8f272249a6bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\UI\Elements\Game">
+      <UniqueIdentifier>{4694cf06-19d6-48b2-be74-11a86f5b504a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,26 +144,11 @@
     <ClCompile Include="src\Game.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
-    <ClCompile Include="src\Buttons.cpp">
-      <Filter>Source Files\Controllers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Frames.cpp">
-      <Filter>Source Files\Controllers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Checkboxes.cpp">
-      <Filter>Source Files\Controllers</Filter>
-    </ClCompile>
     <ClCompile Include="src\FileStream.cpp">
       <Filter>Source Files\IO</Filter>
     </ClCompile>
     <ClCompile Include="src\FileSystem.cpp">
       <Filter>Source Files\IO</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GuiManager.cpp">
-      <Filter>Source Files\Controllers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Textboxes.cpp">
-      <Filter>Source Files\Controllers</Filter>
     </ClCompile>
     <ClCompile Include="src\CommonContext.cpp">
       <Filter>Source Files\Models\Contexts</Filter>
@@ -149,24 +158,6 @@
     </ClCompile>
     <ClCompile Include="src\TextContext.cpp">
       <Filter>Source Files\Models\Contexts</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UIButton.cpp">
-      <Filter>Source Files\Models\Elements</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UICheckbox.cpp">
-      <Filter>Source Files\Models\Elements</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UIElement.cpp">
-      <Filter>Source Files\Models\Elements</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UIFrame.cpp">
-      <Filter>Source Files\Models\Elements</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UIMessageBox.cpp">
-      <Filter>Source Files\Models\Elements</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UITextbox.cpp">
-      <Filter>Source Files\Models\Elements</Filter>
     </ClCompile>
     <ClCompile Include="src\RandomNumberGenerator.cpp">
       <Filter>Source Files\IO</Filter>
@@ -188,12 +179,6 @@
     </ClCompile>
     <ClCompile Include="src\SfmlFontManager.cpp">
       <Filter>Source Files\Views\Resource Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SfmlGraphicsSystem.cpp">
-      <Filter>Source Files\Deprecated</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GraphicsManager.cpp">
-      <Filter>Source Files\Deprecated</Filter>
     </ClCompile>
     <ClCompile Include="src\GameRenderer.cpp">
       <Filter>Source Files\Deprecated</Filter>
@@ -231,9 +216,6 @@
     <ClCompile Include="src\PlayerAction.cpp">
       <Filter>Source Files\Models\Player</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Matthew\Downloads\a3 - 27381794\Assignment3\BoardBuilder.cpp">
-      <Filter>Source Files\Models\Builders</Filter>
-    </ClCompile>
     <ClCompile Include="src\Drawable.cpp">
       <Filter>Source Files\Models\Content</Filter>
     </ClCompile>
@@ -258,6 +240,54 @@
     <ClCompile Include="src\MainMenuView.cpp">
       <Filter>Source Files\Views\Concrete Views</Filter>
     </ClCompile>
+    <ClCompile Include="src\GuiManager.cpp">
+      <Filter>Source Files\Deprecated</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameController.cpp">
+      <Filter>Source Files\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameView.cpp">
+      <Filter>Source Files\Views\Concrete Views</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BoardBuilder.cpp">
+      <Filter>Source Files\Models\Builders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIButton.cpp">
+      <Filter>Source Files\Models\UI\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UICheckbox.cpp">
+      <Filter>Source Files\Models\UI\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIElement.cpp">
+      <Filter>Source Files\Models\UI\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIFrame.cpp">
+      <Filter>Source Files\Models\UI\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIMessageBox.cpp">
+      <Filter>Source Files\Models\UI\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UITextbox.cpp">
+      <Filter>Source Files\Models\UI\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainMenuButtons.cpp">
+      <Filter>Source Files\Models\UI\Elements\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainMenuTextboxes.cpp">
+      <Filter>Source Files\Models\UI\Elements\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainMenuCheckboxes.cpp">
+      <Filter>Source Files\Models\UI\Elements\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameFrames.cpp">
+      <Filter>Source Files\Models\UI\Elements\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainMenuFrames.cpp">
+      <Filter>Source Files\Models\UI\Elements\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameButtons.cpp">
+      <Filter>Source Files\Models\UI\Elements\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MapEditingActions.h">
@@ -272,39 +302,6 @@
     <ClInclude Include="src\Paths.h">
       <Filter>Header Files\IO</Filter>
     </ClInclude>
-    <ClInclude Include="src\Buttons.h">
-      <Filter>Header Files\Controllers</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Checkboxes.h">
-      <Filter>Header Files\Controllers</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Frames.h">
-      <Filter>Header Files\Controllers</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GuiManager.h">
-      <Filter>Header Files\Controllers</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UIButton.h">
-      <Filter>Header Files\Models\Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UICheckbox.h">
-      <Filter>Header Files\Models\Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UIDefinitions.h">
-      <Filter>Header Files\Models\Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UIElement.h">
-      <Filter>Header Files\Models\Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UIFrame.h">
-      <Filter>Header Files\Models\Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UIMessageBox.h">
-      <Filter>Header Files\Models\Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UITextbox.h">
-      <Filter>Header Files\Models\Elements</Filter>
-    </ClInclude>
     <ClInclude Include="src\CommonContext.h">
       <Filter>Header Files\Models\Contexts</Filter>
     </ClInclude>
@@ -313,9 +310,6 @@
     </ClInclude>
     <ClInclude Include="src\SurfaceContext.h">
       <Filter>Header Files\Models\Contexts</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Textboxes.h">
-      <Filter>Header Files\Controllers</Filter>
     </ClInclude>
     <ClInclude Include="src\RandomNumberGenerator.h">
       <Filter>Header Files\IO</Filter>
@@ -395,9 +389,6 @@
     <ClInclude Include="src\Drawable.h">
       <Filter>Header Files\Models\Content</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Matthew\Downloads\a3 - 27381794\Assignment3\BoardBuilder.h">
-      <Filter>Header Files\Models\Builders</Filter>
-    </ClInclude>
     <ClInclude Include="src\PlayerRoleCard.h">
       <Filter>Header Files\Models\Cards</Filter>
     </ClInclude>
@@ -407,19 +398,10 @@
     <ClInclude Include="src\PlayerActions.h">
       <Filter>Header Files\Models\Player</Filter>
     </ClInclude>
-    <ClInclude Include="src\SfmlGraphicsSystem.h">
-      <Filter>Header Files\Deprecated</Filter>
-    </ClInclude>
     <ClInclude Include="src\MainMenuView.h">
       <Filter>Header Files\Views\Concrete Views</Filter>
     </ClInclude>
     <ClInclude Include="src\GameRenderer.h">
-      <Filter>Header Files\Deprecated</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GraphicsManager.h">
-      <Filter>Header Files\Deprecated</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GraphicsSystem.h">
       <Filter>Header Files\Deprecated</Filter>
     </ClInclude>
     <ClInclude Include="src\RenderView.h">
@@ -430,6 +412,57 @@
     </ClInclude>
     <ClInclude Include="src\SfmlRenderView.h">
       <Filter>Header Files\Views\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GuiManager.h">
+      <Filter>Header Files\Deprecated</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameController.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameView.h">
+      <Filter>Header Files\Views\Concrete Views</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIButton.h">
+      <Filter>Header Files\Models\UI\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UICheckbox.h">
+      <Filter>Header Files\Models\UI\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIDefinitions.h">
+      <Filter>Header Files\Models\UI\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIElement.h">
+      <Filter>Header Files\Models\UI\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIFrame.h">
+      <Filter>Header Files\Models\UI\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIMessageBox.h">
+      <Filter>Header Files\Models\UI\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UITextbox.h">
+      <Filter>Header Files\Models\UI\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MainMenuButtons.h">
+      <Filter>Header Files\Models\UI\Elements\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MainMenuTextboxes.h">
+      <Filter>Header Files\Models\UI\Elements\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MainMenuCheckboxes.h">
+      <Filter>Header Files\Models\UI\Elements\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameFrames.h">
+      <Filter>Header Files\Models\UI\Elements\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MainMenuFrames.h">
+      <Filter>Header Files\Models\UI\Elements\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameButtons.h">
+      <Filter>Header Files\Models\UI\Elements\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BoardBuilder.h">
+      <Filter>Header Files\Models\Builders</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

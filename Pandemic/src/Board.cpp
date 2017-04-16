@@ -13,7 +13,6 @@
 #include <time.h>
 #include "RoleCard.h"
 #include "EventCard.h"
-#include "Frames.h"
 #include "EpidemicCard.h"
 #include "RandomNumberGenerator.h"
 
@@ -28,7 +27,7 @@ void Board::tryStartGame()
 	// Can we start the game?
 	if (this->_startGame) {
 		this->_startGame = false;
-		GuiManager::showMsgBox("The game has started!");
+		// TODO: MVC DOES NOT ALLOW THIS:  GuiManager::showMsgBox("The game has started!");
 		this->generateGameContentAtStartOfGame();
 	}
 }
@@ -121,7 +120,7 @@ Board::Board(std::string saveFolder)
 	if (!this->_editingMap) {
 		this->loadPlayers(saveFolder + PLAYER_DATA_FILE);
 	} else {
-		GuiManager::showMsgBox("In Map Editing mode. Hit 'Done Editing' to save the map and start playing.");
+		// TODO: MVC DOES NOT ALLOW THIS:  GuiManager::showMsgBox("In Map Editing mode. Hit 'Done Editing' to save the map and start playing.");
 	}
 }
 
@@ -648,12 +647,12 @@ void Board::shuffleDiscardedInfectionDeck()
 	}
 
 	std::string g = std::to_string(infectionCityCards.size());
-	GuiManager::showMsgBox("SIZE OF INFECTIONCITYCARDS AFTER EPIDEMIC" + g);
+	// TODO: MVC DOES NOT ALLOW THIS:  GuiManager::showMsgBox("SIZE OF INFECTIONCITYCARDS AFTER EPIDEMIC" + g);
 
 	//Clear the discarded infection cards deck after all cards have been placed back in the original deck.
 	this->discardInfectionCard.clear();
 	std::string h = std::to_string(discardInfectionCard.size());
-	GuiManager::showMsgBox("SIZE OF DISCARDCARDS AFTER EPIDEMIC" + h);
+	// TODO: MVC DOES NOT ALLOW THIS:  GuiManager::showMsgBox("SIZE OF DISCARDCARDS AFTER EPIDEMIC" + h);
 }
 
 bool Board::isEditingMap()
@@ -666,7 +665,7 @@ void Board::submitMap()
 	this->_editingMap = false;
 	this->_startGame = true;
 	Game::save();
-	GuiManager::handleWindowClose();
+	// TODO: MVC DOES NOT ALLOW THIS:  GuiManager::handleWindowClose();
 }
 
 
@@ -679,21 +678,21 @@ void Board::checkTurn()
 	{
 		
 		board.drawCards();
-		GuiManager::showMsgBox("Your current hand after picking two cards.");
-		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
+		// TODO: MVC DOES NOT ALLOW THIS:  GuiManager::showMsgBox("Your current hand after picking two cards.");
+		// TODO: MVC DOES NOT ALLOW THIS:  GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
 
 		int numberOfCards = player.getNumberOfCards();
 
 		if (numberOfCards > 7) //You only excess cards if you have more than 7 cards after drawing
 		{
-			GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
-			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.
-			GameFrame::PlayerAction = PlayerActions::DiscardCards;
+			// TODO: MVC DOES NOT ALLOW THIS:  GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
+			// TODO: MVC DOES NOT ALLOW THIS:  GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.
+			// TODO: MVC DOES NOT ALLOW THIS:  GameFrame::PlayerAction = PlayerActions::DiscardCards;
 
 		}
 		//draw infection card and the game will do the infection automatically
 		board.drawInfectionCard();
-		GuiManager::showMsgBox("End of your turn.");
+		// TODO: MVC DOES NOT ALLOW THIS:  GuiManager::showMsgBox("End of your turn.");
 	}
 }
 

@@ -24,22 +24,14 @@ public:
 // The frame that holds all player-action buttons in game.
 struct PlayerActionsFrame : public UIFrame
 {
-	PlayerActionsFrame();
+	PlayerActionsFrame(UIElement* parent);
 	bool onMouseDown(std::string button, int x, int y);
 };
-
-
-// The frame that holds all UI elements for the main menu.
-struct MainMenuFrame : public UIFrame
-{
-	MainMenuFrame();
-};
-
 
 // The frame that handles the rendering of player cards.
 struct PlayerCardsFrame : public UIFrame
 {
-	PlayerCardsFrame();
+	PlayerCardsFrame(UIElement* parent);
 	void draw();
 	bool onMouseDown(std::string button, int x, int y);
 
@@ -52,6 +44,6 @@ private:
 // The frame that contains the map-editing actions.
 struct MapEditingActionsFrame : public UIFrame
 {
-	MapEditingActionsFrame();
+	MapEditingActionsFrame(UIElement* parent);
 	void draw();
 };

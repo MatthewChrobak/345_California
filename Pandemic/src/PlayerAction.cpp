@@ -3,7 +3,6 @@
 
 #include "PlayerAction.h"
 #include "Player.h"
-#include "Frames.h"
 #include "CityCard.h"
 #include "Game.h"
 #include "GuiManager.h"
@@ -38,15 +37,15 @@ void DirectFlightAction::doAction(Player *player) {
                 GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
             }
             else {
-                GuiManager::showMsgBox("Please select a city card.");
+                // TODO: MVC DOES NOT ALLOW THIS:  GuiManager::showMsgBox("Please select a city card.");
             }
         }
         else {
-            GuiManager::showMsgBox("Card was null.");
+            // TODO: MVC DOES NOT ALLOW THIS:  GuiManager::showMsgBox("Card was null.");
         }
     }
     else {
-        GuiManager::showMsgBox("Please select only one card.");
+        // TODO: MVC DOES NOT ALLOW THIS:  GuiManager::showMsgBox("Please select only one card.");
     }
 */
 
