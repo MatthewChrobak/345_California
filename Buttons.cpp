@@ -8,7 +8,7 @@
 
 ToggleActionsButton::ToggleActionsButton() : UIButton(CMD_TOGGLE_ACTIONS)
 {
-    this->surfaceName = "ui/button.png";
+    this->surfaceName = "ui\\button.png";
     this->caption = "View Actions";
     this->width = CMD_TOGGLE_ACTIONS_WIDTH;
     this->height = CMD_TOGGLE_ACITONS_HEIGHT;
@@ -64,7 +64,7 @@ bool PlayGameButton::onMouseDown(std::string button, int x, int y)
 DrivePlayerAction::DrivePlayerAction() : UIButton(CMD_PLAYER_ACTION_DRIVE)
 {
     this->caption = "Drive";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_PLAYER_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
@@ -82,7 +82,7 @@ bool DrivePlayerAction::onMouseDown(std::string key, int x, int y)
 DirectFlightPlayerAction::DirectFlightPlayerAction() : UIButton(CMD_PLAYER_ACTION_DIRECT_FLIGHT)
 {
     this->caption = "Direct Flight";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_PLAYER_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
@@ -106,7 +106,7 @@ bool DirectFlightPlayerAction::onMouseDown(std::string key, int x, int y)
 CharterFlightAction::CharterFlightAction() : UIButton(CMD_PLAYER_ACTION_CHARTER_FLIGHT)
 {
     this->caption = "Charter Flight";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_PLAYER_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
@@ -130,7 +130,7 @@ bool CharterFlightAction::onMouseDown(std::string key, int x, int y)
 ShuttleFlightAction::ShuttleFlightAction() : UIButton(CMD_PLAYER_ACTION_SHUTTLE_FLIGHT)
 {
     this->caption = "Shuttle Flight";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_PLAYER_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
     this->top = FRM_PLAYER_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * PlayerActions::ShuttleFlight;
@@ -153,7 +153,7 @@ bool ShuttleFlightAction::onMouseDown(std::string key, int x, int y)
 BuildResearchCenterAction::BuildResearchCenterAction() : UIButton(CMD_PLAYER_ACTION_BUILD_RESEARCH_CENTER)
 {
     this->caption = "Build Research Center";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_PLAYER_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
@@ -177,7 +177,7 @@ bool BuildResearchCenterAction::onMouseDown(std::string key, int x, int y)
 TreatDiseaseAction::TreatDiseaseAction() : UIButton(CMD_PLAYER_ACTION_TREAT_DISEASE)
 {
     this->caption = "Treat Disease";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_PLAYER_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
@@ -237,7 +237,7 @@ bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 ShareKnowledgeAction::ShareKnowledgeAction() : UIButton(CMD_PLAYER_ACTION_SHARE_KNOWLEDGE)
 {
     this->caption = "Share Knowledge";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_PLAYER_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
@@ -262,7 +262,7 @@ bool ShareKnowledgeAction::onMouseDown(std::string key, int x, int y)
 DiscoverCureAction::DiscoverCureAction() : UIButton(CMD_PLAYER_ACTION_DISCOVER_CURE)
 {
     this->caption = "Discover Cure";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_PLAYER_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
@@ -287,7 +287,7 @@ bool DiscoverCureAction::onMouseDown(std::string key, int x, int y)
 ViewCardsAction::ViewCardsAction() : UIButton(CMD_PLAYER_ACTION_VIEW_CARDS)
 {
     this->caption = "View Cards";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_PLAYER_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
@@ -310,7 +310,7 @@ bool ViewCardsAction::onMouseDown(std::string key, int x, int y)
 
 PlayerCardsClose::PlayerCardsClose() : UIButton(CMD_PLAYER_CARDS_CLOSE)
 {
-    this->surfaceName = "ui/close.png";
+    this->surfaceName = "ui\\close.png";
     this->width = CMD_PLAYER_CARDS_CLOSE_WIDTH;
     this->height = CMD_PLAYER_CARDS_CLOSE_HEIGHT;
 
@@ -335,7 +335,7 @@ PlayerCardsOkay::PlayerCardsOkay(std::vector<int>* cardData) : UIButton(CMD_PLAY
 {
     this->_cardData = cardData;
 
-    this->surfaceName = "ui/button.png";
+    this->surfaceName = "ui\\button.png";
     this->caption = "Okay";
     this->getOutline().setThickness(2);
     this->getOutline().setColor(0, 0, 0);
@@ -636,7 +636,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 ToggleMapEditingActions::ToggleMapEditingActions() : UIButton(CMD_TOGGLE_MAP_EDITING_ACTIONS)
 {
-    this->surfaceName = "ui/button.png";
+    this->surfaceName = "ui\\button.png";
     this->caption = "Show Tools";
     this->width = CMD_TOGGLE_ACTIONS_WIDTH;
     this->height = CMD_TOGGLE_ACITONS_HEIGHT;
@@ -660,7 +660,7 @@ bool ToggleMapEditingActions::onMouseDown(std::string button, int x, int y)
 SelectNodeAction::SelectNodeAction() : UIButton(CMD_SELECT_NODE)
 {
     this->caption = "Select Node";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
@@ -691,7 +691,7 @@ bool RotateNodeAngleAction::onMouseDown(std::string button, int x, int y)
 AddNodeAction::AddNodeAction() : UIButton(CMD_ADD_NODE)
 {
     this->caption = "Add Node";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
@@ -709,7 +709,7 @@ bool AddNodeAction::onMouseDown(std::string button, int x, int y)
 MakeNodeBlackAction::MakeNodeBlackAction() : UIButton(CMD_MAKE_NODE_BLACK)
 {
     this->caption = "Make Black";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
@@ -727,7 +727,7 @@ bool MakeNodeBlackAction::onMouseDown(std::string button, int x, int y)
 MakeNodeRedAction::MakeNodeRedAction() : UIButton(CMD_MAKE_NODE_RED)
 {
     this->caption = "Make Red";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
@@ -744,7 +744,7 @@ bool MakeNodeRedAction::onMouseDown(std::string button, int x, int y)
 MakeNodeYellowAction::MakeNodeYellowAction() : UIButton(CMD_MAKE_NODE_YELLOW)
 {
     this->caption = "Make Yellow";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
@@ -778,7 +778,7 @@ bool MakeNodeBlueAction::onMouseDown(std::string button, int x, int y)
 ChangeNodeNameAction::ChangeNodeNameAction() : UIButton(CMD_CHANGE_NODE_NAME)
 {
     this->caption = "Rename Node";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
@@ -795,7 +795,7 @@ bool ChangeNodeNameAction::onMouseDown(std::string button, int x, int y)
 MakeDirectedEdgeAction::MakeDirectedEdgeAction() : UIButton(CMD_MAKE_DIRECTED_EDGE)
 {
     this->caption = "Make Edge";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
@@ -813,7 +813,7 @@ bool MakeDirectedEdgeAction::onMouseDown(std::string button, int x, int y)
 MoveNodeAction::MoveNodeAction() : UIButton(CMD_MOVE_NODE)
 {
     this->caption = "MoveNode";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
@@ -830,7 +830,7 @@ bool MoveNodeAction::onMouseDown(std::string button, int x, int y)
 FinishedEditingMapAction::FinishedEditingMapAction() : UIButton(CMD_FINISHED_MAP_EDITING)
 {
     this->caption = "Done Editing";
-    this->hoverSurfaceName = "ui/lightbox.png";
+    this->hoverSurfaceName = "ui\\lightbox.png";
     this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
     this->height = CMD_PLAYER_ACTION_BUTTON_HEIGHT;
 
