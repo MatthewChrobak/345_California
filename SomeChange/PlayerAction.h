@@ -15,7 +15,6 @@ public:
 
 class DirectFlightAction1: public PlayerAction{
 
-
     std ::string name = "DirectFlight";
 
 public:
