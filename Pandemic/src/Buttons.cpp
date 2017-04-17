@@ -210,6 +210,15 @@ bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 	the second function is not implemented
 	*/
 	//TODO: Implementation of the medic role completely
+	if (Game::getGameBoard()->isCured[cityColor]==true)
+	{
+		GuiManager::showMsgBox("Cure has been found, all cubes in the city are eradicated.");
+		do {
+			Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor]--;
+			Game::numOfCubeIncrementor(cityColor);
+		} while (Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor] > 0);
+	}
+
 	if (player.getRoleCard()->getRoleCardVal() == 5)
 	{
 		GuiManager::showMsgBox("You're a medic!...Removing all matching cubes! Counts as one action.");
@@ -232,9 +241,7 @@ bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 	}
 	else
-	{
 		GuiManager::showMsgBox("No Infection cube is at the current city.");
-	}
 	
 	return true;
 }
@@ -657,12 +664,6 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				GuiManager::showMsgBox("You need to select " + std::to_string(roleCardIndex) + " cards.");
 			}
 		}
-
-		/*
-		When the player successfully finishes an action, ensure that the action is reset by writing the line
-		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-		Failure to do so will cause assertions to fail and will cause the application to crash.
-		*/
 		return true;
 
 	case PlayerActions::ViewCards:
@@ -688,29 +689,6 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 		}
 		break;
 	}
-
-
-	//If turn is changed, show this message
-	//if (Game::getGameBoard()->playerTurnChange() == true) 
-	//{
-	//	Game::getGameBoard()->drawCards();
-	//	GuiManager::showMsgBox("Your current hand after picking two cards.");
-	//	GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
-
-	//	int numberOfCards = player.getNumberOfCards();
-
-	//	if (numberOfCards >= 6) //You only excess cards only when you draw while you have 6 or more cards
-	//	{
-	//		GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
-	//		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.
-	//		GameFrame::PlayerAction = PlayerActions::DiscardCards;
-
-	//	}
-	//	//draw infection card and the game will do the infection automatically
-	//	Game::getGameBoard()->drawInfectionCard();
-	//	GuiManager::showMsgBox("End of your turn.");
-	//}
-
 	return true;
 }
 
