@@ -140,7 +140,7 @@ Board::~Board()
 //Draw 2 cards
 void Board::drawCards()
 {
-	if (this->_playerWithdrawPile.size() <= 0)
+	if (this->playerWithdrawPile.size() <= 0)
 	{
 		GuiManager::showMsgBox("no more player's card, you lost!");
 		GuiManager::handleWindowClose();
