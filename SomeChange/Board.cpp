@@ -16,6 +16,7 @@
 #include "Frames.h"
 #include "EpidemicCard.h"
 #include "RandomNumberGenerator.h"
+#include "PlayerRoleCard.h"
 
 #ifdef DEBUG
 #include <assert.h>
@@ -380,12 +381,10 @@ void Board::loadPlayers(std::string playerFile)
         }
 
         //create two roleCards
-        RoleCard* rc1 = new RoleCard(RoleCard::roleCardNames[value[0]]);
         RoleCard* rc2 = new RoleCard(RoleCard::roleCardNames[value[1]]);
 
         //add roleCard to the players
         Player* playerOne = new Player();
-        playerOne->setRoleCard(rc1);
         this->_players.push_back(playerOne);
 
 
@@ -549,9 +548,9 @@ bool Board::playerTurnChange()
     if (Game::actionCounter == 0)
     {
 
+        this->currentTurnPlayer = ((this->currentTurnPlayer) + 1) % _players.size();
         Game::resetActionCounter();
         turnChanged = true;
-        Board::checkTurn();
 
     }
 
@@ -623,8 +622,6 @@ void Board::checkTurn()
 
     if (board->playerTurnChange())
     {
-        
-        ///TODO:: FIX LOGIC
         board->drawCards();
         GuiManager::showMsgBox("Your current hand after picking two cards.");
         GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
@@ -673,27 +670,64 @@ void Board::set_players(const vector<Player *, std::allocator<Player *>> &_playe
 void Board::setActionsAndRoles() {
 
     //coming from 397
-    //generate all the possible Action, except move (this is handled by GUI for now
+    //generate all the possible Action, except move (this is handled by GUI)
 
      DirectFlightAction1* directFlightAction = new  DirectFlightAction1();
      BuildResearchStation1* buildResearchStation = new  BuildResearchStation1();
-      TreatDisease1* treatDisease = new  TreatDisease1();
-      ShareKnowledge1* shareKnowledge = new  ShareKnowledge1();
+     TreatDisease1* treatDisease = new  TreatDisease1();
+     ShareKnowledge1* shareKnowledge = new  ShareKnowledge1();
      DiscoverCure1* discoverCure = new  DiscoverCure1();
      CharterFlight1* charterFlight = new  CharterFlight1();
      ShuttleFlight1* shuttleFlight = new  ShuttleFlight1();
 
+
+    //regular vector
     std::vector<PlayerAction *> possiblePlayerActions = {directFlightAction, buildResearchStation, treatDisease,
                                                     shareKnowledge, charterFlight, shuttleFlight, discoverCure};
 
-    ///TODO: ROLECARD IMPLENMENTATION (DECORATOR)
 
-    _players[0]->setPlayerActionList(possiblePlayerActions);
-    _players[1]->setPlayerActionList(possiblePlayerActions);
 
+
+
+    PlayerRoleCard* playerRoleCardOperation = new OperationsExpert(buildResearchStation);
+    //modifies BUILD RC (Operation Expert)
+    std::vector<PlayerAction *> possiblePlayerActionsOperationExpert = {directFlightAction, playerRoleCardOperation, treatDisease,
+                                                                           shareKnowledge, charterFlight, shuttleFlight, discoverCure};
+
+
+
+
+    //Modifies DiscoverCure (Science Guy)
+    PlayerRoleCard* playerRoleCardScientist= new OperationsExpert(discoverCure);
+    //modifed vecotr of action Scientist
+    std::vector<PlayerAction *> possiblePlayerActionsScientist = {directFlightAction, buildResearchStation, treatDisease,
+                                                                  shareKnowledge, charterFlight, shuttleFlight, playerRoleCardScientist};
+
+    //Modifies TreatDisease
+    PlayerRoleCard* playerRoleCardMedic= new OperationsExpert(treatDisease);
+
+    std::vector<PlayerAction *> possiblePlayerActionsMedic = {directFlightAction, buildResearchStation, playerRoleCardMedic,
+                                                                  shareKnowledge, charterFlight, shuttleFlight, discoverCure};
+
+
+
+
+    RoleCard* rc1 = new RoleCard("OperationsExpert");
+    _players[0]->setRoleCard(rc1);
+
+    _players[0]->setPlayerActionList(possiblePlayerActionsOperationExpert);
+    _players[1]->setPlayerActionList(possiblePlayerActionsScientist);
+
+
+    //_players[0]->setRoleCard()
     //set the currentPlayer pointer point to the first player
 
+
+    cout << _players[0]->getRoleCard()->getRoleCardVal() << endl;
+    cout << _players[1]->getRoleCard()->getRoleCardVal() << endl;
+
     currentPlayer = _players[0];
+
 
     //now ready for actions...
 
