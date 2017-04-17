@@ -54,7 +54,7 @@ void UIElement::draw()
 		SurfaceContext ctx;
 		ctx.setPosition(this->left, this->top);
 		ctx.setRenderSize(this->width, this->height);
-		GraphicsManager::renderSurface(this->surfaceName, ctx);
+		GraphicsManager::getInstance().renderSurface(this->surfaceName, ctx);
 	}
 }
 
