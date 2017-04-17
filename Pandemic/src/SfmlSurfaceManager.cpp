@@ -26,7 +26,7 @@ void SfmlSurfaceManager::_loadTexturesInPath(std::string path)
 
 	// Go through all the directories in the graphics folder.
 	for (unsigned int i = 0; i < directories.size(); i++) {
-		std::string subDirectory = directories.at(i) + "\\";
+		std::string subDirectory = directories.at(i) + "/";
 
 		// Get all the files in the sub-directory.
 		std::vector<std::string> files = FileSystem::getFiles(path + subDirectory);

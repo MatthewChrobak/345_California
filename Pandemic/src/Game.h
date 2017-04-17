@@ -25,6 +25,7 @@ public:
 	static GameState getState();
 
 	static Board* getGameBoard();
+	static void setGameBoard(Board* board);
 
 	/*
 	attribute to number of cube for each color

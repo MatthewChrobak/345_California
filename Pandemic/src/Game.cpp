@@ -2,6 +2,7 @@
 #include "FileSystem.h"
 #include "GuiManager.h"
 #include "UICheckbox.h"
+#include "BoardBuilder.h"
 
 #ifdef DEBUG
 #include <assert.h>
@@ -116,32 +117,19 @@ void Game::loadOrCreate(std::string savename)
 	// Assign the new name to the game.
 	Game::_saveFolder = FileSystem::getStartupPath() + GAME_SAVES_FOLDER + savename + "/";
 
-	bool created = false;
+	
+
 	// Ensure the savegame folder exists.
 	if (!FileSystem::directoryExists(Game::_saveFolder)) {
-		FileSystem::createDirectory(Game::_saveFolder);
-		created = true;
-	}
-
-	// Load the game board, and change the game state.
-	if (((UICheckbox*)GuiManager::getUIElementByName(CHK_DEFAULT_MAP))->isChecked() && created) {
-		Game::_gameBoard = new Board(FileSystem::getStartupPath() + GAME_SAVES_FOLDER + "default/");
+		GuiManager::getUIElementByName(FRM_NUM_PLAYERS)->visible = true;
+		return;
 	}
 	else {
-		Game::_gameBoard = new Board(Game::_saveFolder);
+		// Load the saved game.
+		BoardBuilder builder;
+		Game::_gameBoard = builder.loadFromSave(Game::_saveFolder);
+		Game::changeState(GameState::InGame);
 	}
-	
-	Game::changeState(GameState::InGame);
-
-	// Toggle the admin tools if they should be used.
-	if (Game::_gameBoard->isEditingMap()) {
-		GuiManager::getUIElementByName(CMD_TOGGLE_MAP_EDITING_ACTIONS)->visible = true;
-		GuiManager::getUIElementByName(FRM_PLAYER_ACTIONS)->visible = false;
-		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-	}
-
-	// Try and start the game if we can.
-	Game::_gameBoard->tryStartGame();
 }
 
 void Game::save()
@@ -150,7 +138,8 @@ void Game::save()
 	// We should have some kind of valid path.
 	assert(Game::_saveFolder.size() > 0);
 #endif
-	Game::_gameBoard->save(Game::_saveFolder);
+	BoardBuilder builder;
+	builder.save(Game::_saveFolder, *Game::_gameBoard);
 }
 
 void Game::destroy()
@@ -200,4 +189,13 @@ void Game::decrementActionCounter()
 //Resets the number of actions
 void Game::resetActionCounter() {
 	actionCounter = 4;
+}
+
+void Game::setGameBoard(Board* board)
+{
+#ifdef DEBUG
+	assert(Game::_gameBoard == nullptr);
+#endif
+
+	Game::_gameBoard = board;
 }

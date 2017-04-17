@@ -91,74 +91,21 @@ private:
 
 
 
-struct ToggleMapEditingActions : public UIButton
+
+struct SelectTwoPlayerGame : public UIButton
 {
-	ToggleMapEditingActions();
+	SelectTwoPlayerGame();
 	bool onMouseDown(std::string button, int x, int y);
 };
 
-struct MoveNodeAction : public UIButton
+struct SelectThreePlayerGame : public UIButton
 {
-	MoveNodeAction();
+	SelectThreePlayerGame();
 	bool onMouseDown(std::string button, int x, int y);
 };
 
-struct SelectNodeAction : public UIButton
+struct SelectFourPlayerGame : public UIButton
 {
-	SelectNodeAction();
-	bool onMouseDown(std::string button, int x, int y);
-};
-
-struct AddNodeAction : public UIButton
-{
-	AddNodeAction();
-	bool onMouseDown(std::string button, int x, int y);
-};
-
-struct MakeNodeBlackAction : public UIButton
-{
-	MakeNodeBlackAction();
-	bool onMouseDown(std::string button, int x, int y);
-};
-
-struct MakeNodeRedAction : public UIButton
-{
-	MakeNodeRedAction();
-	bool onMouseDown(std::string button, int x, int y);
-};
-
-struct MakeNodeYellowAction : public UIButton
-{
-	MakeNodeYellowAction();
-	bool onMouseDown(std::string button, int x, int y);
-};
-
-struct MakeNodeBlueAction : public UIButton
-{
-	MakeNodeBlueAction();
-	bool onMouseDown(std::string button, int x, int y);
-};
-
-struct ChangeNodeNameAction : public UIButton
-{
-	ChangeNodeNameAction();
-	bool onMouseDown(std::string button, int x, int y);
-};
-
-struct MakeDirectedEdgeAction : public UIButton
-{
-	MakeDirectedEdgeAction();
-	bool onMouseDown(std::string button, int x, int y);
-};
-
-struct RotateNodeAngleAction : public UIButton
-{
-	RotateNodeAngleAction();
-	bool onMouseDown(std::string button, int x, int y);
-};
-
-struct FinishedEditingMapAction : public UIButton
-{
-	FinishedEditingMapAction();
+	SelectFourPlayerGame();
 	bool onMouseDown(std::string button, int x, int y);
 };

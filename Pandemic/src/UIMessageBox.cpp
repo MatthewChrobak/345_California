@@ -3,7 +3,7 @@
 
 UIMessageBox::UIMessageBox() : UIFrame(MSG_BOX)
 {
-	this->surfaceName = "ui\\textbox.png";
+	this->surfaceName = "ui/textbox.png";
 	this->width = MSG_BOX_WIDTH;
 	this->height = MSG_BOX_HEIGHT;
 	this->visible = false;

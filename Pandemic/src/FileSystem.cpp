@@ -1,5 +1,6 @@
 #include "FileSystem.h"
 #include <boost/filesystem.hpp>
+#define PATH_SEPARATOR "\\"
 
 bool FileSystem::fileExists(std::string file)
 {
@@ -19,7 +20,7 @@ std::string FileSystem::getStartupPath()
 std::vector<std::string> FileSystem::getFiles(std::string directory)
 {
 	boost::filesystem::path p(directory);
-	boost::filesystem::directory_iterator itr(p);
+	boost::filesystem::directory_iterator itr(p.make_preferred().native());
 	boost::filesystem::directory_iterator end;
 	std::vector<std::string> files;
 
@@ -30,7 +31,7 @@ std::vector<std::string> FileSystem::getFiles(std::string directory)
 		if (fileExists(itr->path().string())) {
 			// extract the filename, and add it to the vector.
 			std::string path = itr->path().string();
-			path = path.substr(path.find_last_of("\\") + 1);
+			path = path.substr(path.find_last_of(PATH_SEPARATOR) + 1);
 			files.push_back(path);
 		}
 		itr++;
@@ -42,7 +43,7 @@ std::vector<std::string> FileSystem::getFiles(std::string directory)
 std::vector<std::string> FileSystem::getDirectories(std::string directory)
 {
 	boost::filesystem::path p(directory);
-	boost::filesystem::directory_iterator itr(p);
+	boost::filesystem::directory_iterator itr(p.make_preferred().native());
 	boost::filesystem::directory_iterator end;
 	std::vector<std::string> directories;
 
@@ -53,7 +54,7 @@ std::vector<std::string> FileSystem::getDirectories(std::string directory)
 		if (directoryExists(itr->path().string())) {
 			// extract the pathname, and add it to the vector.
 			std::string path = itr->path().string();
-			path = path.substr(path.find_last_of("\\") + 1);
+			path = path.substr(path.find_last_of(PATH_SEPARATOR) + 1);
 			directories.push_back(path);
 		}
 		itr++;
