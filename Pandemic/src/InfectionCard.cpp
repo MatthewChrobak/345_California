@@ -67,8 +67,8 @@ infection with outbreak of the current passing city.
 */
 void InfectionCard::infectCityOutBreak(int city)
 {
-	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(city)->name + " is infected.");
 	GuiManager::showMsgBox("OH NO! AN OUTBREAK OCCURRED!!!");
+	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(city)->name + " is infected.");
 	City::outbreakCount += 1;
 
 	if (City::outbreakCount >= 8) {

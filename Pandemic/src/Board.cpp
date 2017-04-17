@@ -44,7 +44,6 @@ void Board::generateGameContentAtStartOfGame()
 		this->getPlayer(playerIndex).setRoleCard(p);
 		
 	}
-
 	/*
 	show the role for every players
 	*/
@@ -53,6 +52,8 @@ void Board::generateGameContentAtStartOfGame()
 		string role = this->getPlayer(i).getRoleCard()->roleCardNames[this->getPlayer(i).getRoleCard()->getRoleCardVal()];
 		GuiManager::showMsgBox("Player " + std::to_string(i) + " role is: " + role);
 	}
+
+	
 
 	//===========================================================
 	//Adding epidemic cards to the player deck
@@ -139,6 +140,11 @@ Board::~Board()
 //Draw 2 cards
 void Board::drawCards()
 {
+	if (this->_playerWithdrawPile.size() <= 0)
+	{
+		GuiManager::showMsgBox("no more player's card, you lost!");
+		GuiManager::handleWindowClose();
+	}
 	for (int i = 0; i < 2; i++)
 	{
 		if (this->playerWithdrawPile.size() != 0) {
