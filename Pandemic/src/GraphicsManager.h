@@ -13,11 +13,9 @@
 class GraphicsManager
 {
 public:
-	static void initialize();
 	static void destroy();
-	static void draw();
-	static void renderSurface(std::string surfaceName, SurfaceContext& ctx);
-	static void renderText(std::string text, TextContext& ctx);
+
+	static GraphicsSystem& getInstance();
 
 private:
 	static GraphicsSystem* _system;

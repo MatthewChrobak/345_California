@@ -148,6 +148,7 @@
     <ClCompile Include="src\ArrayGraph.cpp" />
     <ClCompile Include="src\ArrayGraphNode.cpp" />
     <ClCompile Include="src\Board.cpp" />
+    <ClCompile Include="src\BoardBuilder.cpp" />
     <ClCompile Include="src\Buttons.cpp" />
     <ClCompile Include="src\Checkboxes.cpp" />
     <ClCompile Include="src\City.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="src\ArrayGraph.h" />
     <ClInclude Include="src\ArrayGraphNode.h" />
     <ClInclude Include="src\Board.h" />
+    <ClInclude Include="src\BoardBuilder.h" />
     <ClInclude Include="src\Buttons.h" />
     <ClInclude Include="src\Checkboxes.h" />
     <ClInclude Include="src\City.h" />

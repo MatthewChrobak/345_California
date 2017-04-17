@@ -15,11 +15,10 @@
 class Board
 {
 public:
-
-	Board(std::string saveFolder);
+	Board();
 	~Board();
 
-	void save(std::string saveFolder);
+	void addPlayer(Player* player);
 	void generateGameContentAtStartOfGame();
 	void addCity(City* city);
 	City* getCity(int index);
@@ -46,8 +45,6 @@ public:
 	int currentTurnPlayer = 0;
 	void drawCards(); // Draw 2 cards from the player deck
 	std::vector<std::string> playerCardDeck;
-	void tryStartGame();
-
 
 	int getInfectionRate();
 	static void incrementInfectionRate();
@@ -61,6 +58,7 @@ public:
 	his own city than we can make his own city's infectionCard
 	and we have an discard pile
 	*/
+	std::vector<PlayerCard*> playerWithdrawPile;
 	std::vector<int> infectionCityCards;
 	std::vector<int> discardInfectionCard;
 	void infectionCityCardsInitializor();
@@ -68,34 +66,12 @@ public:
 	void drawLastInfectionCard();
 	void shuffleDiscardedInfectionDeck();
 
-	bool isEditingMap();
-	void submitMap();
-	
-
+	static int _infectionRate;
 
 private:
 	CityGraph* _cities;
 	std::vector<Player*> _players;
-	std::vector<PlayerCard*> _playerWithdrawPile;
 	std::vector<int> playerIndex;
 
-	static int _infectionRate;
-
-	void loadBoardData(std::string boardFile);
-	void saveBoardData(std::string boardFile);
-
-	void loadNodes(std::string nodesFile);
-	void saveNodes(std::string nodesFile);
-
-	void loadPlayers(std::string playerFile);
-	void savePlayers(std::string playerFile);
-
 	void generatePlayerCards();
-
-
-	// Game properties.
-	bool _editingMap = true;
-	bool _startGame = false;
 };
-
-//this a free function to check turn
