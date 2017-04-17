@@ -12,7 +12,7 @@ public:
 	std::string getSurfaceName();
 	EventCardType getEventType();
 	void playCard();
-	void eventAction(PlayerCard* card);
+	//void eventAction(PlayerCard* card);
 
 protected:
 	EventCardType _eventType;
