@@ -4,6 +4,7 @@
 #include "RoleCard.h"
 
 #define MAX_PLAYER_CARDS 7
+#define MAX_PLAYER_CARDS_IN_HAND 9
 
 class Player
 {

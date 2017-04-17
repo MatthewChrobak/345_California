@@ -469,6 +469,7 @@ void Board::drawCards(Player& player)
 			//If the card drawn is an epidemic card, play it and remove it from the player's hand
 			if (this->_playerWithdrawPile.back()->getType() == Epidemic_Card)
 			{
+				GuiManager::showMsgBox("You have drawn an epidemic card.");
 				EpidemicCard::drawingEpidemicCard();
 				this->_playerWithdrawPile.pop_back();
 			}

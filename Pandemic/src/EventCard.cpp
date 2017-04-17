@@ -93,6 +93,7 @@ void EventCard::playCard()
 }
 
 //Take the event card and check what type of event it is; proceed with the appropriate action
+
 void EventCard::eventAction(PlayerCard* card)
 {
 	switch (card->getEventType())
