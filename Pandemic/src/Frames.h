@@ -13,6 +13,9 @@ public:
 	bool onKeyUp(std::string key);
 	void draw();
 
+	void showAdminTools();
+	void finishedEditing();
+
 	static MapEditingActions EditingAction;
 	static PlayerActions PlayerAction;
 	static int EditNodeIndex;
@@ -43,10 +46,14 @@ struct PlayerCardsFrame : public UIFrame
 	void show();
 
 private:
+
 	std::vector<int> _cardData;
+
 };
 
-struct NumPlayersFrame : public UIFrame 
+// The frame that contains the map-editing actions.
+struct MapEditingActionsFrame : public UIFrame
 {
-	NumPlayersFrame();
+	MapEditingActionsFrame();
+	void draw();
 };

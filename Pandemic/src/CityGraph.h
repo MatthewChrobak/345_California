@@ -4,7 +4,6 @@
 class CityGraph : public ArrayGraph
 {
 public:
-	CityGraph();
-	~CityGraph();
+    CityGraph();
+    ~CityGraph();
 };
-

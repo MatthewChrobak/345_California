@@ -1,7 +1,6 @@
 /*!
 	Author: Matthew Chrobak
 	Contributors:
-
 	Purpose: Provides common data-structures meant to be used with Surface and Text contexts.
 */
 #pragma once

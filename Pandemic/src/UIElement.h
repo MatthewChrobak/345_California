@@ -43,4 +43,3 @@ protected:
 private:
 	std::string _elementName;
 };
-

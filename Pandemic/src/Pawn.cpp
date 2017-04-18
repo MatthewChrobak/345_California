@@ -5,7 +5,7 @@
 
 Pawn::Pawn()
 {
-	this->cityIndex = 0;
+    this->cityIndex = 0;
 }
 
 

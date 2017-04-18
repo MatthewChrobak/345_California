@@ -15,4 +15,3 @@ protected:
 	std::string hoverSurfaceName;
 	std::string caption;
 };
-

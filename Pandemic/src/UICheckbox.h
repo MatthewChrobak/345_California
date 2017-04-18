@@ -4,17 +4,16 @@
 class UICheckbox : public UIElement
 {
 public:
-	UICheckbox(std::string name);
-	bool isChecked();
-	bool onMouseDown(std::string button, int x, int y);
-	void draw();
+    UICheckbox(std::string name);
+    bool isChecked();
+    bool onMouseDown(std::string button, int x, int y);
+    void draw();
 
-	std::string getObjectType();
+    std::string getObjectType();
 
 protected:
-	std::string checkedSurfaceName;
+    std::string checkedSurfaceName;
 
 private:
-	bool _checked;
+    bool _checked;
 };
-

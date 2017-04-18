@@ -14,7 +14,7 @@ enum GameState : int
 	GameState_Length
 };
 
-class Game 
+class Game
 {
 public:
 	static void loadOrCreate(std::string savename);
@@ -25,7 +25,6 @@ public:
 	static GameState getState();
 
 	static Board* getGameBoard();
-	static void setGameBoard(Board* board);
 
 	/*
 	attribute to number of cube for each color
@@ -49,4 +48,3 @@ private:
 	static GameState _state;
 	static std::string _saveFolder;
 };
-

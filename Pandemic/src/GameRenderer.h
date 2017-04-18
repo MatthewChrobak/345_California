@@ -1,7 +1,6 @@
 /*!
 	Author: Matthew Chrobak
 	Contributors:
-
 	Purpose: Utilizes the render and text context classes to specify how the game should be rendered.
 */
 #pragma once

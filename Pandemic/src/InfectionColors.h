@@ -2,9 +2,9 @@
 
 enum InfectionColor : int
 {
-	Red,
-	Blue,
-	Black,
-	Yellow,
-	InfectionColor_Length
+    Red,
+    Blue,
+    Black,
+    Yellow,
+    InfectionColor_Length
 };

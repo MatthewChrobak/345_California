@@ -8,135 +8,315 @@
 #include "Game.h"
 #include "GuiManager.h"
 
-void DirectFlightAction::doAction(Player *player) {
+void DirectFlightAction1::doAction(Player *player) {
 
     ///TODO GET CARD CLICKED DATA FROM THE GUI!
-/*
-   // We should only have one card selected here.
-    if (this->_cardData->size() == 1) {
 
-        // Get the card index.
-        int cardIndex = this->_cardData->at(0);
-        PlayerCard* card = player.getCard(cardIndex);
+    cout << "Direct FLIGHT" << endl;
+    int cardIndex = player->getCardsSelected()[0];
+
+    PlayerCard* card = player->getCard(cardIndex);
+
+    // Make sure the card is not null.
+    if (card != nullptr) {
 
 
-        // Make sure the card is not null.
-        if (card != nullptr) {
+        CityCard *cityCard = (CityCard *) card;
+        int cityIndex = cityCard->cityIndex;
+        //move to the city
+        player->pawn->cityIndex = cityIndex;
+        Game::decrementActionCounter();
+        Board::checkTurn();
+        // Reset the player action.
+        player->removeCard(cardIndex);
 
-            // Make sure it's a city card.
-            if (card->getType() == PlayerCardType::City_Card) {
-                CityCard* cityCard = (CityCard*)card;
-                int cityIndex = cityCard->cityIndex;
+        //clear out the vector after selecting
+        player->getCardsSelected().clear();
 
-                // Remove it, move the player, and hide the player cards.
-                player->removeCard(cardIndex);
-                player->pawn->cityIndex = cityIndex;
-                Game::decrementActionCounter();
-                Board::checkTurn();
-                GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-                // Reset the player action.
-                GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-            }
-            else {
-                GuiManager::showMsgBox("Please select a city card.");
-            }
-        }
-        else {
-            GuiManager::showMsgBox("Card was null.");
-        }
     }
-    else {
-        GuiManager::showMsgBox("Please select only one card.");
+
+    else
+    {
+        GuiManager::showMsgBox("Card was null.");
     }
-*/
 
 }
 
-const string &DirectFlightAction::getName() const {
-
-
-
-
-
+ string &DirectFlightAction1::getName()  {
 
     return name;
 }
 
-void BuildResearchStation::doAction(Player *player) {
+void BuildResearchStation1::doAction(Player *player) {
+    Board* board = Game::getGameBoard();
 
+    int cardIndex = player->getCardsSelected()[0];
+    PlayerCard* card = player->getCard(cardIndex);
+    CityCard *cityCard = (CityCard *) card;
+    int cityIndex = cityCard->cityIndex;
+    City* tempCity = board->getCity(cityIndex);
 
-    std :: cout <<"Build RC" << std::endl;
+    if(!Game::getGameBoard()->getCity(player->pawn->cityIndex)->research) {
+
+        std::cout << "Build RC" << std::endl;
+        GuiManager::showMsgBox("Got a new Research Station");
+
+        Game::getGameBoard()->getCity(player->pawn->cityIndex)->research = true;
+        player->removeCard(cardIndex);
+        Game::numOfResearchCenter--;
+        Game::decrementActionCounter();
+        Board::checkTurn();
+        //reset player actions
+        GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+
+    }
+    else
+    {
+        GuiManager::showMsgBox("There's already an RC");
+
+    }
 
 
 
 }
 
-const string &BuildResearchStation::getName() const {
+ string &BuildResearchStation1::getName()  {
     return name;
 }
 
-void TreatDisease::doAction(Player *player) {
+void TreatDisease1::doAction(Player *player) {
 
 
     std :: cout <<"Treated Disease" << std::endl;
 
 
+    City* city = Game::getGameBoard()->getCity(player->pawn->cityIndex);
+
+    GuiManager::showMsgBox("Removing one cube!");
+
+    //find the highest number of cubes of anyColor
+    //let the first index be a
+    int x =  city->cube[0];
+    int highest = x;
+
+    //simple for loop to find the highest
+    //cout << city->cube[0] << endl;
+
+    for (int i=0; i< 4; i++){
+        if (city->cube[i] > highest){
+             highest = city->cube[i];
+        }
+
+    }
+
+   // cout << highest << endl;
+
+    //clear out all the cubes
+    //get a temp i value to figure out which cube got taken away
+    int temp = 0;
+    for (int i=0; i< 4; i++){
+        if (city->cube[i] == highest){
+            city->cube[i]--;
+            GuiManager::showMsgBox("An infection cube has been remove in the current city");
+            temp = i;
+            break;
+        }
+    }
+    for (int i=0; i< 4; i++) {
+        cout << city->cube[i] << endl;
+
+    }
+
+
+    Game::numOfCubeIncrementor(city->cube[temp]);
+    Game::decrementActionCounter();
+    Board::checkTurn();
+    GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+
+
+
 }
 
-const string &TreatDisease::getName() const {
+ string &TreatDisease1::getName()  {
     return name;
 }
 
-void ShareKnowledge::doAction(Player *player) {
+void ShareKnowledge1::doAction(Player *player) {
 
     std :: cout <<"Shared Knowledge" << std::endl;
 
 
 }
 
-const string &ShareKnowledge::getName() const {
+ string &ShareKnowledge1::getName()  {
     return name;
 }
 
-void DiscoverCure::doAction(Player *player) {
+void DiscoverCure1::doAction(Player *player) {
+    // Card selection is handled in the Buttons cpp
 
-    cout << "Needs 5 mathcing cards" << endl;
+    //main thread is here becuase 5 same colored
+    //get the player's current location
+    int playerCurrentLocation = player->pawn->cityIndex;
+    //Find if the city has a RC
+    City* currentCity = Game::getGameBoard()->getCity(playerCurrentLocation);
+    //if true discover something cool
+    if (currentCity->research){
+        //get the color of the cards selected
+        City* cityToGetCardColor = Game::getGameBoard()->getCity(player->getCardsSelected()[0]);
+        //check it already cured
+
+        if (Game::getGameBoard()->isCured[cityToGetCardColor->color]) {
+            GuiManager::showMsgBox("This disease has already been cured!");
+            player->getCardsSelected().clear();
+            return;
+        }
+        else {
+            Game::getGameBoard()->isCured[cityToGetCardColor->color] = true;
+            //Get rid of all the cubes with respect to card's color
+            currentCity->cube[cityToGetCardColor->color] = 0;
+        }
+
+    }
+    else
+    {
+        GuiManager::showMsgBox("There's not RC in your current city!...you're gonna need that ");
+
+    }
+
+
+
 
 }
 
-const string &DiscoverCure::getName() const {
+ string &DiscoverCure1::getName()  {
     return name;
 }
 
-const string &Drive::getName() const {
+ string &Drive1::getName()  {
     return name;
 }
 
-void Drive::doAction(Player *player) {
+void Drive1::doAction(Player *player) {
 
     std :: cout <<"Drove" << std::endl;
 
 
 }
 
-const string &CharterFlight::getName() const {
+ string &CharterFlight1::getName()  {
     return name;
 }
 
-void CharterFlight::doAction(Player *player) {
+void CharterFlight1::doAction(Player *player) {
 
+    //int clickedCityIndex = City::getCityIndexFromXY(x, y);
+
+
+
+    //INDEX OF THE CARD SELECTED
+    int cardIndex = player->getCardsSelected()[0];
+    // MATCH THE CARD WITH A  PLAYERCARD
+    PlayerCard* card = player->getCard(cardIndex);
+    //find the city card
+    CityCard *cityCard = (CityCard *) card;
+    int cityIndex = cityCard->cityIndex;
+
+    ///GUI INPUT COMING IN FROM BOARD.CPP
+
+   int input = player->getCitySelected();
+
+    // current index of player matches the card selected
+    if(player->pawn->cityIndex == cityIndex)
+    {
+
+        player->pawn->cityIndex = input;
+        player->removeCard(cardIndex);
+        Game::decrementActionCounter();
+        Board::checkTurn();
+        GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+        //reset player Actions
+
+
+    //clear out the vector after selecting
+        player->getCardsSelected().clear();
+        GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+
+
+    }
+    else {
+        GuiManager::showMsgBox("Invalid card!");
+    }
     std :: cout <<"Charter flight" << std::endl;
+    GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 
 
 }
 
-const string &ShuttleFlight::getName() const {
+ string &ShuttleFlight1::getName()  {
     return name;
 }
 
-void ShuttleFlight::doAction(Player *player) {
+void ShuttleFlight1::doAction(Player *player) {
 
     std :: cout <<"Shuttle FLight" << std::endl;
 
+    Board* board = Game::getGameBoard();
+
+
+    //check if the player is in a city with RC
+    // find the city
+    City* curentCity = board->getCity(player->pawn->cityIndex);
+
+    std::vector < City*> citiesWithRC;
+
+    int rcFound =0;
+
+    if (curentCity->research){
+        //search for a city RC
+        for (int i=0; i < board->getNumCities(); i++){
+            City* city = board->getCity(i);
+            if(city->research){
+
+                citiesWithRC.push_back(city);
+                rcFound++;
+            }
+
+        }
+
+        if (rcFound>0) {
+            GuiManager::showMsgBox("Here are the cities you could move to. Please check console!");
+
+
+            for (int i = 0; i < citiesWithRC.size(); i++) {
+
+                cout << citiesWithRC[i]->name << endl;
+            }
+           std:: cout << ("Where do you want to move?") << endl;
+            std::string cityName;
+            std :: getline(std::cin, cityName);
+            for (int i =0; i < board->getNumCities(); i++){
+
+                if (cityName == board->getCity(i)->name){
+                    player->pawn->cityIndex = i;
+                    break;
+                }
+            }
+
+        }
+
+        else
+            GuiManager::showMsgBox("No cities found with RC!");
+
+
+
+
+    }
+
+    else
+        GuiManager::showMsgBox("You're not in a city with RC");
+
+    player->setCitySelected(0);
+    player->getCardsSelected().clear();
 
 }

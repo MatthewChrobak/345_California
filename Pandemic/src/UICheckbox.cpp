@@ -26,7 +26,7 @@ void UICheckbox::draw()
 			SurfaceContext ctx;
 			ctx.setPosition(this->left, this->top);
 			ctx.setRenderSize(this->width, this->height);
-			GraphicsManager::getInstance().renderSurface(this->checkedSurfaceName, ctx);
+			GraphicsManager::renderSurface(this->checkedSurfaceName, ctx);
 			return;
 		}
 	}

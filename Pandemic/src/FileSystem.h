@@ -1,7 +1,6 @@
 /*!
 	Author: Matthew Chrobak
 	Contributors:
-
 	Purpose: Provides basic file-system utility methods.
 */
 #pragma once

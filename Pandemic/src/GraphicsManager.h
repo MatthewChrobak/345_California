@@ -1,7 +1,6 @@
 /*!
 	Author: Matthew Chrobak
 	Contributors:
-
 	Purpose: A god-class designed to allow static access to the graphics implementation.
 */
 #pragma once
@@ -13,10 +12,12 @@
 class GraphicsManager
 {
 public:
-	static void destroy();
-
-	static GraphicsSystem& getInstance();
+    static void initialize();
+    static void destroy();
+    static void draw();
+    static void renderSurface(std::string surfaceName, SurfaceContext& ctx);
+    static void renderText(std::string text, TextContext& ctx);
 
 private:
-	static GraphicsSystem* _system;
+    static GraphicsSystem* _system;
 };

@@ -14,4 +14,3 @@ public:
 protected:
 	std::vector<int> _adjacentNodeIds;
 };
-

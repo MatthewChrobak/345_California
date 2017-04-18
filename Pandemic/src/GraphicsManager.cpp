@@ -7,23 +7,43 @@
 
 GraphicsSystem* GraphicsManager::_system = nullptr;
 
-GraphicsSystem& GraphicsManager::getInstance()
+void GraphicsManager::initialize()
 {
-	// Create the instance if it's null.
-	if (GraphicsManager::_system == nullptr) {
-		GraphicsManager::_system = new SFML::SfmlGraphicsSystem("Pandemic", DRAW_WIDTH, DRAW_HEIGHT, GuiManager::WindowWidth, GuiManager::WindowHeight);
-	}
-	
-	return *GraphicsManager::_system;
+    GraphicsManager::_system = new SFML::SfmlGraphicsSystem("Pandemic", DRAW_WIDTH, DRAW_HEIGHT, GuiManager::WindowWidth, GuiManager::WindowHeight);
+}
+
+void GraphicsManager::draw()
+{
+#ifdef DEBUG
+    assert(GraphicsManager::_system != nullptr);
+#endif
+    if (!GraphicsManager::_system->isDestroyed()) {
+        GraphicsManager::_system->drawContext();
+    }
 }
 
 
 void GraphicsManager::destroy()
 {
 #ifdef DEBUG
-	assert(GraphicsManager::_system != nullptr);
+    assert(GraphicsManager::_system != nullptr);
 #endif
-	delete GraphicsManager::_system;
-	GraphicsManager::_system = nullptr;
+    delete GraphicsManager::_system;
 }
 
+
+void GraphicsManager::renderSurface(std::string surfacename, SurfaceContext& ctx)
+{
+#ifdef DEBUG
+    assert(GraphicsManager::_system != nullptr);
+#endif
+    GraphicsManager::_system->renderSurface(surfacename, ctx);
+}
+
+void GraphicsManager::renderText(std::string text, TextContext& ctx)
+{
+#ifdef DEBUG
+    assert(GraphicsManager::_system != nullptr);
+#endif
+    GraphicsManager::_system->renderText(text, ctx);
+}

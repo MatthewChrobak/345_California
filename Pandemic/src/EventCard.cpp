@@ -10,89 +10,88 @@ EventCard::~EventCard()
 
 EventCard::EventCard(EventCardType type)
 {
-	this->_eventType = type;
-	this->_cardType = PlayerCardType::Event_Card;
+    this->_eventType = type;
+    this->_cardType = PlayerCardType::Event_Card;
 }
 
 std::string EventCard::getEventName()
 {
-	switch (this->_eventType) {
-	
-	case EventCardType::Airlift:
-		return "Airlift";
-		break;
+    switch (this->_eventType) {
 
-	case EventCardType::Forecast:
-		return "Forecast";
-		break;
+        case EventCardType::Airlift:
+            return "Airlift";
+            break;
 
-	case EventCardType::GovernmentGrant:
-		return "Government Grant";
-		break;
+        case EventCardType::Forecast:
+            return "Forecast";
+            break;
 
-	case EventCardType::OneQuietNight:
-		return "One Quiet Night";
-		break;
+        case EventCardType::GovernmentGrant:
+            return "Government Grant";
+            break;
 
-	case EventCardType::ResilientPopulation:
-		return "Resilient Population";
-		break;
+        case EventCardType::OneQuietNight:
+            return "One Quiet Night";
+            break;
 
-	}
+        case EventCardType::ResilientPopulation:
+            return "Resilient Population";
+            break;
+
+    }
 }
 
 std::string EventCard::getSurfaceName()
 
 {
 
-	std::string file;
+    std::string file;
 
 
 
-	switch (this->_eventType) {
+    switch (this->_eventType) {
 
-	case EventCardType::Airlift:
+        case EventCardType::Airlift:
 
-		file = "airlift";
+            file = "airlift";
 
-		break;
+            break;
 
-	case EventCardType::Forecast:
+        case EventCardType::Forecast:
 
-		file = "forecast";
+            file = "forecast";
 
-		break;
+            break;
 
-	case EventCardType::GovernmentGrant:
+        case EventCardType::GovernmentGrant:
 
-		file = "governmentgrant";
+            file = "governmentgrant";
 
-		break;
+            break;
 
-	case EventCardType::OneQuietNight:
+        case EventCardType::OneQuietNight:
 
-		file = "onequietnight";
+            file = "onequietnight";
 
-		break;
+            break;
 
-	case EventCardType::ResilientPopulation:
+        case EventCardType::ResilientPopulation:
 
-		file = "resilientpopulation";
+            file = "resilientpopulation";
 
-		break;
+            break;
 
-	}
+    }
 
 
 
-	return CARDS_PATH + file + ".png";
+    return CARDS_PATH + file + ".png";
 
 }
 
 void EventCard::playCard()
 {
-	std::cout << "An event card was played." << std::endl;
+    std::cout << "An event card was played." << std::endl;
 }
-
 
 
