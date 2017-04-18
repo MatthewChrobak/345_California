@@ -24,7 +24,7 @@ public:
 
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 };
 
@@ -38,7 +38,7 @@ public:
 
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 };
 
@@ -52,6 +52,6 @@ public:
 
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 };

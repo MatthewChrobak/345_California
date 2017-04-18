@@ -3,24 +3,16 @@
 #include <vector>
 
 
-enum EventCardType
-{
-	Airlift,
-	OneQuietNight,
-	ResilientPopulation,
-	GovernmentGrant,
-	Forecast
-};
-
-
 class EventCard : public PlayerCard
 {
 public:
+	EventCardType getEventType();
 	EventCard(EventCardType type);
 	~EventCard();
 	std::string getEventName();
 	void playCard();
 	std::string getSurfaceName();
+	void eventAction(PlayerCard* card);
 
 private:
 	EventCardType _eventType;

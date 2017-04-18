@@ -165,7 +165,6 @@
     <ClCompile Include="src\GraphicsManager.cpp" />
     <ClCompile Include="src\GuiManager.cpp" />
     <ClCompile Include="src\InfectionCard.cpp" />
-    <ClCompile Include="src\Observable.cpp" />
     <ClCompile Include="src\Pawn.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\PlayerAction.cpp" />
@@ -211,7 +210,6 @@
     <ClInclude Include="src\InfectionCard.h" />
     <ClInclude Include="src\InfectionColors.h" />
     <ClInclude Include="src\MapEditingActions.h" />
-    <ClInclude Include="src\Observable.h" />
     <ClInclude Include="src\Observer.h" />
     <ClInclude Include="src\Paths.h" />
     <ClInclude Include="src\Pawn.h" />

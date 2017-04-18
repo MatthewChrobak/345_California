@@ -11,7 +11,6 @@
 #include <assert.h>
 #endif
 
-// TODO: This needs to be cleaned up.
 int main()
 {
 

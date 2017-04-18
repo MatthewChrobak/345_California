@@ -113,9 +113,9 @@ void BoardBuilder::loadBoardData(std::string file, Board& board)
 		if (type == PlayerCardType::City_Card) {
 			board.playerWithdrawPile.push_back(new CityCard(fs->readInt()));
 		}
-		else if (type == PlayerCardType::Event_Card) {
-			// This is nonesense.
-			fs->readInt();
+		else if (type == PlayerCardType::Event_Card)
+		{
+			board.playerWithdrawPile.push_back(new EventCard((EventCardType)fs->readInt()));
 		}
 	}
 
@@ -202,6 +202,11 @@ void BoardBuilder::loadPlayers(std::string file, Board& board)
 					CityCard* card = new CityCard(fs->readInt());
 					player->addCard(card);
 				}break;
+				case PlayerCardType::Event_Card:
+				{
+					EventCard* card = new EventCard((EventCardType)fs->readInt());
+					player->addCard(card);
+				}break;
 				}
 			}
 		}
@@ -255,6 +260,9 @@ void BoardBuilder::saveBoardData(std::string file, Board& board)
 		if (card->getType() == PlayerCardType::City_Card) {
 			fs->write(((CityCard*)card)->cityIndex);
 		}
+		else if (card->getType() == PlayerCardType::Event_Card) {
+			fs->write((int)((EventCard*)card)->getType());
+		} 
 		else {
 			fs->write(-1);
 		}
@@ -294,12 +302,18 @@ void BoardBuilder::savePlayers(std::string file, Board& board)
 			if (card != nullptr) {
 				fs->write(card->getType());
 
-				// TODO: Save event cards.
 				switch (card->getType())
 				{
 				case PlayerCardType::City_Card:
+				{
 					fs->write(((CityCard*)card)->cityIndex);
 					break;
+				}
+				case PlayerCardType::Event_Card:
+				{
+					fs->write((int)((EventCard*)card->getType()));
+					break;
+				}
 				}
 			}
 			else {

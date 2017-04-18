@@ -183,20 +183,17 @@
     <ClCompile Include="src\ArrayGraph.cpp">
       <Filter>Source Files\Models\Cities\ArrayGraph</Filter>
     </ClCompile>
-    <ClCompile Include="src\Observable.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
     <ClCompile Include="src\PlayerAction.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="src\PlayerRoleCard.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
+    <ClCompile Include="src\BoardBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\MapEditingActions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\PlayerActions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -323,13 +320,16 @@
     <ClInclude Include="src\Observer.h">
       <Filter>Header Files\Views</Filter>
     </ClInclude>
-    <ClInclude Include="src\Observable.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
     <ClInclude Include="src\PlayerAction.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="src\PlayerRoleCard.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BoardBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MapEditingActions.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
   </ItemGroup>

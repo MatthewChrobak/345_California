@@ -101,6 +101,11 @@ void InfectionCard::infectCityOutBreak(int city)
 		*/
 		else
 			infectCityOutBreak(iterator.at(i));
+
+		if (Game::getState() == GameState::MainMenu)
+		{
+			return;
+		}
 	}
 }
 

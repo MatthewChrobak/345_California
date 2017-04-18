@@ -144,6 +144,7 @@ void Board::drawCards()
 	{
 		GuiManager::showMsgBox("no more player's card, you lost!");
 		GuiManager::handleWindowClose();
+		return;
 	}
 	for (int i = 0; i < 2; i++)
 	{
@@ -251,7 +252,7 @@ this will check the number of action and change turn if it reaches
 bool Board::playerTurnChange()
 {
 	bool turnChanged = false;
-	if (Game::actionCounter == 0)
+	if (Game::actionCounter <= 0)
 	{
 		this->currentTurnPlayer = ((this->currentTurnPlayer) + 1) % _players.size();
 		Game::resetActionCounter();
@@ -288,6 +289,7 @@ void Board::drawInfectionCard()
 		{
 			GuiManager::showMsgBox("Less than 2 infection cards in the infection deck, you lost!");
 			GuiManager::handleWindowClose();
+			return;
 		}
 		else if (infectionCityCards.size() != 0)
 		{
@@ -342,27 +344,39 @@ void Board::checkTurn()
 	Board* board = Game::getGameBoard();
 	Player& player = board->getCurrentTurnPlayer();
 
+	// Is there about to be a turn change?
+	if (Game::actionCounter <= 0) {
+		int numberOfCards = player.getNumberOfCards();
+
+		if (numberOfCards >= 6) //You only excess cards if you have more than 7 cards after drawing
+		{
+			GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
+			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.
+			GuiManager::getUIElementByName(CMD_PLAYER_CARDS_CLOSE)->visible = false;
+			GameFrame::PlayerAction = PlayerActions::DiscardCards;
+			return;
+		}
+	}
+
 	if (board->playerTurnChange() == true)
 	{
 		string name = player.getRoleCard()->roleCardNames[player.getRoleCard()->getRoleCardVal()];
 		GuiManager::showMsgBox("My role is: " + name);
-		board->drawCards();
-		GuiManager::showMsgBox("Your current hand after picking two cards.");
-		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
-
-		int numberOfCards = player.getNumberOfCards();
-
-		if (numberOfCards > 7) //You only excess cards if you have more than 7 cards after drawing
-		{
-			GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
-			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.
-			GameFrame::PlayerAction = PlayerActions::DiscardCards;
-
+		
+		if (board->checkChange > 0) {
+			board->drawCards();
 		}
+		board->checkChange = 1;
+		//GuiManager::showMsgBox("Your current hand after picking two cards.");
+		//GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
+		GuiManager::showMsgBox("You drew 2 cards.");
 		//draw infection card and the game will do the infection automatically
 		Game::getGameBoard()->drawInfectionCard();
-		GuiManager::showMsgBox("End of your turn.");
+
+		if (Game::getState() == GameState::InGame)
+			GuiManager::showMsgBox("End of your turn.");
 	}
+
 }
 
 int Board::getActualInfectionRate()
@@ -374,4 +388,12 @@ void Board::setActualInfectionRate(int value)
 {
 	this->_infectionRate = value;
 
+}
+
+int Board::drawTopInfectionCard()
+{
+	int temp = infectionCityCards.at(0);
+	Board::infectionCityCards.erase(infectionCityCards.begin());
+	infectionCityCards.shrink_to_fit();
+	return temp;
 }
