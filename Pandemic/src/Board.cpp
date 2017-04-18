@@ -144,6 +144,7 @@ void Board::drawCards()
 	{
 		GuiManager::showMsgBox("no more player's card, you lost!");
 		GuiManager::handleWindowClose();
+		return;
 	}
 	for (int i = 0; i < 2; i++)
 	{
@@ -288,6 +289,7 @@ void Board::drawInfectionCard()
 		{
 			GuiManager::showMsgBox("Less than 2 infection cards in the infection deck, you lost!");
 			GuiManager::handleWindowClose();
+			return;
 		}
 		else if (infectionCityCards.size() != 0)
 		{
@@ -370,7 +372,9 @@ void Board::checkTurn()
 		GuiManager::showMsgBox("You drew 2 cards.");
 		//draw infection card and the game will do the infection automatically
 		Game::getGameBoard()->drawInfectionCard();
-		GuiManager::showMsgBox("End of your turn.");
+
+		if (Game::getState() == GameState::InGame)
+			GuiManager::showMsgBox("End of your turn.");
 	}
 
 }

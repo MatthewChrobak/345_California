@@ -302,7 +302,6 @@ void BoardBuilder::savePlayers(std::string file, Board& board)
 			if (card != nullptr) {
 				fs->write(card->getType());
 
-				// TODO: Save event cards.
 				switch (card->getType())
 				{
 				case PlayerCardType::City_Card:

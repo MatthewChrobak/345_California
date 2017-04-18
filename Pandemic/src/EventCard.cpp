@@ -105,19 +105,22 @@ void EventCard::playCard()
 
 void EventCard::eventAction(PlayerCard* card)
 {
+	Board* board = Game::getGameBoard();
+
 	switch (card->getEventType())
 	{
 
 		//Examine the top 6 cards of the infection draw pile, rearrange them to your liking and put them back
 	case EventCardType::Forecast:
 	{
+		return;
 		//Temporary array to hold the 6 cards
 		std::vector <int> temporary;
 
 		//Push the first 6 cards of the infection deck into the temporary deck
 		for (int i = 0; i < 6; i++)
 		{
-			temporary.push_back(Game::getGameBoard()->drawTopInfectionCard());
+			temporary.push_back(board->drawTopInfectionCard());
 		}
 
 		//Display the first 6 infection cards
@@ -128,7 +131,7 @@ void EventCard::eventAction(PlayerCard* card)
 			int input = 0;
 			if (temporary[input] >= 0)
 			{
-				Game::getGameBoard()->infectionCityCards.insert(Game::getGameBoard()->infectionCityCards.begin(), temporary[input]);
+				board->infectionCityCards.insert(board->infectionCityCards.begin(), temporary[input]);
 				temporary[input] = -1;
 			}
 		}
@@ -139,21 +142,80 @@ void EventCard::eventAction(PlayerCard* card)
 	case EventCardType::OneQuietNight:
 	{
 		//The Attributed boolean becomes true, preventing cards from being drawn that night
-		Game::getGameBoard()->oneQuietNight = true;
+		board->oneQuietNight = true;
+		break;
+	}
+	case EventCardType::Airlift:
+	{
+		/*
+		* Ask user which city will have a new research center
+		*/
+
+		std::string cityName = "";
+		int cityIndex = -1;
+
+		std::cout << "Please enter a city name that you want to move to: ";
+
+		try {
+			std::getline(std::cin, cityName);
+
+			for (int i = 0; i < board->getNumCities(); i++) {
+				if (cityName == board->getCity(i)->name) {
+					cityIndex = i;
+					throw 0;
+				}
+			}
+
+			throw "";
+		}
+		catch (const char* e)
+		{
+			std::cout << "Something went wrong. Try again." << std::endl;
+			board->getCurrentTurnPlayer().addCard(new EventCard(EventCardType::Airlift));
+			return;
+		}
+		catch (int e)
+		{
+
+		}
+
+		board->getCurrentTurnPlayer().pawn->cityIndex = cityIndex;
+
 		break;
 	}
 
 	//Move a pawn (yours or another palyer's) to any city.
-	case EventCardType::Airlift:
+	case EventCardType::GovernmentGrant:
 	{
 		/*
 		 * Ask user which city will have a new research center		
 		 */
 
-		int cityInput = 0;
+		std::string cityName = "";
+		int cityIndex = -1;
+
+		std::cout << "Please enter a city name that you want to have a research center: ";
+
+		try {
+			std::getline(std::cin, cityName);
+
+			for (int i = 0; i < board->getNumCities(); i++) {
+				if (cityName == board->getCity(i)->name) {
+					cityIndex = i;
+					break;
+				}
+			}
+
+			throw "";
+		}
+		catch (const char* e)
+		{
+			std::cout << "Something went wrong. Try again." << std::endl;
+			return;
+		}
 
 		//Gets the city
-		City* city = Game::getGameBoard()->getCity(cityInput);
+		City* city = board->getCity(cityIndex);
 
 		//Build a research center if the city doesn't already have one
 		city->buildResearchFacility();
@@ -168,11 +230,30 @@ void EventCard::eventAction(PlayerCard* card)
 		 *Display all discarded infection cards
 		 */
 
-		int inputDiscard = 0;//User inputs a value of the card he wishes to discard
+		int inputDiscard = -1;//User inputs a value of the card he wishes to discard
+
+		for (int i = 0; i < board->discardInfectionCard.size(); i++) {
+			std::cout << i << ": " << (board->getCity(board->discardInfectionCard.at(i))->name) << std::endl;
+		}
+
+		try {
+			std::cout << "Please enter a card index [0-" << (board->discardInfectionCard.size() - 1) << "]:";
+			std::cin >> inputDiscard;
+
+			if (inputDiscard < 0 || inputDiscard >= board->discardInfectionCard.size()) {
+				throw "";
+				inputDiscard = -1;
+			}
+		}
+		catch (const char* e)
+		{
+			std::cout << "Something went wrong. Try again." << std::endl;
+			return;
+		}
 
 		//Permanently discard the card
-		Game::getGameBoard()->discardInfectionCard.erase(Game::getGameBoard()->discardInfectionCard.begin() + inputDiscard);
-		Game::getGameBoard()->discardInfectionCard.shrink_to_fit();
+		board->discardInfectionCard.erase(board->discardInfectionCard.begin() + inputDiscard);
+		board->discardInfectionCard.shrink_to_fit();
 		break;
 	}
 
