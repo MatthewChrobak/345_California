@@ -190,7 +190,6 @@ TreatDiseaseAction::TreatDiseaseAction() : UIButton(CMD_PLAYER_ACTION_TREAT_DISE
 	this->top = FRM_PLAYER_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * PlayerActions::TreatDisease;
 	this->left = FRM_PLAYER_ACTIONS_LEFT;
 }
-//TODO: only the city cube color can be remove(the game itself allow to remove any cubes on the city. Thus, we have to modify that in the future)
 bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 {
 	
@@ -209,7 +208,6 @@ bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 	implementing one function of the medic role
 	the second function is not implemented
 	*/
-	//TODO: Implementation of the medic role completely
 	if (Game::getGameBoard()->isCured[cityColor]==true)
 	{
 		GuiManager::showMsgBox("Cure has been found, all cubes in the city are eradicated.");
@@ -562,7 +560,6 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
      
 		case PlayerActions::ShareKnowledge:
 		{
-			//TODO: THE PHI FIX THIS
 			int numOfPlayerInSameCity = 0;
 			int nextPlayerIndex;
 

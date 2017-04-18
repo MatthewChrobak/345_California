@@ -144,6 +144,7 @@ void Board::drawCards()
 	{
 		GuiManager::showMsgBox("no more player's card, you lost!");
 		GuiManager::handleWindowClose();
+		return;
 	}
 	for (int i = 0; i < 2; i++)
 	{
@@ -288,6 +289,7 @@ void Board::drawInfectionCard()
 		{
 			GuiManager::showMsgBox("Less than 2 infection cards in the infection deck, you lost!");
 			GuiManager::handleWindowClose();
+			return;
 		}
 		else if (infectionCityCards.size() != 0)
 		{
@@ -361,12 +363,19 @@ void Board::checkTurn()
 		string name = player.getRoleCard()->roleCardNames[player.getRoleCard()->getRoleCardVal()];
 		GuiManager::showMsgBox("My role is: " + name);
 		board->drawCards();
+
+		if (Game::getState() != GameState::InGame) {
+			return;
+		}
+
 		GuiManager::showMsgBox("Your current hand after picking two cards.");
 		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
 		
 		//draw infection card and the game will do the infection automatically
 		Game::getGameBoard()->drawInfectionCard();
-		GuiManager::showMsgBox("End of your turn.");
+
+		if (Game::getState() == GameState::InGame)
+			GuiManager::showMsgBox("End of your turn.");
 	}
 }
 
