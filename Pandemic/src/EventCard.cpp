@@ -125,7 +125,7 @@ void EventCard::eventAction(PlayerCard* card)
 		//From an input from the user, add the cards back into the infection deck accordingly
 		for (int i = 0; i < 6; i++)
 		{
-			int input;
+			int input = 0;
 			if (temporary[input] >= 0)
 			{
 				Game::getGameBoard()->infectionCityCards.insert(Game::getGameBoard()->infectionCityCards.begin(), temporary[input]);
@@ -150,7 +150,7 @@ void EventCard::eventAction(PlayerCard* card)
 		 * Ask user which city will have a new research center		
 		 */
 
-		int cityInput;
+		int cityInput = 0;
 
 		//Gets the city
 		City* city = Game::getGameBoard()->getCity(cityInput);
@@ -168,7 +168,7 @@ void EventCard::eventAction(PlayerCard* card)
 		 *Display all discarded infection cards
 		 */
 
-		int inputDiscard;//User inputs a value of the card he wishes to discard
+		int inputDiscard = 0;//User inputs a value of the card he wishes to discard
 
 		//Permanently discard the card
 		Game::getGameBoard()->discardInfectionCard.erase(Game::getGameBoard()->discardInfectionCard.begin() + inputDiscard);
