@@ -362,21 +362,21 @@ void Board::checkTurn()
 	{
 		string name = player.getRoleCard()->roleCardNames[player.getRoleCard()->getRoleCardVal()];
 		GuiManager::showMsgBox("My role is: " + name);
-		board->drawCards();
-
-		if (Game::getState() != GameState::InGame) {
-			return;
-		}
-
-		GuiManager::showMsgBox("Your current hand after picking two cards.");
-		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
 		
+		if (board->checkChange > 0) {
+			board->drawCards();
+		}
+		board->checkChange = 1;
+		//GuiManager::showMsgBox("Your current hand after picking two cards.");
+		//GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
+		GuiManager::showMsgBox("You drew 2 cards.");
 		//draw infection card and the game will do the infection automatically
 		Game::getGameBoard()->drawInfectionCard();
 
 		if (Game::getState() == GameState::InGame)
 			GuiManager::showMsgBox("End of your turn.");
 	}
+
 }
 
 int Board::getActualInfectionRate()
