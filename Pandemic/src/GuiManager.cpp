@@ -20,7 +20,6 @@ void GuiManager::initialize()
 	auto menuScene = &GuiManager::_uiElements[(int)GameState::MainMenu];
 	menuScene->push_back(new MainMenuFrame());
 
-
 	auto gameScene = &GuiManager::_uiElements[(int)GameState::InGame];	
 	gameScene->push_back(new GameFrame());
 }

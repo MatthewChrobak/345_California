@@ -42,7 +42,7 @@ int main()
 	GuiManager::initialize();
 
 	// Initialize the graphics system.
-	GraphicsManager::initialize();
+	GraphicsSystem& graphics = GraphicsManager::getInstance();
 
 
 
@@ -58,7 +58,7 @@ int main()
 		tick = std::clock();
 
 		if (tmrGraphics < tick) {
-			GraphicsManager::draw();
+			graphics.drawContext();
 			tmrGraphics = tick + 16;
 		}
 	}

@@ -24,7 +24,7 @@ void UIButton::draw()
 		SurfaceContext ctx;
 		ctx.setPosition(this->left, this->top);
 		ctx.setRenderSize(this->width, this->height);
-		GraphicsManager::renderSurface(this->hoverSurfaceName, ctx);
+		GraphicsManager::getInstance().renderSurface(this->hoverSurfaceName, ctx);
 	}
 	else {
 		UIElement::draw();
@@ -34,7 +34,7 @@ void UIButton::draw()
 	this->setPosition(this->left + (this->width / 2),
 		this->top + (this->height - this->getFontSize()) / 2);
 
-	GraphicsManager::renderText(this->caption, *this);
+	GraphicsManager::getInstance().renderText(this->caption, *this);
 }
 
 std::string UIButton::getObjectType()

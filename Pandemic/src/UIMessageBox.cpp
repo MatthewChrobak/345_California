@@ -3,7 +3,7 @@
 
 UIMessageBox::UIMessageBox() : UIFrame(MSG_BOX)
 {
-	this->surfaceName = "ui\\textbox.png";
+	this->surfaceName = "ui/textbox.png";
 	this->width = MSG_BOX_WIDTH;
 	this->height = MSG_BOX_HEIGHT;
 	this->visible = false;
@@ -22,7 +22,7 @@ void UIMessageBox::draw()
 		ctx.setHorizontalCenter(true);
 		ctx.setFontColor(RGBA(0, 0, 0));
 		ctx.setPosition(this->width / 2, this->height / 2);
-		GraphicsManager::renderText(this->_messages.front(), ctx);
+		GraphicsManager::getInstance().renderText(this->_messages.front(), ctx);
 	}
 }
 

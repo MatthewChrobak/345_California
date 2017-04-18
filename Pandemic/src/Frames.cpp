@@ -15,55 +15,12 @@ int GameFrame::EditNodeIndex = 0;
 
 GameFrame::GameFrame() : UIFrame(FRM_GAME_FRAME)
 {
-	this->surfaceName = "ui\\frame.png";
+	this->surfaceName = "ui/frame.png";
 	this->width = FRM_GAME_FRAME_WIDTH;
 	this->height = FRM_GAME_FRAME_HEIGHT;
 	this->_elements.push_back(new ToggleActionsButton());
 	this->_elements.push_back(new PlayerActionsFrame());
 	this->_elements.push_back(new PlayerCardsFrame());
-	this->_elements.push_back(new ToggleMapEditingActions());
-	this->_elements.push_back(new MapEditingActionsFrame());
-}
-
-void GameFrame::showAdminTools()
-{	
-	// Make the map tools button visible.
-	auto element = GuiManager::getUIElementByName(CMD_TOGGLE_MAP_EDITING_ACTIONS);
-#ifdef DEBUG
-	assert(element != nullptr);
-	assert(element->getObjectType() == UI_TYPE_BUTTON);
-#endif
-	element->visible = true;
-
-	// Make the other frame invisible.
-	element = GuiManager::getUIElementByName(FRM_PLAYER_ACTIONS);
-#ifdef DEBUG
-	assert(element != nullptr);
-	assert(element->getObjectType() == UI_TYPE_FRAME);
-#endif
-	element->visible = false;
-}
-
-void GameFrame::finishedEditing()
-{
-	// Make the map tools button invisible.
-	auto element = GuiManager::getUIElementByName(CMD_TOGGLE_MAP_EDITING_ACTIONS);
-#ifdef DEBUG
-	assert(element != nullptr);
-	assert(element->getObjectType() == UI_TYPE_BUTTON);
-#endif
-	element->visible = false;
-
-	// Make the map tools frame invisible.
-	element = GuiManager::getUIElementByName(FRM_MAP_EDITING_ACTIONS);
-#ifdef DEBUG
-	assert(element != nullptr);
-	assert(element->getObjectType() == UI_TYPE_FRAME);
-#endif
-	element->visible = false;
-
-	// Submit the map.
-	Game::getGameBoard()->submitMap();
 }
 
 bool GameFrame::onMouseDown(std::string button, int x, int y)
@@ -80,162 +37,64 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 	if (button == "left") {
 		Board* board = Game::getGameBoard();
 
-		// Are we currently editing the map?
-		if (Game::getGameBoard()->isEditingMap())
-		{
-			// Figure out if we did an action that requires clicking on cities.
-			switch (GameFrame::EditingAction) {
-				// Move the node.
-				case MapEditingActions::MoveNode: {
-					City* city = Game::getGameBoard()->getCity(GameFrame::EditNodeIndex);
-					city->x = x;
-					city->y = y;
-				}
-				break;
-			case MapEditingActions::AddNode: {
-				City* city = new City();
-				city->x = x;
-				city->y = y;
-				Game::getGameBoard()->addCity(city);
-				break;
-			}
-			case MapEditingActions::RotateAngle:
-			case MapEditingActions::SelectNode:
-			case MapEditingActions::MakeNodeBlack:
-			case MapEditingActions::MakeNodeRed:
-			case MapEditingActions::MakeNodeYellow:
-			case MapEditingActions::MakeNodeBlue:
-			case MapEditingActions::MakeDirectedEdge:
-				// Get the city from the x/y coordinate.
-				
-				int index = City::getCityIndexFromXY(x, y);
-				
-				if (index < 0)
-				{
-					return true;
-				}
+		// Are we currently trying to do an action?
+		if (GameFrame::PlayerAction != PlayerActions::NoPlayerAction) {
 
-				City* city = board->getCity(index);
+			switch (GameFrame::PlayerAction)
+			{
+				// Are we trying to move?
+			case PlayerActions::Drive:
+			{
+				Player& player = board->getCurrentTurnPlayer();
+				int playerCityIndex = player.pawn->cityIndex;
 
-				// Make sure it's not null.
-				if (city != nullptr) {
-					// Figure out what editing action we're doing.
-					switch (GameFrame::EditingAction) {
+				// Make sure we're within the valid bounds.
+				if (playerCityIndex >= 0 && playerCityIndex < numCities) {
+					City* playerCity = board->getCity(playerCityIndex);
+					int clickedCityIndex = City::getCityIndexFromXY(x, y);
 
-						// Modify the currently focused node.
-						case MapEditingActions::SelectNode:
-							GameFrame::EditNodeIndex = index;
-							break;
+					// If the city is an adjacent city, move us.
+					if (playerCity->isAdjacent(clickedCityIndex)) {
+						player.pawn->cityIndex = clickedCityIndex;
 
-							// Place the node in the current position.
-						case MapEditingActions::AddNode:
-						{
-							City* newCity = new City();
-							newCity->x = x;
-							newCity->y = y;
-							board->addCity(newCity);
-						}
-						break;
-
-						// Set the colors.
-						case MapEditingActions::MakeNodeBlack:
-							city->color = InfectionColor::Black;
-							break;
-						case MapEditingActions::MakeNodeRed:
-							city->color = InfectionColor::Red;
-							break;
-						case MapEditingActions::MakeNodeYellow:
-							city->color = InfectionColor::Yellow;
-							break;
-						case MapEditingActions::MakeNodeBlue:
-							city->color = InfectionColor::Blue;
-							break;
-
-						case MapEditingActions::RotateAngle:
-							city->inverseAngle = !city->inverseAngle;
-							break;
-
-							// Add the edges.
-						case MapEditingActions::MakeDirectedEdge:
-						{
-							City* primaryCity = Game::getGameBoard()->getCity(GameFrame::EditNodeIndex);
-
-							// Connect them only if they're different.
-							if (index != GameFrame::EditNodeIndex) {
-								primaryCity->addAdjacentNode(index);
-								city->addAdjacentNode(GameFrame::EditNodeIndex);
-							}
-						}
+						// Reset the player action.
+						Game::decrementActionCounter();
+						//If turn is changed, show this message
+						Board::checkTurn();
+						GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 						break;
 					}
-					break;
 				}
 				break;
 			}
-		} 
-		
-		else 
-		{
-			
-			// Are we currently trying to do an action?
-			if (GameFrame::PlayerAction != PlayerActions::NoPlayerAction) {
+			case PlayerActions::ShuttleFlight:
 
-				switch (GameFrame::PlayerAction)
+				if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != false)
 				{
-					// Are we trying to move?
-				case PlayerActions::Drive:
-				{
-					Player& player = board->getCurrentTurnPlayer();
-					int playerCityIndex = player.pawn->cityIndex;
-
-					// Make sure we're within the valid bounds.
-					if (playerCityIndex >= 0 && playerCityIndex < numCities) {
-						City* playerCity = board->getCity(playerCityIndex);
-						int clickedCityIndex = City::getCityIndexFromXY(x, y);
-
-						// If the city is an adjacent city, move us.
-						if (playerCity->isAdjacent(clickedCityIndex)) {
-							player.pawn->cityIndex = clickedCityIndex;
-
-							// Reset the player action.
-							Game::decrementActionCounter();
-							//If turn is changed, show this message
-							Board::checkTurn();
-							GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-							break;
-						}
-					}
-					break;
-				}
-				case PlayerActions::ShuttleFlight:
-
-					if (Game::getGameBoard()->getCity(player.pawn->cityIndex)->research != false)
+					int clickedCityIndex = City::getCityIndexFromXY(x, y);
+					if (Game::getGameBoard()->getCity(clickedCityIndex)->research == true)
 					{
-						int clickedCityIndex = City::getCityIndexFromXY(x, y);
-						if (Game::getGameBoard()->getCity(clickedCityIndex)->research == true)
-						{
-							player.pawn->cityIndex = clickedCityIndex;
-							/*
-							When the player successfully finishes an action, ensure that the action is reset by writing the line
-							GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-							Failure to do so will cause assertions to fail and will cause the application to crash.
-							*/
-							Game::decrementActionCounter();
-							Board::checkTurn();
-							GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-							//reset player Actions
-							GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
-						}
-						else
-							GuiManager::showMsgBox("Invalid choice, the city does not have a research center.");
+						player.pawn->cityIndex = clickedCityIndex;
+						/*
+						When the player successfully finishes an action, ensure that the action is reset by writing the line
+						GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+						Failure to do so will cause assertions to fail and will cause the application to crash.
+						*/
+						Game::decrementActionCounter();
+						Board::checkTurn();
+						GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+						//reset player Actions
+						GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
 					}
 					else
-						GuiManager::showMsgBox("There is no research center at your current city. ");
-					return true;
-				default:
-					GuiManager::showMsgBox("Tried to perform an action on " + GameFrame::PlayerAction);
-					break;
+						GuiManager::showMsgBox("Invalid choice, the city does not have a research center.");
 				}
+				else
+					GuiManager::showMsgBox("There is no research center at your current city. ");
+				return true;
+			default:
+				GuiManager::showMsgBox("Tried to perform an action on " + GameFrame::PlayerAction);
+				break;
 			}
 			
 		}
@@ -247,54 +106,10 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 void GameFrame::draw()
 {
 	UIFrame::draw();
-
-	// Are we editing right now?
-	if (Game::getGameBoard()->isEditingMap() && Game::getGameBoard()->getNumCities()) {
-		switch (GameFrame::EditingAction) {
-			case MapEditingActions::SelectNode:
-			case MapEditingActions::MakeDirectedEdge:
-			case MapEditingActions::ChangeNodeName:
-			case MapEditingActions::MoveNode:
-				SurfaceContext ctx;
-				City* city = Game::getGameBoard()->getCity(GameFrame::EditNodeIndex);
-				ctx.setPosition(city->x - (CITY_RENDER_WIDTH / 2), city->y - (CITY_RENDER_HEIGHT / 2));
-				ctx.setRenderSize(CITY_RENDER_WIDTH, CITY_RENDER_HEIGHT);
-				GraphicsManager::renderSurface("ui\\selectbox.png", ctx);
-				break;
-		}
-	}
 }
 
 bool GameFrame::onKeyDown(std::string key)
 {
-	// Are we editing right now?
-	if (Game::getGameBoard()->isEditingMap() && Game::getGameBoard()->getNumCities()) {
-		switch (GameFrame::EditingAction) {
-			case MapEditingActions::ChangeNodeName:
-
-				// Get the city object.
-				City* city = Game::getGameBoard()->getCity(GameFrame::EditNodeIndex);
-
-				// Is the input a non-character?
-				if (key.size() != 1) {
-
-					if (key == "backspace") {
-						// Can we even backspace?
-						if (city->name.size() != 0) {
-							city->name = city->name.substr(0, city->name.size() - 1);
-							return true;
-						}
-					}
-
-					// Exit out. This is not a character we should append.
-					return true;
-				}
-
-				city->name += key;
-				break;
-		}
-	}
-
 	return true;
 }
 
@@ -312,7 +127,7 @@ void GameFrame::onMouseMove(int x, int y)
 
 PlayerActionsFrame::PlayerActionsFrame() : UIFrame(FRM_PLAYER_ACTIONS)
 {
-	this->surfaceName = "ui\\panel.png";
+	this->surfaceName = "ui/panel.png";
 	this->width = FRM_PLAYER_ACTIONS_WIDTH;
 	this->height = FRM_PLAYER_ACTIONS_HEIGHT;
 
@@ -345,19 +160,19 @@ bool PlayerActionsFrame::onMouseDown(std::string button, int x, int y)
 
 MainMenuFrame::MainMenuFrame() : UIFrame(FRM_MAIN_MENU)
 {
-	this->surfaceName = "ui\\mainmenu.png";
+	this->surfaceName = "ui/mainmenu.png";
 	this->width = FRM_MAIN_MENU_WIDTH;
 	this->height = FRM_MAIN_MENU_HEIGHT;
 
 	this->_elements.push_back(new SaveNameTextbox());
 	this->_elements.push_back(new PlayGameButton());
-	this->_elements.push_back(new DefaultMapBox());
+	this->_elements.push_back(new NumPlayersFrame());
 }
 
 
 PlayerCardsFrame::PlayerCardsFrame() : UIFrame(FRM_PLAYER_CARDS)
 {
-	this->surfaceName = "ui\\textbox.png";
+	this->surfaceName = "ui/textbox.png";
 	this->width = FRM_PLAYER_CARDS_WIDTH;
 	this->height = FRM_PLAYER_CARDS_HEIGHT;
 	this->visible = false;
@@ -397,7 +212,7 @@ void PlayerCardsFrame::draw()
 		// Do we render the selector?
 		for (unsigned int cardDataIndex = 0; cardDataIndex < this->_cardData.size(); cardDataIndex++) {
 			if (this->_cardData.at(cardDataIndex) == i) {
-				GraphicsManager::renderSurface("cards\\cardselect.png", sCtx);
+				GraphicsManager::getInstance().renderSurface("cards/cardselect.png", sCtx);
 				break;
 			}
 		}
@@ -433,8 +248,8 @@ void PlayerCardsFrame::draw()
 				tCtx.setFontSize(18);
 
 				// Pass it off to the graphics manager to draw.
-				GraphicsManager::renderSurface("cards\\citycard.png", sCtx);
-				GraphicsManager::renderText(city->name, tCtx);
+				GraphicsManager::getInstance().renderSurface("cards/citycard.png", sCtx);
+				GraphicsManager::getInstance().renderText(city->name, tCtx);
 			}
 		}
 
@@ -449,8 +264,8 @@ void PlayerCardsFrame::draw()
 			tCtx.setFontSize(20);
 
 			// Pass if off to the graphics manager to draw.
-			GraphicsManager::renderSurface("cards\\eventcard.png", sCtx);
-			GraphicsManager::renderText(((EventCard*)card)->getEventName(), tCtx);
+			GraphicsManager::getInstance().renderSurface("cards/eventcard.png", sCtx);
+			GraphicsManager::getInstance().renderText(((EventCard*)card)->getEventName(), tCtx);
 		}
 	}
 }
@@ -546,36 +361,16 @@ void PlayerCardsFrame::show()
 }
 
 
-MapEditingActionsFrame::MapEditingActionsFrame() : UIFrame(FRM_MAP_EDITING_ACTIONS)
+NumPlayersFrame::NumPlayersFrame() : UIFrame(FRM_NUM_PLAYERS)
 {
-	this->surfaceName = "ui\\panel.png";
-	this->width = FRM_MAP_EDITING_ACTIONS_WIDTH;
-	this->height = FRM_MAP_EDITING_ACTIONS_HEIGHT;
-
-	this->top = FRM_MAP_EDITING_ACTIONS_TOP;
-	this->left = FRM_MAP_EDITING_ACTIONS_LEFT;
+	this->surfaceName = "ui/mainmenu.png";
+	this->width = FRM_NUM_PLAYERS_WIDTH;
+	this->height = FRM_NUM_PLAYERS_HEIGHT;
+	this->top = 0;
+	this->left = 0;
 	this->visible = false;
 
-	this->_elements.push_back(new SelectNodeAction());
-	this->_elements.push_back(new AddNodeAction());
-	this->_elements.push_back(new MakeNodeBlackAction());
-	this->_elements.push_back(new MakeNodeRedAction());
-	this->_elements.push_back(new MakeNodeYellowAction());
-	this->_elements.push_back(new MakeNodeBlueAction());
-	this->_elements.push_back(new ChangeNodeNameAction());
-	this->_elements.push_back(new MakeDirectedEdgeAction());
-	this->_elements.push_back(new MoveNodeAction());
-	this->_elements.push_back(new FinishedEditingMapAction());
-	this->_elements.push_back(new RotateNodeAngleAction());
-}
-
-void MapEditingActionsFrame::draw()
-{
-	UIFrame::draw();
-
-	// Highlight the selected tool.
-	SurfaceContext ctx;
-	ctx.setRenderSize(FRM_MAP_EDITING_ACTIONS_WIDTH, CMD_PLAYER_ACTION_BUTTON_HEIGHT);
-	ctx.setPosition(FRM_MAP_EDITING_ACTIONS_LEFT, FRM_MAP_EDITING_ACTIONS_TOP + CMD_PLAYER_ACTION_BUTTON_HEIGHT * GameFrame::EditingAction);
-	GraphicsManager::renderSurface("ui\\lightbox.png", ctx);
+	this->_elements.push_back(new SelectTwoPlayerGame());
+	this->_elements.push_back(new SelectThreePlayerGame());
+	this->_elements.push_back(new SelectFourPlayerGame());
 }
