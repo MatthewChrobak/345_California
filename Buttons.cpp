@@ -145,8 +145,17 @@ bool ShuttleFlightAction::onMouseDown(std::string key, int x, int y)
 	assert(element->getObjectType() == UI_TYPE_FRAME);
 	assert(GameFrame::PlayerAction == PlayerActions::NoPlayerAction || GameFrame::PlayerAction == PlayerActions::Drive);
 #endif
-    GameFrame::PlayerAction = PlayerActions::ShuttleFlight;
-    ((PlayerCardsFrame*)element)->show();
+    Board* board = Game::getGameBoard();
+    Player& player = board->getCurrentTurnPlayer();
+    player.usePlayerAction("ShuttleFlight");
+
+
+
+
+
+
+    GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+   // ((PlayerCardsFrame*)element)->show();
     return true;
 }
 
