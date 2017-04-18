@@ -23,15 +23,14 @@ void Game::numOfCubeDecrementor(int cityColor)
 	switch (cityColor)
 	{
 	case 0:
-if (cityColor == InfectionColor::Red)
-Game::numOfRedCube--;
-//if the number of cube is equal or below 0, its game over
-if (Game::numOfRedCube <= 0)
-{
-	GuiManager::showMsgBox("No more red cubes. Game over!");
-	GuiManager::handleWindowClose();
-}
-break;
+		if (cityColor == InfectionColor::Red)
+		Game::numOfRedCube--;
+		//if the number of cube is equal or below 0, its game over
+		if (Game::numOfRedCube <= 0)
+		{
+			GuiManager::showMsgBox("No more red cubes. Game over!");
+		}
+		break;
 
 	case 1:
 		if (cityColor == InfectionColor::Blue)
@@ -40,7 +39,6 @@ break;
 		if (Game::numOfBlueCube <= 0)
 		{
 			GuiManager::showMsgBox("No more blue cubes. Game over!");
-			GuiManager::handleWindowClose();
 		}
 		break;
 
@@ -51,7 +49,6 @@ break;
 		if (Game::numOfBlackCube <= 0)
 		{
 			GuiManager::showMsgBox("No more black cubes. Game over!");
-			GuiManager::handleWindowClose();
 		}
 		break;
 
@@ -62,7 +59,6 @@ break;
 		if (Game::numOfYellowCube <= 0)
 		{
 			GuiManager::showMsgBox("No more yellow cubes. Game over!");
-			GuiManager::handleWindowClose();
 		}
 		break;
 

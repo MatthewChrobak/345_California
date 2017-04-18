@@ -18,6 +18,14 @@ enum PlayerCardType
 	Event_Card
 };
 
+enum EventCardType
+{
+	Airlift,
+	OneQuietNight,
+	ResilientPopulation,
+	GovernmentGrant,
+	Forecast
+};
 
 
 class PlayerCard {
@@ -35,6 +43,8 @@ protected:
 public:
 	PlayerCard();
 	~PlayerCard();
+	virtual EventCardType getEventType();
+	virtual void eventAction(PlayerCard* card);
 
 };
 
