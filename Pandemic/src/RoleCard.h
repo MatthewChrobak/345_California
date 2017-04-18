@@ -1,4 +1,3 @@
-
 #ifndef PANDEMIC_1_1_ROLECARD_H
 #define PANDEMIC_1_1_ROLECARD_H
 
@@ -15,7 +14,6 @@ enum RoleCardColors : int
 	RCC_DarkGreen,
 	RoleCardColors_Length
 };
-
 
 class RoleCard
 {
