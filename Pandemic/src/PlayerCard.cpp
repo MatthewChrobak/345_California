@@ -1,9 +1,6 @@
 #include "PlayerCard.h"
 #include "Game.h"
-#include "EventCard.h"
-#include "EpidemicCard.h"
 #include "Board.h"
-#include "InfectionCard.h"
 #include "City.h"
 #include <stdlib.h>    
 #include <time.h>
@@ -11,30 +8,37 @@
 #include "FileStream.h"
 #include "FileSystem.h"
 
-
-
 void PlayerCard::playCard()
 {
-	// Throw an exception because this method is virtual and should be overriden.
-	throw;
+
 }
 
 std::string PlayerCard::getSurfaceName()
 {
-	// Throw an exception because this method is virtual and should be overriden.
-	throw;
+	return "";
+}
+
+EventCardType PlayerCard::getEventType()
+{
+	return EventCardType::Airlift;
 }
 
 PlayerCardType PlayerCard::getType()
 {
 	return this->_cardType;
+};
+
+void PlayerCard::eventAction(PlayerCard* card) {
+
 }
+
+
 
 //Default constructor
 PlayerCard::PlayerCard() {};
 
 PlayerCard::~PlayerCard()
 {
-}
+};
 
 

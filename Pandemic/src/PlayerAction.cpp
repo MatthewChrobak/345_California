@@ -52,7 +52,7 @@ void DirectFlightAction::doAction(Player *player) {
 
 }
 
-const string &DirectFlightAction::getName() const {
+const std::string &DirectFlightAction::getName() const {
 
 
 
@@ -71,7 +71,7 @@ void BuildResearchStation::doAction(Player *player) {
 
 }
 
-const string &BuildResearchStation::getName() const {
+const std::string &BuildResearchStation::getName() const {
     return name;
 }
 
@@ -83,7 +83,7 @@ void TreatDisease::doAction(Player *player) {
 
 }
 
-const string &TreatDisease::getName() const {
+const std::string &TreatDisease::getName() const {
     return name;
 }
 
@@ -94,21 +94,21 @@ void ShareKnowledge::doAction(Player *player) {
 
 }
 
-const string &ShareKnowledge::getName() const {
+const std::string &ShareKnowledge::getName() const {
     return name;
 }
 
 void DiscoverCure::doAction(Player *player) {
 
-    cout << "Needs 5 mathcing cards" << endl;
+    std::cout << "Needs 5 mathcing cards" << std::endl;
 
 }
 
-const string &DiscoverCure::getName() const {
+const std::string &DiscoverCure::getName() const {
     return name;
 }
 
-const string &Drive::getName() const {
+const std::string &Drive::getName() const {
     return name;
 }
 
@@ -119,7 +119,7 @@ void Drive::doAction(Player *player) {
 
 }
 
-const string &CharterFlight::getName() const {
+const std::string &CharterFlight::getName() const {
     return name;
 }
 
@@ -130,7 +130,7 @@ void CharterFlight::doAction(Player *player) {
 
 }
 
-const string &ShuttleFlight::getName() const {
+const std::string &ShuttleFlight::getName() const {
     return name;
 }
 

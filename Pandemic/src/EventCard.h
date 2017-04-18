@@ -1,16 +1,6 @@
 #pragma once
-#include "PlayerCard.h"
 #include <vector>
-
-
-enum EventCardType
-{
-	Airlift,
-	OneQuietNight,
-	ResilientPopulation,
-	GovernmentGrant,
-	Forecast
-};
+#include "PlayerCard.h"
 
 
 class EventCard : public PlayerCard
@@ -19,10 +9,12 @@ public:
 	EventCard(EventCardType type);
 	~EventCard();
 	std::string getEventName();
-	void playCard();
 	std::string getSurfaceName();
+	EventCardType getEventType();
+	void playCard();
+	//void eventAction(PlayerCard* card);
 
-private:
+protected:
 	EventCardType _eventType;
 };
 

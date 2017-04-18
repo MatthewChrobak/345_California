@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "PlayerCard.h"
+#include "GuiManager.h"
 
 #ifdef DEBUG
 #include <assert.h>
@@ -39,12 +40,30 @@ Player::~Player()
 
 void Player::addCard(PlayerCard* card) 
 {
-	for (int i = 0; i < MAX_PLAYER_CARDS; i++) {
+
+	int currentNumber = 0;
+
+	for (int i = 0; i < MAX_PLAYER_CARDS_IN_HAND; i++) {
 		if (this->_playerCards[i] == nullptr) {
 			this->_playerCards[i] = card;
 			break;
 		}
 	}
+
+	for (int i = 0; i < MAX_PLAYER_CARDS_IN_HAND; i++)
+	{
+		if (this->_playerCards[i] != nullptr) {
+			currentNumber++;
+		}
+	}
+	
+	/*
+	if (currentNumber > MAX_PLAYER_CARDS)
+	{
+		int userInput;
+		removeCard(userInput);
+	}
+	*/
 }
 
 void Player::removeCard(int index)
