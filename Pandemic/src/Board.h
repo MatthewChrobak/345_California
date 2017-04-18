@@ -28,6 +28,7 @@ public:
 	//index value indicating disease according it's color...bool array if cured update bool value
 
 	bool isCured[4];
+	bool oneQuietNight = false; // In case the player plays a one Quiet night card
 	
 	static void checkTurn();
 
@@ -67,6 +68,7 @@ public:
 	void shuffleDiscardedInfectionDeck();
 
 	static int _infectionRate;
+	int drawTopInfectionCard();
 
 private:
 	CityGraph* _cities;
