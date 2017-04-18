@@ -686,7 +686,7 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 					//Make sure it's an event card.
 					if (card->getType() == PlayerCardType::Event_Card) {
 
-						card->eventAction(card);
+						((EventCard*)card)->eventAction(card);
 
 						//Remove it, move the player and hide the player cards
 
