@@ -211,6 +211,7 @@ void EventCard::eventAction(PlayerCard* card)
 		catch (const char* e)
 		{
 			std::cout << "Something went wrong. Try again." << std::endl;
+			board->getCurrentTurnPlayer().addCard(new EventCard(EventCardType::GovernmentGrant));
 			return;
 		}
 
@@ -248,6 +249,7 @@ void EventCard::eventAction(PlayerCard* card)
 		catch (const char* e)
 		{
 			std::cout << "Something went wrong. Try again." << std::endl;
+			board->getCurrentTurnPlayer().addCard(new EventCard(EventCardType::ResilientPopulation));
 			return;
 		}
 
