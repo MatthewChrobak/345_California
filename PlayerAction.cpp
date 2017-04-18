@@ -92,21 +92,32 @@ void TreatDisease1::doAction(Player *player) {
 
     City* city = Game::getGameBoard()->getCity(player->pawn->cityIndex);
 
-    GuiManager::showMsgBox("Removing one cube!");
-
-    //find the highest number of cubes of anyColor
+       //find the highest number of cubes of anyColor
     //let the first index be a
     int highest = city->cube[0];
     //simple for loop to find the highest
+    cout << city->cube[0] << endl;
 
     for (int i=0; i< 5; i++){
+        cout << city->cube[i] << endl;
         if (city->cube[i] > highest){
-            highest = city->cube[i];
+             highest = city->cube[i]   ;
         }
     }
 
     cout << highest << endl;
 
+    //clear out all the cubes
+    //get a temp i value to figure out which cube got taken away
+    int temp = 0;
+    for (int i=0; i< 5; i++){
+        if (city->cube[i] == highest){
+            city->cube[i]--;
+            GuiManager::showMsgBox("An infection cube has been remove in the current city");
+            temp = i;
+            break;
+        }
+    }
     //clear out all the cubes
     //get a temp i value to figure out which cube got taken away
     int temp = 0;
