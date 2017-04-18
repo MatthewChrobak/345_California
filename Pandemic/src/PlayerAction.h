@@ -8,23 +8,23 @@ class PlayerAction {
 
 public:
     virtual void doAction(Player* player)=0;
-    virtual const std::string &getName() const =0;
+    virtual  std::string &getName()  =0;
 
 
 };
 
-class DirectFlightAction: public PlayerAction{
+class DirectFlightAction1: public PlayerAction{
 
-    std ::string name = "DirectFlightAction";
+    std ::string name = "DirectFlight";
 
 public:
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 };
 
-class BuildResearchStation: public PlayerAction{
+class BuildResearchStation1: public PlayerAction{
 
     std ::string name = "BuildResearchStation";
 
@@ -32,11 +32,11 @@ class BuildResearchStation: public PlayerAction{
 public:
     void doAction(Player* player);
 
-    const std::string &getName() const;
+    std::string &getName();
 
 };
 
-class TreatDisease: public PlayerAction{
+class TreatDisease1: public PlayerAction{
 
     std ::string name = "TreatDisease";
 
@@ -44,11 +44,11 @@ class TreatDisease: public PlayerAction{
 public:
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 };
 
-class ShareKnowledge: public PlayerAction{
+class ShareKnowledge1: public PlayerAction{
 
 
     std ::string name = "ShareKnowledge";
@@ -57,11 +57,11 @@ class ShareKnowledge: public PlayerAction{
 public:
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 };
 
-class DiscoverCure: public PlayerAction{
+class DiscoverCure1: public PlayerAction{
 
     std ::string name = "DiscoverCure";
 
@@ -69,12 +69,12 @@ class DiscoverCure: public PlayerAction{
 public:
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 
 };
 
-class Drive: public PlayerAction{
+class Drive1: public PlayerAction{
 
     std ::string name = "Drive/Ferry";
 
@@ -82,12 +82,12 @@ class Drive: public PlayerAction{
 public:
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 
 };
 
-class CharterFlight: public PlayerAction{
+class CharterFlight1: public PlayerAction{
 
     std ::string name = "CharterFlight";
 
@@ -95,11 +95,11 @@ class CharterFlight: public PlayerAction{
 public:
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 
 };
-class ShuttleFlight: public PlayerAction{
+class ShuttleFlight1: public PlayerAction{
 
     std ::string name = "ShuttleFlight";
 
@@ -107,7 +107,7 @@ class ShuttleFlight: public PlayerAction{
 public:
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 };
 

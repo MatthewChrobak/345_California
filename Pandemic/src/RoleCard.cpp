@@ -5,15 +5,15 @@ DISTINCT PART -> ROLE CARD AND REFERENCE CARD CLASSES.
 #include <iostream>
 #include "RoleCard.h"
 
-std::string RoleCard::roleCardNames[7] = { "The Contingency Planner", "Researcher", "Scientist", "Dispatcher", "Operations Expert", "Medic", "Quarantine Specialist", };
+std::string RoleCard::roleCardNames[7] = { "ContingencyPlanner", "Researcher", "Scientist", "Dispatcher", "OperationsExpert", "Medic", "Quarantine Specialist", };
 
 
 RoleCard::RoleCard(const std::string &roleCardname) : roleCardname(roleCardname)
 {
-    int roleValue = this->getRoleCardNum();	
+    int roleValue = this->getRoleCardNum();
     this->setRoleCardVal(roleValue);
 
-	this->setRoleCardColour((RoleCardColors)roleValue);
+    this->setRoleCardColour((RoleCardColors)roleValue);
 }
 
 RoleCard::~RoleCard() {}
@@ -30,13 +30,13 @@ void RoleCard::setRoleCardname(const std::string &roleCardname) {
 
 int RoleCard::getRoleCardNum()
 {
-	for (int i = 0; i < 7; i++) {
-		if (roleCardNames[i].compare(this->getRoleCardname()) == 0) {
-			return i;
-		}
-	}
+    for (int i = 0; i < 7; i++) {
+        if (roleCardNames[i].compare(this->getRoleCardname()) == 0) {
+            return i;
+        }
+    }
 
-	return -1;
+    return -1;
 }
 
 
@@ -50,10 +50,10 @@ void RoleCard::setRoleCardVal(int roleCardVal) {
 
 void RoleCard::setRoleCardColour(const RoleCardColors& roleCardColour)
 {
-	this->roleCardColour = roleCardColour;
+    this->roleCardColour = roleCardColour;
 }
 
 RoleCardColors RoleCard::getRoleCardColour() const
 {
-	return roleCardColour;
+    return roleCardColour;
 }
