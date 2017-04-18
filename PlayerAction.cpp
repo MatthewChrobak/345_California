@@ -42,7 +42,7 @@ void DirectFlightAction1::doAction(Player *player) {
 
 }
 
-const string &DirectFlightAction1::getName() const {
+ string &DirectFlightAction1::getName()  {
 
     return name;
 }
@@ -80,7 +80,7 @@ void BuildResearchStation1::doAction(Player *player) {
 
 }
 
-const string &BuildResearchStation1::getName() const {
+ string &BuildResearchStation1::getName()  {
     return name;
 }
 
@@ -98,10 +98,12 @@ void TreatDisease1::doAction(Player *player) {
     //let the first index be a
     int highest = city->cube[0];
     //simple for loop to find the highest
+    cout << city->cube[0] << endl;
 
     for (int i=0; i< 5; i++){
+        cout << city->cube[i] << endl;
         if (city->cube[i] > highest){
-            highest = city->cube[i];
+             highest = city->cube[i]   ;
         }
     }
 
@@ -113,6 +115,7 @@ void TreatDisease1::doAction(Player *player) {
     for (int i=0; i< 5; i++){
         if (city->cube[i] == highest){
             city->cube[i]--;
+            GuiManager::showMsgBox("An infection cube has been remove in the current city");
             temp = i;
             break;
         }
@@ -121,7 +124,6 @@ void TreatDisease1::doAction(Player *player) {
     
 
 
-    GuiManager::showMsgBox("An infection cube has been remove in the current city");
     Game::numOfCubeIncrementor(city->cube[temp]);
     Game::decrementActionCounter();
     Board::checkTurn();
@@ -131,7 +133,7 @@ void TreatDisease1::doAction(Player *player) {
 
 }
 
-const string &TreatDisease1::getName() const {
+ string &TreatDisease1::getName()  {
     return name;
 }
 
@@ -142,7 +144,7 @@ void ShareKnowledge1::doAction(Player *player) {
 
 }
 
-const string &ShareKnowledge1::getName() const {
+ string &ShareKnowledge1::getName()  {
     return name;
 }
 
@@ -183,11 +185,11 @@ void DiscoverCure1::doAction(Player *player) {
 
 }
 
-const string &DiscoverCure1::getName() const {
+ string &DiscoverCure1::getName()  {
     return name;
 }
 
-const string &Drive1::getName() const {
+ string &Drive1::getName()  {
     return name;
 }
 
@@ -198,7 +200,7 @@ void Drive1::doAction(Player *player) {
 
 }
 
-const string &CharterFlight1::getName() const {
+ string &CharterFlight1::getName()  {
     return name;
 }
 
@@ -243,13 +245,39 @@ void CharterFlight1::doAction(Player *player) {
 
 }
 
-const string &ShuttleFlight1::getName() const {
+ string &ShuttleFlight1::getName()  {
     return name;
 }
 
 void ShuttleFlight1::doAction(Player *player) {
 
     std :: cout <<"Shuttle FLight" << std::endl;
+
+    Board* board = Game::getGameBoard();
+
+
+    //check if the player is in a city with RC
+    // find the city
+    City* curentCity = board->getCity(player->pawn->cityIndex);
+
+    if (curentCity->research){
+        //search for a city RC
+        for (int i=0; i < board->getNumCities(); i++){
+            City* city = board->getCity(i);
+            if(city->research){
+
+                player->pawn->cityIndex = i;
+                GuiManager::showMsgBox("Player just moved");
+
+
+            }
+
+
+
+        }
+    }
+    else
+        GuiManager::showMsgBox("You're not in a city with RC");
 
 
 }

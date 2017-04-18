@@ -37,4 +37,11 @@ PlayerCard::~PlayerCard()
 {
 }
 
+void PlayerCard::eventAction(PlayerCard* card) {
 
+}
+
+EventCardType PlayerCard::getEventType()
+{
+	return EventCardType::Airlift;
+}

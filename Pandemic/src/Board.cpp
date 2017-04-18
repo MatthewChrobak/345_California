@@ -389,3 +389,11 @@ void Board::setActualInfectionRate(int value)
 	this->_infectionRate = value;
 
 }
+
+int Board::drawTopInfectionCard()
+{
+	int temp = infectionCityCards.at(0);
+	Board::infectionCityCards.erase(infectionCityCards.begin());
+	infectionCityCards.shrink_to_fit();
+	return temp;
+}

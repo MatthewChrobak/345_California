@@ -6,6 +6,7 @@
 #include "PlayerActions.h"
 #include "CityCard.h"
 #include "BoardBuilder.h"
+#include "EventCard.h"
 
 ToggleActionsButton::ToggleActionsButton() : UIButton(CMD_TOGGLE_ACTIONS)
 {
@@ -317,6 +318,7 @@ bool ViewCardsAction::onMouseDown(std::string key, int x, int y)
 #endif
 	GameFrame::PlayerAction = PlayerActions::ViewCards;
 	((PlayerCardsFrame*)element)->show();
+	GuiManager::showMsgBox("Select an event card if you wish to play one.");
 	return true;
 }
 
@@ -671,9 +673,44 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 		}
 		return true;
 
-	case PlayerActions::ViewCards:
-		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
-		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+		case PlayerActions::ViewCards: {
+			if (this->_cardData->size() == 1) {
+
+				//Get the card index.
+				int cardIndex = this->_cardData->at(0);
+				PlayerCard* card = player.getCard(cardIndex);
+
+				//Make sure the card is not null.
+				if (card != nullptr) {
+
+					//Make sure it's an event card.
+					if (card->getType() == PlayerCardType::Event_Card) {
+
+						card->eventAction(card);
+
+						//Remove it, move the player and hide the player cards
+
+						player.removeCard(cardIndex);
+						Board::checkTurn();
+						GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+
+						//Reset the player action.
+						GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+						break;
+					}
+
+					else {
+						GuiManager::showMsgBox("Please select an event card.");
+					}
+				}
+				else {
+					GuiManager::showMsgBox("Card was null.");
+				}
+
+				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+			}
+		}
 		return true;
 
 

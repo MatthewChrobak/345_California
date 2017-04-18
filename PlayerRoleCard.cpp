@@ -18,9 +18,9 @@ void PlayerRoleCard::doAction(Player *player) {
 
 void Scientist::doAction(Player *player) {
 
-    std :: cout << "needs 4 cards" << std::endl;
+    // Card selection is handled in the Buttons cpp
 
-    //main thread is here becuase 4 same color cards
+    //main thread is here becuase 5 same colored
     //get the player's current location
     int playerCurrentLocation = player->pawn->cityIndex;
     //Find if the city has a RC
@@ -29,9 +29,19 @@ void Scientist::doAction(Player *player) {
     if (currentCity->research){
         //get the color of the cards selected
         City* cityToGetCardColor = Game::getGameBoard()->getCity(player->getCardsSelected()[0]);
-        //Get rid of all the cubes with respect to card's color
-        currentCity->cube[cityToGetCardColor->color] = -1;
-        player->getCardsSelected().clear();
+        //check it already cured
+
+        if (Game::getGameBoard()->isCured[cityToGetCardColor->color]) {
+            GuiManager::showMsgBox("This disease has already been cured!");
+            player->getCardsSelected().clear();
+            return;
+        }
+        else {
+            Game::getGameBoard()->isCured[cityToGetCardColor->color] = true;
+            //Get rid of all the cubes with respect to card's color
+            currentCity->cube[cityToGetCardColor->color] = -1;
+        }
+
     }
     else
     {
@@ -42,16 +52,11 @@ void Scientist::doAction(Player *player) {
 
 
 
-
-
-
-
-
 }
 
 Scientist::Scientist(PlayerAction *playerAction) : playerAction(playerAction) {}
 
-const std::string &Scientist::getName() const {
+ std::string &Scientist::getName()  {
     return name;
 }
 
@@ -101,8 +106,8 @@ else {
 
 }
 
-const std::string &OperationsExpert::getName() const {
-    return "OperationsExpert";
+ std::string &OperationsExpert::getName()  {
+    return name;
 }
 
 
@@ -131,7 +136,7 @@ void Medic::doAction(Player *player) {
     //clear out all the cubes
     for (int i=0; i< 5; i++){
         if (city->cube[i] == highest){
-           city->cube[i] = -1;
+           city->cube[i] = 0;
         }
     }
 
@@ -144,6 +149,6 @@ void Medic::doAction(Player *player) {
 
 }
 
-const std::string &Medic::getName() const {
-    return "Medic";
+ std::string &Medic::getName()  {
+    return name;
 }
