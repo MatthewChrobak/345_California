@@ -17,7 +17,6 @@ class Board
 public:
 	Board();
 	~Board();
-
 	void addPlayer(Player* player);
 	void generateGameContentAtStartOfGame();
 	void addCity(City* city);
@@ -29,6 +28,7 @@ public:
 
 	bool isCured[4];
 	bool oneQuietNight = false; // In case the player plays a one Quiet night card
+	int checkChange = 0;
 	
 	static void checkTurn();
 
@@ -46,7 +46,7 @@ public:
 	int currentTurnPlayer = 0;
 	void drawCards(); // Draw 2 cards from the player deck
 	std::vector<std::string> playerCardDeck;
-	int checkChange = 0;
+
 
 
 	int getInfectionRate();
