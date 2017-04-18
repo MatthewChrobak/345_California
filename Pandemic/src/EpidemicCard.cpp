@@ -30,6 +30,7 @@ std::string EpidemicCard::getSurfaceName()
 //When an epidemic card is drawn, do the following steps
 void EpidemicCard::drawingEpidemicCard()
 {
+	GuiManager::showMsgBox("You've drawn an epidemic card.");
 	//Increment the infection rate
 	Board::incrementInfectionRate();
 
