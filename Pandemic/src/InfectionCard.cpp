@@ -57,9 +57,14 @@ normal infection without outbreak
 */
 void InfectionCard::infectCity(int city, int index)
 {
-	Game::getGameBoard()->getCity(city)->cube[index]++;
-	Game::numOfCubeDecrementor(index);
-	GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(city)->name + " is infected.");
+	if (Game::getGameBoard()->getCity(city)->cube[index] < 3)
+	{
+		Game::getGameBoard()->getCity(city)->cube[index]++;
+		Game::numOfCubeDecrementor(index);
+		GuiManager::showMsgBox("The city: " + Game::getGameBoard()->getCity(city)->name + " is infected.");
+	}
+	else
+		InfectionCard::infectCityOutBreak(city);
 }
 
 /*
