@@ -136,7 +136,7 @@ void Medic::doAction(Player *player) {
     //clear out all the cubes
     for (int i=0; i< 5; i++){
         if (city->cube[i] == highest){
-           city->cube[i] = -1;
+           city->cube[i] = 0;
         }
     }
 
