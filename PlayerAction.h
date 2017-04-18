@@ -8,7 +8,7 @@ class PlayerAction {
 
 public:
     virtual void doAction(Player* player)=0;
-    virtual const std::string &getName() const =0;
+    virtual  std::string &getName()  =0;
 
 
 };
@@ -20,7 +20,7 @@ class DirectFlightAction1: public PlayerAction{
 public:
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 };
 
@@ -32,7 +32,7 @@ class BuildResearchStation1: public PlayerAction{
 public:
     void doAction(Player* player);
 
-    const std::string &getName() const;
+    std::string &getName();
 
 };
 
@@ -44,7 +44,7 @@ class TreatDisease1: public PlayerAction{
 public:
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 };
 
@@ -57,7 +57,7 @@ class ShareKnowledge1: public PlayerAction{
 public:
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 };
 
@@ -69,7 +69,7 @@ class DiscoverCure1: public PlayerAction{
 public:
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 
 };
@@ -82,7 +82,7 @@ class Drive1: public PlayerAction{
 public:
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 
 };
@@ -95,7 +95,7 @@ class CharterFlight1: public PlayerAction{
 public:
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 
 };
@@ -107,7 +107,7 @@ class ShuttleFlight1: public PlayerAction{
 public:
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 };
 

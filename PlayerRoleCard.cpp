@@ -18,11 +18,9 @@ void PlayerRoleCard::doAction(Player *player) {
 
 void Scientist::doAction(Player *player) {
 
-    std :: cout << "needs 4 cards" << std::endl;
-
     // Card selection is handled in the Buttons cpp
 
-    //main thread is here becuase 4 same colored
+    //main thread is here becuase 5 same colored
     //get the player's current location
     int playerCurrentLocation = player->pawn->cityIndex;
     //Find if the city has a RC
@@ -54,12 +52,11 @@ void Scientist::doAction(Player *player) {
 
 
 
-
 }
 
 Scientist::Scientist(PlayerAction *playerAction) : playerAction(playerAction) {}
 
-const std::string &Scientist::getName() const {
+ std::string &Scientist::getName()  {
     return name;
 }
 
@@ -109,8 +106,8 @@ else {
 
 }
 
-const std::string &OperationsExpert::getName() const {
-    return "OperationsExpert";
+ std::string &OperationsExpert::getName()  {
+    return name;
 }
 
 
@@ -152,6 +149,6 @@ void Medic::doAction(Player *player) {
 
 }
 
-const std::string &Medic::getName() const {
-    return "Medic";
+ std::string &Medic::getName()  {
+    return name;
 }
