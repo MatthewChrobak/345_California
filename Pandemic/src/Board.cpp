@@ -140,7 +140,7 @@ Board::~Board()
 //Draw 2 cards
 void Board::drawCards()
 {
-	if (this->_playerWithdrawPile.size() <= 0)
+	if (this->playerWithdrawPile.size() <= 0)
 	{
 		GuiManager::showMsgBox("no more player's card, you lost!");
 		GuiManager::handleWindowClose();
@@ -251,7 +251,7 @@ this will check the number of action and change turn if it reaches
 bool Board::playerTurnChange()
 {
 	bool turnChanged = false;
-	if (Game::actionCounter == 0)
+	if (Game::actionCounter <= 0)
 	{
 		this->currentTurnPlayer = ((this->currentTurnPlayer) + 1) % _players.size();
 		Game::resetActionCounter();
@@ -342,6 +342,20 @@ void Board::checkTurn()
 	Board* board = Game::getGameBoard();
 	Player& player = board->getCurrentTurnPlayer();
 
+	// Is there about to be a turn change?
+	if (Game::actionCounter <= 0) {
+		int numberOfCards = player.getNumberOfCards();
+
+		if (numberOfCards >= 6) //You only excess cards if you have more than 7 cards after drawing
+		{
+			GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
+			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.
+			GuiManager::getUIElementByName(CMD_PLAYER_CARDS_CLOSE)->visible = false;
+			GameFrame::PlayerAction = PlayerActions::DiscardCards;
+			return;
+		}
+	}
+
 	if (board->playerTurnChange() == true)
 	{
 		string name = player.getRoleCard()->roleCardNames[player.getRoleCard()->getRoleCardVal()];
@@ -349,16 +363,7 @@ void Board::checkTurn()
 		board->drawCards();
 		GuiManager::showMsgBox("Your current hand after picking two cards.");
 		GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
-
-		int numberOfCards = player.getNumberOfCards();
-
-		if (numberOfCards > 7) //You only excess cards if you have more than 7 cards after drawing
-		{
-			GuiManager::showMsgBox("Please discard " + std::to_string((numberOfCards + 2) % 7) + " cards.");
-			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;// show message that we have to discard.
-			GameFrame::PlayerAction = PlayerActions::DiscardCards;
-
-		}
+		
 		//draw infection card and the game will do the infection automatically
 		Game::getGameBoard()->drawInfectionCard();
 		GuiManager::showMsgBox("End of your turn.");
