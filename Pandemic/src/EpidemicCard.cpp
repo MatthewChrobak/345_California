@@ -6,8 +6,6 @@
 #include "Game.h"
 
 
-
-
 EpidemicCard::EpidemicCard()
 {
 	this->_cardType = PlayerCardType::Epidemic_Card;
