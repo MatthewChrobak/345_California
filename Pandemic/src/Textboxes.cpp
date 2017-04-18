@@ -3,7 +3,7 @@
 
 SaveNameTextbox::SaveNameTextbox() : UITextbox(TXT_SAVE_NAME)
 {
-	this->surfaceName = "ui\\lightbox.png";
+	this->surfaceName = "ui/lightbox.png";
 	this->width = DRAW_WIDTH / 2;
 	this->left = this->width / 2;
 	this->setFontSize(24);

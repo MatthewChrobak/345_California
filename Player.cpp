@@ -140,7 +140,6 @@ void Player::setPlayerActionList( vector<PlayerAction *, std::allocator<PlayerAc
 void Player::setCardsSelected( vector<int, std::allocator<int>> &cardsSelected) {
     Player::cardsSelected = cardsSelected;
 }
-
 int Player::getCitySelected() const {
     return citySelected;
 }

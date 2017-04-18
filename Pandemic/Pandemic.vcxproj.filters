@@ -31,12 +31,6 @@
     <Filter Include="Header Files\Views\Contexts">
       <UniqueIdentifier>{b99c09c6-f8dc-4018-a12f-c71ab14b5f7a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Controllers\MainMenu">
-      <UniqueIdentifier>{ff9b1c8e-05e8-4926-b05d-0b81defda11d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Controllers\InGame">
-      <UniqueIdentifier>{16faaab0-1235-4a65-8175-0dd33166a4a5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Controllers\Elements">
       <UniqueIdentifier>{063ad9f1-38ed-4aa3-a4d4-ef3cb288bf9d}</UniqueIdentifier>
     </Filter>
@@ -60,12 +54,6 @@
     </Filter>
     <Filter Include="Source Files\Controllers\Elements">
       <UniqueIdentifier>{0a2e26cf-af28-475a-98db-340130d99e6b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Controllers\InGame">
-      <UniqueIdentifier>{9d0643d5-623b-42e8-bb6a-01095dbddc5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Controllers\MainMenu">
-      <UniqueIdentifier>{f1a8de8d-b431-413b-8247-9f5951d98f62}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Models\Cities">
       <UniqueIdentifier>{d8a0c6f2-4d91-4a57-a201-6c8e488b63bb}</UniqueIdentifier>

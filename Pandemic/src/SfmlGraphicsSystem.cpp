@@ -373,7 +373,7 @@ std::string SfmlGraphicsSystem::keycodeToString(sf::Keyboard::Key key, bool caps
 			return "|";
 		}
 		else {
-			return "\\";
+			return "/";
 		}
 	case sf::Keyboard::Key::Tilde:
 		if (caps) {

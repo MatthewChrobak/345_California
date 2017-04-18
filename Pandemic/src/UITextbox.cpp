@@ -43,7 +43,7 @@ void UITextbox::draw()
 	
 	this->setPosition(this->left,
 		this->top + (this->height - this->getFontSize()) / 2);
-	GraphicsManager::renderText(renderText, *this);
+	GraphicsManager::getInstance().renderText(renderText, *this);
 }
 
 bool UITextbox::onKeyDown(std::string key)
