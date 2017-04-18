@@ -329,13 +329,10 @@ void Board::shuffleDiscardedInfectionDeck()
 		infectionCityCards.insert(this->infectionCityCards.begin(), this->discardInfectionCard[rng]);
 	}
 
-	std::string g = std::to_string(infectionCityCards.size());
-	GuiManager::showMsgBox("SIZE OF INFECTIONCITYCARDS AFTER EPIDEMIC" + g);
 
 	//Clear the discarded infection cards deck after all cards have been placed back in the original deck.
 	this->discardInfectionCard.clear();
-	std::string h = std::to_string(discardInfectionCard.size());
-	GuiManager::showMsgBox("SIZE OF DISCARDCARDS AFTER EPIDEMIC" + h);
+
 }
 
 
@@ -371,7 +368,18 @@ void Board::checkTurn()
 		//GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = true;
 		GuiManager::showMsgBox("You drew 2 cards.");
 		//draw infection card and the game will do the infection automatically
-		Game::getGameBoard()->drawInfectionCard();
+		
+		
+		//oneQuietNight stays false as long as the event card is not played (cards always will be drawn)
+		if (board->oneQuietNight == false) {
+			Game::getGameBoard()->drawInfectionCard();
+		}
+
+		//Reset value to false once oneQuietNight has been played
+		if (board->oneQuietNight == true) {
+			GuiManager::showMsgBox("You've played One Quiet Night, there will be no infections tonight!");
+			board->oneQuietNight = false;
+		}
 
 		if (Game::getState() == GameState::InGame)
 			GuiManager::showMsgBox("End of your turn.");
