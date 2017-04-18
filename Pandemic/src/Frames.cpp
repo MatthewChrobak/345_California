@@ -60,8 +60,8 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 						// Reset the player action.
 						Game::decrementActionCounter();
 						//If turn is changed, show this message
-						Board::checkTurn();
 						GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+						Board::checkTurn();
 						break;
 					}
 				}
@@ -81,10 +81,11 @@ bool GameFrame::onMouseDown(std::string button, int x, int y)
 						Failure to do so will cause assertions to fail and will cause the application to crash.
 						*/
 						Game::decrementActionCounter();
-						Board::checkTurn();
+						
 						GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 						//reset player Actions
 						GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+						Board::checkTurn();
 					}
 					else
 						GuiManager::showMsgBox("Invalid choice, the city does not have a research center.");
@@ -209,14 +210,6 @@ void PlayerCardsFrame::draw()
 		sCtx.setRenderSize(PLAYER_CARD_WIDTH, PLAYER_CARD_HEIGHT);
 		sCtx.setPosition(PLAYER_CARD_WIDTH * x + 10 * (x + 1), PLAYER_CARD_HEIGHT * y / 2 + 10 * (y + 1) + y * PLAYER_CARD_HEIGHT / 2);
 
-		// Do we render the selector?
-		for (unsigned int cardDataIndex = 0; cardDataIndex < this->_cardData.size(); cardDataIndex++) {
-			if (this->_cardData.at(cardDataIndex) == i) {
-				GraphicsManager::getInstance().renderSurface("cards/cardselect.png", sCtx);
-				break;
-			}
-		}
-
 		// Render the card as a city card if it's a city card.
 		if (card->getType() == PlayerCardType::City_Card) {
 			// Get the city from its index.
@@ -266,6 +259,14 @@ void PlayerCardsFrame::draw()
 			// Pass if off to the graphics manager to draw.
 			GraphicsManager::getInstance().renderSurface("cards/eventcard.png", sCtx);
 			GraphicsManager::getInstance().renderText(((EventCard*)card)->getEventName(), tCtx);
+		}
+
+		// Do we render the selector?
+		for (unsigned int cardDataIndex = 0; cardDataIndex < this->_cardData.size(); cardDataIndex++) {
+			if (this->_cardData.at(cardDataIndex) == i) {
+				GraphicsManager::getInstance().renderSurface("cards/cardselect.png", sCtx);
+				break;
+			}
 		}
 	}
 }
