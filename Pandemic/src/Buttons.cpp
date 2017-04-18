@@ -227,8 +227,9 @@ bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 			Game::numOfCubeIncrementor(cityColor);
 		} while (Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor] > 0);
 		Game::decrementActionCounter();
-		Board::checkTurn();
+		
 		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+		Board::checkTurn();
 	}
 	//if the player is not a medic
 	else if (Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor] > 0)
@@ -237,8 +238,9 @@ bool TreatDiseaseAction::onMouseDown(std::string key, int x, int y)
 		Game::getGameBoard()->getCity(currentPlayerIndex)->cube[cityColor]--;
 		Game::numOfCubeIncrementor(cityColor);
 		Game::decrementActionCounter();
-		Board::checkTurn();
+		
 		GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+		Board::checkTurn();
 	}
 	else
 		GuiManager::showMsgBox("No Infection cube is at the current city.");
@@ -382,10 +384,10 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				player.pawn->cityIndex = clickedCityIndex;
 
 				Game::decrementActionCounter();
-				Board::checkTurn();
 				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 				// Reset the player action.
 				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+				Board::checkTurn();
 				break;
 			}
 			else
@@ -415,10 +417,11 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 					player.removeCard(cardIndex);
 					player.pawn->cityIndex = cityIndex;
 					Game::decrementActionCounter();
-					Board::checkTurn();
+					
 					GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 					// Reset the player action.
 					GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+					Board::checkTurn();
 					break;
 				}
 				else {
@@ -453,10 +456,11 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				player.pawn->cityIndex = x;
 				player.removeCard(cardIndex);
 				Game::decrementActionCounter();
-				Board::checkTurn();
+				
 				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 				//reset player Actions
 				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+				Board::checkTurn();
 				break;
 			}
 
@@ -477,10 +481,10 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				Failure to do so will cause assertions to fail and will cause the application to crash.
 				*/
 				Game::decrementActionCounter();
-				Board::checkTurn();
 				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 				//reset player Actions
 				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+				Board::checkTurn();
 			}
 			else
 				GuiManager::showMsgBox("Invalid choice, the city does not have a research center.");
@@ -502,9 +506,10 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 					Game::numOfResearchCenter--;
 					GuiManager::showMsgBox("A research center has been built");
 					Game::decrementActionCounter();
-					Board::checkTurn();
+					
 					//reset player actions
 					GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+					Board::checkTurn();
 				}
 			}	
 		}
@@ -535,9 +540,10 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 							player.removeCard(cardIndex);
 							Game::numOfResearchCenter--;
 							Game::decrementActionCounter();
-							Board::checkTurn();
+							
 							//reset player actions
 							GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+							Board::checkTurn();
 							break;
 						}
 						else
@@ -590,10 +596,11 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 						Failure to do so will cause assertions to fail and will cause the application to crash.
 						*/
 						Game::decrementActionCounter();
-						Board::checkTurn();
+						
 						GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 						//reset player Actions
 						GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+						Board::checkTurn();
 					}
 				}
 			}
@@ -655,13 +662,14 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 				GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
 				GuiManager::showMsgBox("The disease has been cured.");
 				Game::decrementActionCounter();
-				Board::checkTurn();
+				
 				GameFrame::PlayerAction = PlayerActions::NoPlayerAction;
+				Board::checkTurn();
 				
 			} 
 			else 
 			{
-				GuiManager::showMsgBox("You need to select " + std::to_string(roleCardIndex) + " cards.");
+				GuiManager::showMsgBox("You need to select " + std::to_string(requiredCardCount) + " cards.");
 			}
 		}
 		return true;
@@ -680,12 +688,15 @@ bool PlayerCardsOkay::onMouseDown(std::string button, int x, int y)
 
 			for (int i = 0; i < numberOfDiscards; i++)
 			{
-				int cardIndex1 = this->_cardData->at(0);
-				player.removeCard(cardIndex1);
+				player.removeCard(this->_cardData->at(i));
 			}
+
+			GuiManager::getUIElementByName(FRM_PLAYER_CARDS)->visible = false;
+			GuiManager::getUIElementByName(CMD_PLAYER_CARDS_CLOSE)->visible = true;
+			board->checkTurn();
 		}
 		else {
-			GuiManager::showMsgBox("You must select " + std::to_string(numberOfCards) + " cards.");
+			GuiManager::showMsgBox("You must select " + std::to_string(numberOfDiscards) + " cards.");
 		}
 		break;
 	}
