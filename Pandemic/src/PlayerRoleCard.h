@@ -17,14 +17,41 @@ public:
 
 class Scientist: public PlayerRoleCard {
 PlayerAction* playerAction;
-    std :: string name = "Scientist - requires 4 matching player cards instead of 5";
+    std :: string name = "Scientist";
 
 public:
     Scientist(PlayerAction *playerAction);
 
     void doAction(Player* player);
 
-    const std::string &getName() const;
+     std::string &getName() ;
 
 };
 
+
+class OperationsExpert: public PlayerRoleCard {
+    PlayerAction* playerAction;
+    std :: string name = "OperationsExpert";
+
+public:
+    OperationsExpert(PlayerAction *playerAction);
+
+    void doAction(Player* player);
+
+     std::string &getName() ;
+
+};
+
+
+class Medic: public PlayerRoleCard {
+    PlayerAction* playerAction;
+    std :: string name = "Medic";
+
+public:
+    Medic(PlayerAction *playerAction);
+
+    void doAction(Player* player);
+
+     std::string &getName() ;
+
+};
