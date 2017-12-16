@@ -1,3 +1,2 @@
 # 345_California
-COMP 345 "PANDEMIC" 
-PROJECT
+Popular board game "PANDEMIC" done in C++. Thanks team.
